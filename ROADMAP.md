@@ -9,7 +9,7 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 
 | ID | Goal | Status | Notes |
 |---|---|---|---|
-| R13 | Real-device check on iPad and phone | ⏸ | Tests only run in desktop Chromium at iPad sizes and 375 px. Check tap feel, text size, rotation, and whether Safari keeps saved progress for the downloaded file. |
+| R13 | Real-device check on iPad and phone | ⏸ | Tests only run in desktop Chromium at iPad sizes and 375 px. Check tap feel, text size, rotation, whether Safari keeps saved progress for the downloaded file, and the R24 Safari layout fixes. |
 | R14 | Fully tap-only onboarding | ⏸ | The nurse name is the one typed field (it can be skipped). Option: pick a name from a list, or keep typing as optional. |
 | R16 | Update the online (claude.ai) game page | ⏸ | On hold at the user's request; the downloadable file on `main` is the current version. |
 
@@ -37,3 +37,5 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 | R21 | Room-themed patients + discharge parade | ✅ | Each room's patients carry a prop (goggles, cast in traction, eye patch…) that joins in on hot streaks. The report screen has a parade of the round's patients; it gets sillier with the score (waves → conga → hats → nurse crowd-surf at 100%). |
 | R22 | Shift events + daily challenge | ✅ | 1 shift in 4: Rapid Response (2 questions from other rooms, due/fading items first; ×2, no life lost), a visitor's bonus question, or a power outage (×1.5). Cross-room recall % on the report card. Daily challenge: 5 fixed patients a day with its own streak; unlocks party hat (3 days) and rubber-duck scrubs (7). |
 | R23 | Thank-you card collection | ✅ | A discharged missed patient leaves a card (pun + the fact behind the question), shown under the explanation and kept in the Get-well cards album. Badges at 10/25/50. |
+| R24 | Safari layout fixes | ✅ | Onboarding steps no longer overlap or lag (they swap in place with a short fade), and room cards no longer clip the patient or door strip (cards are grids now). Fixed in Chromium only; a real-Safari check is part of R13. |
+| R25 | Deterministic test suites | ✅ | `autosave.mjs` turns random shift events off (shifts were sometimes 11–12 patients) and clears a restored selection before answering; `whimsy.mjs` uses fully wrong ordering answers. Each passed 10 runs in a row; no checks removed. |
