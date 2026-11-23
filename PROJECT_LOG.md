@@ -89,3 +89,25 @@
 - Added `ROADMAP.md`: every goal has a permanent ID (R1, R2, …). R1–R9 are the work done so far; R10–R15 are the
   gaps found when checking the game against the original prompt; R16 (online page) is on hold at the user's request.
 - Assumption: IDs are never renumbered; the order of the Open table is the suggested order of work.
+
+## 2026-11-23 — R10, R11, R12, R15 (R13, R14, R16 on hold per the user)
+- R10: "Ask a colleague" is a true 50/50 on single-answer questions (right answer + one wrong stay). On SATA it
+  removes half the wrong options, rounded up (a true 50/50 isn't defined when several answers are right); on
+  ordering it still places the first step. The button is greyed out when nothing can be removed (one guide
+  question has only 2 options), and the lifeline isn't spent. New `tests/lifeline.mjs` checks every question.
+- R11: wrote a question-specific memory trick + ATI tip for all 232 study-guide questions
+  (`content/guide-extras/chNN.json`, keyed by question id). `build.py --strict` now fails if any is missing or if
+  an extras id doesn't match a guide question. Tricks are built from each question's own "why" and the guide's
+  section content; one proofreading fix (epidermis strata order label).
+- R12: +32 "needs further teaching" (`x-r12-teaching.json`) and +29 "see first" (`x-r12-priority.json`), spread
+  over sections that had none and avoiding scenarios already used (stroke, meningitis, compartment syndrome…).
+  Totals: teaching 55 (9.6%), priority 46 (8.0%) of 575. Assumption: ~8–10% each is close enough to the plan's
+  ~10%; going higher would mean stretching thin A&P sections into clinical topics the guide doesn't cover.
+- R15: +9 med-math (`x-r15-math.json`), all A&P-relevant; 16 total.
+- Clinical framings on top of guide facts (standard nursing priority logic): hypothermia, oliguria, appendicitis,
+  pneumothorax, hypoglycemia, dehydration, CO poisoning, DKA, deep-tissue pressure injury, early newborn jaundice,
+  thrombocytopenia bleeding, post-thyroidectomy hypocalcemia, cauda equina, infant hydrocephalus, referred cardiac
+  pain, chemical eye splash, acute glaucoma, worsening head injury, hyperkalemia, hip-replacement dislocation,
+  botulism, Guillain-Barré, autonomic dysreflexia, sudden hearing loss, diabetic foot, choking, neck injury,
+  heart-failure fluid overload.
+- All suites pass (smoke at 4 sizes rendering all 575, hot restore, autosave, lifeline).

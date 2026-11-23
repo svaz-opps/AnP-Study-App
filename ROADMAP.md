@@ -9,12 +9,8 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 
 | ID | Goal | Status | Notes |
 |---|---|---|---|
-| R10 | "Ask a colleague" becomes a true 50/50 | ⬜ | Today it removes half the *wrong* options rounded down (1 of 3 on a 4-option question). Should leave the right answer + one wrong. Decide what it does on SATA / ordering. |
-| R11 | Memory trick + ATI tip on the 232 study-guide questions | ⬜ | Only the 273 new questions have their own trick and tip; guide questions show section tips and a generic tip per question type. Biggest content job left. |
-| R12 | More "needs further teaching" and "see first" questions | ⬜ | 23 teaching + 17 priority of 505 (~8% together); the plan aimed for ~10% each. |
-| R13 | Real-device check on iPad and phone | ⬜ | Tests only run in desktop Chromium at iPad sizes and 375 px. Check tap feel, text size, rotation, and whether Safari keeps saved progress for the downloaded file. |
-| R14 | Fully tap-only onboarding | ⬜ | The nurse name is the one typed field (it can be skipped). Option: pick a name from a list, or keep typing as optional. |
-| R15 | More med-math questions | ⬜ | 7 now (A&P-relevant: rule of nines, pH, mg dosing…). Optional. |
+| R13 | Real-device check on iPad and phone | ⏸ | Tests only run in desktop Chromium at iPad sizes and 375 px. Check tap feel, text size, rotation, and whether Safari keeps saved progress for the downloaded file. |
+| R14 | Fully tap-only onboarding | ⏸ | The nurse name is the one typed field (it can be skipped). Option: pick a name from a list, or keep typing as optional. |
 | R16 | Update the online (claude.ai) game page | ⏸ | On hold at the user's request; the downloadable file on `main` is the current version. |
 
 ## Done
@@ -30,3 +26,7 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 | R7 | Submit button on every question | ✅ | Tapping only selects; nothing is graded until Submit. |
 | R8 | Downloadable game file in the repo | ✅ | `game/dist/ward-rounds.html` on `main`, rebuilt with each change. |
 | R9 | Autosave rounds in progress | ✅ | Resume / Discard prompt on launch; `game/tests/autosave.mjs`. |
+| R10 | "Ask a colleague" is a true 50/50 | ✅ | Single-answer: the right answer + one wrong stay. SATA: half the wrong options go (rounded up). Ordering: first step placed. Greyed out when there is nothing to remove. `game/tests/lifeline.mjs`. |
+| R11 | Memory trick + ATI tip on all 232 study-guide questions | ✅ | `game/content/guide-extras/`; `build.py --strict` fails if any guide question lacks one. |
+| R12 | More "needs further teaching" and "see first" questions | ✅ | +32 teaching (now 55, ~9.6%) and +29 priority (now 46, ~8%) of 575. |
+| R15 | More med-math questions | ✅ | +9 (now 16): atoms/ions, pH, rule of nines, tablet dosing, % solution, membrane potential, ATP yield. |
