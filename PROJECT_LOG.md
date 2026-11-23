@@ -232,3 +232,17 @@
 - Assumption: Safari's exact flex-in-button behaviour could not be reproduced here (Chromium only); the new
   layout avoids depending on it. Edits kept small and in place to merge cleanly with the parallel overhaul;
   `game/dist/ward-rounds.html` will conflict and should just be rebuilt after merging.
+
+## 2026-11-23 — Flaky test fixes (autosave, whimsy)
+- `autosave.mjs`: random shift events (R22 Rapid Response / visitor) made shifts 11–12 patients long, so
+  `Patient 3 of 10` failed about 1 run in 3. The test now switches events off (wraps `Run.prototype.rollEvent` to
+  force `'none'`, re-applied after every page load), so every run is the same 10-patient shift; the check is unchanged.
+- `autosave.mjs`, second flake found while looping: step 4 answered on top of the selection restored by resume.
+  On an ordering question at patient 3, tapping the already-placed step takes it back, leaving the answer short and
+  Submit disabled (timeout waiting for Next). `answer()` now clears any existing selection first. Proven by forcing
+  an ordering question into slot 3: the old test timed out, the new one passes.
+- `whimsy.mjs`: "miss 1 in a row → chaos 1" failed when the shift's first question was an ordering one with an
+  odd number of steps: the reversed "wrong" answer leaves the middle step right (partial credit, e.g. frac 0.2),
+  and partly-right answers get no chaos reaction by design. Wrong ordering answers are now the steps rotated by one
+  (no step in place). `startShift()` in that test also passes `event: 'none'`; events keep their own checks.
+- No app code changed, no checks removed. Each suite passed 10 consecutive runs; all `BRANCHING.md` suites pass.

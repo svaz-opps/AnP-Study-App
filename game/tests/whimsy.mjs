@@ -20,15 +20,18 @@ await page.evaluate(() => { WR.state.profile.onboarded = true; WR.state.settings
 
 const startShift = (unit = 'ch7') => page.evaluate((unit) => {
   const { App, Run, Engine } = WR;
-  App.run = new Run('shift', { unit, queue: Engine.pickShift(unit, 10) });
+  // no random shift event here (they are tested on their own below), so every run plays the same way
+  App.run = new Run('shift', { unit, queue: Engine.pickShift(unit, 10), event: 'none' });
   App.run.next(); App.show('chart');
 }, unit);
 
-// answer the current question right or wrong (fully wrong, so it counts as a miss)
+// answer the current question right or wrong (fully wrong, so it counts as a miss).
+// A wrong ordering answer is the steps rotated by one, so no step stays in its place (reversing an odd-length
+// list leaves the middle step right, which is partial credit and earns no chaos reaction).
 const answer = (wantRight) => page.evaluate((wantRight) => {
   const run = WR.App.run, q = run.q;
   let ans;
-  if (q.type === 'order') ans = wantRight ? [...q.steps.keys()] : [...q.steps.keys()].reverse();
+  if (q.type === 'order') ans = wantRight ? [...q.steps.keys()] : [...q.steps.keys()].map((i) => (i + 1) % q.steps.length);
   else if (q.type === 'sata') ans = q.opts.map((o, i) => i).filter((i) => (wantRight ? q.opts[i].c : !q.opts[i].c));
   else ans = q.opts.findIndex((o) => (wantRight ? o.c : !o.c));
   run.cur.sel = Array.isArray(ans) ? ans : [ans];

@@ -12,21 +12,28 @@ const page = await browser.newPage({ viewport: { width: 1180, height: 820 } });
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 
-// answer the current question right (select + Submit), optionally go to the next patient
+// answer the current question right (select + Submit), optionally go to the next patient.
+// Any selection already on the question (e.g. one restored by resume) is taken back first: on an ordering
+// question, tapping a placed step removes it, which would leave the answer short and Submit disabled.
 const answer = () => page.evaluate(() => {
-  const q = window.WR.App.run.q;
+  const run = window.WR.App.run, q = run.q;
   const click = (i) => document.querySelector(`.opt[data-i="${i}"]`).click();
+  if (q.type === 'order' || q.type === 'sata') run.cur.sel.slice().reverse().forEach(click);
   if (q.type === 'order') q.steps.forEach((_, i) => click(i));
   else if (q.type === 'sata') q.opts.forEach((o, i) => o.c && click(i));
   else click(q.opts.findIndex((o) => o.c));
   document.querySelector('[data-action="submit"]').click();
 });
 const state = () => page.evaluate(() => { const r = window.WR.App.run; return r ? { screen: window.WR.App.name, mode: r.mode, idx: r.idx, qid: r.cur.qid, score: r.score, lives: r.lives, sel: r.cur.sel.slice(), revealed: r.cur.revealed, time: r.timeLeft, n: r.results.length } : { screen: window.WR.App.name }; });
-const reload = async () => { await page.waitForTimeout(400); await page.reload(); await page.waitForSelector('.floorplan, .chart, .onboard'); await page.waitForTimeout(300); };
+// Random shift events (Rapid Response, visitor) make a shift 11 or 12 patients long; switch them off so every
+// run plays the same 10-patient shift. Re-applied after each load because a reload brings back the original.
+const noEvents = () => page.evaluate(() => { const roll = WR.Run.prototype.rollEvent; WR.Run.prototype.rollEvent = function () { return roll.call(this, 'none'); }; });
+const reload = async () => { await page.waitForTimeout(400); await page.reload(); await page.waitForSelector('.floorplan, .chart, .onboard'); await noEvents(); await page.waitForTimeout(300); };
 const modal = () => page.evaluate(() => !!document.querySelector('#modal-root .modal'));
 
 await page.goto(file);
 await page.waitForSelector('.onboard');
+await noEvents();
 for (const t of ['1', '2', '3', '4', '5']) await page.click(`[data-to="${t}"]`);
 await page.waitForSelector('.chart .opt');
 
