@@ -84,3 +84,8 @@
 - Assumptions: the Code Blue clock is paused while the game is closed (resumes with the time it had); Resume
   has default keyboard focus so Enter doesn't discard by accident.
 - New `game/tests/autosave.mjs` (12 checks) passes, along with the smoke and hot-restore suites.
+
+## 2026-11-23 — Roadmap
+- Added `ROADMAP.md`: every goal has a permanent ID (R1, R2, …). R1–R9 are the work done so far; R10–R15 are the
+  gaps found when checking the game against the original prompt; R16 (online page) is on hold at the user's request.
+- Assumption: IDs are never renumbered; the order of the Open table is the suggested order of work.
