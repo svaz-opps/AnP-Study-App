@@ -151,3 +151,14 @@
 - `build.py --strict` now fails when a single-answer question's right answer is >40 characters and more than
   1.8× its longest wrong option (0 now). At a stricter 1.6×, 22 milder cases remain; left as is (assumption:
   1.8× is the line for an obvious cue, matching the original check).
+
+## 2026-11-23 — GitHub Pages hosting
+- Added `.github/workflows/pages.yml`: on push to `main` (when the built game or the workflow changes, or run by
+  hand), it publishes `game/dist/ward-rounds.html` as the site's `index.html` (also kept at `/ward-rounds.html`).
+- Assumption: deploy the committed build rather than rebuilding in CI, since the committed file is what the
+  branching workflow already tests and treats as the release.
+- The repo is private: Pages on a private personal repo needs GitHub Pro (free with the Student Developer Pack),
+  or the repo must be made public. The published site itself is public either way. Pages must be switched on once
+  in Settings → Pages → Source: "GitHub Actions".
+- Removed the merged leftover branches (ccr-dd43cba2-3w86f7, claude/dreamy-heisenberg-vtqdyh,
+  claude/friendly-meitner-j5l8qj); the user deleted them on GitHub.

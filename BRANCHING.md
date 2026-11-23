@@ -13,3 +13,8 @@ Workflow
 3. Run `python3 game/build.py --strict`, `node game/tests/smoke.mjs`, `node game/tests/hot.mjs`, `node game/tests/autosave.mjs` and `node game/tests/lifeline.mjs` on `beta`.
 4. Commit the rebuilt `game/dist/ward-rounds.html` too (that is the file you download).
 5. When they pass (and it plays right), merge `beta` into `main`, then bring `beta` back level with `main`.
+
+Hosting
+- Every push to `main` that changes `game/dist/ward-rounds.html` republishes the game to GitHub Pages
+  (`.github/workflows/pages.yml`). Link: https://svaz-opps.github.io/AnP-Study-App/
+- `beta` is not published, so test there freely.
