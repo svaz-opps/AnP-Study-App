@@ -201,9 +201,16 @@ def main():
     guide_ids = {q["id"] for q in guide}
     errors += [f"guide-extras: unknown question id {k}" for k in extras if k not in guide_ids]
     for q in guide:
+        ex = extras.get(q["id"], {})
         for k in ("trick", "tip"):
-            if extras.get(q["id"], {}).get(k):
-                q[k] = extras[q["id"]][k]
+            if ex.get(k):
+                q[k] = ex[k]
+        # optional rewording of option text, by the option's index in the guide (keeps the answer key)
+        for i, text in ex.get("opts", {}).items():
+            if not (i.isdigit() and int(i) < len(q["opts"]) and text.strip()):
+                errors.append(f"guide-extras {q['id']}: bad option override {i!r}")
+            else:
+                q["opts"][int(i)]["t"] = text
     missing_extras = [q["id"] for q in guide if not (q.get("trick") and q.get("tip"))]
     questions = new + guide
 
@@ -245,6 +252,17 @@ def main():
         sys.exit(1)
     if strict and gaps:
         print("\nStrict mode: uncovered focus points.")
+        sys.exit(1)
+    long_keys = []
+    for q in questions:
+        if q["type"] in SINGLE:
+            right = [len(o["t"]) for o in q["opts"] if o.get("c")]
+            wrong = [len(o["t"]) for o in q["opts"] if not o.get("c")]
+            if right and wrong and right[0] > 40 and right[0] > 1.8 * max(wrong):
+                long_keys.append(q["id"])
+    print(f"  answer-length cues (right answer > 1.8x longest wrong one): {len(long_keys)}")
+    if strict and long_keys:
+        print("\nStrict mode: the right answer is much longer than the others in:", ", ".join(long_keys[:20]))
         sys.exit(1)
     if strict and missing_extras:
         print("\nStrict mode: guide questions without a trick + tip:", ", ".join(missing_extras[:20]))

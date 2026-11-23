@@ -56,10 +56,10 @@
     "id": "N5-05", "sec": "ch5-simple", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "Under the microscope, the lining of the trachea looks multilayered because its nuclei sit at different heights. What is true about this pseudostratified epithelium?",
     "opts": [
-      {"t": "It is a single layer: every cell touches the basement membrane.", "c": true},
-      {"t": "Every cell reaches the lumen.", "w": "Not every cell reaches the lumen, but every cell touches the basement membrane."},
-      {"t": "It truly has many layers of cells.", "w": "It only LOOKS layered ('pseudo' means false)."},
-      {"t": "It never has cilia.", "w": "The respiratory version is ciliated and has goblet cells."}
+      {"t": "Every cell touches the basement membrane.", "c": true},
+      {"t": "Every cell reaches the free surface (lumen).", "w": "Not every cell reaches the lumen, but every cell touches the basement membrane."},
+      {"t": "It truly has several layers of cells.", "w": "It only LOOKS layered ('pseudo' means false)."},
+      {"t": "It never has cilia or goblet cells.", "w": "The respiratory version is ciliated and has goblet cells."}
     ],
     "why": "Pseudostratified columnar epithelium looks stratified because the nuclei are at different heights, but it is one layer: all cells contact the basement membrane. In the airways it is ciliated with goblet cells that make mucus.",
     "trick": "PSEUDO = fake layers. All feet on the same floor (basement membrane).",

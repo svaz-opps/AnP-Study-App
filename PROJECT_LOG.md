@@ -139,3 +139,15 @@
   lack of ATP", "loss of synovial joint function begins in the third decade"); questions follow it even where
   textbooks phrase things with more nuance.
 - All suites pass.
+
+## 2026-11-23 — R19 answer-length cues removed
+- Reworded the 15 flagged MCQs (N1-05, N3-06, N5-05, N6-08, N7-23, N7-29, N8-23, N9-04, N9-16, N11-03, N11-07,
+  N11-17, N12-05, G-F118, C-ch9-disorders): shortened the right answer to its core idea and made the wrong options
+  equally specific. The detail that was cut from right answers is still in each explanation. Answer keys unchanged.
+- The same check run on all single-answer types also caught 4 priority questions (P-09, P2-16, P2-22, P2-23);
+  fixed the same way.
+- G-F118 and C-ch9-disorders come from the study guide's own bank, so they're reworded through a new optional
+  `"opts"` override in `content/guide-extras/` (option index → text); the guide file is untouched.
+- `build.py --strict` now fails when a single-answer question's right answer is >40 characters and more than
+  1.8× its longest wrong option (0 now). At a stricter 1.6×, 22 milder cases remain; left as is (assumption:
+  1.8× is the line for an obvious cue, matching the original check).

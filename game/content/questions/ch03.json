@@ -71,10 +71,10 @@
     "id": "N3-06", "sec": "ch3-nucleus", "focus": [0], "type": "mcq", "diff": 2,
     "stem": "Which statement about the nucleus is accurate?",
     "opts": [
-      {"t": "Nuclear pores regulate traffic in and out, and the nucleolus assembles ribosomal subunits.", "c": true},
+      {"t": "The nucleolus assembles ribosomal subunits.", "c": true},
       {"t": "The nucleolus makes ATP for the nucleus.", "w": "Mitochondria make ATP. The nucleolus builds ribosomal subunits."},
       {"t": "Nuclear pores let any molecule pass freely.", "w": "Pores REGULATE exchange, such as RNA export and protein import."},
-      {"t": "Chromatin assembles ribosomes.", "w": "Chromatin is DNA plus proteins. The nucleolus assembles ribosomal subunits."}
+      {"t": "Chromatin assembles the cell's ribosomes.", "w": "Chromatin is DNA plus proteins. The nucleolus assembles ribosomal subunits."}
     ],
     "why": "The nucleus holds DNA inside a double-membrane envelope. Nuclear pores control what goes in and out, and the nucleolus uses ribosomal RNA and proteins to build ribosome subunits.",
     "trick": "NucleOLus = the ribosome factOry.",

@@ -295,10 +295,10 @@
     "id": "N8-23", "sec": "ch8-aging", "focus": [0], "type": "mcq", "diff": 2,
     "stem": "A 28-year-old client is surprised that their knees feel stiffer than they used to. When does loss of function in synovial joints often begin?",
     "opts": [
-      {"t": "In the third decade of life (around ages 20 to 30)", "c": true},
-      {"t": "Only after age 70", "w": "Changes begin much earlier, around age 30."},
-      {"t": "In early childhood", "w": "Childhood joints are still growing and flexible."},
-      {"t": "Only after menopause", "w": "Joint stiffening affects everyone and starts well before menopause."}
+      {"t": "In the third decade (your 20s)", "c": true},
+      {"t": "Only after the age of 70", "w": "Changes begin much earlier, around age 30."},
+      {"t": "During early childhood", "w": "Childhood joints are still growing and flexible."},
+      {"t": "Only after menopause begins", "w": "Joint stiffening affects everyone and starts well before menopause."}
     ],
     "why": "Collagen changes cause stiffening beginning around age 30, so loss of synovial joint function often begins in the third decade of life. Fibrocartilage also loses water with age. Exercise delays stiffening.",
     "trick": "Third decade = your twenties. Joint changes start earlier than most people expect.",

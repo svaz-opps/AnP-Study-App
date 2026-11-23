@@ -32,3 +32,4 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 | R15 | More med-math questions | ✅ | +9 (now 16): atoms/ions, pH, rule of nines, tablet dosing, % solution, membrane potential, ATP yield. |
 | R17 | "See first" questions up to 10% | ✅ | +14 priority (`x-r17-priority.json`): 60 of 589 = 10.2%. Teaching is 55 (9.3%). |
 | R18 | Accuracy review of all learning material | ✅ | Read all 589 questions (stems, every option, wrong-option reasons, explanations, tricks, tips), the 26 guide tips and the game's own teaching text. 15 fixes, no wrong answer keys. Details in the project log. |
+| R19 | Remove answer-length cues | ✅ | 19 questions reworded so the right answer no longer stands out by length (15 MCQ + 4 priority). `build.py --strict` now fails if a right answer is more than 1.8× the longest wrong one. |

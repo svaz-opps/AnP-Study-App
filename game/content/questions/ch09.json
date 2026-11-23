@@ -42,10 +42,10 @@
     "id": "N9-04", "sec": "ch9-structure", "focus": [2], "type": "mcq", "diff": 2,
     "stem": "What causes the severe pain of compartment syndrome?",
     "opts": [
-      {"t": "Excessive fluid pressure within the muscle compartment", "c": true},
-      {"t": "Tearing of the fascia walls", "w": "The fascia is intact. Its toughness is why pressure builds up."},
-      {"t": "Stretched tendons", "w": "Tendons are not the cause."},
-      {"t": "Lactic acid from exercise", "w": "Lactic acid causes fatigue, not compartment syndrome."}
+      {"t": "High fluid pressure in the compartment", "c": true},
+      {"t": "Tearing of the surrounding fascia walls", "w": "The fascia is intact. Its toughness is why pressure builds up."},
+      {"t": "Overstretched tendons near the injury", "w": "Tendons are not the cause."},
+      {"t": "Lactic acid buildup from exercise", "w": "Lactic acid causes fatigue, not compartment syndrome."}
     ],
     "why": "Swelling or bleeding inside a compartment enclosed by fascia raises the fluid pressure, which squeezes blood vessels and nerves. That excessive fluid pressure causes the pain.",
     "trick": "Pressure = Pain in a closed Pocket.",
@@ -203,8 +203,8 @@
     "id": "N9-16", "sec": "ch9-energy", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "After a hard sprint, a client keeps breathing heavily for several minutes. What is the extra oxygen being used for?",
     "opts": [
-      {"t": "Oxygen debt: converting lactic acid back to glucose and glycogen and restoring ATP and creatine phosphate", "c": true},
-      {"t": "Starting a new muscle contraction", "w": "The client has stopped exercising."},
+      {"t": "Repaying the oxygen debt", "c": true},
+      {"t": "Starting a new contraction", "w": "The client has stopped exercising."},
       {"t": "Breaking down acetylcholine", "w": "Acetylcholinesterase does that, without needing extra oxygen."},
       {"t": "Making more lactic acid", "w": "Lactic acid builds up when oxygen is SHORT, not when extra oxygen arrives."}
     ],
