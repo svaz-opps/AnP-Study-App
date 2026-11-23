@@ -5,7 +5,19 @@ const MODES = {
   codeblue: { lives: 0, n: Infinity, feedback: false, lifelines: false, time: 60 },
   boss: { lives: 3, n: Infinity, feedback: true, lifelines: true, hp: 1500 },
   exam: { lives: 0, n: 50, feedback: false, lifelines: false },
+  daily: { lives: 0, n: 5, feedback: true, lifelines: false },
 };
+
+// Random shift events (1 shift in 4). Each touches only the questions listed in event.qids.
+//  rapid:   2 questions from OTHER rooms dropped into the shift; ×2 points, no life lost
+//  visitor: a family member's extra quick question; bonus XP, no life lost
+//  outage:  3 questions by flashlight (the bedside goes dark, the chart stays readable); ×1.5 points
+const EVENTS = {
+  rapid: { name: 'Rapid Response', bonus: 2, safe: true },
+  visitor: { name: 'Visitor', bonus: 1, safe: true, xp: 15 },
+  outage: { name: 'Power outage', bonus: 1.5, safe: false },
+};
+const EVENT_CHANCE = 0.25;
 
 class Run {
   constructor(mode, opts = {}) {
@@ -35,7 +47,42 @@ class Run {
     this.xpStart = WR.state.xp;
     this.rankUp = null;
     this.newBadges = [];
+    this.event = null;
+    if (mode === 'shift' && !opts.restoring) this.rollEvent(opts.event);
   }
+
+  // maybe add a random event to this shift (force one with type, or 'none' for no event)
+  rollEvent(force) {
+    if (force === 'none') return;
+    const r = rng(this.seed + ':event');
+    const roll = r();
+    const type = force || (roll < EVENT_CHANCE ? ['rapid', 'visitor', 'outage'][Math.floor(r() * 3)] : null);
+    if (!type || !EVENTS[type]) return;
+    const q = this.queue;
+    let at, qids;
+    if (type === 'rapid') {
+      at = Math.min(q.length, 3 + Math.floor(r() * 5));
+      qids = Engine.rapidPicks(this.unit, 2, q);
+      if (qids.length < 2) return;
+      q.splice(at, 0, ...qids);
+    } else if (type === 'visitor') {
+      at = Math.min(q.length, 5);
+      const id = Engine.pickOne((x) => x.unit === this.unit && Content.isQuick(x), q) || Engine.pickOne((x) => Content.isQuick(x), q);
+      if (!id || q.indexOf(id) !== -1) return;
+      qids = [id];
+      q.splice(at, 0, id);
+    } else {
+      at = Math.min(Math.max(0, q.length - 3), 2 + Math.floor(r() * 5));
+      qids = q.slice(at, at + 3);
+    }
+    this.event = { type, at, qids, results: [] };
+  }
+  // the event the current question belongs to (or null)
+  evNow() {
+    const e = this.event;
+    return e && this.cur && e.qids.indexOf(this.cur.qid) !== -1 ? e : null;
+  }
+  evFirst() { const e = this.evNow(); return !!(e && e.qids[0] === this.cur.qid); }
 
   get q() { return this.cur ? Content.byId[this.cur.qid] : null; }
   get total() { return this.cfg.n === Infinity ? null : this.queue.length; }
@@ -100,11 +147,19 @@ class Run {
     if (res.correct) { this.streak++; this.wrongRun = 0; } else { this.streak = 0; this.wrongRun++; }
     this.best = Math.max(this.best, this.streak);
     WR.state.bestStreak = Math.max(WR.state.bestStreak, this.streak);
-    const pts = Engine.points(q, res.frac, this.streak);
+    const ev = this.evNow();
+    const evInfo = ev ? EVENTS[ev.type] : null;
+    const pts = Engine.points(q, res.frac, this.streak, evInfo ? evInfo.bonus : 1);
     c.pts = pts;
     this.score += pts.pts;
     WR.state.points += pts.pts;
-    const lostLife = !res.correct && res.frac < 0.5;
+    if (ev) {
+      c.ev = ev.type;
+      ev.results.push({ qid: q.id, correct: res.correct });
+      if (ev.type === 'rapid') { const ra = WR.state.rapid; ra.n++; if (res.correct) ra.r++; }
+    }
+    const lostLife = !res.correct && res.frac < 0.5 && !(evInfo && evInfo.safe);
+    c.evSafe = !res.correct && !!(evInfo && evInfo.safe);
     c.lostLife = false;
     if (this.maxLives && lostLife) { this.lives--; c.lostLife = true; }
     if (this.mode === 'codeblue') this.timeLeft = Math.max(0, this.timeLeft + (res.correct ? 3 : -5));
@@ -119,7 +174,7 @@ class Run {
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
-    const xp = pts.pts / 10;
+    const xp = pts.pts / 10 + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
     const up = Engine.addXP(xp);
     if (up != null) this.rankUp = up;
     const badges = Engine.checkBadges();
@@ -202,6 +257,22 @@ class Run {
       bonus += 20;
       if (this.results.length >= this.queue.length && right === this.results.length && this.results.length >= 10) { u.perfect++; extra.push('shift_perfect'); bonus += 50; }
       if (this.lives === 1 && this.results.length >= this.queue.length) extra.push('comeback');
+      const ev = this.event;
+      if (ev && ev.type === 'rapid' && ev.results.length === 2 && ev.results.every((x) => x.correct)) extra.push('rapid');
+    }
+    if (this.mode === 'daily') {
+      const d = s.daily, t = todayStr();
+      this.dailyFirst = d.last !== t && this.results.length >= this.queue.length;
+      if (this.dailyFirst) {
+        const yesterday = todayStr(new Date(Date.now() - 86400000));
+        d.streak = d.last === yesterday ? d.streak + 1 : 1;
+        d.last = t;
+        d.best = Math.max(d.best, right);
+        bonus += 30;
+        extra.push('daily1');
+        if (d.streak >= 3) extra.push('daily3');
+        if (d.streak >= 7) extra.push('daily7');
+      }
     }
     if (this.mode === 'codeblue') {
       extra.push('codeblue');
@@ -237,7 +308,7 @@ class Run {
     return JSON.parse(JSON.stringify(o));
   }
   static restore(o) {
-    const r = new Run(o.mode, { unit: o.unit, queue: o.queue });
+    const r = new Run(o.mode, { unit: o.unit, queue: o.queue, restoring: true });
     Object.assign(r, o);
     r.cfg = MODES[o.mode];
     return r;
@@ -282,6 +353,10 @@ const Talk = {
       bossPhase: ["It's mutating! Questions just got harder.", 'It changed color. Stay sharp!'],
       exam: ['Exam mode: no hints until the end.', 'Pace yourself. One question at a time.'],
       review: ['Re-rounding on missed patients. Second chances!', 'Two right days and they are discharged.'],
+      rapid: [`Rapid Response, Room ${ctx.room}! Different floor, same brain. Double points!`, `Overhead page: Rapid Response to Room ${ctx.room}. Switch gears!`],
+      visitor: ['A family member has a quick question for you!', 'Visitor at the bedside! Answer them and earn bonus XP.'],
+      outage: ['Power outage! Backup lights only. 1.5× points while it lasts.', 'The lights went out! Charts still readable. 1.5× points.'],
+      daily: ["Today's daily challenge: 5 patients. Make them count!", 'Daily challenge! Same 5 patients all day.'],
       win: ['What a shift!', 'You crushed it!', 'Chief Nurse material.'],
       lose: ['Rough shift. The misses are saved for review.', 'Every nurse has hard shifts. Review and come back.'],
     };
@@ -291,6 +366,6 @@ const Talk = {
     return s;
   },
   mood(kind) {
-    return { right: 'happy', streak: 'cheer', wrong: 'worried', part: 'focus', low: 'worried', back: 'happy', codeblue: 'focus', boss: 'focus', bossPhase: 'worried', win: 'cheer', lose: 'sad', exam: 'focus', review: 'happy', start: 'happy' }[kind] || 'happy';
+    return { right: 'happy', streak: 'cheer', wrong: 'worried', part: 'focus', low: 'worried', back: 'happy', codeblue: 'focus', boss: 'focus', bossPhase: 'worried', win: 'cheer', lose: 'sad', exam: 'focus', review: 'happy', start: 'happy', rapid: 'focus', visitor: 'happy', outage: 'worried', daily: 'happy' }[kind] || 'happy';
   },
 };

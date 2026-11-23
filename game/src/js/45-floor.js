@@ -22,8 +22,16 @@ function hudHTML() {
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span class="num">${s.days.streak || 0}</span>-day streak</span></span>
       <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
       ${examChip}
+      ${dailyChip()}
     </div>
   </header>`;
+}
+
+function dailyChip() {
+  const d = WR.state.daily, done = d.last === todayStr();
+  const yesterday = todayStr(new Date(Date.now() - 86400000));
+  const streak = d.last === todayStr() || d.last === yesterday ? d.streak : 0;
+  return `<button class="chip daily ${done ? 'done' : 'todo'}" data-action="daily" aria-label="${done ? 'Daily challenge done today' : "Start today's daily challenge"}${streak ? `, ${streak}-day daily streak` : ''}">${icon(done ? 'check' : 'sparkle')}<span>${done ? 'Daily done' : 'Daily challenge'}${streak ? ` · <span class="num">${streak}</span>d` : ''}</span></button>`;
 }
 
 function roomHTML(u) {
@@ -143,6 +151,12 @@ Screens.floor = {
       startShift(d.unit);
     },
     codeblue() { startMode('codeblue'); },
+    daily() {
+      const done = WR.state.daily.last === todayStr();
+      App.modal(`<h2>Daily challenge</h2><p class="dim">5 patients, the same set all day: 2 from your missed or weak list and 3 from anywhere in the bank. Finish it on back-to-back days to build a daily streak and unlock a party hat (3 days) and rubber-duck scrubs (7 days).</p>${done ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>' : ''}
+        <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">${done ? 'Replay' : 'Start'}</button></div>`,
+      (m) => { if (m === 'go') startDaily(); return false; });
+    },
     boss() {
       if (!Engine.bossUnlocked() && !WR.debug) {
         App.modal(`<h2>The OR is locked</h2><p class="dim">The Superbug only fights experienced nurses. Earn a star in ${Engine.BOSS_ROOMS} rooms, or finish ${Engine.BOSS_SHIFTS} shifts (you've finished ${Engine.shiftsDone()}). A star means you've answered 60% of a room's patients right at least once.</p><div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>`);
@@ -168,6 +182,12 @@ function startReview(qids, label) {
   App.run = new Run('review', { queue: qids });
   App.run.label = label || 'Missed patients';
   App.run.next();
+  App.show('chart', {}, 'zoom-in');
+}
+function startDaily() {
+  App.run = new Run('daily', { queue: Engine.pickDaily() });
+  App.run.next();
+  Store.save();
   App.show('chart', {}, 'zoom-in');
 }
 function startMode(mode) {

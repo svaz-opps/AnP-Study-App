@@ -146,6 +146,7 @@ Screens.stats = {
           <div class="stat"><span class="label">New ATI-style questions</span><b class="num">${pctOf(s.originStats.new)}</b><span class="faint">your honest readiness score</span></div>
           <div class="stat"><span class="label">Guide questions</span><b class="num">${pctOf(s.originStats.guide)}</b><span class="faint">may include memorized ones</span></div>
           <div class="stat"><span class="label">Discharged</span><b class="num">${s.discharged}</b><span class="faint">missed, then fixed</span></div>
+          <div class="stat"><span class="label">Cross-room recall</span><b class="num">${pctOf(s.rapid)}</b><span class="faint">Rapid Response questions from other rooms</span></div>
         </div>
         <div class="card"><span class="label">Weakest instructor focus points</span>${weakHTML}</div>
         <div class="card"><span class="label">Rooms <span class="legend"><i></i>right once <i class="solid"></i>mastered</span></span><div class="unit-bars">${units}</div></div>

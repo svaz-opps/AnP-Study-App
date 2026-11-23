@@ -1,5 +1,5 @@
 // ---------- patient chart (the question screen) ----------
-const MODE_TITLE = { codeblue: 'Code Blue', boss: 'Operating Room', exam: 'Exam simulation' };
+const MODE_TITLE = { codeblue: 'Code Blue', boss: 'Operating Room', exam: 'Exam simulation', daily: 'Daily challenge' };
 
 Screens.chart = {
   cls: 'chart',
@@ -34,7 +34,9 @@ Screens.chart = {
     const q = run.q, c = run.cur, p = c.patient;
     const unit = Content.unitById[q.unit];
     const title = run.mode === 'shift' ? Content.unitLabel(run.unit) : run.mode === 'review' ? run.label : MODE_TITLE[run.mode];
-    const sub = run.total ? `Patient ${run.idx + 1} of ${run.total}` : run.mode === 'boss' ? `Phase ${run.phase + 1} of 3` : `Patient ${run.idx + 1}`;
+    const ev = run.evNow();
+    let sub = run.total ? `Patient ${run.idx + 1} of ${run.total}` : run.mode === 'boss' ? `Phase ${run.phase + 1} of 3` : `Patient ${run.idx + 1}`;
+    if (ev) sub = ev.type === 'rapid' ? `Rapid Response · Room ${unit.room} ${esc(unit.ward)}` : ev.type === 'visitor' ? `${sub} · Visitor question` : `${sub} · Power outage`;
     const talk = run.talk || { text: Talk.line(run.mode === 'shift' ? 'start' : run.mode), mood: 'happy' };
     run.talk = talk;
     const av = WR.state.profile.avatar;
@@ -54,11 +56,12 @@ Screens.chart = {
     } else {
       middle = `<div class="bedside-row">
         <div class="patient-card"><div class="bed" id="bed">${patientInBed(p, this.ptMood(run))}</div>
+          ${ev && ev.type === 'visitor' ? `<div class="visitor" aria-hidden="true">${patientHead(patientFor({ id: 'visitor:' + q.id, stem: '' }), 'happy')}</div>` : ''}
           <div class="pt-info"><b>${esc(p.name)}</b><span class="sub">${p.age} y · Bed ${unit.room}-${p.bed}</span><span class="pt-topic">${esc(sec.num + ' ' + sec.title)}</span><span class="band">NKDA</span></div></div>
-        ${monitor}</div>`;
+        ${monitor}${ev && ev.type === 'outage' ? '<div class="outage-dark" aria-hidden="true"></div>' : ''}</div>`;
     }
     const nurse = run.mode === 'boss' ? '' : `<div class="nurse-row" id="nurse-row"><div class="nurse">${nurseSVG(av, talk.mood)}</div><div class="bubble" id="talk">${esc(talk.text)}</div></div>`;
-    return `<aside class="bedside">${top}${middle}<div class="scorebar" id="scorebar">${this.scoreHTML(run)}</div>${nurse}</aside>`;
+    return `<aside class="bedside ${ev ? 'ev-' + ev.type : ''}">${top}${middle}<div class="scorebar" id="scorebar">${this.scoreHTML(run)}</div>${nurse}</aside>`;
   },
   hpHTML(run) {
     return `<div class="hp"><div class="hp-row"><span>The Superbug</span><span class="num" id="hp-num">${run.hp} / ${run.maxHp}</span></div>
@@ -74,7 +77,8 @@ Screens.chart = {
     let pips = '';
     for (let i = 0; i < run.total; i++) {
       const r = run.results[i];
-      const cls = i === run.idx && !run.cur.revealed ? 'now' : r ? (run.mode === 'exam' ? 'ok' : r.correct ? 'ok' : r.frac > 0 ? 'part' : 'bad') : '';
+      let cls = i === run.idx && !run.cur.revealed ? 'now' : r ? (run.mode === 'exam' ? 'ok' : r.correct ? 'ok' : r.frac > 0 ? 'part' : 'bad') : '';
+      if (run.event && run.event.qids.indexOf(run.queue[i]) !== -1) cls += ' ev ev-' + run.event.type;
       pips += `<i class="${cls}"></i>`;
     }
     return `<div class="prog-row"><div class="pips" aria-label="Patient ${run.idx + 1} of ${run.total}">${pips}</div></div>`;
@@ -152,6 +156,9 @@ Screens.chart = {
     else answer = `<ul>${q.opts.filter((o) => o.c).map((o) => `<li>${esc(o.t)}</li>`).join('')}</ul>`;
     const ansLabel = q.type === 'order' ? 'Correct order' : q.type === 'sata' ? 'Correct answers' : q.type === 'teaching' ? 'Statement that needs more teaching' : 'Correct answer';
     const notes = [];
+    if (c.ev === 'rapid') { const u = Content.unitById[q.unit]; notes.push(`${icon('alarm')} Rapid Response from Room ${u.room} · ${esc(u.ward)}: ×2 points${c.evSafe ? ', and no life lost' : ''}.`); }
+    if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? ': +15 bonus XP' : ''}${c.evSafe ? '. No life lost' : ''}.`);
+    if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×1.5 points.`);
     if (c.lostLife) notes.push(`${icon('heart')} You lost a life.`);
     if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!`);
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
@@ -313,6 +320,18 @@ Screens.chart = {
     }
   },
 
+  eventBanner(type) {
+    const bs = $('.bedside', App.el);
+    if (!bs) return;
+    const b = document.createElement('div');
+    b.className = 'ev-banner ev-' + type;
+    b.setAttribute('role', 'status');
+    b.textContent = { rapid: 'Rapid Response!', visitor: 'Visitor!', outage: 'Power outage!' }[type];
+    bs.appendChild(b);
+    setTimeout(() => b.remove(), 2000);
+    Sound.play(type === 'rapid' ? 'alarm' : type === 'visitor' ? 'door' : 'slidedown');
+  },
+
   advance() {
     const run = App.run;
     clearTimeout(this.autoT);
@@ -323,8 +342,11 @@ Screens.chart = {
       return;
     }
     if (!run.next()) { App.show('report'); return; }
-    if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : 'start');
+    const evStart = run.evFirst();
+    if (evStart) this.say(run.event.type, { room: Content.unitById[run.q.unit].room });
+    else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
     App.rerender();
+    if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
     const sec = App.el;
     if (sec && !reducedMotion()) { const cb = $('#clipboard', sec); if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' }); }

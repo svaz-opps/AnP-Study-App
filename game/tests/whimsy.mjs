@@ -97,6 +97,85 @@ await page.evaluate(() => { const { App, Run, Engine } = WR; App.run = new Run('
 r = await answer(true);
 if (r.wh) fail('exam mode reacted'); else ok('exam mode: no reaction');
 
+// ----- shift events
+console.log('== shift events');
+const evRun = (type) => page.evaluate((type) => {
+  const { App, Run, Engine } = WR;
+  App.run = new Run('shift', { unit: 'ch7', queue: Engine.pickShift('ch7', 10), event: type });
+  App.run.next(); App.show('chart');
+  const e = App.run.event;
+  return e && { type: e.type, qids: e.qids, units: e.qids.map((id) => WR.Content.byId[id].unit), n: App.run.queue.length };
+}, type);
+// play up to the event's questions, answering right; then answer the event ones as asked
+async function playEvent(plan) {
+  const got = [];
+  for (let guard = 0; guard < 20; guard++) {
+    const inEv = await page.evaluate(() => !!WR.App.run.evNow());
+    if (inEv) {
+      const want = plan[got.length];
+      const before = await page.evaluate(() => ({ lives: WR.App.run.lives, rapid: { ...WR.state.rapid } }));
+      const r = await answer(want);
+      const c = await page.evaluate(() => ({ bonus: WR.App.run.cur.pts.bonus, ev: WR.App.run.cur.ev, banner: true }));
+      got.push({ ...r, ...c, livesBefore: before.lives, rapidBefore: before.rapid });
+      if (got.length === plan.length) return got;
+    } else {
+      await page.evaluate(() => { WR.App.run.lives = 3; });
+      await answer(true);
+    }
+    await next();
+  }
+  return got;
+}
+let e = await evRun('rapid');
+if (!e || e.qids.length !== 2) fail('rapid: no event ' + JSON.stringify(e));
+else {
+  if (e.units.includes('ch7') || e.units[0] === e.units[1]) fail('rapid: picks must come from 2 different OTHER rooms: ' + e.units); else ok(`rapid: picks from ${e.units.join(' + ')}, not ch7`);
+  if (e.n !== 12) fail('rapid: queue should grow to 12, got ' + e.n); else ok('rapid: shift grows to 12');
+  const saved = await page.evaluate(() => JSON.stringify(WR.Run.restore(WR.App.run.serialize()).event) === JSON.stringify(WR.App.run.event));
+  if (!saved) fail('rapid: event lost in serialize/restore'); else ok('rapid: event survives autosave');
+  const res = await playEvent([false, true]);
+  if (res.length !== 2) fail('rapid: never reached the event questions');
+  else {
+    if (res[0].lives !== res[0].livesBefore) fail('rapid: a miss cost a life'); else ok('rapid: a miss costs no life');
+    if (res[1].bonus !== 2) fail('rapid: right answer bonus should be 2, got ' + res[1].bonus); else ok('rapid: ×2 points');
+    const ra = await page.evaluate(() => WR.state.rapid);
+    if (ra.n !== res[0].rapidBefore.n + 2 || ra.r !== res[0].rapidBefore.r + 1) fail('rapid: state.rapid not updated ' + JSON.stringify(ra)); else ok('rapid: cross-room recall stat updated');
+  }
+}
+e = await evRun('outage');
+if (!e || e.qids.length !== 3) fail('outage: no event');
+else {
+  const res = await playEvent([true]);
+  if (!res.length || res[0].bonus !== 1.5) fail('outage: bonus should be 1.5'); else ok('outage: ×1.5 points');
+  const dark = await page.evaluate(() => !!document.querySelector('.outage-dark'));
+  if (!dark) fail('outage: no dark overlay'); else ok('outage: bedside goes dark');
+}
+e = await evRun('visitor');
+if (!e || e.qids.length !== 1) fail('visitor: no event');
+else {
+  const res = await playEvent([false]);
+  if (!res.length || res[0].lives !== res[0].livesBefore) fail('visitor: a miss cost a life'); else ok('visitor: a miss costs no life');
+}
+const none = await page.evaluate(() => { const r = new WR.Run('shift', { unit: 'ch1', queue: WR.Engine.pickShift('ch1', 10), event: 'none' }); return r.event; });
+if (none) fail('event "none" still rolled an event'); else ok('no event when told none');
+
+// ----- daily challenge
+console.log('== daily challenge');
+const d1 = await page.evaluate(() => { const q = WR.Engine.pickDaily(); WR.Store.save({ now: true }); WR.Store._local.flush(); return q; });
+await page.reload();
+await page.waitForSelector('.floorplan, .onboard');
+const d2 = await page.evaluate(() => WR.Engine.pickDaily());
+if (d1.length !== 5 || JSON.stringify(d1) !== JSON.stringify(d2)) fail(`daily set changed on reload: ${d1} vs ${d2}`); else ok('daily: same 5 patients after reload');
+if (await page.$('[data-m="drop"]')) await page.click('[data-m="drop"]'); // the autosaved shift from above
+await page.evaluate(() => { WR.state.settings.sound = false; WR.state.daily.last = ''; WR.state.daily.streak = 0; });
+await page.click('.chip.daily');
+await page.click('[data-m="go"]');
+await page.waitForSelector('.mode-daily .opt');
+for (let k = 0; k < 5; k++) { await answer(true); await next(); }
+await page.waitForSelector('.report-wrap');
+const dd = await page.evaluate(() => ({ d: WR.state.daily, badge: !!WR.state.badges.daily1, title: document.querySelector('.report-wrap h1').textContent }));
+if (dd.d.streak !== 1 || dd.d.last !== dd.d.date || !dd.badge) fail('daily: streak/badge not recorded ' + JSON.stringify(dd)); else ok(`daily: done, streak 1, badge earned ("${dd.title}")`);
+
 const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 if (overflow > 1) fail('horizontal overflow ' + overflow);
 

@@ -29,6 +29,9 @@ function defaultState() {
     recent: [],
     unlocks: {},
     settings: { sound: true, motion: 'auto', whimsy: 'full', text: 1, examDate: '', dailyGoal: 0 },
+    daily: { date: '', qids: [], last: '', streak: 0, best: 0 },
+    rapid: { n: 0, r: 0 },   // Rapid Response (cross-room recall) answers
+    cards: {},          // qid -> { d: day earned }  thank-you cards from discharged patients
     openRun: null,      // autosaved round in progress: { at, run }
   };
 }

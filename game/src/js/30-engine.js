@@ -34,6 +34,10 @@ const BADGES = [
   { id: 'exam80', n: 'Exam Ready', d: 'Score 80% or more on an exam simulation.', ico: 'trophy' },
   { id: 'night', n: 'Night Shift', d: 'Study after 10 PM.', ico: 'sparkle' },
   { id: 'chief', n: 'Chief Nurse', d: 'Reach the top rank.', ico: 'trophy' },
+  { id: 'daily1', n: 'Daily Dose', d: 'Finish a daily challenge.', ico: 'calendar' },
+  { id: 'daily3', n: 'Habit Forming', d: 'Finish the daily challenge 3 days in a row.', ico: 'calendar' },
+  { id: 'daily7', n: 'Daily Devotion', d: 'Finish the daily challenge 7 days in a row.', ico: 'trophy' },
+  { id: 'rapid', n: 'Cross-Trained', d: 'Get both Rapid Response questions right in one shift.', ico: 'alarm' },
 ];
 
 const Engine = {
@@ -138,6 +142,41 @@ const Engine = {
     const got = weightedSample(pool.length ? pool : Content.all().filter(filter), (q) => this.weight(q, { weakBias }), 1);
     return got.length ? got[0].id : null;
   },
+  // Rapid Response: questions from OTHER rooms, so the shift suddenly demands recall of
+  // older material (interleaving + spaced retrieval). Best first: items that are due or
+  // fading, then rooms already played but not seen today, then easier items anywhere else.
+  // Never two from the same room.
+  rapidPicks(unit, n = 2, exclude = []) {
+    const s = WR.state, today = dayNum(todayStr());
+    const others = Content.all().filter((q) => q.unit !== unit && exclude.indexOf(q.id) === -1);
+    const age = (r) => (r && r.ld ? today - dayNum(r.ld) : 0);
+    const played = (u) => (s.units[u] && s.units[u].shifts) || (Content.byUnit[u] || []).some((q) => s.items[q.id] && s.items[q.id].s);
+    const due = others.filter((q) => { const r = s.items[q.id]; return r && r.s && (r.miss ? age(r) >= 1 : r.ok < 2 && age(r) >= 3); });
+    const stale = others.filter((q) => { const r = s.items[q.id]; return played(q.unit) && (!r || r.ld !== todayStr()); });
+    const easy = others.filter((q) => (q.diff || 1) <= 1);
+    const out = [], used = new Set();
+    for (const tier of [due, stale, easy, others]) {
+      for (const q of shuffle(tier)) {
+        if (out.length >= n) break;
+        if (used.has(q.unit) || out.indexOf(q.id) !== -1) continue;
+        out.push(q.id); used.add(q.unit);
+      }
+    }
+    return out;
+  },
+  // today's daily challenge: 2 weak or missed items + 3 from the whole bank, fixed for the day
+  pickDaily() {
+    const d = WR.state.daily, t = todayStr();
+    if (d.date === t && d.qids && d.qids.length && d.qids.every((id) => Content.byId[id])) return d.qids.slice();
+    const r = rng('daily:' + t);
+    const byId = (a, b) => (a.id < b.id ? -1 : 1);
+    const weak = Engine.missed().sort(byId);
+    const out = shuffle(weak, r).slice(0, 2).map((q) => q.id);
+    const rest = Content.all().filter((q) => out.indexOf(q.id) === -1).sort(byId);
+    out.push(...shuffle(rest, r).slice(0, 5 - out.length).map((q) => q.id));
+    d.date = t; d.qids = out.slice();
+    return out;
+  },
   pickExam(n = 50) {
     const out = [];
     for (const u of Content.units) out.push(...weightedSample(Content.byUnit[u.id], (q) => this.weight(q), 2).map((q) => q.id));
@@ -164,10 +203,10 @@ const Engine = {
     return { correct: ok, frac: ok ? 1 : 0 };
   },
   multiplier(streak) { return streak >= 10 ? 3 : streak >= 6 ? 2 : streak >= 3 ? 1.5 : 1; },
-  points(q, frac, streak) {
+  points(q, frac, streak, bonus = 1) {
     const base = TYPE_INFO[q.type].base;
     const mult = frac === 1 ? this.multiplier(streak) : 1;
-    return { base, mult, pts: Math.round(base * frac * mult) };
+    return { base, mult, bonus, pts: Math.round(base * frac * mult * bonus) };
   },
 
   // ----- exam countdown + daily target

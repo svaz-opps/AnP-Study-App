@@ -74,6 +74,19 @@ Screens.report = {
         <div class="room-stars big">${starRow(m.stars)}</div></div>
         <div class="mini-bars"><div><span>Answered right at least once</span><b class="num">${m.ever}/${m.total}</b></div><div class="bar"><i style="width:${m.everFrac * 100}%"></i></div>
         <div><span>Mastered (right on 2 different days)</span><b class="num">${m.solid}/${m.total}</b></div><div class="bar"><i style="width:${m.solidFrac * 100}%;background:var(--good)"></i></div></div></div>`;
+      const ev = run.event;
+      if (ev && ev.results.length) {
+        const er = ev.results.filter((x) => x.correct).length;
+        const line = ev.type === 'rapid' ? `<b>Rapid Response:</b> ${er}/${ev.results.length} right. That's recall from other rooms, the kind the final exam asks for.`
+          : ev.type === 'visitor' ? `<b>Visitor question:</b> ${er ? 'answered right, +15 bonus XP.' : 'missed; it is saved for review.'}`
+            : `<b>Power outage:</b> ${er}/${ev.results.length} right by flashlight.`;
+        extra += `<div class="card ev-sum ev-${ev.type}">${icon(ev.type === 'rapid' ? 'alarm' : ev.type === 'visitor' ? 'users' : 'sparkle')}<p>${line}</p></div>`;
+      }
+    } else if (run.mode === 'daily') {
+      const d = WR.state.daily;
+      title = right === n ? 'Daily challenge: perfect!' : 'Daily challenge done';
+      mood = right >= 4 ? 'cheer' : 'happy';
+      sub = run.dailyFirst ? `${right} of ${n} right · ${d.streak}-day daily streak${d.streak > 1 ? '!' : ''}` : `${right} of ${n} right · replay (today's streak was already counted)`;
     } else if (run.mode === 'review') {
       title = 'Re-rounds done'; sub = `${right} of ${n} right. Patients right on 2 different days get discharged.`; mood = 'happy';
     } else if (run.mode === 'codeblue') {
@@ -101,8 +114,9 @@ Screens.report = {
     let btns = '';
     if (missedN && run.mode !== 'review') btns += `<button class="btn" data-action="reviewRun">${icon('bed')}Review these ${missedN} misses</button>`;
     if (run.mode === 'shift') btns += `<button class="btn primary big" data-action="again">Next shift in Room ${Content.unitById[run.unit].room}</button>`;
+    if (run.mode === 'daily') btns += `<button class="btn" data-action="again">Replay today's 5 (not scored)</button>`;
     if (run.mode === 'codeblue' || run.mode === 'boss') btns += `<button class="btn primary big" data-action="again">${run.mode === 'boss' ? 'Fight again' : 'Run another Code Blue'}</button>`;
-    btns += `<button class="btn ${run.mode === 'review' || run.mode === 'exam' ? 'primary big' : ''}" data-action="home">Back to the floor</button>`;
+    btns += `<button class="btn ${run.mode === 'review' || run.mode === 'exam' || run.mode === 'daily' ? 'primary big' : ''}" data-action="home">Back to the floor</button>`;
     return `<div class="narrow report-wrap">
       <div class="report-hero">
         <div class="report-nurse">${nurseSVG(WR.state.profile.avatar, mood)}</div>
@@ -130,7 +144,7 @@ Screens.report = {
   act: {
     again() {
       const run = App.run;
-      if (run.mode === 'shift') startShift(run.unit); else startMode(run.mode);
+      if (run.mode === 'shift') startShift(run.unit); else if (run.mode === 'daily') startDaily(); else startMode(run.mode);
     },
     reviewRun() {
       const ids = App.run.results.filter((r) => !r.correct).map((r) => r.qid);

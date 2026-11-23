@@ -12,11 +12,12 @@ const AVATAR = {
     { n: 'Ceil blue', c: '#7fa9d9' }, { n: 'Navy', c: '#2f4d80' }, { n: 'Teal', c: '#22a093' }, { n: 'Wine', c: '#8e2f4f' },
     { n: 'Charcoal', c: '#33373f' }, { n: 'Lilac', c: '#a68bd6' }, { n: 'Rose', c: '#e7889f' }, { n: 'Hunter', c: '#2f6b4f' },
   ],
-  pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages'],
+  pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages', 'Ducks'],
   shoes: [{ n: 'White', c: '#f4f6f8' }, { n: 'Black', c: '#2b2f36' }, { n: 'Mint', c: '#5cd6c0' }, { n: 'Pink', c: '#ee8fb0' }, { n: 'Sunny', c: '#f6bd52' }, { n: 'Sky', c: '#7fa9d9' }],
   acc: [
     { id: 'stethoscope', n: 'Stethoscope' }, { id: 'badge', n: 'Badge reel' }, { id: 'glasses', n: 'Glasses' },
     { id: 'cap', n: 'Scrub cap' }, { id: 'watch', n: 'Watch' }, { id: 'penlight', n: 'Penlight' }, { id: 'earrings', n: 'Earrings' },
+    { id: 'partyhat', n: 'Party hat' },
   ],
 };
 
@@ -26,6 +27,7 @@ const UNLOCKS = {
   'scrubs:6': { rank: 2 }, 'scrubs:7': { badge: 'codeblue' },
   'acc:cap': { rank: 1 }, 'acc:penlight': { badge: 'priority' }, 'acc:watch': { badge: 'shift3' },
   'hairColor:7': { rank: 4 }, 'shoes:4': { badge: 'daystreak3' },
+  'acc:partyhat': { badge: 'daily3' }, 'pattern:6': { badge: 'daily7' },
 };
 
 function lighten(hex, amt) {
@@ -116,6 +118,7 @@ function patternDefs(id, p, base) {
     3: `<circle cx="8" cy="9" r="2.4" fill="${ink}"/><circle cx="5" cy="5.6" r="1.1" fill="${ink}"/><circle cx="8" cy="4.6" r="1.1" fill="${ink}"/><circle cx="11" cy="5.6" r="1.1" fill="${ink}"/>`,
     4: `<circle cx="5" cy="5" r="1.6" fill="${ink}"/><circle cx="12" cy="11" r="1.6" fill="${ink}"/>`,
     5: `<rect x="3" y="6" width="10" height="4" rx="2" fill="#f7e1c8" transform="rotate(-30 8 8)"/><circle cx="7" cy="8" r=".6" fill="#c9a37c"/><circle cx="9" cy="8" r=".6" fill="#c9a37c"/>`,
+    6: `<ellipse cx="8" cy="10" rx="4.4" ry="2.8" fill="#ffd84d"/><circle cx="11" cy="6.6" r="2.2" fill="#ffd84d"/><path d="M12.8 6.6 l2 .5 -2 .6z" fill="#f28c28"/><circle cx="11.4" cy="6.1" r=".45" fill="#2a2230"/>`,
   };
   if (!shapes[p]) return '';
   return `<pattern id="${id}" width="16" height="16" patternUnits="userSpaceOnUse">${shapes[p]}</pattern>`;
@@ -171,6 +174,10 @@ function nurseSVG(av, mood = 'neutral', opts = {}) {
     s += `<path d="M${cx - 35} ${cy - 6} q0 -34 35 -34 q35 0 35 34 q-35 -10 -70 0z" fill="${capC}"/>`;
     if (pat) s += `<path d="M${cx - 35} ${cy - 6} q0 -34 35 -34 q35 0 35 34 q-35 -10 -70 0z" fill="url(#${uid}p)" opacity=".9"/>`;
     s += `<path d="M${cx - 35} ${cy - 6} q35 -10 70 0" stroke="${scrubDark}" stroke-width="3" fill="none"/>`;
+  }
+  if (acc.has('partyhat') && !isHijab) {
+    s += `<path d="M${cx - 13} ${cy - 29} L${cx + 1} ${cy - 50} L${cx + 13} ${cy - 28} z" fill="#f6bd52" stroke="#c98a1a" stroke-width="1.2"/>`;
+    s += `<path d="M${cx - 8} ${cy - 36} l17 -2 M${cx - 3} ${cy - 43} l8 -1" stroke="#ff6b8a" stroke-width="2.6"/><circle cx="${cx + 1}" cy="${cy - 50}" r="4" fill="#ff6b8a"/>`;
   }
   s += `</svg>`;
   return s;

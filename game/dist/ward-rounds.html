@@ -742,6 +742,41 @@ details.more[open] summary::before { transform: rotate(90deg); }
   .pp-surfer { display: none; }
 }
 
+/* ---------- shift events ---------- */
+.bedside { position: relative; }
+.bedside.ev-rapid .patient-card { border-color: var(--code); animation: ev-alarm 1s ease-in-out infinite alternate; }
+.bedside.ev-rapid .topbar b { color: var(--code); }
+.bedside.ev-visitor .topbar b, .bedside.ev-outage .topbar b { color: var(--warn); }
+.visitor { position: absolute; right: 6px; bottom: 4px; width: 44px; height: 44px; z-index: 2; animation: pop-in .4s cubic-bezier(.2, 1.4, .4, 1) both; }
+.visitor svg { width: 100%; height: 100%; }
+.bedside-row { position: relative; }
+.outage-dark {
+  position: absolute; inset: -2px; border-radius: var(--r-lg); pointer-events: none; z-index: 3;
+  background: radial-gradient(circle at 22% 50%, rgba(255, 240, 180, .08) 0, rgba(255, 240, 180, .04) 18%, rgba(2, 5, 12, .82) 34%);
+  animation: ev-flicker 4s steps(1) infinite;
+}
+.ev-banner {
+  position: absolute; left: 0; right: 0; top: 34%; z-index: 5; text-align: center; pointer-events: none;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-2xl); color: #ffd36b; text-shadow: 0 3px 0 #7a2b00;
+  animation: banner 1.9s ease both;
+}
+.ev-banner.ev-rapid { color: #ff8a95; text-shadow: 0 3px 0 #5a0010; }
+.pips i.ev { outline: 2px solid var(--warn); outline-offset: 1px; }
+.pips i.ev-rapid { outline-color: var(--code); }
+.ev-sum { display: flex; gap: var(--s3); align-items: center; }
+.ev-sum svg { width: 22px; height: 22px; flex: none; color: var(--warn); }
+.ev-sum.ev-rapid svg { color: var(--code); }
+.chip.daily { cursor: pointer; font-family: inherit; color: inherit; }
+.chip.daily.todo { border-color: var(--accent); background: var(--accent-soft); }
+.chip.daily.todo svg { color: var(--accent); }
+.chip.daily.done svg { color: var(--good); }
+@keyframes ev-alarm { from { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); } to { box-shadow: 0 0 0 4px rgba(255, 71, 87, .45); } }
+@keyframes ev-flicker { 0%, 100% { opacity: 1; } 3% { opacity: .55; } 5% { opacity: 1; } 47% { opacity: .7; } 48% { opacity: 1; } }
+[data-calm="1"] .bedside.ev-rapid .patient-card, [data-calm="1"] .outage-dark, [data-calm="1"] .ev-banner, [data-calm="1"] .visitor { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .bedside.ev-rapid .patient-card, .outage-dark, .ev-banner, .visitor { animation: none !important; }
+}
+
 /* ---------- shared bits ---------- */
 .stack { display: flex; flex-direction: column; gap: var(--s4); }
 .center { text-align: center; }
@@ -1095,6 +1130,9 @@ function defaultState() {
     recent: [],
     unlocks: {},
     settings: { sound: true, motion: 'auto', whimsy: 'full', text: 1, examDate: '', dailyGoal: 0 },
+    daily: { date: '', qids: [], last: '', streak: 0, best: 0 },
+    rapid: { n: 0, r: 0 },   // Rapid Response (cross-room recall) answers
+    cards: {},          // qid -> { d: day earned }  thank-you cards from discharged patients
     openRun: null,      // autosaved round in progress: { at, run }
   };
 }
@@ -1317,11 +1355,12 @@ const AVATAR = {
     { n: 'Ceil blue', c: '#7fa9d9' }, { n: 'Navy', c: '#2f4d80' }, { n: 'Teal', c: '#22a093' }, { n: 'Wine', c: '#8e2f4f' },
     { n: 'Charcoal', c: '#33373f' }, { n: 'Lilac', c: '#a68bd6' }, { n: 'Rose', c: '#e7889f' }, { n: 'Hunter', c: '#2f6b4f' },
   ],
-  pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages'],
+  pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages', 'Ducks'],
   shoes: [{ n: 'White', c: '#f4f6f8' }, { n: 'Black', c: '#2b2f36' }, { n: 'Mint', c: '#5cd6c0' }, { n: 'Pink', c: '#ee8fb0' }, { n: 'Sunny', c: '#f6bd52' }, { n: 'Sky', c: '#7fa9d9' }],
   acc: [
     { id: 'stethoscope', n: 'Stethoscope' }, { id: 'badge', n: 'Badge reel' }, { id: 'glasses', n: 'Glasses' },
     { id: 'cap', n: 'Scrub cap' }, { id: 'watch', n: 'Watch' }, { id: 'penlight', n: 'Penlight' }, { id: 'earrings', n: 'Earrings' },
+    { id: 'partyhat', n: 'Party hat' },
   ],
 };
 
@@ -1331,6 +1370,7 @@ const UNLOCKS = {
   'scrubs:6': { rank: 2 }, 'scrubs:7': { badge: 'codeblue' },
   'acc:cap': { rank: 1 }, 'acc:penlight': { badge: 'priority' }, 'acc:watch': { badge: 'shift3' },
   'hairColor:7': { rank: 4 }, 'shoes:4': { badge: 'daystreak3' },
+  'acc:partyhat': { badge: 'daily3' }, 'pattern:6': { badge: 'daily7' },
 };
 
 function lighten(hex, amt) {
@@ -1421,6 +1461,7 @@ function patternDefs(id, p, base) {
     3: `<circle cx="8" cy="9" r="2.4" fill="${ink}"/><circle cx="5" cy="5.6" r="1.1" fill="${ink}"/><circle cx="8" cy="4.6" r="1.1" fill="${ink}"/><circle cx="11" cy="5.6" r="1.1" fill="${ink}"/>`,
     4: `<circle cx="5" cy="5" r="1.6" fill="${ink}"/><circle cx="12" cy="11" r="1.6" fill="${ink}"/>`,
     5: `<rect x="3" y="6" width="10" height="4" rx="2" fill="#f7e1c8" transform="rotate(-30 8 8)"/><circle cx="7" cy="8" r=".6" fill="#c9a37c"/><circle cx="9" cy="8" r=".6" fill="#c9a37c"/>`,
+    6: `<ellipse cx="8" cy="10" rx="4.4" ry="2.8" fill="#ffd84d"/><circle cx="11" cy="6.6" r="2.2" fill="#ffd84d"/><path d="M12.8 6.6 l2 .5 -2 .6z" fill="#f28c28"/><circle cx="11.4" cy="6.1" r=".45" fill="#2a2230"/>`,
   };
   if (!shapes[p]) return '';
   return `<pattern id="${id}" width="16" height="16" patternUnits="userSpaceOnUse">${shapes[p]}</pattern>`;
@@ -1476,6 +1517,10 @@ function nurseSVG(av, mood = 'neutral', opts = {}) {
     s += `<path d="M${cx - 35} ${cy - 6} q0 -34 35 -34 q35 0 35 34 q-35 -10 -70 0z" fill="${capC}"/>`;
     if (pat) s += `<path d="M${cx - 35} ${cy - 6} q0 -34 35 -34 q35 0 35 34 q-35 -10 -70 0z" fill="url(#${uid}p)" opacity=".9"/>`;
     s += `<path d="M${cx - 35} ${cy - 6} q35 -10 70 0" stroke="${scrubDark}" stroke-width="3" fill="none"/>`;
+  }
+  if (acc.has('partyhat') && !isHijab) {
+    s += `<path d="M${cx - 13} ${cy - 29} L${cx + 1} ${cy - 50} L${cx + 13} ${cy - 28} z" fill="#f6bd52" stroke="#c98a1a" stroke-width="1.2"/>`;
+    s += `<path d="M${cx - 8} ${cy - 36} l17 -2 M${cx - 3} ${cy - 43} l8 -1" stroke="#ff6b8a" stroke-width="2.6"/><circle cx="${cx + 1}" cy="${cy - 50}" r="4" fill="#ff6b8a"/>`;
   }
   s += `</svg>`;
   return s;
@@ -2016,6 +2061,10 @@ const BADGES = [
   { id: 'exam80', n: 'Exam Ready', d: 'Score 80% or more on an exam simulation.', ico: 'trophy' },
   { id: 'night', n: 'Night Shift', d: 'Study after 10 PM.', ico: 'sparkle' },
   { id: 'chief', n: 'Chief Nurse', d: 'Reach the top rank.', ico: 'trophy' },
+  { id: 'daily1', n: 'Daily Dose', d: 'Finish a daily challenge.', ico: 'calendar' },
+  { id: 'daily3', n: 'Habit Forming', d: 'Finish the daily challenge 3 days in a row.', ico: 'calendar' },
+  { id: 'daily7', n: 'Daily Devotion', d: 'Finish the daily challenge 7 days in a row.', ico: 'trophy' },
+  { id: 'rapid', n: 'Cross-Trained', d: 'Get both Rapid Response questions right in one shift.', ico: 'alarm' },
 ];
 
 const Engine = {
@@ -2120,6 +2169,41 @@ const Engine = {
     const got = weightedSample(pool.length ? pool : Content.all().filter(filter), (q) => this.weight(q, { weakBias }), 1);
     return got.length ? got[0].id : null;
   },
+  // Rapid Response: questions from OTHER rooms, so the shift suddenly demands recall of
+  // older material (interleaving + spaced retrieval). Best first: items that are due or
+  // fading, then rooms already played but not seen today, then easier items anywhere else.
+  // Never two from the same room.
+  rapidPicks(unit, n = 2, exclude = []) {
+    const s = WR.state, today = dayNum(todayStr());
+    const others = Content.all().filter((q) => q.unit !== unit && exclude.indexOf(q.id) === -1);
+    const age = (r) => (r && r.ld ? today - dayNum(r.ld) : 0);
+    const played = (u) => (s.units[u] && s.units[u].shifts) || (Content.byUnit[u] || []).some((q) => s.items[q.id] && s.items[q.id].s);
+    const due = others.filter((q) => { const r = s.items[q.id]; return r && r.s && (r.miss ? age(r) >= 1 : r.ok < 2 && age(r) >= 3); });
+    const stale = others.filter((q) => { const r = s.items[q.id]; return played(q.unit) && (!r || r.ld !== todayStr()); });
+    const easy = others.filter((q) => (q.diff || 1) <= 1);
+    const out = [], used = new Set();
+    for (const tier of [due, stale, easy, others]) {
+      for (const q of shuffle(tier)) {
+        if (out.length >= n) break;
+        if (used.has(q.unit) || out.indexOf(q.id) !== -1) continue;
+        out.push(q.id); used.add(q.unit);
+      }
+    }
+    return out;
+  },
+  // today's daily challenge: 2 weak or missed items + 3 from the whole bank, fixed for the day
+  pickDaily() {
+    const d = WR.state.daily, t = todayStr();
+    if (d.date === t && d.qids && d.qids.length && d.qids.every((id) => Content.byId[id])) return d.qids.slice();
+    const r = rng('daily:' + t);
+    const byId = (a, b) => (a.id < b.id ? -1 : 1);
+    const weak = Engine.missed().sort(byId);
+    const out = shuffle(weak, r).slice(0, 2).map((q) => q.id);
+    const rest = Content.all().filter((q) => out.indexOf(q.id) === -1).sort(byId);
+    out.push(...shuffle(rest, r).slice(0, 5 - out.length).map((q) => q.id));
+    d.date = t; d.qids = out.slice();
+    return out;
+  },
   pickExam(n = 50) {
     const out = [];
     for (const u of Content.units) out.push(...weightedSample(Content.byUnit[u.id], (q) => this.weight(q), 2).map((q) => q.id));
@@ -2146,10 +2230,10 @@ const Engine = {
     return { correct: ok, frac: ok ? 1 : 0 };
   },
   multiplier(streak) { return streak >= 10 ? 3 : streak >= 6 ? 2 : streak >= 3 ? 1.5 : 1; },
-  points(q, frac, streak) {
+  points(q, frac, streak, bonus = 1) {
     const base = TYPE_INFO[q.type].base;
     const mult = frac === 1 ? this.multiplier(streak) : 1;
-    return { base, mult, pts: Math.round(base * frac * mult) };
+    return { base, mult, bonus, pts: Math.round(base * frac * mult * bonus) };
   },
 
   // ----- exam countdown + daily target
@@ -2210,7 +2294,19 @@ const MODES = {
   codeblue: { lives: 0, n: Infinity, feedback: false, lifelines: false, time: 60 },
   boss: { lives: 3, n: Infinity, feedback: true, lifelines: true, hp: 1500 },
   exam: { lives: 0, n: 50, feedback: false, lifelines: false },
+  daily: { lives: 0, n: 5, feedback: true, lifelines: false },
 };
+
+// Random shift events (1 shift in 4). Each touches only the questions listed in event.qids.
+//  rapid:   2 questions from OTHER rooms dropped into the shift; ×2 points, no life lost
+//  visitor: a family member's extra quick question; bonus XP, no life lost
+//  outage:  3 questions by flashlight (the bedside goes dark, the chart stays readable); ×1.5 points
+const EVENTS = {
+  rapid: { name: 'Rapid Response', bonus: 2, safe: true },
+  visitor: { name: 'Visitor', bonus: 1, safe: true, xp: 15 },
+  outage: { name: 'Power outage', bonus: 1.5, safe: false },
+};
+const EVENT_CHANCE = 0.25;
 
 class Run {
   constructor(mode, opts = {}) {
@@ -2240,7 +2336,42 @@ class Run {
     this.xpStart = WR.state.xp;
     this.rankUp = null;
     this.newBadges = [];
+    this.event = null;
+    if (mode === 'shift' && !opts.restoring) this.rollEvent(opts.event);
   }
+
+  // maybe add a random event to this shift (force one with type, or 'none' for no event)
+  rollEvent(force) {
+    if (force === 'none') return;
+    const r = rng(this.seed + ':event');
+    const roll = r();
+    const type = force || (roll < EVENT_CHANCE ? ['rapid', 'visitor', 'outage'][Math.floor(r() * 3)] : null);
+    if (!type || !EVENTS[type]) return;
+    const q = this.queue;
+    let at, qids;
+    if (type === 'rapid') {
+      at = Math.min(q.length, 3 + Math.floor(r() * 5));
+      qids = Engine.rapidPicks(this.unit, 2, q);
+      if (qids.length < 2) return;
+      q.splice(at, 0, ...qids);
+    } else if (type === 'visitor') {
+      at = Math.min(q.length, 5);
+      const id = Engine.pickOne((x) => x.unit === this.unit && Content.isQuick(x), q) || Engine.pickOne((x) => Content.isQuick(x), q);
+      if (!id || q.indexOf(id) !== -1) return;
+      qids = [id];
+      q.splice(at, 0, id);
+    } else {
+      at = Math.min(Math.max(0, q.length - 3), 2 + Math.floor(r() * 5));
+      qids = q.slice(at, at + 3);
+    }
+    this.event = { type, at, qids, results: [] };
+  }
+  // the event the current question belongs to (or null)
+  evNow() {
+    const e = this.event;
+    return e && this.cur && e.qids.indexOf(this.cur.qid) !== -1 ? e : null;
+  }
+  evFirst() { const e = this.evNow(); return !!(e && e.qids[0] === this.cur.qid); }
 
   get q() { return this.cur ? Content.byId[this.cur.qid] : null; }
   get total() { return this.cfg.n === Infinity ? null : this.queue.length; }
@@ -2305,11 +2436,19 @@ class Run {
     if (res.correct) { this.streak++; this.wrongRun = 0; } else { this.streak = 0; this.wrongRun++; }
     this.best = Math.max(this.best, this.streak);
     WR.state.bestStreak = Math.max(WR.state.bestStreak, this.streak);
-    const pts = Engine.points(q, res.frac, this.streak);
+    const ev = this.evNow();
+    const evInfo = ev ? EVENTS[ev.type] : null;
+    const pts = Engine.points(q, res.frac, this.streak, evInfo ? evInfo.bonus : 1);
     c.pts = pts;
     this.score += pts.pts;
     WR.state.points += pts.pts;
-    const lostLife = !res.correct && res.frac < 0.5;
+    if (ev) {
+      c.ev = ev.type;
+      ev.results.push({ qid: q.id, correct: res.correct });
+      if (ev.type === 'rapid') { const ra = WR.state.rapid; ra.n++; if (res.correct) ra.r++; }
+    }
+    const lostLife = !res.correct && res.frac < 0.5 && !(evInfo && evInfo.safe);
+    c.evSafe = !res.correct && !!(evInfo && evInfo.safe);
     c.lostLife = false;
     if (this.maxLives && lostLife) { this.lives--; c.lostLife = true; }
     if (this.mode === 'codeblue') this.timeLeft = Math.max(0, this.timeLeft + (res.correct ? 3 : -5));
@@ -2324,7 +2463,7 @@ class Run {
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
-    const xp = pts.pts / 10;
+    const xp = pts.pts / 10 + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
     const up = Engine.addXP(xp);
     if (up != null) this.rankUp = up;
     const badges = Engine.checkBadges();
@@ -2407,6 +2546,22 @@ class Run {
       bonus += 20;
       if (this.results.length >= this.queue.length && right === this.results.length && this.results.length >= 10) { u.perfect++; extra.push('shift_perfect'); bonus += 50; }
       if (this.lives === 1 && this.results.length >= this.queue.length) extra.push('comeback');
+      const ev = this.event;
+      if (ev && ev.type === 'rapid' && ev.results.length === 2 && ev.results.every((x) => x.correct)) extra.push('rapid');
+    }
+    if (this.mode === 'daily') {
+      const d = s.daily, t = todayStr();
+      this.dailyFirst = d.last !== t && this.results.length >= this.queue.length;
+      if (this.dailyFirst) {
+        const yesterday = todayStr(new Date(Date.now() - 86400000));
+        d.streak = d.last === yesterday ? d.streak + 1 : 1;
+        d.last = t;
+        d.best = Math.max(d.best, right);
+        bonus += 30;
+        extra.push('daily1');
+        if (d.streak >= 3) extra.push('daily3');
+        if (d.streak >= 7) extra.push('daily7');
+      }
     }
     if (this.mode === 'codeblue') {
       extra.push('codeblue');
@@ -2442,7 +2597,7 @@ class Run {
     return JSON.parse(JSON.stringify(o));
   }
   static restore(o) {
-    const r = new Run(o.mode, { unit: o.unit, queue: o.queue });
+    const r = new Run(o.mode, { unit: o.unit, queue: o.queue, restoring: true });
     Object.assign(r, o);
     r.cfg = MODES[o.mode];
     return r;
@@ -2487,6 +2642,10 @@ const Talk = {
       bossPhase: ["It's mutating! Questions just got harder.", 'It changed color. Stay sharp!'],
       exam: ['Exam mode: no hints until the end.', 'Pace yourself. One question at a time.'],
       review: ['Re-rounding on missed patients. Second chances!', 'Two right days and they are discharged.'],
+      rapid: [`Rapid Response, Room ${ctx.room}! Different floor, same brain. Double points!`, `Overhead page: Rapid Response to Room ${ctx.room}. Switch gears!`],
+      visitor: ['A family member has a quick question for you!', 'Visitor at the bedside! Answer them and earn bonus XP.'],
+      outage: ['Power outage! Backup lights only. 1.5× points while it lasts.', 'The lights went out! Charts still readable. 1.5× points.'],
+      daily: ["Today's daily challenge: 5 patients. Make them count!", 'Daily challenge! Same 5 patients all day.'],
       win: ['What a shift!', 'You crushed it!', 'Chief Nurse material.'],
       lose: ['Rough shift. The misses are saved for review.', 'Every nurse has hard shifts. Review and come back.'],
     };
@@ -2496,7 +2655,7 @@ const Talk = {
     return s;
   },
   mood(kind) {
-    return { right: 'happy', streak: 'cheer', wrong: 'worried', part: 'focus', low: 'worried', back: 'happy', codeblue: 'focus', boss: 'focus', bossPhase: 'worried', win: 'cheer', lose: 'sad', exam: 'focus', review: 'happy', start: 'happy' }[kind] || 'happy';
+    return { right: 'happy', streak: 'cheer', wrong: 'worried', part: 'focus', low: 'worried', back: 'happy', codeblue: 'focus', boss: 'focus', bossPhase: 'worried', win: 'cheer', lose: 'sad', exam: 'focus', review: 'happy', start: 'happy', rapid: 'focus', visitor: 'happy', outage: 'worried', daily: 'happy' }[kind] || 'happy';
   },
 };
 
@@ -2657,8 +2816,16 @@ function hudHTML() {
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span class="num">${s.days.streak || 0}</span>-day streak</span></span>
       <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
       ${examChip}
+      ${dailyChip()}
     </div>
   </header>`;
+}
+
+function dailyChip() {
+  const d = WR.state.daily, done = d.last === todayStr();
+  const yesterday = todayStr(new Date(Date.now() - 86400000));
+  const streak = d.last === todayStr() || d.last === yesterday ? d.streak : 0;
+  return `<button class="chip daily ${done ? 'done' : 'todo'}" data-action="daily" aria-label="${done ? 'Daily challenge done today' : "Start today's daily challenge"}${streak ? `, ${streak}-day daily streak` : ''}">${icon(done ? 'check' : 'sparkle')}<span>${done ? 'Daily done' : 'Daily challenge'}${streak ? ` · <span class="num">${streak}</span>d` : ''}</span></button>`;
 }
 
 function roomHTML(u) {
@@ -2778,6 +2945,12 @@ Screens.floor = {
       startShift(d.unit);
     },
     codeblue() { startMode('codeblue'); },
+    daily() {
+      const done = WR.state.daily.last === todayStr();
+      App.modal(`<h2>Daily challenge</h2><p class="dim">5 patients, the same set all day: 2 from your missed or weak list and 3 from anywhere in the bank. Finish it on back-to-back days to build a daily streak and unlock a party hat (3 days) and rubber-duck scrubs (7 days).</p>${done ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>' : ''}
+        <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">${done ? 'Replay' : 'Start'}</button></div>`,
+      (m) => { if (m === 'go') startDaily(); return false; });
+    },
     boss() {
       if (!Engine.bossUnlocked() && !WR.debug) {
         App.modal(`<h2>The OR is locked</h2><p class="dim">The Superbug only fights experienced nurses. Earn a star in ${Engine.BOSS_ROOMS} rooms, or finish ${Engine.BOSS_SHIFTS} shifts (you've finished ${Engine.shiftsDone()}). A star means you've answered 60% of a room's patients right at least once.</p><div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>`);
@@ -2805,6 +2978,12 @@ function startReview(qids, label) {
   App.run.next();
   App.show('chart', {}, 'zoom-in');
 }
+function startDaily() {
+  App.run = new Run('daily', { queue: Engine.pickDaily() });
+  App.run.next();
+  Store.save();
+  App.show('chart', {}, 'zoom-in');
+}
 function startMode(mode) {
   const queue = mode === 'exam' ? Engine.pickExam(50) : [];
   App.run = new Run(mode, { queue });
@@ -2815,7 +2994,7 @@ function startMode(mode) {
 
 /* ---- 50-chart.js ---- */
 // ---------- patient chart (the question screen) ----------
-const MODE_TITLE = { codeblue: 'Code Blue', boss: 'Operating Room', exam: 'Exam simulation' };
+const MODE_TITLE = { codeblue: 'Code Blue', boss: 'Operating Room', exam: 'Exam simulation', daily: 'Daily challenge' };
 
 Screens.chart = {
   cls: 'chart',
@@ -2850,7 +3029,9 @@ Screens.chart = {
     const q = run.q, c = run.cur, p = c.patient;
     const unit = Content.unitById[q.unit];
     const title = run.mode === 'shift' ? Content.unitLabel(run.unit) : run.mode === 'review' ? run.label : MODE_TITLE[run.mode];
-    const sub = run.total ? `Patient ${run.idx + 1} of ${run.total}` : run.mode === 'boss' ? `Phase ${run.phase + 1} of 3` : `Patient ${run.idx + 1}`;
+    const ev = run.evNow();
+    let sub = run.total ? `Patient ${run.idx + 1} of ${run.total}` : run.mode === 'boss' ? `Phase ${run.phase + 1} of 3` : `Patient ${run.idx + 1}`;
+    if (ev) sub = ev.type === 'rapid' ? `Rapid Response · Room ${unit.room} ${esc(unit.ward)}` : ev.type === 'visitor' ? `${sub} · Visitor question` : `${sub} · Power outage`;
     const talk = run.talk || { text: Talk.line(run.mode === 'shift' ? 'start' : run.mode), mood: 'happy' };
     run.talk = talk;
     const av = WR.state.profile.avatar;
@@ -2870,11 +3051,12 @@ Screens.chart = {
     } else {
       middle = `<div class="bedside-row">
         <div class="patient-card"><div class="bed" id="bed">${patientInBed(p, this.ptMood(run))}</div>
+          ${ev && ev.type === 'visitor' ? `<div class="visitor" aria-hidden="true">${patientHead(patientFor({ id: 'visitor:' + q.id, stem: '' }), 'happy')}</div>` : ''}
           <div class="pt-info"><b>${esc(p.name)}</b><span class="sub">${p.age} y · Bed ${unit.room}-${p.bed}</span><span class="pt-topic">${esc(sec.num + ' ' + sec.title)}</span><span class="band">NKDA</span></div></div>
-        ${monitor}</div>`;
+        ${monitor}${ev && ev.type === 'outage' ? '<div class="outage-dark" aria-hidden="true"></div>' : ''}</div>`;
     }
     const nurse = run.mode === 'boss' ? '' : `<div class="nurse-row" id="nurse-row"><div class="nurse">${nurseSVG(av, talk.mood)}</div><div class="bubble" id="talk">${esc(talk.text)}</div></div>`;
-    return `<aside class="bedside">${top}${middle}<div class="scorebar" id="scorebar">${this.scoreHTML(run)}</div>${nurse}</aside>`;
+    return `<aside class="bedside ${ev ? 'ev-' + ev.type : ''}">${top}${middle}<div class="scorebar" id="scorebar">${this.scoreHTML(run)}</div>${nurse}</aside>`;
   },
   hpHTML(run) {
     return `<div class="hp"><div class="hp-row"><span>The Superbug</span><span class="num" id="hp-num">${run.hp} / ${run.maxHp}</span></div>
@@ -2890,7 +3072,8 @@ Screens.chart = {
     let pips = '';
     for (let i = 0; i < run.total; i++) {
       const r = run.results[i];
-      const cls = i === run.idx && !run.cur.revealed ? 'now' : r ? (run.mode === 'exam' ? 'ok' : r.correct ? 'ok' : r.frac > 0 ? 'part' : 'bad') : '';
+      let cls = i === run.idx && !run.cur.revealed ? 'now' : r ? (run.mode === 'exam' ? 'ok' : r.correct ? 'ok' : r.frac > 0 ? 'part' : 'bad') : '';
+      if (run.event && run.event.qids.indexOf(run.queue[i]) !== -1) cls += ' ev ev-' + run.event.type;
       pips += `<i class="${cls}"></i>`;
     }
     return `<div class="prog-row"><div class="pips" aria-label="Patient ${run.idx + 1} of ${run.total}">${pips}</div></div>`;
@@ -2968,6 +3151,9 @@ Screens.chart = {
     else answer = `<ul>${q.opts.filter((o) => o.c).map((o) => `<li>${esc(o.t)}</li>`).join('')}</ul>`;
     const ansLabel = q.type === 'order' ? 'Correct order' : q.type === 'sata' ? 'Correct answers' : q.type === 'teaching' ? 'Statement that needs more teaching' : 'Correct answer';
     const notes = [];
+    if (c.ev === 'rapid') { const u = Content.unitById[q.unit]; notes.push(`${icon('alarm')} Rapid Response from Room ${u.room} · ${esc(u.ward)}: ×2 points${c.evSafe ? ', and no life lost' : ''}.`); }
+    if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? ': +15 bonus XP' : ''}${c.evSafe ? '. No life lost' : ''}.`);
+    if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×1.5 points.`);
     if (c.lostLife) notes.push(`${icon('heart')} You lost a life.`);
     if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!`);
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
@@ -3129,6 +3315,18 @@ Screens.chart = {
     }
   },
 
+  eventBanner(type) {
+    const bs = $('.bedside', App.el);
+    if (!bs) return;
+    const b = document.createElement('div');
+    b.className = 'ev-banner ev-' + type;
+    b.setAttribute('role', 'status');
+    b.textContent = { rapid: 'Rapid Response!', visitor: 'Visitor!', outage: 'Power outage!' }[type];
+    bs.appendChild(b);
+    setTimeout(() => b.remove(), 2000);
+    Sound.play(type === 'rapid' ? 'alarm' : type === 'visitor' ? 'door' : 'slidedown');
+  },
+
   advance() {
     const run = App.run;
     clearTimeout(this.autoT);
@@ -3139,8 +3337,11 @@ Screens.chart = {
       return;
     }
     if (!run.next()) { App.show('report'); return; }
-    if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : 'start');
+    const evStart = run.evFirst();
+    if (evStart) this.say(run.event.type, { room: Content.unitById[run.q.unit].room });
+    else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
     App.rerender();
+    if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
     const sec = App.el;
     if (sec && !reducedMotion()) { const cb = $('#clipboard', sec); if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' }); }
@@ -3289,6 +3490,19 @@ Screens.report = {
         <div class="room-stars big">${starRow(m.stars)}</div></div>
         <div class="mini-bars"><div><span>Answered right at least once</span><b class="num">${m.ever}/${m.total}</b></div><div class="bar"><i style="width:${m.everFrac * 100}%"></i></div>
         <div><span>Mastered (right on 2 different days)</span><b class="num">${m.solid}/${m.total}</b></div><div class="bar"><i style="width:${m.solidFrac * 100}%;background:var(--good)"></i></div></div></div>`;
+      const ev = run.event;
+      if (ev && ev.results.length) {
+        const er = ev.results.filter((x) => x.correct).length;
+        const line = ev.type === 'rapid' ? `<b>Rapid Response:</b> ${er}/${ev.results.length} right. That's recall from other rooms, the kind the final exam asks for.`
+          : ev.type === 'visitor' ? `<b>Visitor question:</b> ${er ? 'answered right, +15 bonus XP.' : 'missed; it is saved for review.'}`
+            : `<b>Power outage:</b> ${er}/${ev.results.length} right by flashlight.`;
+        extra += `<div class="card ev-sum ev-${ev.type}">${icon(ev.type === 'rapid' ? 'alarm' : ev.type === 'visitor' ? 'users' : 'sparkle')}<p>${line}</p></div>`;
+      }
+    } else if (run.mode === 'daily') {
+      const d = WR.state.daily;
+      title = right === n ? 'Daily challenge: perfect!' : 'Daily challenge done';
+      mood = right >= 4 ? 'cheer' : 'happy';
+      sub = run.dailyFirst ? `${right} of ${n} right · ${d.streak}-day daily streak${d.streak > 1 ? '!' : ''}` : `${right} of ${n} right · replay (today's streak was already counted)`;
     } else if (run.mode === 'review') {
       title = 'Re-rounds done'; sub = `${right} of ${n} right. Patients right on 2 different days get discharged.`; mood = 'happy';
     } else if (run.mode === 'codeblue') {
@@ -3316,8 +3530,9 @@ Screens.report = {
     let btns = '';
     if (missedN && run.mode !== 'review') btns += `<button class="btn" data-action="reviewRun">${icon('bed')}Review these ${missedN} misses</button>`;
     if (run.mode === 'shift') btns += `<button class="btn primary big" data-action="again">Next shift in Room ${Content.unitById[run.unit].room}</button>`;
+    if (run.mode === 'daily') btns += `<button class="btn" data-action="again">Replay today's 5 (not scored)</button>`;
     if (run.mode === 'codeblue' || run.mode === 'boss') btns += `<button class="btn primary big" data-action="again">${run.mode === 'boss' ? 'Fight again' : 'Run another Code Blue'}</button>`;
-    btns += `<button class="btn ${run.mode === 'review' || run.mode === 'exam' ? 'primary big' : ''}" data-action="home">Back to the floor</button>`;
+    btns += `<button class="btn ${run.mode === 'review' || run.mode === 'exam' || run.mode === 'daily' ? 'primary big' : ''}" data-action="home">Back to the floor</button>`;
     return `<div class="narrow report-wrap">
       <div class="report-hero">
         <div class="report-nurse">${nurseSVG(WR.state.profile.avatar, mood)}</div>
@@ -3345,7 +3560,7 @@ Screens.report = {
   act: {
     again() {
       const run = App.run;
-      if (run.mode === 'shift') startShift(run.unit); else startMode(run.mode);
+      if (run.mode === 'shift') startShift(run.unit); else if (run.mode === 'daily') startDaily(); else startMode(run.mode);
     },
     reviewRun() {
       const ids = App.run.results.filter((r) => !r.correct).map((r) => r.qid);
@@ -3503,6 +3718,7 @@ Screens.stats = {
           <div class="stat"><span class="label">New ATI-style questions</span><b class="num">${pctOf(s.originStats.new)}</b><span class="faint">your honest readiness score</span></div>
           <div class="stat"><span class="label">Guide questions</span><b class="num">${pctOf(s.originStats.guide)}</b><span class="faint">may include memorized ones</span></div>
           <div class="stat"><span class="label">Discharged</span><b class="num">${s.discharged}</b><span class="faint">missed, then fixed</span></div>
+          <div class="stat"><span class="label">Cross-room recall</span><b class="num">${pctOf(s.rapid)}</b><span class="faint">Rapid Response questions from other rooms</span></div>
         </div>
         <div class="card"><span class="label">Weakest instructor focus points</span>${weakHTML}</div>
         <div class="card"><span class="label">Rooms <span class="legend"><i></i>right once <i class="solid"></i>mastered</span></span><div class="unit-bars">${units}</div></div>
