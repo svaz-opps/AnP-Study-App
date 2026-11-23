@@ -38,6 +38,8 @@ async function start(hot) {
     return;
   }
   Store.init();
+  // ask the browser not to clear saved progress when space runs low or the site goes unused (best effort)
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) { /* not supported */ }
   applySettings();
   WR.debug = location.hash === '#debug';
   bindEvents();
@@ -59,6 +61,7 @@ async function start(hot) {
   if (!run) {
     if (WR.state.openRun) { WR.state.openRun = null; Store.save(); }
     App.show('floor');
+    SaveHelp.maybeRemind();
     return;
   }
   Store.holdRun = true;

@@ -33,6 +33,7 @@ function defaultState() {
     rapid: { n: 0, r: 0 },   // Rapid Response (cross-room recall) answers
     cards: {},          // qid -> { d: day earned }  thank-you cards from discharged patients
     openRun: null,      // autosaved round in progress: { at, run }
+    tips: {},           // one-time hints already dismissed, e.g. { iosSave: true }
   };
 }
 

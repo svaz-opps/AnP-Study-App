@@ -1,6 +1,7 @@
 # Publishes the game to GitHub Pages every time main changes.
 # The page is the committed single-file build, game/dist/ward-rounds.html,
-# served as index.html so the site link opens straight into the game.
+# served as index.html so the site link opens straight into the game, plus the
+# Home Screen icon and manifest from game/web/.
 name: Publish game to GitHub Pages
 
 on:
@@ -8,6 +9,7 @@ on:
     branches: [main]
     paths:
       - game/dist/ward-rounds.html
+      - game/web/**
       - .github/workflows/pages.yml
   workflow_dispatch:
 
@@ -33,6 +35,7 @@ jobs:
           mkdir -p _site
           cp game/dist/ward-rounds.html _site/index.html
           cp game/dist/ward-rounds.html _site/ward-rounds.html
+          cp game/web/* _site/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4

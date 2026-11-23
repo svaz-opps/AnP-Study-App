@@ -165,6 +165,33 @@
 - First deploy (a re-run of the original run) uploaded the site but deploy-pages found 0 artifacts. Bumped
   checkout to v5 and upload-pages-artifact to v4 and pushed so a fresh run starts.
 
+## 2026-11-23 — Saving on the hosted (GitHub Pages) version
+- Outside claude.ai there is no account save, only browser storage, so three changes:
+  1. Backup now saves a real file. On iPad/iPhone it opens the share sheet with the .json file ("Save to Files"),
+     which works in Safari and from the Home Screen app; elsewhere it is an ordinary download. Clipboard is the
+     last fallback. Inside claude.ai the downloads capability is still used first.
+  2. Home Screen support: build.py adds Apple web-app meta tags, theme colour, an apple-touch-icon and a web app
+     manifest to the standalone build. Icons + manifest live in `game/web/` (drawn by `tools/make_app_icons.py`)
+     and the Pages workflow publishes them next to the page. Status bar style "black" (not translucent) so the
+     top bar never sits under the status bar.
+  3. The game calls `navigator.storage.persist()` at start (best effort; Safari may ignore it).
+- Settings text (non-cloud) now says progress is device-only and tells iPad users to use the Home Screen icon.
+- New test `game/tests/backup.mjs` (desktop download + restore, iPad share sheet, Home Screen tags); added to
+  the BRANCHING checklist. All six suites pass.
+- Assumption: a Home Screen web app keeps its own storage, separate from Safari, and is exempt from Safari's 7-day
+  storage cap (Apple's documented behaviour as far as known); not verifiable from here.
+
+## 2026-11-23 — In-game "how to save on iPad" instructions
+- Settings has a new card, shown only outside claude.ai (where there is no account save): "How to save your game on
+  iPad". It says where you are playing (Safari vs the Home Screen icon) and gives the steps: add to Home Screen,
+  move existing Safari progress with backup/restore, back up to Files now and then, and what erases progress.
+  Desktop browsers get a short generic version. Already in the Home Screen app, the Home Screen steps are hidden.
+- A one-time popup "Keep your progress safe" with the same steps appears at start in Safari on an iPad (hosted
+  version only, not in the Home Screen app, not when a resume prompt is showing). Buttons: Remind me later (shows
+  again next launch), Back up now, Got it (stored in the new `state.tips.iosSave`).
+- Assumption: iPad detection uses the user agent plus the "MacIntel with touch" check, since iPadOS Safari
+  reports itself as a Mac. The Share button may sit in the ••• menu on newer iPadOS, so the text mentions both.
+- backup.mjs extended (guide shown, reminder shown/re-shown/retired, none on desktop). All suites pass.
 ## 2026-11-23 — R20–R23 whimsy and gameplay
 - Plan agreed with the user: whimsy driven by both the in-round streak and the end-of-shift score; wrong answers get
   escalating chaos; all four gameplay additions (room themes, thank-you cards, shift events, daily challenge). The user
