@@ -1,0 +1,359 @@
+[
+  {
+    "id": "N8-01", "sec": "ch8-functional", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A client asks why the discs between the vertebrae let the spine bend a little but not a lot. Which functional class describes a joint with some limited movement?",
+    "opts": [
+      {"t": "Amphiarthrotic", "c": true},
+      {"t": "Synarthrotic", "w": "Synarthrotic joints are immovable, like skull sutures."},
+      {"t": "Diarthrotic", "w": "Diarthrotic joints are freely movable, like the shoulder and knee."},
+      {"t": "Synovial", "w": "Synovial is a structural class (fluid-filled cavity), not a functional one."}
+    ],
+    "why": "Functional classes describe how much a joint moves. Amphiarthrotic joints move a little: intervertebral discs, the symphysis pubis, and the distal tibiofibular joint.",
+    "trick": "Syn = Stuck. Amphi = About half. Di = Does everything. (From your guide.)",
+    "tip": "Check which classification the question asks for. 'Synovial' is a real joint word, but it answers a structure question, not a movement question."
+  },
+  {
+    "id": "N8-02", "sec": "ch8-functional", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which joint-to-movement pairings are correct? Select all that apply.",
+    "opts": [
+      {"t": "Skull suture: synarthrotic (immovable)", "c": true},
+      {"t": "Knee: diarthrotic (freely movable)", "c": true},
+      {"t": "Symphysis pubis: amphiarthrotic (slightly movable)", "c": true},
+      {"t": "Shoulder: synarthrotic (immovable)", "w": "The shoulder is the most freely movable joint, so it is diarthrotic."},
+      {"t": "Distal tibiofibular joint: diarthrotic (freely movable)", "w": "This syndesmosis has only a little 'give', so it is amphiarthrotic."}
+    ],
+    "why": "Synarthrotic = immovable (sutures). Amphiarthrotic = slightly movable (symphysis pubis, intervertebral discs, distal tibiofibular joint). Diarthrotic = freely movable (most limb joints, like the knee and shoulder).",
+    "trick": "Syn = Stuck. Amphi = About half. Di = Does everything.",
+    "tip": "SATA: judge each pairing alone. Picture whether that joint actually moves."
+  },
+  {
+    "id": "N8-03", "sec": "ch8-fibrous", "focus": [0, 1], "type": "mcq", "diff": 2,
+    "stem": "The parietal and temporal bones of the skull are joined by which type of joint?",
+    "opts": [
+      {"t": "A suture: a fibrous joint that is synarthrotic", "c": true},
+      {"t": "A symphysis: a cartilaginous joint that is amphiarthrotic", "w": "Symphyses join the vertebral bodies and the pubic bones, not skull bones."},
+      {"t": "A synovial joint that is diarthrotic", "w": "The only movable skull joint is the jaw (TMJ). The parietal and temporal bones don't move."},
+      {"t": "A syndesmosis: a fibrous joint with a ligament", "w": "Syndesmoses have longer fibers that allow a little give, like the distal tibiofibular joint."}
+    ],
+    "why": "Skull bones (except the mandible) are joined by sutures: very short collagen fibers with no joint cavity. Structurally fibrous, functionally synarthrotic (immovable). The parietal–temporal one is the squamous suture.",
+    "trick": "Sutures are like stitches holding the skull plates shut.",
+    "tip": "Joint questions often need two labels: what it's made of (structure) and how much it moves (function). Make sure both halves are right."
+  },
+  {
+    "id": "N8-04", "sec": "ch8-fibrous", "focus": [], "type": "mcq", "diff": 2,
+    "stem": "A dental client asks how a tooth is held in its socket. Which type of joint is this?",
+    "opts": [
+      {"t": "Gomphosis", "c": true},
+      {"t": "Suture", "w": "Sutures join skull bones."},
+      {"t": "Synchondrosis", "w": "A synchondrosis is joined by hyaline cartilage, like the epiphyseal plate."},
+      {"t": "Gliding joint", "w": "Gliding joints are synovial joints between flat surfaces, like the carpals."}
+    ],
+    "why": "A gomphosis is a fibrous joint where the short periodontal ligament holds a tooth in its socket. It is synarthrotic (immovable).",
+    "trick": "Gomphosis = a tooth 'bolted' into the gums.",
+    "tip": "Odd-sounding terms are often the right answer when the stem describes something specific, like teeth."
+  },
+  {
+    "id": "N8-05", "sec": "ch8-cartilaginous", "focus": [0, 1, "ch8-summary#0"], "type": "mcq", "diff": 2,
+    "stem": "Which statement correctly describes the symphysis pubis?",
+    "opts": [
+      {"t": "It is a cartilaginous joint with a fibrocartilage pad, and it is slightly movable.", "c": true},
+      {"t": "It is a fibrous joint held by short collagen fibers.", "w": "Short collagen fibers describe a suture. The symphysis pubis is NOT fibrous."},
+      {"t": "It is a synovial joint with a fluid-filled cavity.", "w": "The symphysis pubis is NOT synovial. It has no joint cavity."},
+      {"t": "It is a synchondrosis made of hyaline cartilage.", "w": "Synchondroses use hyaline cartilage (like the epiphyseal plate). Symphyses use fibrocartilage."}
+    ],
+    "why": "A symphysis is a cartilaginous joint joined by fibrocartilage. It works as a compressible shock absorber and is amphiarthrotic. The symphysis pubis and the intervertebral discs are both symphyses. Your instructor flagged that it is neither fibrous nor synovial.",
+    "trick": "SYMphysis = SYMmetrical pads of fibrocartilage in the middle of the body (pubis, spine).",
+    "tip": "When an option uses the word 'synovial' or 'fibrous' for a cartilage joint, cross it out."
+  },
+  {
+    "id": "N8-06", "sec": "ch8-cartilaginous", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which joints are symphyses? Select all that apply.",
+    "opts": [
+      {"t": "The joint between the bodies of two vertebrae (intervertebral disc)", "c": true},
+      {"t": "The joint between the two pubic bones", "c": true},
+      {"t": "The epiphyseal plate", "w": "The epiphyseal plate is a synchondrosis (hyaline cartilage) that later turns to bone."},
+      {"t": "The joint between the first rib and the manubrium", "w": "This is also a synchondrosis."},
+      {"t": "The joint between the parietal and temporal bones", "w": "That is a suture, a fibrous joint."}
+    ],
+    "why": "Symphyses are fibrocartilage pads: the intervertebral discs and the symphysis pubis. Synchondroses are hyaline cartilage plates: the epiphyseal plate and the first rib–manubrium joint.",
+    "trick": "Hyaline plate = synCHONDROsis (chondro = cartilage, grows then ossifies). Fibro pad = symphysis (stays cartilage for life).",
+    "tip": "SATA can have just two answers. Stop once the remaining options clearly belong to another category."
+  },
+  {
+    "id": "N8-07", "sec": "ch8-synovial-structure", "focus": [0, 4], "type": "sata", "diff": 2,
+    "stem": "A nurse is teaching about a client's knee replacement. Which statements about synovial joints are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The ends of the bones are covered with hyaline (articular) cartilage.", "c": true},
+      {"t": "A joint capsule, reinforced by ligaments, holds the bones together.", "c": true},
+      {"t": "The synovial membrane secretes synovial fluid.", "c": true},
+      {"t": "Tendons connect the bones to each other inside the capsule.", "w": "Ligaments connect bone to bone. Tendons connect muscle to bone."},
+      {"t": "Synovial joints have no joint cavity.", "w": "A fluid-filled joint cavity is the defining feature of a synovial joint."}
+    ],
+    "why": "Every synovial joint has articular (hyaline) cartilage on the bone ends, a joint capsule reinforced by ligaments, a synovial membrane that makes fluid, and a fluid-filled cavity. That design makes them freely movable.",
+    "trick": "Ligament links bone to bone. Tendon ties muscle to bone.",
+    "tip": "Watch for one swapped word (tendon vs ligament). It is the classic SATA trap."
+  },
+  {
+    "id": "N8-08", "sec": "ch8-synovial-structure", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "Which structure secretes synovial fluid, lines the joint cavity, and reabsorbs fluid?",
+    "opts": [
+      {"t": "Synovial membrane", "c": true},
+      {"t": "Articular cartilage", "w": "Articular cartilage covers the bone ends. It reduces friction but doesn't make fluid."},
+      {"t": "Fibrous layer of the capsule", "w": "The tough outer fibrous layer holds the bones together. The inner layer makes the fluid."},
+      {"t": "Meniscus", "w": "A meniscus is a fibrocartilage pad that absorbs shock in the knee."}
+    ],
+    "why": "The synovial membrane is the inner layer of the joint capsule. It secretes synovial fluid (lubricant and nourishment for the cartilage), reabsorbs fluid, and its phagocytes clear debris.",
+    "trick": "The synovial membrane makes the synovial fluid: same word, same job.",
+    "tip": "When the name of the answer matches the name in the stem (synovial fluid, synovial membrane), it is often right, but confirm the function."
+  },
+  {
+    "id": "N8-09", "sec": "ch8-synovial-structure", "focus": [3], "type": "mcq", "diff": 1,
+    "stem": "A client who leans on their elbows all day has a swollen, fluid-filled sac over the point of the elbow. Which structure is inflamed?",
+    "opts": [
+      {"t": "A bursa", "c": true},
+      {"t": "A meniscus", "w": "Menisci are fibrocartilage pads inside the knee."},
+      {"t": "A ligament", "w": "Ligaments are bands connecting bone to bone, not sacs."},
+      {"t": "A fat pad", "w": "Fat pads cushion and fill space but are not fluid-filled sacs."}
+    ],
+    "why": "Bursae are flat fluid-filled sacs lined with synovial membrane. They sit between skin and bony prominences (and between tendons and bone) where friction happens. Inflammation of a bursa is bursitis.",
+    "trick": "Bursa = a little purse of fluid. Bursitis = the purse is swollen.",
+    "tip": "Match the description ('fluid-filled sac') to the structure word by word."
+  },
+  {
+    "id": "N8-10", "sec": "ch8-synovial-structure", "focus": [2, "ch8-examples#4"], "type": "mcq", "diff": 2,
+    "stem": "A soccer player has a torn C-shaped pad of fibrocartilage inside the knee. Which structure is torn?",
+    "opts": [
+      {"t": "Meniscus", "c": true},
+      {"t": "Bursa", "w": "A bursa is a fluid-filled sac, not a cartilage pad."},
+      {"t": "Anterior cruciate ligament (ACL)", "w": "The ACL is a ligament inside the knee, not a C-shaped cartilage pad."},
+      {"t": "Articular disc of the jaw", "w": "Articular discs are also fibrocartilage, but this one is in the jaw, not the knee."}
+    ],
+    "why": "Menisci (medial and lateral) are C-shaped fibrocartilage pads in the knee. They absorb shock and improve how the femur fits on the tibia.",
+    "trick": "Meniscus = crescent moon (C-shaped) cushions in the knee.",
+    "tip": "Use location plus shape: 'C-shaped' + 'knee' points to only one structure."
+  },
+  {
+    "id": "N8-11", "sec": "ch8-synovial-structure", "focus": [], "type": "teaching", "diff": 1,
+    "stem": "A nurse teaches a client with a sprained ankle about joint structures. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Ligaments connect my muscles to my bones.\"", "c": true},
+      {"t": "\"Tendons connect muscle to bone.\"", "w": "Accurate."},
+      {"t": "\"Synovial fluid lubricates the joint and nourishes the cartilage.\"", "w": "Accurate."},
+      {"t": "\"Strong muscles around a joint help keep it stable.\"", "w": "Accurate. Muscle tone is one of the three factors in joint stability."}
+    ],
+    "why": "Ligaments connect bone to bone and reinforce the joint capsule. Tendons connect muscle to bone. Joint stability depends on the shape of the bones, the ligaments, and muscle tone.",
+    "trick": "Ligament links bone to bone. Tendon ties muscle to bone. (From your guide.)",
+    "tip": "'Needs further teaching' = find the incorrect statement."
+  },
+  {
+    "id": "N8-12", "sec": "ch8-types", "focus": [0, 1], "type": "mcq", "diff": 1,
+    "stem": "Which type of synovial joint allows the most movement, including rotation?",
+    "opts": [
+      {"t": "Ball-and-socket joint", "c": true},
+      {"t": "Hinge joint", "w": "Hinges allow only flexion and extension in one plane."},
+      {"t": "Condyloid joint", "w": "Condyloid joints allow all angular movements EXCEPT rotation."},
+      {"t": "Gliding joint", "w": "Gliding joints only slide back and forth."}
+    ],
+    "why": "A ball-and-socket joint (shoulder, hip) has a rounded head in a cup, so it allows flexion, extension, abduction, adduction, circumduction, and rotation. Pivot joints also rotate, but only around one axis.",
+    "trick": "Ball and socket: the shoulder and hip rock. (From your guide.)",
+    "tip": "'Most' questions: pick the option that does everything the others do and more."
+  },
+  {
+    "id": "N8-13", "sec": "ch8-types", "focus": [2], "type": "sata", "diff": 2,
+    "stem": "Which joint-type pairings are correct? Select all that apply.",
+    "opts": [
+      {"t": "Base of the thumb: saddle joint", "c": true},
+      {"t": "Between the carpals: gliding joint", "c": true},
+      {"t": "Atlas and axis: pivot joint", "c": true},
+      {"t": "Elbow: ball-and-socket joint", "w": "The elbow is mainly a hinge joint."},
+      {"t": "Wrist (radiocarpal): pivot joint", "w": "The radiocarpal wrist joint is condyloid."}
+    ],
+    "why": "Saddle = base of the thumb (allows opposition). Gliding = between carpals and tarsals. Pivot = atlas–axis (shaking your head 'no'). Hinge = elbow and knee. Condyloid = wrist and knuckles.",
+    "trick": "Pivot: shake your head 'no.' Saddle: the thumb can touch every finger. (From your guide.)",
+    "tip": "Act it out. Move your own thumb, wrist and head to check each pairing."
+  },
+  {
+    "id": "N8-14", "sec": "ch8-types", "focus": [3], "type": "mcq", "diff": 3,
+    "stem": "Which statement about a condyloid joint, such as the wrist, is accurate?",
+    "opts": [
+      {"t": "It moves in two planes but does not allow rotation.", "c": true},
+      {"t": "It allows rotation, like a ball-and-socket joint.", "w": "Condyloid joints allow every angular movement except rotation."},
+      {"t": "It is limited to one plane, like a hinge.", "w": "Condyloid joints move in two planes, not one."},
+      {"t": "It is the joint between the atlas and axis.", "w": "The atlas–axis joint is a pivot joint."}
+    ],
+    "why": "A condyloid (ellipsoidal) joint has an oval head in an oval cavity. It allows flexion, extension, abduction, adduction and circumduction (two planes), but not rotation.",
+    "trick": "Condyloid = oval, so it can't spin. Try twisting your wrist alone: the forearm does the turning.",
+    "tip": "Two of these options are 'too much' or 'too little'. The answer sits in the middle."
+  },
+  {
+    "id": "N8-15", "sec": "ch8-types", "focus": [4], "type": "mcq", "diff": 1,
+    "stem": "The elbow and the knee are primarily which type of joint?",
+    "opts": [
+      {"t": "Hinge", "c": true},
+      {"t": "Pivot", "w": "Pivot joints rotate around one axis (atlas–axis)."},
+      {"t": "Saddle", "w": "The saddle joint is at the base of the thumb."},
+      {"t": "Ball-and-socket", "w": "Ball-and-socket joints are the shoulder and hip."}
+    ],
+    "why": "Hinge joints move like a door: flexion and extension in one plane. The elbow (humerus–ulna), the knee and the finger joints are hinges. The knee also allows slight rotation.",
+    "trick": "Hinge: like a door at the elbow and knee. (From your guide.)",
+    "tip": "Picture the movement: bend and straighten only, like a door, means hinge."
+  },
+  {
+    "id": "N8-16", "sec": "ch8-movements", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "During range-of-motion exercises, the nurse asks a client to pull the top of the foot up toward the shin. Which movement is this?",
+    "opts": [
+      {"t": "Dorsiflexion", "c": true},
+      {"t": "Plantar flexion", "w": "Plantar flexion points the toes down, like standing on tiptoe."},
+      {"t": "Inversion", "w": "Inversion turns the sole of the foot inward."},
+      {"t": "Eversion", "w": "Eversion turns the sole of the foot outward."}
+    ],
+    "why": "Dorsiflexion brings the top (dorsum) of the foot closer to the shin, as when you stand on your heels. Plantar flexion is the opposite: pointing the toes.",
+    "trick": "DORSiflexion = toes up like a shark's DORSal fin. PLANTar flexion = press the gas pedal, sole toward the floor.",
+    "tip": "Opposite pairs are common distractors. Decide the direction first, then the name."
+  },
+  {
+    "id": "N8-17", "sec": "ch8-movements", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A client lowers the arm from straight out at the side back down against the body. Which movement is this?",
+    "opts": [
+      {"t": "Adduction", "c": true},
+      {"t": "Abduction", "w": "Abduction moves the arm AWAY from the midline (raising it to the side)."},
+      {"t": "Circumduction", "w": "Circumduction moves a limb in a cone-shaped circle."},
+      {"t": "Rotation", "w": "Rotation turns a bone around its own long axis."}
+    ],
+    "why": "Adduction moves a body part toward the trunk (midline). Abduction moves it away.",
+    "trick": "ADDuction = ADD it back to the body. ABduction = ABduct (take it away). (From your guide.)",
+    "tip": "Abduction and adduction differ by one letter. Slow down and read each one."
+  },
+  {
+    "id": "N8-18", "sec": "ch8-movements", "focus": [], "type": "sata", "diff": 2,
+    "stem": "A nurse documents a client's range of motion. Which descriptions are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Pronation turns the palm down.", "c": true},
+      {"t": "Supination turns the palm up.", "c": true},
+      {"t": "Flexion decreases the angle between two bones.", "c": true},
+      {"t": "Extension decreases the angle between two bones.", "w": "Extension INCREASES the angle (straightening the elbow)."},
+      {"t": "Eversion turns the sole of the foot inward.", "w": "That is inversion. Eversion turns the sole outward."}
+    ],
+    "why": "Flexion decreases a joint angle and extension increases it. Supination = palm up, pronation = palm down (rotation at the radioulnar joint). Inversion = sole in, eversion = sole out.",
+    "trick": "SUPination: you can hold a bowl of SOUP. PRONE = face (palm) down.",
+    "tip": "SATA with opposite pairs: only one direction of each pair can be correct."
+  },
+  {
+    "id": "N8-19", "sec": "ch8-examples", "focus": [0, 1], "type": "mcq", "diff": 2,
+    "stem": "A client is scheduled for rotator cuff repair. What is the anatomical name of the joint this surgery stabilizes?",
+    "opts": [
+      {"t": "Glenohumeral joint", "c": true},
+      {"t": "Acromioclavicular joint", "w": "This is a separate small joint between the acromion and the clavicle."},
+      {"t": "Coxal joint", "w": "The coxal joint is the hip."},
+      {"t": "Sternoclavicular joint", "w": "This joins the sternum and the clavicle."}
+    ],
+    "why": "The shoulder joint is the glenohumeral joint: the head of the humerus in the glenoid cavity of the scapula. Because the socket is shallow, it is stabilized mainly by the rotator cuff (four muscles and their tendons).",
+    "trick": "GLENO-HUMERAL = GLENOid cavity + HUMERus.",
+    "tip": "Break long anatomy names into their bones. The name tells you which bones meet."
+  },
+  {
+    "id": "N8-20", "sec": "ch8-examples", "focus": [3, "ch8-summary#1"], "type": "sata", "diff": 2,
+    "stem": "Which statements about the major joints are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The shoulder has the greatest range of motion, so it dislocates most easily.", "c": true},
+      {"t": "The hip is less mobile than the shoulder because of its deep socket and strong ligaments.", "c": true},
+      {"t": "The knee is the largest and most complex synovial joint.", "c": true},
+      {"t": "The hip is the largest and most complex synovial joint.", "w": "That title belongs to the knee."},
+      {"t": "The elbow is a ball-and-socket joint.", "w": "The elbow is a hinge joint."}
+    ],
+    "why": "Mobility and stability trade off. The shoulder's shallow socket gives the most motion and the most dislocations. The hip's deep acetabulum makes it stable but less mobile. The knee is the largest, most complex synovial joint.",
+    "trick": "Shallow socket = more swing, more slips (shoulder). Deep socket = steady (hip).",
+    "tip": "Comparison SATAs: check that each 'more' or 'most' points at the right joint."
+  },
+  {
+    "id": "N8-21", "sec": "ch8-examples", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "An injury report mentions the radial collateral ligament. Which joint is involved?",
+    "opts": [
+      {"t": "Elbow", "c": true},
+      {"t": "Knee", "w": "The knee's collateral ligaments are the tibial (medial) and fibular (lateral) collateral ligaments."},
+      {"t": "Shoulder", "w": "The shoulder relies mainly on the rotator cuff."},
+      {"t": "Hip", "w": "The hip is reinforced by large hip ligaments, not the radial collateral."}
+    ],
+    "why": "The elbow is very stable thanks to strong ligaments: the radial collateral ligament on the lateral side and the ulnar collateral ligament on the medial side.",
+    "trick": "Radial and ulnar are forearm bones, so their collateral ligaments guard the elbow.",
+    "tip": "Use the bone name inside a structure's name to find its location."
+  },
+  {
+    "id": "N8-22", "sec": "ch8-examples", "focus": [], "type": "mcq", "diff": 2,
+    "stem": "A client tore the anterior cruciate ligament (ACL). What does the ACL normally prevent?",
+    "opts": [
+      {"t": "The tibia sliding forward (anteriorly) under the femur", "c": true},
+      {"t": "The tibia sliding backward (posteriorly)", "w": "That is the job of the posterior cruciate ligament (PCL)."},
+      {"t": "Friction between the patella and femur", "w": "Cartilage and fluid reduce friction. The ACL is a stabilizing ligament."},
+      {"t": "Swelling of the bursae", "w": "Ligaments don't control bursa swelling."}
+    ],
+    "why": "The cruciate ligaments cross inside the knee capsule. The ACL stops the tibia from sliding anteriorly, and the PCL stops it from sliding posteriorly. Both help prevent hyperextension.",
+    "trick": "ACL stops the tibia sliding Anteriorly. PCL stops it sliding Posteriorly. (From your guide.)",
+    "tip": "The first letter of the ligament's name gives you the direction."
+  },
+  {
+    "id": "N8-23", "sec": "ch8-aging", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A 28-year-old client is surprised that their knees feel stiffer than they used to. When does loss of function in synovial joints often begin?",
+    "opts": [
+      {"t": "In the third decade of life (the twenties and thirties)", "c": true},
+      {"t": "Only after age 70", "w": "Changes begin much earlier, around age 30."},
+      {"t": "In early childhood", "w": "Childhood joints are still growing and flexible."},
+      {"t": "Only after menopause", "w": "Joint stiffening affects everyone and starts well before menopause."}
+    ],
+    "why": "Collagen changes cause stiffening beginning around age 30, so loss of synovial joint function often begins in the third decade of life. Fibrocartilage also loses water with age. Exercise delays stiffening.",
+    "trick": "The third decade = your twenties. Joints start 'thirty-ing' early.",
+    "tip": "'Third decade' means ages 20 to 29, not the 30s. Decades count from 1 to 10, 11 to 20, 21 to 30."
+  },
+  {
+    "id": "N8-24", "sec": "ch8-disorders", "focus": [0], "type": "priority", "diff": 2,
+    "stem": "The nurse in a sports medicine clinic has four clients waiting. Which client should the nurse see first?",
+    "opts": [
+      {"t": "A client whose shoulder is visibly deformed after a fall and who cannot move the arm", "c": true},
+      {"t": "A client with an ankle sprain who is resting with ice and elevation", "w": "This injury is already being managed and is stable."},
+      {"t": "A client with osteoarthritis reporting morning knee stiffness", "w": "A chronic, expected symptom. It can wait."},
+      {"t": "A client with gout asking which foods to avoid", "w": "Teaching is important but not urgent."}
+    ],
+    "why": "A dislocation displaces the articulating bones, so the joint is clearly deformed, and it often damages the capsule and ligaments. It is acute and needs attention first.",
+    "trick": "Dislocation = the joint looks 'dis-placed'. Deformed means look first.",
+    "tip": "Priority: new and acute beats chronic and expected. Teaching comes last."
+  },
+  {
+    "id": "N8-25", "sec": "ch8-disorders", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A client twisted an ankle and overstretched its ligaments. Which injury is this?",
+    "opts": [
+      {"t": "Sprain", "c": true},
+      {"t": "Strain", "w": "A strain overstretches or tears a MUSCLE, like a hamstring."},
+      {"t": "Dislocation", "w": "A dislocation displaces the bones, leaving the joint deformed."},
+      {"t": "Bursitis", "w": "Bursitis is inflammation of a bursa."}
+    ],
+    "why": "A sprain is overstretching or tearing of the ligaments (and sometimes tendons) in a joint. A strain is the same kind of injury to a muscle.",
+    "trick": "sTrain has a T, as in Tug on a muscle. Sprain is the joint's ligaments.",
+    "tip": "Look for the tissue named in the stem (ligament vs muscle). That decides sprain vs strain."
+  },
+  {
+    "id": "N8-26", "sec": "ch8-disorders", "focus": [2], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client newly diagnosed with rheumatoid arthritis (RA). Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My RA is caused by wear and tear from getting older.\"", "c": true},
+      {"t": "\"In RA, my immune system attacks the synovial membrane.\"", "w": "Accurate. RA is autoimmune."},
+      {"t": "\"Osteoarthritis is the most common type and affects weight-bearing joints.\"", "w": "Accurate."},
+      {"t": "\"Gout is caused by uric acid crystals in the joint.\"", "w": "Accurate."}
+    ],
+    "why": "RA is autoimmune: the immune system attacks the synovial membrane. Wear and tear from aging causes osteoarthritis (OA). They do not share the same cause.",
+    "trick": "OA = Old and Aching. RA = Rogue Antibodies. (From your guide.)",
+    "tip": "'Needs further teaching' = the one statement that mixes up two conditions."
+  },
+  {
+    "id": "N8-27", "sec": "ch8-disorders", "focus": [3], "type": "mcq", "diff": 1,
+    "stem": "A client who went hiking in the woods now has a swollen, painful knee and remembers a tick bite. Which condition should the nurse suspect?",
+    "opts": [
+      {"t": "Lyme arthritis, caused by a tick-borne bacterium", "c": true},
+      {"t": "Gout, caused by uric acid crystals", "w": "Gout often hits the big toe and is not linked to tick bites."},
+      {"t": "Rheumatoid arthritis, an autoimmune disease", "w": "RA is not caused by a tick bite."},
+      {"t": "Osteoarthritis from wear and tear", "w": "OA develops slowly with age, not after a bite."}
+    ],
+    "why": "Lyme arthritis is caused by the bacterium Borrelia burgdorferi, transmitted by a tick bite. It causes joint swelling and pain, especially in the knees.",
+    "trick": "Lyme = Little tick, Large knee.",
+    "tip": "A clear exposure in the stem (tick bite) usually points straight to the answer."
+  }
+]

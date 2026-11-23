@@ -1,0 +1,399 @@
+[
+  {
+    "id": "N9-01", "sec": "ch9-structure", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "During surgery, the surgeon cuts through the deep fascia. Which connective tissue layer, wrapping the entire muscle, lies just underneath?",
+    "opts": [
+      {"t": "Epimysium", "c": true},
+      {"t": "Perimysium", "w": "Perimysium wraps each fascicle (a bundle of fibers), deeper inside."},
+      {"t": "Endomysium", "w": "Endomysium wraps each single muscle fiber, the deepest layer."},
+      {"t": "Sarcolemma", "w": "The sarcolemma is the cell membrane of a muscle fiber, not a connective tissue wrap."}
+    ],
+    "why": "From outside in: deep fascia, then epimysium (the whole muscle, the outermost connective tissue layer), then perimysium (each fascicle), then endomysium (each fiber).",
+    "trick": "Epi = on the outside, Peri = around the bundle, Endo = inside, around each fiber. (From your guide.)",
+    "tip": "Layer questions: line up the prefixes from outside to inside before reading the options."
+  },
+  {
+    "id": "N9-02", "sec": "ch9-structure", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A client has an Achilles tendon injury. What is a tendon?",
+    "opts": [
+      {"t": "A cord of dense connective tissue that attaches muscle to bone", "c": true},
+      {"t": "A band that attaches bone to bone", "w": "That is a ligament."},
+      {"t": "A broad, flat sheet that attaches a muscle to another muscle", "w": "That is an aponeurosis."},
+      {"t": "A seam where the fibers of two muscles meet", "w": "That is a raphe."}
+    ],
+    "why": "A tendon is a cord of dense connective tissue that attaches muscle to bone. A ligament attaches bone to bone, and an aponeurosis is a broad flat sheet.",
+    "trick": "Tendon ties muscle to bone. Ligament links bone to bone.",
+    "tip": "All four options are real structures. Match the exact connection described."
+  },
+  {
+    "id": "N9-03", "sec": "ch9-structure", "focus": [2], "type": "priority", "diff": 3,
+    "stem": "The nurse is caring for four clients on the orthopedic unit. Which client should the nurse assess first?",
+    "opts": [
+      {"t": "A client with a casted lower-leg fracture whose severe calf pain is not relieved by pain medicine and whose calf feels tight", "c": true},
+      {"t": "A client with a pulled hamstring resting with ice", "w": "A muscle strain being treated with rest and ice is stable."},
+      {"t": "A client with muscular dystrophy who wants to talk about a support group", "w": "Important, but not urgent."},
+      {"t": "A client with tendinitis asking when they can return to tennis", "w": "Teaching can wait."}
+    ],
+    "why": "Severe pain that medicine doesn't relieve, plus a tight, swollen limb after an injury, suggests compartment syndrome. Fluid pressure inside the fascia compartment squeezes vessels and nerves, and untreated it can permanently damage tissue. Surgery (fasciotomy) relieves the pressure.",
+    "trick": "Compartment syndrome = a crowded closet: too much fluid, no room for blood and nerves.",
+    "tip": "Pain out of proportion to the injury is a red-flag phrase. It points to the urgent client."
+  },
+  {
+    "id": "N9-04", "sec": "ch9-structure", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "What causes the severe pain of compartment syndrome?",
+    "opts": [
+      {"t": "Excessive fluid pressure within the muscle compartment", "c": true},
+      {"t": "Tearing of the fascia walls", "w": "The fascia is intact. Its toughness is why pressure builds up."},
+      {"t": "Stretched tendons", "w": "Tendons are not the cause."},
+      {"t": "Lactic acid from exercise", "w": "Lactic acid causes fatigue, not compartment syndrome."}
+    ],
+    "why": "Swelling or bleeding inside a compartment enclosed by fascia raises the fluid pressure, which squeezes blood vessels and nerves. That excessive fluid pressure causes the pain.",
+    "trick": "Pressure = Pain in a closed Pocket.",
+    "tip": "Your instructor tests the mechanism. Look for the option that names the cause, not a side detail."
+  },
+  {
+    "id": "N9-05", "sec": "ch9-fiber", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Myofibrils inside a skeletal muscle fiber are composed primarily of which proteins?",
+    "opts": [
+      {"t": "Actin and myosin", "c": true},
+      {"t": "Collagen and elastin", "w": "These are connective tissue fibers, not myofibril proteins."},
+      {"t": "Hemoglobin and myoglobin", "w": "Myoglobin stores oxygen in muscle, but it doesn't form myofibrils."},
+      {"t": "Keratin and melanin", "w": "These are skin proteins and pigments."}
+    ],
+    "why": "Myofibrils are made mostly of thin filaments (actin) and thick filaments (myosin). Their sliding produces contraction.",
+    "trick": "Actin is thin, Myosin is thick (and has the Mighty heads).",
+    "tip": "Eliminate options from other body systems first (skin, blood, connective tissue)."
+  },
+  {
+    "id": "N9-06", "sec": "ch9-fiber", "focus": [1, 3, 4], "type": "sata", "diff": 2,
+    "stem": "Which statements about the sarcomere are accurate? Select all that apply.",
+    "opts": [
+      {"t": "It is the functional unit of contraction.", "c": true},
+      {"t": "Z lines form its boundaries and hold the bands of actin together.", "c": true},
+      {"t": "The arrangement of thick and thin filaments in sarcomeres creates the striations.", "c": true},
+      {"t": "The I band contains thick filaments only.", "w": "The light I band has thin filaments only."},
+      {"t": "The filaments themselves shorten during contraction.", "w": "The filaments slide past each other. They don't shorten."}
+    ],
+    "why": "A sarcomere runs from one Z line to the next and is the contractile unit. Alternating dark A bands (thick and thin overlap) and light I bands (thin only) make the stripes.",
+    "trick": "Z = the end of the alphabet = the end of the sarcomere. I band = lIght, thIn only.",
+    "tip": "SATA: one wrong word (thick vs thin) makes an option false."
+  },
+  {
+    "id": "N9-07", "sec": "ch9-fiber", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "Which pairing of muscle fiber structure and job is correct?",
+    "opts": [
+      {"t": "T tubules carry the impulse into the cell's interior; the sarcoplasmic reticulum stores calcium.", "c": true},
+      {"t": "T tubules store calcium; the sarcoplasmic reticulum carries the impulse inward.", "w": "The jobs are swapped."},
+      {"t": "T tubules make ATP; the sarcoplasmic reticulum makes acetylcholine.", "w": "Mitochondria make ATP. ACh comes from the motor neuron."},
+      {"t": "The sarcolemma stores calcium; T tubules contract the fiber.", "w": "The sarcolemma is the membrane, and T tubules don't contract."}
+    ],
+    "why": "T (transverse) tubules are inward extensions of the sarcolemma that carry the muscle impulse deep into the fiber. The sarcoplasmic reticulum (SR) surrounds each myofibril, stores calcium, and releases it when stimulated.",
+    "trick": "T tubules = Transmit inward. SR = Storage Room for calcium.",
+    "tip": "Swapped-pair options are common. Check each half of the statement separately."
+  },
+  {
+    "id": "N9-08", "sec": "ch9-nmj", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "What is a motor unit?",
+    "opts": [
+      {"t": "One motor neuron and all the muscle fibers it controls", "c": true},
+      {"t": "All the motor neurons that supply one muscle", "w": "A motor unit has just one neuron."},
+      {"t": "A single sarcomere", "w": "A sarcomere is the contractile unit inside a fiber."},
+      {"t": "The gap between a neuron and a fiber", "w": "That gap is the synaptic cleft."}
+    ],
+    "why": "A motor unit is one motor neuron plus every fiber it stimulates. Fine-movement muscles (eye, fingers) have few fibers per neuron. Powerful muscles have hundreds.",
+    "trick": "One boss (neuron) and the whole team (fibers) it commands.",
+    "tip": "Definitions: pick the option that matches the size of the thing (one neuron, many fibers)."
+  },
+  {
+    "id": "N9-09", "sec": "ch9-nmj", "focus": [1, 2, 3, 4], "type": "sata", "diff": 2,
+    "stem": "Which statements about the neuromuscular junction are accurate? Select all that apply.",
+    "opts": [
+      {"t": "It is the functional connection (synapse) between a motor neuron and a muscle fiber.", "c": true},
+      {"t": "A small gap, the synaptic cleft, separates the neuron from the fiber.", "c": true},
+      {"t": "Acetylcholine is stored in vesicles in the motor neuron endings.", "c": true},
+      {"t": "Cholinesterase breaks down (decomposes) acetylcholine.", "c": true},
+      {"t": "Acetylcholine is stored in the sarcoplasmic reticulum.", "w": "The SR stores calcium. ACh is stored in vesicles in the axon terminal."},
+      {"t": "The neuron directly touches the muscle membrane.", "w": "They don't touch. The synaptic cleft separates them."}
+    ],
+    "why": "At the NMJ, the axon terminal releases acetylcholine from its vesicles across the synaptic cleft onto the motor end plate. Acetylcholinesterase in the cleft breaks ACh down, so one impulse gives one twitch. On your exam this appeared as an 'all of these' item.",
+    "trick": "ACh: stored in the neuron's Vesicles, Crosses the cleft, then Chopped by cholinesterase.",
+    "tip": "If your exam lists several true NMJ facts with 'all of these', check each one against this list."
+  },
+  {
+    "id": "N9-10", "sec": "ch9-nmj", "focus": [2], "type": "mcq", "diff": 3,
+    "stem": "A farm worker was exposed to a pesticide that blocks acetylcholinesterase. What effect on the muscles should the nurse expect?",
+    "opts": [
+      {"t": "Muscles stay contracted (spastic) because acetylcholine remains in the cleft.", "c": true},
+      {"t": "Flaccid paralysis because acetylcholine is never released", "w": "That describes botulism toxin, which blocks ACh release."},
+      {"t": "Weakness because the ACh receptors are destroyed", "w": "That describes myasthenia gravis, an autoimmune attack on receptors."},
+      {"t": "No effect, because calcium controls contraction", "w": "Calcium matters, but ACh starts the whole process."}
+    ],
+    "why": "Acetylcholinesterase normally breaks down ACh. If it is blocked, ACh keeps stimulating the muscle, so the muscle stays contracted (spastic paralysis).",
+    "trick": "No cleaner (cholinesterase) means the 'GO' signal never gets cleared.",
+    "tip": "Predict the result: if you remove the 'off switch', the muscle stays 'on'."
+  },
+  {
+    "id": "N9-11", "sec": "ch9-contraction", "focus": [0, 2], "type": "order", "diff": 3,
+    "stem": "Put the events of skeletal muscle contraction in order, from first to last.",
+    "steps": [
+      "Acetylcholine is released from the end of the motor neuron.",
+      "ACh binds receptors on the motor end plate, and the sarcolemma depolarizes.",
+      "The muscle impulse travels deep into the fiber through the T tubules.",
+      "The sarcoplasmic reticulum releases calcium ions.",
+      "Calcium binds troponin, which moves tropomyosin off the binding sites on actin.",
+      "Myosin heads form cross-bridges and pull actin in a power stroke, using ATP."
+    ],
+    "why": "The nerve signal releases ACh, ACh excites the muscle membrane, the impulse runs down the T tubules, the SR releases calcium, calcium binds troponin to uncover actin, and myosin heads pull the thin filaments using ATP.",
+    "trick": "A-T-C-C-S: ACh, T tubule, Calcium, Cross-bridges, Slide. (From your guide.)",
+    "tip": "Ordering: start where the nerve meets the muscle, finish where the filaments slide."
+  },
+  {
+    "id": "N9-12", "sec": "ch9-contraction", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which is the first event in skeletal muscle contraction at the neuromuscular junction?",
+    "opts": [
+      {"t": "Acetylcholine is released from the end of the motor neuron.", "c": true},
+      {"t": "Calcium binds to troponin.", "w": "This happens later, after the SR releases calcium."},
+      {"t": "Myosin cross-bridges form.", "w": "Cross-bridges form near the end of the sequence."},
+      {"t": "The sarcoplasmic reticulum releases calcium.", "w": "The SR releases calcium only after the impulse arrives through the T tubules."}
+    ],
+    "why": "Contraction starts when the motor neuron releases acetylcholine into the synaptic cleft. Everything else follows from that signal.",
+    "trick": "ACh is the Alarm Clock that starts the sequence.",
+    "tip": "'First' questions: picture the chain of events. The answer is the one that triggers the others."
+  },
+  {
+    "id": "N9-13", "sec": "ch9-contraction", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "Calcium released from the sarcoplasmic reticulum binds to which protein to start contraction?",
+    "opts": [
+      {"t": "Troponin", "c": true},
+      {"t": "Tropomyosin", "w": "Tropomyosin covers the binding sites. It moves AFTER calcium binds troponin."},
+      {"t": "Myosin", "w": "Myosin heads bind actin, not calcium."},
+      {"t": "Acetylcholine", "w": "ACh is a neurotransmitter, not a calcium-binding protein."}
+    ],
+    "why": "Calcium binds troponin. Troponin then shifts tropomyosin off the myosin-binding sites on actin, so cross-bridges can form.",
+    "trick": "Troponin Takes the calcium. Tropomyosin is the cover that Moves.",
+    "tip": "Similar names (troponin vs tropomyosin): learn one detail that tells them apart."
+  },
+  {
+    "id": "N9-14", "sec": "ch9-contraction", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A family member asks why the body of a deceased relative became stiff. Which explanation is accurate?",
+    "opts": [
+      {"t": "Without ATP, myosin heads cannot detach from actin, so the muscles stay contracted.", "c": true},
+      {"t": "Too much ATP builds up and locks the muscles.", "w": "It is the LACK of ATP that causes stiffness."},
+      {"t": "Acetylcholine keeps being released after death.", "w": "Rigor mortis is about ATP, not ongoing nerve signals."},
+      {"t": "The bones fuse together after death.", "w": "Rigor mortis is a muscle change, not a bone change."}
+    ],
+    "why": "ATP supplies the energy for myofilament movement, and a new ATP is also needed to release each myosin head from actin. After death no ATP is made, so the heads stay attached: rigor mortis.",
+    "trick": "ATP = the 'Release button'. No ATP, no letting go.",
+    "tip": "Clinical-story questions often test one mechanism. Find the mechanism (ATP) behind the story."
+  },
+  {
+    "id": "N9-15", "sec": "ch9-energy", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A sprinter's muscles use creatine phosphate in the first few seconds of a race. What does creatine phosphate do?",
+    "opts": [
+      {"t": "It supplies energy for the synthesis of ATP.", "c": true},
+      {"t": "It breaks ATP down into ADP.", "w": "CP rebuilds ATP. It doesn't break it down."},
+      {"t": "It delivers oxygen to the mitochondria.", "w": "Myoglobin and blood carry oxygen."},
+      {"t": "It converts lactic acid back into glucose.", "w": "That happens during oxygen debt, mostly after exercise."}
+    ],
+    "why": "Muscle stores only a few seconds of ATP. Creatine phosphate quickly hands its phosphate to ADP to make ATP (CP + ADP → creatine + ATP), lasting about 10 seconds.",
+    "trick": "Creatine Phosphate = a Charged Phone battery that recharges ATP fast.",
+    "tip": "Direction matters: 'supplies energy for making ATP' vs 'breaks ATP down' are opposites."
+  },
+  {
+    "id": "N9-16", "sec": "ch9-energy", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "After a hard sprint, a client keeps breathing heavily for several minutes. What is the extra oxygen being used for?",
+    "opts": [
+      {"t": "Oxygen debt: converting lactic acid back to glucose and glycogen and restoring ATP and creatine phosphate", "c": true},
+      {"t": "Starting a new muscle contraction", "w": "The client has stopped exercising."},
+      {"t": "Breaking down acetylcholine", "w": "Acetylcholinesterase does that, without needing extra oxygen."},
+      {"t": "Making more lactic acid", "w": "Lactic acid builds up when oxygen is SHORT, not when extra oxygen arrives."}
+    ],
+    "why": "Oxygen debt is the oxygen needed after intense exercise to convert lactic acid back to glucose and glycogen, rebuild ATP and creatine phosphate, and restore oxygen levels. That's why you keep breathing hard after you stop.",
+    "trick": "Oxygen debt = paying back the oxygen loan you took during the sprint.",
+    "tip": "Look for the option that describes RECOVERY, since the stem happens after exercise."
+  },
+  {
+    "id": "N9-17", "sec": "ch9-energy", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "A client wakes at night with a painful calf cramp. What is the most likely cause of a muscle cramp?",
+    "opts": [
+      {"t": "A lack of ATP", "c": true},
+      {"t": "Too much ATP", "w": "Extra ATP would help the muscle relax."},
+      {"t": "Too much oxygen", "w": "Oxygen does not cause cramps."},
+      {"t": "Too much calcium stored in the sarcoplasmic reticulum", "w": "Calcium stored in the SR is the RELAXED state."}
+    ],
+    "why": "Without ATP, calcium can't be pumped back into the SR and myosin heads can't detach, so the muscle stays contracted. That is a cramp.",
+    "trick": "No ATP means the muscle can't let go, both in a cramp and in rigor mortis.",
+    "tip": "Connect related facts: the cramp and rigor mortis share the same mechanism."
+  },
+  {
+    "id": "N9-18", "sec": "ch9-responses", "focus": [0, 1], "type": "sata", "diff": 2,
+    "stem": "Which definitions of muscle responses are correct? Select all that apply.",
+    "opts": [
+      {"t": "Latent period: the delay between the stimulus and the start of the response", "c": true},
+      {"t": "Refractory period: a brief moment after stimulation when the fiber can't respond", "c": true},
+      {"t": "Threshold stimulus: the minimal stimulus needed to cause a contraction", "c": true},
+      {"t": "Tetanus: a single, brief twitch", "w": "Tetanus is a SUSTAINED contraction with no relaxation between stimuli."},
+      {"t": "Recruitment: activating fewer motor units as the stimulus grows", "w": "Recruitment activates MORE motor units as the stimulus grows."}
+    ],
+    "why": "On a myogram: the latent period is the delay before the twitch, and the refractory period is the brief unresponsive time after stimulation. A threshold stimulus is the minimum that triggers contraction, and the fiber then responds all or none.",
+    "trick": "LATEnt = LATE start. REfractory = REst time, no response.",
+    "tip": "SATA: words like 'fewer' or 'single' are often the twist that makes an option false."
+  },
+  {
+    "id": "N9-19", "sec": "ch9-responses", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "A client in rehab pushes against a wall. The arm muscles tighten, but the arms don't move. Which type of contraction is this?",
+    "opts": [
+      {"t": "Isometric", "c": true},
+      {"t": "Concentric", "w": "Concentric contractions shorten the muscle, so the limb moves."},
+      {"t": "Eccentric", "w": "Eccentric contractions lengthen the muscle while it works."},
+      {"t": "Isotonic", "w": "Isotonic contractions change the muscle's length and move the load."}
+    ],
+    "why": "In an isometric contraction tension increases but the muscle length does not change. Isotonic contractions change length: concentric shortens, eccentric lengthens.",
+    "trick": "Iso-METRIC = same Measure (length). Iso-TONIC = same Tension, the length changes.",
+    "tip": "Ask: did anything move? If not, it's isometric."
+  },
+  {
+    "id": "N9-20", "sec": "ch9-responses", "focus": [2], "type": "mcq", "diff": 3,
+    "stem": "A client slowly lowers a dumbbell from a curl. The biceps stays tense while it lengthens. Which contraction is this?",
+    "opts": [
+      {"t": "Eccentric", "c": true},
+      {"t": "Concentric", "w": "Concentric is the lifting phase, when the biceps shortens."},
+      {"t": "Isometric", "w": "In isometric contractions the length doesn't change."},
+      {"t": "Treppe", "w": "Treppe (staircase effect) is a series of twitches, each a bit stronger."}
+    ],
+    "why": "An eccentric contraction is a lengthening contraction: the muscle is working (tense) while it gets longer, as when lowering a weight under control.",
+    "trick": "ECcentric = Elongates under Control. CONcentric = CONtracts shorter.",
+    "tip": "Watch the direction of length change: shortening vs lengthening decides concentric vs eccentric."
+  },
+  {
+    "id": "N9-21", "sec": "ch9-responses", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "A nurse lifts a light box and then a heavy one. To produce more force, the nervous system activates more motor units. What is this called?",
+    "opts": [
+      {"t": "Recruitment", "c": true},
+      {"t": "Muscle tone", "w": "Tone is the steady, partial contraction of a resting muscle that maintains posture."},
+      {"t": "A twitch", "w": "A twitch is one brief contraction from one impulse."},
+      {"t": "The latent period", "w": "That is the delay before a twitch begins."}
+    ],
+    "why": "Recruitment increases the number of active motor units as the stimulus grows, producing a stronger contraction.",
+    "trick": "Recruitment = recruiting more workers (motor units) for a heavier job.",
+    "tip": "Key phrase match: 'more motor units' = recruitment."
+  },
+  {
+    "id": "N9-22", "sec": "ch9-responses", "focus": [3], "type": "mcq", "diff": 2,
+    "stem": "A marathon runner has many slow-twitch (red) fibers. Which statement about red fibers is accurate?",
+    "opts": [
+      {"t": "They contract more slowly, have more myoglobin and mitochondria, and fatigue slowly.", "c": true},
+      {"t": "They have fewer mitochondria than white fibers.", "w": "Red fibers have MORE mitochondria. Your guide flags this false comparison."},
+      {"t": "They fatigue quickly from lactic acid buildup.", "w": "Fast-twitch white fibers fatigue quickly."},
+      {"t": "They are best for short sprints.", "w": "Sprints rely on fast-twitch white fibers."}
+    ],
+    "why": "Slow-twitch red fibers have lots of myoglobin (the red color), many mitochondria, and a rich blood supply, so they make ATP aerobically and resist fatigue: endurance and posture. White fibers are fast but tire quickly.",
+    "trick": "Red = Running long (marathon). White = Whoosh, then tired (sprint).",
+    "tip": "Comparisons: make sure 'more' and 'fewer' point the right way."
+  },
+  {
+    "id": "N9-23", "sec": "ch9-responses", "focus": [], "type": "math", "diff": 2,
+    "stem": "A muscle fiber's membrane potential must change from about −100 mV to −70 mV for an impulse to begin. What is the size and direction of this change?",
+    "opts": [
+      {"t": "+30 mV (it becomes less negative)", "c": true},
+      {"t": "−30 mV (it becomes more negative)", "w": "Going from −100 to −70 moves toward zero, which is a positive change."},
+      {"t": "+170 mV", "w": "This adds the two numbers instead of subtracting."},
+      {"t": "−170 mV", "w": "Subtract the start from the end: −70 − (−100) = +30."}
+    ],
+    "why": "Change = end − start = (−70) − (−100) = +30 mV. The inside becomes less negative, which is what a threshold stimulus does.",
+    "trick": "Minus a minus is a plus: −70 − (−100) = −70 + 100.",
+    "tip": "Number-line check: moving from −100 toward zero is moving in the positive direction."
+  },
+  {
+    "id": "N9-24", "sec": "ch9-disorders", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "A client's leg was in a cast for 8 weeks, and the calf muscle has atrophied from disuse. Which changes happen in disuse atrophy? Select all that apply.",
+    "opts": [
+      {"t": "Reduced capillary networks", "c": true},
+      {"t": "Fewer mitochondria", "c": true},
+      {"t": "Smaller actin and myosin filaments", "c": true},
+      {"t": "More capillaries to deliver oxygen", "w": "Disuse reduces capillary networks."},
+      {"t": "Enlarged muscle fibers", "w": "Enlarged fibers are hypertrophy, from heavy use."}
+    ],
+    "why": "Disuse atrophy reduces capillary networks, mitochondria, and the size of actin and myosin filaments. On your exam this was an 'all of these' item. Exercise reverses it.",
+    "trick": "Atrophy shrinks everything: blood supply, power plants (mitochondria), and motors (filaments).",
+    "tip": "If every listed change points the same way (all decreases), they are likely all true."
+  },
+  {
+    "id": "N9-25", "sec": "ch9-actions", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "What is the name for the end of a muscle attached to the relatively immovable bone?",
+    "opts": [
+      {"t": "Origin", "c": true},
+      {"t": "Insertion", "w": "The insertion attaches to the movable bone and is pulled toward the origin."},
+      {"t": "Belly", "w": "The belly is the thick middle of the muscle."},
+      {"t": "Aponeurosis", "w": "An aponeurosis is a flat connective tissue sheet."}
+    ],
+    "why": "The origin is the attachment to the relatively stationary bone. The insertion is on the movable bone, and contraction pulls the insertion toward the origin.",
+    "trick": "Origin = where the muscle Originates and stays put. Insertion = gets pulled In.",
+    "tip": "Pairs like origin/insertion: decide which one moves, and the other is your answer."
+  },
+  {
+    "id": "N9-26", "sec": "ch9-actions", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "When the biceps brachii contracts to flex the elbow, the triceps brachii relaxes and stretches. What is the triceps' role in this movement?",
+    "opts": [
+      {"t": "Antagonist", "c": true},
+      {"t": "Agonist (prime mover)", "w": "The biceps is the prime mover for elbow flexion."},
+      {"t": "Synergist", "w": "Synergists ASSIST the prime mover, like the brachialis."},
+      {"t": "Fixator", "w": "Fixators stabilize the prime mover's origin, like muscles holding the scapula."}
+    ],
+    "why": "The antagonist opposes the prime mover's movement. It relaxes or stretches while the prime mover contracts. The quadriceps and hamstrings are another antagonist pair.",
+    "trick": "ANTagonist = ANTI the move. Agonist = the one in Action. (Don't mix them up!)",
+    "tip": "Agonist and antagonist look alike. Read slowly."
+  },
+  {
+    "id": "N9-27", "sec": "ch9-head", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "During a cranial nerve check, the nurse asks a client to raise the eyebrows. Which muscle does this?",
+    "opts": [
+      {"t": "Frontalis", "c": true},
+      {"t": "Orbicularis oculi", "w": "Orbicularis oculi closes the eye."},
+      {"t": "Zygomaticus", "w": "Zygomaticus raises the corners of the mouth (smiling)."},
+      {"t": "Buccinator", "w": "Buccinator compresses the cheek."}
+    ],
+    "why": "The frontalis sits over the forehead (frontal bone) and raises the eyebrows. Many muscles are named for the bone they cover.",
+    "trick": "Frontalis is on the Front of the head: surprised eyebrows.",
+    "tip": "Use the location in the name: frontalis is on the frontal bone."
+  },
+  {
+    "id": "N9-28", "sec": "ch9-arm", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A client is lifting the arm straight out to the side. Which muscle is the main abductor of the arm?",
+    "opts": [
+      {"t": "Deltoid", "c": true},
+      {"t": "Pectoralis major", "w": "Pectoralis major flexes and ADducts the arm."},
+      {"t": "Latissimus dorsi", "w": "Latissimus dorsi adducts and extends the humerus."},
+      {"t": "Biceps brachii", "w": "The biceps flexes the elbow."}
+    ],
+    "why": "The triangular deltoid caps the shoulder and abducts the arm (lifts it away from the body). It also helps flex and extend.",
+    "trick": "Deltoid = Delta (triangle) on the shoulder that lifts the arm like a wing.",
+    "tip": "Abduct = away from the body. Find the muscle that pulls upward and outward."
+  },
+  {
+    "id": "N9-29", "sec": "ch9-leg", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A physical therapist asks a client to bend the knee, bringing the heel toward the buttock. Which muscle group does this?",
+    "opts": [
+      {"t": "Hamstrings", "c": true},
+      {"t": "Quadriceps femoris", "w": "The quadriceps EXTEND the knee (straighten it)."},
+      {"t": "Gastrocnemius", "w": "Gastrocnemius is the prime mover of plantar flexion."},
+      {"t": "Gluteus maximus", "w": "Gluteus maximus extends the thigh at the hip."}
+    ],
+    "why": "The hamstrings (biceps femoris, semitendinosus, semimembranosus) on the back of the thigh flex the leg at the knee. The quadriceps on the front extend it. Your instructor flagged 'not the quadriceps.'",
+    "trick": "Quads = four heads that extend the knee. Hamstrings bend the knee (the ham in the back). (From your guide.)",
+    "tip": "Front of a limb vs back: opposite sides usually do opposite jobs."
+  },
+  {
+    "id": "N9-30", "sec": "ch9-overview", "focus": [], "type": "mcq", "diff": 2,
+    "stem": "A biopsy shows branched, striated cells, each with one nucleus, joined by intercalated discs. Which tissue is this?",
+    "opts": [
+      {"t": "Cardiac muscle", "c": true},
+      {"t": "Skeletal muscle", "w": "Skeletal fibers are striated but long, cylindrical, and multinucleated."},
+      {"t": "Smooth muscle", "w": "Smooth muscle has no striations and is spindle-shaped."},
+      {"t": "Dense regular connective tissue", "w": "This is not muscle tissue."}
+    ],
+    "why": "Cardiac muscle is striated, branched, has one nucleus per cell, and is joined by intercalated discs with gap junctions, so the heart contracts as a unit. It is involuntary and self-exciting.",
+    "trick": "Intercalated discs = the heart's 'Connected' handshake. Only cardiac has them.",
+    "tip": "Find the one unique feature (intercalated discs) and the answer follows."
+  }
+]
