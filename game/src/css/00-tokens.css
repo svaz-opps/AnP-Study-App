@@ -1,0 +1,64 @@
+/* Layout: a one-screen hospital game. Landscape iPad = floor plan + two-pane bedside chart;
+   portrait / Split View = vertical corridor + stacked chart. Dark ward lighting, with the
+   question itself printed on a paper chart clipped to a board (the one bright surface). */
+:root {
+  color-scheme: dark;
+  --bg: #0a1322;
+  --floor: #0e1a2c;
+  --floor-tile: #122139;
+  --surface: #15253d;
+  --surface-2: #1b2f4c;
+  --surface-3: #243c60;
+  --line: #2b4369;
+  --text: #e8f0fa;
+  --text-dim: #a6b7d0;
+  --text-faint: #7488a6;
+  --accent: #5cd6c0;
+  --accent-ink: #052b25;
+  --accent-soft: rgba(92, 214, 192, .15);
+  --ecg: #52f0a4;
+  --good: #4fdc8f;
+  --good-soft: rgba(79, 220, 143, .16);
+  --bad: #ff6b7a;
+  --bad-soft: rgba(255, 107, 122, .16);
+  --warn: #f6bd52;
+  --warn-soft: rgba(246, 189, 82, .16);
+  --code: #ff4757;
+  --xp: #8fa8ff;
+  --paper: #f4f7fb;
+  --paper-2: #e6edf6;
+  --paper-line: #c9d5e6;
+  --ink: #13233b;
+  --ink-dim: #4b5f7d;
+  --ink-good: #11804a;
+  --ink-bad: #c42d3f;
+  --board: #3a4c66;
+  --clip: #c4ced9;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+
+  --font-display: "Fredoka", "Nunito", system-ui, -apple-system, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --text-scale: 1;
+  --fs-xs: .74rem;
+  --fs-sm: .86rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.2rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.6rem;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --tap: 48px;
+}

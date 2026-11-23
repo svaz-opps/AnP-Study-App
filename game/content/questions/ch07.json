@@ -1,0 +1,434 @@
+[
+  {
+    "id": "N7-01", "sec": "ch7-overview", "focus": [0, 1], "type": "sata", "diff": 1,
+    "stem": "A nurse is reviewing the skeleton with a client recovering from a hip replacement. Which bones belong to the appendicular skeleton? Select all that apply.",
+    "opts": [
+      {"t": "Femur", "c": true},
+      {"t": "Scapula", "c": true},
+      {"t": "Coxal (hip) bone of the pelvic girdle", "c": true},
+      {"t": "Clavicle", "c": true},
+      {"t": "Sternum", "w": "The sternum is part of the thoracic cage, which sits on the body's central axis (axial skeleton)."},
+      {"t": "Vertebrae", "w": "The vertebral column is the body's central axis, so it is axial."}
+    ],
+    "why": "The adult skeleton has 206 bones in two groups. Axial = the central axis (skull, hyoid, spine, rib cage). Appendicular = the limbs plus the girdles (pectoral and pelvic) that attach them to the trunk.",
+    "trick": "APPENDicular = APPENDages, plus the girdles that hang them on the body.",
+    "tip": "SATA: judge each option on its own as true or false. Don't look for a set number of answers."
+  },
+  {
+    "id": "N7-02", "sec": "ch7-shape", "focus": [0, 1, 2], "type": "sata", "diff": 2,
+    "stem": "A student nurse is matching bones to their shapes. Which pairings are correct? Select all that apply.",
+    "opts": [
+      {"t": "Femur: long bone", "c": true},
+      {"t": "Patella: sesamoid bone", "c": true},
+      {"t": "Vertebra: irregular bone", "c": true},
+      {"t": "Rib: flat bone", "c": true},
+      {"t": "Phalanx (finger bone): short bone", "w": "Phalanges are long bones. 'Long' means a shaft with two ends, not a big size."},
+      {"t": "Tarsal (ankle bone): flat bone", "w": "Tarsals and carpals are cube-like, so they are short bones."}
+    ],
+    "why": "Long = a shaft with two ends (femur, humerus, phalanges). Short = cube-like (carpals, tarsals). Flat = thin plates (skull, ribs, sternum, scapulae). Irregular = odd shapes (vertebrae). Sesamoid = forms inside a tendon (patella, inside the quadriceps tendon).",
+    "trick": "Sesamoid looks like a sesame seed sitting in a tendon. The kneecap is the classic one.",
+    "tip": "SATA: test each pairing alone. One wrong word ('short' vs 'long') makes the whole option false."
+  },
+  {
+    "id": "N7-03", "sec": "ch7-long-bone", "focus": [0, 1], "type": "mcq", "diff": 1,
+    "stem": "A nurse reviews an X-ray of a client's femur. Which statement about the shaft (diaphysis) is accurate?",
+    "opts": [
+      {"t": "It is made mostly of compact bone around a hollow medullary cavity.", "c": true},
+      {"t": "It is made mostly of spongy bone filled with red marrow.", "w": "That describes the epiphyses (the expanded ends)."},
+      {"t": "It is covered with hyaline articular cartilage.", "w": "Articular cartilage covers only the ends, where the bone meets another bone in a joint."},
+      {"t": "It is the site where the bone grows in length.", "w": "Lengthwise growth happens at the epiphyseal plate, between the epiphysis and the diaphysis."}
+    ],
+    "why": "The diaphysis is a thick collar of compact bone, which makes it rigid and strong. The epiphyses at the ends are mostly spongy bone and hold red marrow.",
+    "trick": "Diaphysis = the Dense shaft. Epiphyses = the Ends, spongy inside.",
+    "tip": "When options name two similar parts (diaphysis vs epiphysis), picture the bone and place each part before choosing."
+  },
+  {
+    "id": "N7-04", "sec": "ch7-long-bone", "focus": [2], "type": "mcq", "diff": 1,
+    "stem": "A client with knee pain asks what normally covers the ends of the bones inside the joint. Which response by the nurse is accurate?",
+    "opts": [
+      {"t": "Hyaline (articular) cartilage", "c": true},
+      {"t": "Fibrocartilage", "w": "Fibrocartilage forms the intervertebral discs and the pad of the symphysis pubis, not the ends of long bones."},
+      {"t": "Periosteum", "w": "Periosteum covers the outside of the bone everywhere except over the articular cartilage."},
+      {"t": "Compact bone with no covering", "w": "The joint surface is capped with cartilage, which absorbs shock and reduces friction."}
+    ],
+    "why": "The articular surfaces of long bones are covered with hyaline cartilage. It is smooth, so it reduces friction, and it acts as a shock absorber.",
+    "trick": "Hyaline = 'glassy' smooth, like ice on the bone ends so they glide.",
+    "tip": "Watch for options that are true facts about a different location (periosteum is real, just not on the joint surface)."
+  },
+  {
+    "id": "N7-05", "sec": "ch7-growth", "focus": [1, "ch7-long-bone#3"], "type": "mcq", "diff": 1,
+    "stem": "A parent looks at their 10-year-old's X-ray and asks why there is a dark line near the end of the tibia. Which response by the nurse is accurate?",
+    "opts": [
+      {"t": "That is the epiphyseal plate. Seeing it means the bone is still growing.", "c": true},
+      {"t": "That dark line is a fracture.", "w": "The growth plate is cartilage, which looks dark on an X-ray. It is normal in children."},
+      {"t": "That is the epiphyseal line, which means growth has stopped.", "w": "The thin epiphyseal line is what remains in adults after the plate ossifies."},
+      {"t": "That is the medullary cavity.", "w": "The medullary cavity is the hollow center of the shaft, not a line near the end."}
+    ],
+    "why": "The epiphyseal disk (plate) is hyaline cartilage between the epiphysis and diaphysis. If you can see it on an X-ray, the bone is still lengthening. When growth ends it ossifies and leaves only a thin epiphyseal line.",
+    "trick": "PLATE = still Playing (growing). LINE = growth has Left.",
+    "tip": "Choose the answer that explains a normal finding before assuming the worst. Not every line on an X-ray is a break."
+  },
+  {
+    "id": "N7-06", "sec": "ch7-marrow", "focus": [0, 1, 2], "type": "sata", "diff": 2,
+    "stem": "A nurse is preparing a client for a bone marrow biopsy. Which statements about bone marrow are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Red marrow forms red blood cells, white blood cells, and platelets.", "c": true},
+      {"t": "Yellow marrow stores fat.", "c": true},
+      {"t": "In adults, red marrow is found mainly in spongy bone, such as in the sternum and hip.", "c": true},
+      {"t": "The iliac crest is a common biopsy site because it keeps active red marrow for life.", "c": true},
+      {"t": "Red marrow increases as a person gets older.", "w": "With age, much red marrow is replaced by yellow marrow."},
+      {"t": "In adults, yellow marrow fills the epiphyses.", "w": "Adult yellow marrow fills the medullary cavity of long-bone shafts. Epiphyses are spongy bone."}
+    ],
+    "why": "Red marrow does hematopoiesis (makes all blood cells). Yellow marrow stores fat. In adults, red marrow stays in spongy bone of flat bones (sternum, ribs, pelvis, vertebrae) and in the upper ends of the femur and humerus, which is why the sternum or iliac crest is sampled.",
+    "trick": "RED makes blood (red). YELLOW is butter-colored fat.",
+    "tip": "SATA: an absolute change ('increases with age') is a red flag. Check it against what you know."
+  },
+  {
+    "id": "N7-07", "sec": "ch7-cells", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A client's blood calcium is high because bone is being broken down too fast. Which bone cell is most responsible for breaking down (resorbing) bone?",
+    "opts": [
+      {"t": "Osteoclast", "c": true},
+      {"t": "Osteoblast", "w": "Osteoblasts build bone by secreting collagen and matrix."},
+      {"t": "Osteocyte", "w": "Osteocytes are mature cells that maintain bone from inside their lacunae."},
+      {"t": "Osteoprogenitor cell", "w": "Osteoprogenitor cells are stem cells that divide and become osteoblasts."}
+    ],
+    "why": "Osteoclasts are large, multinucleated cells that dissolve bone matrix with acid and enzymes. This releases calcium and phosphate into the blood.",
+    "trick": "Clast = Cut/Crush. Blast = Build. Cyte = Caretaker. (From your guide.)",
+    "tip": "Bone-cell questions are about the suffix. Decode -clast, -blast and -cyte and the answer follows."
+  },
+  {
+    "id": "N7-08", "sec": "ch7-cells", "focus": [1, 2], "type": "sata", "diff": 2,
+    "stem": "Which statements about bone tissue are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Osteocytes live in small chambers called lacunae.", "c": true},
+      {"t": "Most of the bone matrix is hydroxyapatite (calcium phosphate crystals).", "c": true},
+      {"t": "Collagen fibers give bone flexibility so it does not shatter.", "c": true},
+      {"t": "Osteoclasts release calcium and phosphate into the blood.", "c": true},
+      {"t": "Osteoblasts divide quickly to make more bone cells.", "w": "Osteoblasts cannot divide. Osteoprogenitor cells divide and become osteoblasts."},
+      {"t": "Hydroxyapatite is what makes bone flexible.", "w": "Hydroxyapatite makes bone hard. Collagen makes it flexible."}
+    ],
+    "why": "Bone matrix is about 65% mineral (hydroxyapatite = hardness) and 35% organic (mostly collagen = flexibility and tensile strength). Osteocytes sit in lacunae and connect through canaliculi.",
+    "trick": "Hard Hydroxyapatite, Comfy-bendy Collagen.",
+    "tip": "Two options that swap the same two words (hard vs flexible) can't both be true. Decide which way is right."
+  },
+  {
+    "id": "N7-09", "sec": "ch7-compact-spongy", "focus": [0, 1, 2], "type": "mcq", "diff": 2,
+    "stem": "A nurse is explaining bone types to a client with osteoporosis. Which description matches compact bone?",
+    "opts": [
+      {"t": "It is built of osteons: rings of matrix around a central canal.", "c": true},
+      {"t": "It is a lattice of thin plates (trabeculae) with open spaces.", "w": "That is spongy bone."},
+      {"t": "It is also called cancellous bone.", "w": "Cancellous is another name for spongy bone."},
+      {"t": "It makes up most of the epiphyses of long bones.", "w": "The epiphyses are mainly spongy bone covered by a thin compact layer."}
+    ],
+    "why": "Compact bone forms the wall of the diaphysis and is built of osteons (Haversian systems): concentric lamellae around a central canal. Spongy (cancellous) bone has trabeculae and no osteons, and fills the epiphyses.",
+    "trick": "Compact = Concentric Circles (osteons). Cancellous comes from the Latin for 'lattice', so it is the spongy one with holes.",
+    "tip": "Eliminate any option that belongs to the 'other' item in a pair. Three of these describe spongy bone."
+  },
+  {
+    "id": "N7-10", "sec": "ch7-ossification", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which bone forms by intramembranous ossification?",
+    "opts": [
+      {"t": "Frontal bone", "c": true},
+      {"t": "Femur", "w": "The femur forms from a hyaline cartilage model (endochondral ossification)."},
+      {"t": "Radius", "w": "The radius forms by endochondral ossification."},
+      {"t": "Ulna", "w": "The ulna forms by endochondral ossification."}
+    ],
+    "why": "Intramembranous ossification builds bone inside sheets of fibrous membrane. It forms the flat skull bones (frontal, parietal, occipital, temporal) and the clavicles. Most other bones, like the femur, radius and ulna, form from cartilage (endochondral).",
+    "trick": "INTRAmembranous = flat skull bones made 'in membranes'. ENDOCHONDRAL = 'inside cartilage' (chondro = cartilage).",
+    "tip": "When three options share a feature (all limb bones) and one doesn't, the odd one out is often the answer."
+  },
+  {
+    "id": "N7-11", "sec": "ch7-ossification", "focus": [1], "type": "order", "diff": 3,
+    "stem": "Put the steps of endochondral ossification in order, from first to last.",
+    "steps": [
+      "Hyaline cartilage forms in the shape of the future bone.",
+      "Cartilage cells in the center enlarge, the matrix calcifies, and the cells die.",
+      "Periosteum forms on the outside of the developing bone.",
+      "Blood vessels and osteoblasts invade, forming the primary ossification center in the diaphysis.",
+      "Secondary ossification centers appear in the epiphyses.",
+      "Cartilage remains only as articular cartilage and the epiphyseal plates."
+    ],
+    "why": "The cartilage model comes first, then it calcifies and dies in the middle, periosteum forms, and bone replaces cartilage from the center (diaphysis) out to the ends (epiphyses). At the end, cartilage is left only where it is still needed: joint surfaces and growth plates.",
+    "trick": "Model, Mineralize, Membrane wrap, Middle first, Ends second, Leftovers at joints and plates.",
+    "tip": "Ordering items: find the obvious first and last steps, then fill in the middle."
+  },
+  {
+    "id": "N7-12", "sec": "ch7-ossification", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which statement is NOT a step of endochondral ossification?",
+    "opts": [
+      {"t": "Hyaline cartilage changes into adipose tissue.", "c": true},
+      {"t": "A hyaline cartilage model forms in the shape of the bone.", "w": "This is a real step. It is the very first one."},
+      {"t": "A primary ossification center appears in the diaphysis.", "w": "This is a real step. Osteoblasts replace cartilage from the center."},
+      {"t": "Secondary ossification centers appear in the epiphyses.", "w": "This is a real step that happens later."}
+    ],
+    "why": "In endochondral ossification, cartilage is replaced by bone, never by fat (adipose tissue). Your instructor flagged this false statement as a favorite.",
+    "trick": "Cartilage turns into BONE, never into FAT.",
+    "tip": "For NOT or EXCEPT questions, mark each option true or false. The answer is the only false one."
+  },
+  {
+    "id": "N7-13", "sec": "ch7-growth", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "By about what age are all bones normally fully ossified?",
+    "opts": [
+      {"t": "25 years", "c": true},
+      {"t": "12 years", "w": "Bones are still growing at 12. Most growth plates close between ages 14 and 20."},
+      {"t": "18 years", "w": "Many plates close by then, but ossification of all bones is complete around 25."},
+      {"t": "40 years", "w": "Ossification is finished long before 40."}
+    ],
+    "why": "Most epiphyseal plates close between ages 14 and 20, and ossification of all bones is normally complete by about age 25.",
+    "trick": "Quarter-century skeleton: done by 25.",
+    "tip": "Number questions: remember the anchor fact (25) and the range around it (plates close 14-20)."
+  },
+  {
+    "id": "N7-14", "sec": "ch7-growth", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "How does a long bone grow in thickness (width)?",
+    "opts": [
+      {"t": "Osteoblasts beneath the periosteum deposit compact bone on the outer surface.", "c": true},
+      {"t": "Chondrocytes divide in the epiphyseal plate.", "w": "That is how bone grows in length, not thickness."},
+      {"t": "Osteoclasts add bone beneath the endosteum.", "w": "Osteoclasts remove bone on the inner surface, which enlarges the medullary cavity."},
+      {"t": "Yellow marrow hardens into bone.", "w": "Marrow does not turn into bone."}
+    ],
+    "why": "Appositional growth: osteoblasts under the periosteum add compact bone on the outside while osteoclasts on the inside remove bone. The bone gets wider without getting too heavy.",
+    "trick": "Appositional = bone is 'applied' to the outside, like adding layers of paint.",
+    "tip": "Separate 'length' from 'thickness' before reading the options. They use different growth sites."
+  },
+  {
+    "id": "N7-15", "sec": "ch7-factors", "focus": [0], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client about nutrients that help bones heal. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Vitamin C helps my body absorb calcium from my intestine.\"", "c": true},
+      {"t": "\"Vitamin C helps my body make collagen for the bone matrix.\"", "w": "Accurate. Vitamin C is required for collagen synthesis."},
+      {"t": "\"Vitamin D helps me absorb calcium from my intestine.\"", "w": "Accurate. This is vitamin D's main bone job."},
+      {"t": "\"Calcium and phosphorus make up the hard mineral part of bone.\"", "w": "Accurate. They form hydroxyapatite."}
+    ],
+    "why": "Vitamin D increases calcium absorption from the small intestine. Vitamin C is needed to make collagen (lack of it causes scurvy and weak, slow-healing bones). The client mixed up the two vitamins.",
+    "trick": "C = Collagen. D = Digest (absorb) calcium.",
+    "tip": "'Needs further teaching' means find the WRONG statement. Three options will be correct facts."
+  },
+  {
+    "id": "N7-16", "sec": "ch7-factors", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A 35-year-old client has thickened bones in the hands, feet, and jaw caused by too much growth hormone. Which condition does this describe?",
+    "opts": [
+      {"t": "Acromegaly", "c": true},
+      {"t": "Pituitary gigantism", "w": "Gigantism is excess growth hormone BEFORE the growth plates close, so the bones grow very long."},
+      {"t": "Pituitary dwarfism", "w": "Dwarfism comes from too LITTLE growth hormone in childhood."},
+      {"t": "Rickets", "w": "Rickets is soft bones from lack of vitamin D in children."}
+    ],
+    "why": "Excess growth hormone before the epiphyseal plates ossify causes gigantism (very tall). In adults the plates are already closed, so bones can't lengthen. They thicken instead: acromegaly.",
+    "trick": "Before plates close: GIANT. After: ACRO-megaly (acro = the ends: hands, feet, jaw).",
+    "tip": "Use the client's age as a clue. An adult can't have growth-plate problems."
+  },
+  {
+    "id": "N7-17", "sec": "ch7-factors", "focus": [2, 3], "type": "sata", "diff": 3,
+    "stem": "Which hormones can stop bones from growing longer by causing the epiphyseal plates to ossify? Select all that apply.",
+    "opts": [
+      {"t": "Estrogen", "c": true},
+      {"t": "Testosterone (an androgen)", "c": true},
+      {"t": "Excess thyroid hormone", "c": true},
+      {"t": "Growth hormone", "w": "Growth hormone makes plate cartilage divide, which keeps bones growing."},
+      {"t": "Calcitonin", "w": "Calcitonin controls blood calcium and remodeling, not plate closure."}
+    ],
+    "why": "Sex hormones stimulate ossification of the epiphyseal disks, which ends growth. Estrogen's effect is stronger than androgens', so girls' plates usually close earlier. An excess of thyroid hormone can also halt growth by closing the plates too early.",
+    "trick": "Puberty hormones Put the brakes on height. Estrogen brakes harder.",
+    "tip": "SATA: an option that does the opposite (growth hormone speeds growth) is a quick elimination."
+  },
+  {
+    "id": "N7-18", "sec": "ch7-factors", "focus": [4], "type": "mcq", "diff": 1,
+    "stem": "A client began weight-bearing exercise six months ago. A scan now shows thicker, stronger bones. What is this change called?",
+    "opts": [
+      {"t": "Bone hypertrophy", "c": true},
+      {"t": "Bone atrophy", "w": "Atrophy is bone LOSS from lack of use, such as long bed rest."},
+      {"t": "Osteoporosis", "w": "Osteoporosis is loss of bone mass, the opposite change."},
+      {"t": "Acromegaly", "w": "Acromegaly is bone thickening from excess growth hormone in adults, not from exercise."}
+    ],
+    "why": "Physical stress from weight-bearing activity and muscle pull stimulates bone growth. The increase in bone mass is called bone hypertrophy. Disuse causes the opposite, bone atrophy.",
+    "trick": "Hyper = more (use it, gain it). Atrophy = 'a-trophy', no prize for skipping the gym.",
+    "tip": "Match the cause in the stem (exercise) to the effect. Two options here describe loss, so they can't fit."
+  },
+  {
+    "id": "N7-19", "sec": "ch7-functions", "focus": [0], "type": "sata", "diff": 1,
+    "stem": "A nurse explains the jobs of the skeletal system to a client. Which are functions of bones? Select all that apply.",
+    "opts": [
+      {"t": "Producing blood cells", "c": true},
+      {"t": "Storing inorganic salts such as calcium and phosphate", "c": true},
+      {"t": "Protecting organs such as the brain and heart", "c": true},
+      {"t": "Storing fat for energy in yellow marrow", "c": true},
+      {"t": "Making vitamin C", "w": "Bone needs vitamin C for collagen, but the body gets vitamin C from food."},
+      {"t": "Producing insulin", "w": "Insulin comes from the pancreas, not bone."}
+    ],
+    "why": "Bones support the body, protect organs, act as levers for movement, make blood cells (red marrow), store salts like calcium and phosphate, and store fat (yellow marrow). On your instructor's exam this showed up as an 'all of the above' item.",
+    "trick": "Some People Move Blood, Salts, and Energy: Support, Protection, Movement, Blood cells, Salt storage, Energy storage. (From your guide.)",
+    "tip": "If your exam shows 'all of the above', check that every listed item really is a skeletal function. Here blood cells, salts and protection all are."
+  },
+  {
+    "id": "N7-20", "sec": "ch7-remodeling", "focus": [0, 2], "type": "mcq", "diff": 2,
+    "stem": "A client's blood calcium level is above normal. Which response does the nurse expect the body to make?",
+    "opts": [
+      {"t": "The thyroid releases calcitonin, which slows osteoclasts and helps osteoblasts deposit calcium in bone.", "c": true},
+      {"t": "The parathyroid glands release PTH to stimulate osteoclasts.", "w": "PTH is the response to LOW calcium. It would raise calcium further."},
+      {"t": "Osteoclast activity increases to release more calcium.", "w": "That would make the high calcium worse."},
+      {"t": "The intestine absorbs more calcium.", "w": "Extra absorption (with vitamin D) is part of the response to low calcium."}
+    ],
+    "why": "Negative feedback reverses the change. High blood calcium causes the thyroid to release calcitonin. Calcitonin inhibits osteoclasts, osteoblasts deposit calcium into bone, and the kidneys excrete more calcium, so blood calcium falls back to normal.",
+    "trick": "CalciTONEin TONES down blood calcium. (From your guide.)",
+    "tip": "Homeostasis questions: the correct response always pushes the value back toward normal. Rule out anything that pushes it further."
+  },
+  {
+    "id": "N7-21", "sec": "ch7-remodeling", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "A client's blood calcium is low, and the parathyroid glands release parathyroid hormone (PTH). Which effects of PTH should the nurse expect? Select all that apply.",
+    "opts": [
+      {"t": "Osteoclasts are stimulated to break down bone.", "c": true},
+      {"t": "The kidneys reabsorb calcium back into the blood.", "c": true},
+      {"t": "The intestine absorbs more dietary calcium (with vitamin D).", "c": true},
+      {"t": "Osteoblasts deposit calcium into bone.", "w": "That lowers blood calcium. It is calcitonin's effect."},
+      {"t": "The kidneys excrete more calcium in the urine.", "w": "That also lowers blood calcium. It is calcitonin's effect."}
+    ],
+    "why": "When the parathyroid glands sense low blood calcium, they release PTH. PTH raises calcium three ways: bone (osteoclasts release calcium), kidneys (keep calcium), and intestine (absorb more, with vitamin D).",
+    "trick": "PTH Pulls calcium To the Heart (into the blood). (From your guide.)",
+    "tip": "SATA: sort each option into 'raises calcium' or 'lowers calcium'. Only the raisers fit PTH."
+  },
+  {
+    "id": "N7-22", "sec": "ch7-fractures", "focus": [0], "type": "priority", "diff": 2,
+    "stem": "The nurse receives report on four clients on the orthopedic unit. Which client should the nurse see first?",
+    "opts": [
+      {"t": "A client with a compound fracture of the tibia, with bone visible through the skin", "c": true},
+      {"t": "A client with a closed greenstick fracture of the forearm in a cast, rating pain 3 out of 10", "w": "A closed fracture in a cast with mild pain is stable. This client can wait."},
+      {"t": "A client with osteoporosis asking about calcium supplements", "w": "Teaching matters, but it can wait until physical needs are met."},
+      {"t": "An adolescent with scoliosis waiting for a follow-up screening", "w": "Scoliosis is a chronic, stable condition."}
+    ],
+    "why": "In a compound (open) fracture the broken bone is exposed through an opening in the skin. That means bleeding and a high risk of infection, so it is acute and unstable. The other clients are stable or need teaching.",
+    "trick": "Compound = bone has COME out through the skin.",
+    "tip": "Priority: acute before chronic, unstable before stable, physical needs before teaching."
+  },
+  {
+    "id": "N7-23", "sec": "ch7-fractures", "focus": [2], "type": "mcq", "diff": 2,
+    "stem": "A 3-year-old is brought in with a spiral fracture of the humerus. The parent says the child fell off the couch. What should the nurse recognize?",
+    "opts": [
+      {"t": "Spiral fractures come from twisting forces and can be a sign of child abuse, so the nurse should follow the facility's reporting policy.", "c": true},
+      {"t": "Spiral fractures are the usual result of short falls.", "w": "A spiral fracture is caused by excessive twisting, which a simple fall doesn't explain well."},
+      {"t": "A spiral fracture means the bone broke through the skin.", "w": "Breaking through the skin is a compound (open) fracture."},
+      {"t": "Spiral fractures happen only in adults with osteoporosis.", "w": "A break from disease-weakened bone is a pathologic fracture."}
+    ],
+    "why": "A spiral fracture is caused by excessive twisting of a bone and is often seen in child abuse cases. When the story doesn't match the injury, the nurse keeps the child safe and reports per policy.",
+    "trick": "Spiral = twiSted. A twisting injury in a small child is a red flag.",
+    "tip": "Safety answers win: when an injury doesn't match the explanation, protect the client first."
+  },
+  {
+    "id": "N7-24", "sec": "ch7-fractures", "focus": [1], "type": "order", "diff": 2,
+    "stem": "Put the stages of fracture repair in order, from first to last.",
+    "steps": [
+      "Hematoma: a blood clot forms at the break.",
+      "Granulation tissue: fibroblasts and new blood vessels invade the clot.",
+      "Cartilaginous callus forms across the break.",
+      "Bony callus: osteoblasts replace the cartilage with spongy bone.",
+      "Remodeling: osteoclasts remove extra bone and compact bone restores the shape."
+    ],
+    "why": "Bleeding comes first (hematoma), then the clot is organized into granulation tissue, then a callus bridges the gap (cartilage first, then spongy bone), and finally remodeling restores the original shape.",
+    "trick": "Happy Grandmas Cook Recipes: Hematoma, Granulation, Callus, Remodeling. (From your guide.)",
+    "tip": "Ordering items: healing always starts with bleeding and clotting and ends with remodeling."
+  },
+  {
+    "id": "N7-25", "sec": "ch7-axial", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which suture joins the parietal bone to the temporal bone?",
+    "opts": [
+      {"t": "Squamous suture", "c": true},
+      {"t": "Coronal suture", "w": "The coronal suture joins the frontal and parietal bones."},
+      {"t": "Sagittal suture", "w": "The sagittal suture runs between the two parietal bones."},
+      {"t": "Lambdoid suture", "w": "The lambdoid suture joins the parietal and occipital bones."}
+    ],
+    "why": "The squamous suture is the side seam just above the ear, where the parietal bone meets the temporal bone. A suture is an immovable fibrous joint.",
+    "trick": "Coronal = Crown (front). Sagittal = Splits left and right. Lambdoid = back of the head, shaped like λ. Squamous = Side, above the ear.",
+    "tip": "Picture the skull from the side. The temporal bone is by the ear, so the answer is the side suture."
+  },
+  {
+    "id": "N7-26", "sec": "ch7-axial", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "During a school screening, a nurse sees that a 13-year-old girl's right shoulder is higher than her left. Which condition does this suggest?",
+    "opts": [
+      {"t": "Scoliosis", "c": true},
+      {"t": "Kyphosis", "w": "Kyphosis is an exaggerated thoracic curve ('hunchback')."},
+      {"t": "Lordosis", "w": "Lordosis is an exaggerated lumbar curve ('swayback')."},
+      {"t": "Herniated disc", "w": "A herniated disc presses on spinal nerves. It doesn't make one shoulder or hip higher."}
+    ],
+    "why": "Scoliosis is a sideways (lateral) curve of the spine. One shoulder or hip ends up lower than the other, and it is most common in adolescent girls.",
+    "trick": "Scoliosis = S-shaped Sideways curve. Kyphosis = hump. Lordosis = Lower back (Lumbar).",
+    "tip": "Use every clue in the stem: age, sex, and an uneven shoulder all point to one answer."
+  },
+  {
+    "id": "N7-27", "sec": "ch7-appendicular", "focus": [0], "type": "sata", "diff": 1,
+    "stem": "A client fell on an outstretched arm and injured the pectoral girdle. Which bones make up the pectoral girdle? Select all that apply.",
+    "opts": [
+      {"t": "Clavicle", "c": true},
+      {"t": "Scapula", "c": true},
+      {"t": "Humerus", "w": "The humerus is the upper-limb bone that attaches TO the girdle."},
+      {"t": "Sternum", "w": "The sternum is part of the axial thoracic cage."},
+      {"t": "First rib", "w": "Ribs are part of the axial skeleton."}
+    ],
+    "why": "The pectoral (shoulder) girdle is the two clavicles and two scapulae. It connects the upper limbs to the trunk.",
+    "trick": "Shoulder girdle = Collarbone + Shoulder blade: 'C and S'.",
+    "tip": "SATA can have only two correct answers. Don't add options just because they are near the shoulder."
+  },
+  {
+    "id": "N7-28", "sec": "ch7-aging", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Four 65-year-old clients have similar diets and activity levels. Which client is most likely to have the lowest bone mass?",
+    "opts": [
+      {"t": "A light-skinned woman", "c": true},
+      {"t": "A dark-skinned woman", "w": "Darker-skinned people tend to start with more peak bone mass."},
+      {"t": "A light-skinned man", "w": "Men don't have the fast bone loss that follows menopause."},
+      {"t": "A dark-skinned man", "w": "This client has neither the sex nor the ancestry risk factor."}
+    ],
+    "why": "Women lose bone faster after menopause because estrogen falls. Light-skinned (white or Asian) ancestry means less peak bone mass to begin with. Together they give the lowest bone mass at 65.",
+    "trick": "Osteoporosis risk: Female + Fair skin + Frail frame.",
+    "tip": "Stack the risk factors. The client with the most risk factors is the answer."
+  },
+  {
+    "id": "N7-29", "sec": "ch7-aging", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "An 80-year-old client fractured the upper femur after a minor fall. Why does this part of the bone often break in older adults?",
+    "opts": [
+      {"t": "Spongy (trabecular) bone weakens sooner than compact bone, and the femoral neck has a lot of spongy bone.", "c": true},
+      {"t": "Compact bone is lost before spongy bone.", "w": "It is the reverse. Spongy bone is lost sooner and faster."},
+      {"t": "The epiphyseal plates reopen in older adults.", "w": "Plates ossify for good. They never reopen."},
+      {"t": "Yellow marrow turns into cartilage.", "w": "Marrow does not turn into cartilage."}
+    ],
+    "why": "Trabecular (spongy) bone is lost sooner and faster than compact bone. The femoral neck and the vertebral bodies have lots of spongy bone, so they weaken first, which is why hip and vertebral compression fractures are common in older adults.",
+    "trick": "Spongy goes Soonest: the hip and spine break first.",
+    "tip": "If two options say opposite things (spongy first vs compact first), one of them is usually the answer."
+  },
+  {
+    "id": "N7-30", "sec": "ch7-aging", "focus": [], "type": "teaching", "diff": 1,
+    "stem": "A nurse teaches a 60-year-old postmenopausal client about preventing osteoporosis. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Resting in bed as much as I can will protect my bones.\"", "c": true},
+      {"t": "\"Walking and other weight-bearing exercise will help my bones.\"", "w": "Accurate. Physical stress builds bone mass."},
+      {"t": "\"I need enough calcium and vitamin D every day.\"", "w": "Accurate. Low calcium or vitamin D is a risk factor."},
+      {"t": "\"Quitting smoking can help protect my bones.\"", "w": "Accurate. Smoking is a risk factor."}
+    ],
+    "why": "Lack of use causes bone atrophy, as in prolonged bed rest. Weight-bearing exercise, enough calcium and vitamin D, and avoiding smoking and heavy alcohol all protect bone.",
+    "trick": "Bones follow 'use it or lose it'.",
+    "tip": "'Needs further teaching' = the statement that would hurt the client if they followed it."
+  },
+  {
+    "id": "N7-31", "sec": "ch7-aging", "focus": [], "type": "math", "diff": 1,
+    "stem": "A provider prescribes calcium carbonate 1,000 mg by mouth daily for a client with osteoporosis. The tablets on hand are 500 mg each. How many tablets should the nurse give?",
+    "opts": [
+      {"t": "2 tablets", "c": true},
+      {"t": "0.5 tablet", "w": "This flips the formula (have ÷ desired). Always put the dose you WANT on top."},
+      {"t": "1 tablet", "w": "One tablet is only 500 mg, half the prescribed dose."},
+      {"t": "4 tablets", "w": "Four tablets would be 2,000 mg, double the dose."}
+    ],
+    "why": "Desired ÷ Have × Quantity = 1,000 mg ÷ 500 mg × 1 tablet = 2 tablets.",
+    "trick": "D over H times Q: what you Desire, over what you Have, times the Quantity it comes in.",
+    "tip": "Med math: check that your answer makes sense. A dose bigger than one tablet needs more than one tablet."
+  },
+  {
+    "id": "N7-32", "sec": "ch7-disorders", "focus": [], "type": "mcq", "diff": 1,
+    "stem": "A child has bowed legs and soft bones caused by a lack of vitamin D. Which disorder does the nurse recognize?",
+    "opts": [
+      {"t": "Rickets", "c": true},
+      {"t": "Osteogenesis imperfecta", "w": "This is an inherited collagen defect ('brittle bone disease')."},
+      {"t": "Scurvy", "w": "Scurvy comes from lack of vitamin C, which is needed for collagen."},
+      {"t": "Osteoporosis", "w": "Osteoporosis is porous, fragile bone, mostly in older adults."}
+    ],
+    "why": "Lack of vitamin D (or calcium) makes bones soft. In children this is rickets, which causes bowed legs. In adults the same problem is called osteomalacia.",
+    "trick": "Rickets = Rubbery legs in kids. Vitamin D = 'Don't bend'.",
+    "tip": "Link the deficiency to its disease: D goes with rickets and osteomalacia, C goes with scurvy."
+  }
+]

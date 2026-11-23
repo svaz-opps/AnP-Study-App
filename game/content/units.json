@@ -1,0 +1,14 @@
+[
+  {"id": "ch1",  "room": 101, "ward": "Admissions",      "topic": "Foundations",       "blurb": "Body organization, homeostasis, body language of anatomy"},
+  {"id": "ch2",  "room": 102, "ward": "Clinical Lab",    "topic": "Chemistry",         "blurb": "Atoms, bonds, water, pH, and biological molecules"},
+  {"id": "ch3",  "room": 103, "ward": "Infusion Suite",  "topic": "Cells",             "blurb": "Membranes, organelles, transport, tonicity, cell division"},
+  {"id": "ch4",  "room": 104, "ward": "Metabolic Clinic","topic": "Metabolism",        "blurb": "Enzymes, ATP, cellular respiration, DNA to protein"},
+  {"id": "ch5",  "room": 105, "ward": "Pathology",       "topic": "Tissues",           "blurb": "Epithelium, connective tissue, membranes, muscle and nerve tissue"},
+  {"id": "ch6",  "room": 106, "ward": "Burn Unit",       "topic": "Skin",              "blurb": "Skin layers, glands, temperature control, burns and healing"},
+  {"id": "ch7",  "room": 107, "ward": "Ortho",           "topic": "Bones",             "blurb": "Bone structure, growth, remodeling, calcium, fractures, skeleton"},
+  {"id": "ch8",  "room": 108, "ward": "Sports Med",      "topic": "Joints",            "blurb": "Joint classes, synovial joints, movements, shoulder to knee"},
+  {"id": "ch9",  "room": 109, "ward": "Rehab Gym",       "topic": "Muscles",           "blurb": "Muscle structure, contraction, energy, responses, major muscles"},
+  {"id": "ch10", "room": 110, "ward": "Neuro Step-Down", "topic": "Neural signaling",  "blurb": "Neurons, glia, membrane potentials, synapses"},
+  {"id": "ch11", "room": 111, "ward": "Neuro ICU",       "topic": "Neuroanatomy",      "blurb": "Meninges, spinal cord, reflexes, brain, cranial nerves, autonomic"},
+  {"id": "ch12", "room": 112, "ward": "Eye & Ear Clinic","topic": "Senses",            "blurb": "Receptors, pain, smell, taste, hearing, balance, vision"}
+]
