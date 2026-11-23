@@ -35,6 +35,20 @@ SINGLE = {"mcq", "priority", "teaching", "math"}
 BANNED = re.compile(r"\b(all|none) of the above\b", re.I)
 
 
+# Lets the hosted page (GitHub Pages) be added to an iPad Home Screen and open full screen like an app.
+# The icon and manifest live in game/web/ and are published next to the page by .github/workflows/pages.yml;
+# opened anywhere else, those two links just don't resolve and nothing else changes.
+HOME_SCREEN_TAGS = (
+    '<meta name="theme-color" content="#0a1322">'
+    '<meta name="mobile-web-app-capable" content="yes">'
+    '<meta name="apple-mobile-web-app-capable" content="yes">'
+    '<meta name="apple-mobile-web-app-status-bar-style" content="black">'
+    '<meta name="apple-mobile-web-app-title" content="Ward Rounds">'
+    '<link rel="apple-touch-icon" href="apple-touch-icon.png">'
+    '<link rel="manifest" href="manifest.webmanifest">'
+)
+
+
 def strip(s):
     """HTML fragment -> plain text."""
     s = re.sub(r"<[^>]+>", "", s or "")
@@ -287,6 +301,7 @@ def main():
     standalone = (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+        + HOME_SCREEN_TAGS +
         "</head><body>" + page.replace("<!--__DATA__-->", inline) + "</body></html>"
     )
     (DIST / "ward-rounds.html").write_text(standalone)

@@ -164,3 +164,19 @@
   claude/friendly-meitner-j5l8qj); the user deleted them on GitHub.
 - First deploy (a re-run of the original run) uploaded the site but deploy-pages found 0 artifacts. Bumped
   checkout to v5 and upload-pages-artifact to v4 and pushed so a fresh run starts.
+
+## 2026-11-23 — Saving on the hosted (GitHub Pages) version
+- Outside claude.ai there is no account save, only browser storage, so three changes:
+  1. Backup now saves a real file. On iPad/iPhone it opens the share sheet with the .json file ("Save to Files"),
+     which works in Safari and from the Home Screen app; elsewhere it is an ordinary download. Clipboard is the
+     last fallback. Inside claude.ai the downloads capability is still used first.
+  2. Home Screen support: build.py adds Apple web-app meta tags, theme colour, an apple-touch-icon and a web app
+     manifest to the standalone build. Icons + manifest live in `game/web/` (drawn by `tools/make_app_icons.py`)
+     and the Pages workflow publishes them next to the page. Status bar style "black" (not translucent) so the
+     top bar never sits under the status bar.
+  3. The game calls `navigator.storage.persist()` at start (best effort; Safari may ignore it).
+- Settings text (non-cloud) now says progress is device-only and tells iPad users to use the Home Screen icon.
+- New test `game/tests/backup.mjs` (desktop download + restore, iPad share sheet, Home Screen tags); added to
+  the BRANCHING checklist. All six suites pass.
+- Assumption: a Home Screen web app keeps its own storage, separate from Safari, and is exempt from Safari's 7-day
+  storage cap (Apple's documented behaviour as far as known); not verifiable from here.

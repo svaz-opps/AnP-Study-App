@@ -166,7 +166,7 @@ Screens.stats = {
 Screens.settings = {
   render() {
     const st = WR.state.settings;
-    const cloud = Store.cloud.status === 'cloud' ? 'Progress autosaves to your Claude account after every tap, even mid-round, so it follows you to any device.' : 'Progress autosaves in this browser after every tap, even mid-round. Download a backup now and then to be safe.';
+    const cloud = Store.cloud.status === 'cloud' ? 'Progress autosaves to your Claude account after every tap, even mid-round, so it follows you to any device.' : 'Progress autosaves in this browser after every tap, even mid-round. It stays on this device only, so download a backup now and then. On iPad, add the game to your Home Screen (Share, then Add to Home Screen) and always open it from there so Safari does not clear it.';
     const seg = (key, opts) => `<div class="seg" role="group">${opts.map(([v, n]) => `<button class="${String(st[key]) === String(v) ? 'on' : ''}" data-action="setting" data-key="${key}" data-val="${v}" aria-pressed="${String(st[key]) === String(v)}">${n}</button>`).join('')}</div>`;
     return `${topbar('Settings')}
       <div class="narrow stack">
@@ -212,6 +212,27 @@ Screens.settings = {
       if (dl) {
         try { await dl.save({ filename: `ward-rounds-backup-${todayStr()}.json`, data: text }); App.toast('Backup saved.'); return; } catch (e) { if (e && e.code === 'declined') return; }
       }
+      const filename = `ward-rounds-backup-${todayStr()}.json`;
+      // iPad / iPhone: the share sheet's "Save to Files" works in Safari and from the Home Screen app
+      const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      try {
+        const file = new File([text], filename, { type: 'application/json' });
+        if (ios && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: 'Ward Rounds backup' });
+          App.toast('Backup ready. Choose "Save to Files" to keep it.');
+          return;
+        }
+      } catch (e) { if (e && e.name === 'AbortError') return; }
+      // everywhere else: an ordinary file download
+      try {
+        const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.style.display = 'none';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        App.toast('Backup downloaded.');
+        return;
+      } catch (e) { /* fall through to the clipboard */ }
       try { await navigator.clipboard.writeText(text); App.toast('Backup copied. Paste it into a note and save it as a .json file.'); }
       catch (e) { App.toast('Saving files is not available here.'); }
     },
