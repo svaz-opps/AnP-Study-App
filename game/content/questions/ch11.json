@@ -1,0 +1,271 @@
+[
+  {
+    "id": "N11-01", "sec": "ch11-protection", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "During a lumbar puncture, cerebrospinal fluid is collected. In which space around the spinal cord is CSF found?",
+    "opts": [
+      {"t": "Subarachnoid space", "c": true},
+      {"t": "Epidural space", "w": "The spinal epidural space is outside the dura and contains fat and vessels, not CSF."},
+      {"t": "Subdural space", "w": "CSF is not confined to a subdural space."},
+      {"t": "Inside the dura mater itself", "w": "The dura is a membrane, not a fluid space."}
+    ],
+    "why": "CSF fills the subarachnoid space between the arachnoid mater and the pia mater, plus the ventricles and central canal.",
+    "trick": "CSF sits SUB-ARACHNOID: under the spider-web layer.",
+    "tip": "Picture the layers from outside in: epidural, dura, arachnoid, then subarachnoid space with the CSF, then pia."
+  },
+  {
+    "id": "N11-02", "sec": "ch11-protection", "focus": [0], "type": "order", "diff": 3,
+    "stem": "Put the classic path of cerebrospinal fluid circulation in order.",
+    "steps": ["Lateral ventricles", "Interventricular foramina", "Third ventricle", "Cerebral aqueduct", "Fourth ventricle", "Subarachnoid space (through the apertures)"],
+    "why": "CSF made by the choroid plexuses flows from the lateral ventricles through the interventricular foramina to the third ventricle, down the cerebral aqueduct to the fourth ventricle, then out through apertures into the subarachnoid space. A blockage can enlarge the ventricles (hydrocephalus).",
+    "trick": "Lateral, Into the 3rd, Aqueduct, 4th, Out: count up 1-2, 3, 4, out.",
+    "tip": "The ventricles are numbered in flow order (lateral first, then 3, then 4)."
+  },
+  {
+    "id": "N11-03", "sec": "ch11-protection", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A client in labor receives an epidural. Where is an epidural injection meant to go?",
+    "opts": [
+      {"t": "Into the space outside the spinal dura, which contains fat and blood vessels", "c": true},
+      {"t": "Into the CSF-filled subarachnoid space", "w": "That is where a lumbar puncture (spinal tap) samples CSF, not an epidural."},
+      {"t": "Into the ventricles of the brain", "w": "Ventricles are deep in the brain."},
+      {"t": "Under the pia mater", "w": "The pia clings to the neural tissue. Injections don't go there."}
+    ],
+    "why": "The spinal cord has a real epidural space outside the dura, containing fat and vessels. An epidural targets that space, not the CSF-filled subarachnoid space.",
+    "trick": "EPI-dural = ON TOP of the dura (outside it).",
+    "tip": "Use the prefix: epi- (upon), sub- (under)."
+  },
+  {
+    "id": "N11-04", "sec": "ch11-protection", "focus": [], "type": "mcq", "diff": 1,
+    "stem": "Which meningeal layer is the outermost?",
+    "opts": [
+      {"t": "Dura mater", "c": true},
+      {"t": "Arachnoid mater", "w": "The arachnoid lies beneath the dura."},
+      {"t": "Pia mater", "w": "The pia is innermost, clinging to the brain and cord."},
+      {"t": "Choroid plexus", "w": "The choroid plexus makes CSF. It isn't a meningeal layer."}
+    ],
+    "why": "From outside in: dura mater (tough), arachnoid mater (web-like), pia mater (delicate, follows the brain's surface). Meningitis is inflammation of these coverings.",
+    "trick": "DAP: Dura, Arachnoid, Pia, from outside in. Dura = durable.",
+    "tip": "Durable = tough = outer protective layer."
+  },
+  {
+    "id": "N11-05", "sec": "ch11-cord", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A client has damage to the dorsal roots at L4. Which function is most directly affected?",
+    "opts": [
+      {"t": "Sensory input from that region", "c": true},
+      {"t": "Motor output only", "w": "Motor output travels through the VENTRAL roots."},
+      {"t": "Nothing, because spinal nerves are mixed", "w": "Spinal nerves are mixed, but the dorsal root alone carries only sensory input."},
+      {"t": "Hearing", "w": "Hearing uses cranial nerve VIII."}
+    ],
+    "why": "Dorsal roots carry sensory (afferent) input and have the sensory cell bodies in the dorsal root ganglia. Ventral roots carry motor (efferent) output. They join to form a mixed spinal nerve.",
+    "trick": "Dorsal = Detect (sensory). Ventral = moVe (motor).",
+    "tip": "Roots are pure (sensory or motor). Spinal nerves are mixed."
+  },
+  {
+    "id": "N11-06", "sec": "ch11-cord", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which statements about spinal nerves and roots are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The dorsal root carries sensory input.", "c": true},
+      {"t": "The ventral root carries motor output.", "c": true},
+      {"t": "Spinal nerves and their rami are mixed (sensory and motor).", "c": true},
+      {"t": "The dorsal root ganglion holds motor neuron cell bodies.", "w": "It holds SENSORY neuron cell bodies."},
+      {"t": "There are 12 pairs of spinal nerves.", "w": "There are 31 pairs of spinal nerves. 12 is the number of cranial nerve pairs."}
+    ],
+    "why": "31 spinal nerve pairs (8 cervical, 12 thoracic, 5 lumbar, 5 sacral, 1 coccygeal). Each forms from a sensory dorsal root (cell bodies in the dorsal root ganglion) and a motor ventral root, so the nerve and its rami are mixed.",
+    "trick": "31 spinal pairs, 12 cranial pairs. Dorsal = detect, ventral = move.",
+    "tip": "Number traps: spinal (31) vs cranial (12)."
+  },
+  {
+    "id": "N11-07", "sec": "ch11-cord", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which statement about the spinal cord's internal structure is accurate?",
+    "opts": [
+      {"t": "Gray matter forms the horns; white matter forms columns of tracts, and ascending tracts carry sensory information to the brain.", "c": true},
+      {"t": "White matter forms the horns; gray matter forms the columns.", "w": "Swapped: horns are gray, columns are white."},
+      {"t": "Descending tracts carry sensory information up to the brain.", "w": "Descending tracts carry motor commands DOWN. Ascending tracts carry sensory information up."},
+      {"t": "The gray matter is on the outside of the spinal cord.", "w": "In the cord, gray matter is central (H-shaped), surrounded by white matter."}
+    ],
+    "why": "The cord has central, H-shaped gray matter (dorsal, ventral and lateral horns) surrounded by white matter columns full of tracts. Ascending tracts carry sensory signals up and descending tracts carry motor commands down.",
+    "trick": "Horn = gray (like a gray rhino horn). Column = white. Ascend = sensory goes up.",
+    "tip": "Remember that the cord is the reverse of the cerebrum: gray inside, white outside."
+  },
+  {
+    "id": "N11-08", "sec": "ch11-reflex", "focus": [0], "type": "order", "diff": 1,
+    "stem": "Put the five parts of a reflex arc in order.",
+    "steps": ["Receptor", "Sensory neuron", "Integration center", "Motor neuron", "Effector"],
+    "why": "A receptor detects the stimulus, a sensory neuron carries it to an integration center (in the spinal cord or brainstem), a motor neuron carries the command out, and an effector (muscle or gland) responds.",
+    "trick": "Really Smart Igloos Make Ending (Receptor, Sensory, Integration, Motor, Effector).",
+    "tip": "Reflex arcs mirror input, processing, output."
+  },
+  {
+    "id": "N11-09", "sec": "ch11-reflex", "focus": [0, 1], "type": "mcq", "diff": 3,
+    "stem": "The nurse taps the patellar tendon and the client's leg kicks. Which statement about this reflex is accurate?",
+    "opts": [
+      {"t": "It is a monosynaptic stretch reflex started by muscle spindles sensing stretch (length).", "c": true},
+      {"t": "It is a polysynaptic withdrawal reflex started by Golgi tendon organs.", "w": "Withdrawal reflexes respond to pain. Tendon organs sense tension, not stretch length."},
+      {"t": "It needs a conscious decision in the brain before it happens.", "w": "Reflexes are integrated in the spinal cord before conscious awareness."},
+      {"t": "Every reflex, including this one, needs an interneuron.", "w": "The stretch reflex links sensory and motor neurons directly, with no interneuron in the main pathway."}
+    ],
+    "why": "Tapping the tendon stretches the quadriceps. Muscle spindles detect the stretch (length) and the sensory neuron synapses directly on the motor neuron (monosynaptic), so the quadriceps contracts.",
+    "trick": "Spindles sense Stretch. Tendon organs sense Tension.",
+    "tip": "Watch absolute words like 'every'. Not every reflex has an interneuron."
+  },
+  {
+    "id": "N11-10", "sec": "ch11-cerebrum", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which pairings of cerebral lobe and function are correct? Select all that apply.",
+    "opts": [
+      {"t": "Frontal lobe: planning and voluntary motor control", "c": true},
+      {"t": "Parietal lobe: somatic sensation (touch, pressure)", "c": true},
+      {"t": "Occipital lobe: vision", "c": true},
+      {"t": "Temporal lobe: vision", "w": "The temporal lobe handles hearing and important memory functions."},
+      {"t": "Sphenoid lobe: smell", "w": "The sphenoid is a skull BONE, not a lobe of the brain."}
+    ],
+    "why": "Frontal = motor and planning (prefrontal judgment). Parietal = somatosensory. Temporal = hearing and memory. Occipital = vision. Insula = taste and more.",
+    "trick": "Frontal = Future planning, Parietal = Pressure and touch, Temporal = Tunes (hearing), Occipital = Optics.",
+    "tip": "Watch for names borrowed from other systems (sphenoid is a bone)."
+  },
+  {
+    "id": "N11-11", "sec": "ch11-cerebrum", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which statement about the cerebrum's tissue layers is accurate?",
+    "opts": [
+      {"t": "The cortex is superficial gray matter covering white matter and deeper gray nuclei.", "c": true},
+      {"t": "The cortex is white matter covering a gray core.", "w": "Cerebral cortex is GRAY matter on the surface."},
+      {"t": "The cerebrum has no white matter.", "w": "White matter tracts connect cortical areas."},
+      {"t": "Basal nuclei are peripheral ganglia outside the brain.", "w": "Basal nuclei are deep gray matter INSIDE the brain."}
+    ],
+    "why": "The cerebral cortex is a superficial layer of gray matter. Beneath it are white matter tracts and deep gray nuclei such as the basal nuclei, which help regulate movement.",
+    "trick": "Brain = gray bark (cortex) on a white trunk.",
+    "tip": "Cerebrum vs spinal cord: the gray and white are in opposite positions."
+  },
+  {
+    "id": "N11-12", "sec": "ch11-brainstem", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A client with a hypothalamic tumor is most likely to have trouble with which function?",
+    "opts": [
+      {"t": "Regulating body temperature, thirst, and appetite", "c": true},
+      {"t": "Relaying sensory signals to the cortex", "w": "The thalamus is the main sensory relay."},
+      {"t": "Coordinating balance and smooth movement", "w": "That is the cerebellum."},
+      {"t": "Seeing", "w": "Vision is processed in the occipital lobe."}
+    ],
+    "why": "The hypothalamus coordinates homeostasis: temperature, appetite, thirst, autonomic activity, endocrine signals, and daily rhythms. The thalamus next door relays sensory information to the cortex.",
+    "trick": "HYPOthalamus = Homeostasis (hunger, hot/cold, H₂O thirst). THALamus = the relay sTATion.",
+    "tip": "Neighbors with similar names (thalamus vs hypothalamus) do different jobs. Lock in one."
+  },
+  {
+    "id": "N11-13", "sec": "ch11-brainstem", "focus": [1], "type": "priority", "diff": 3,
+    "stem": "The nurse on the neuro unit receives report. Which client should the nurse see first?",
+    "opts": [
+      {"t": "A client with a medulla injury whose breathing has become slow and irregular", "c": true},
+      {"t": "A client with a cerebellar injury who has an unsteady gait", "w": "Coordination problems need safety measures, but breathing comes first."},
+      {"t": "A client with an occipital lobe stroke and stable vision loss on one side", "w": "Stable, not an airway or breathing problem."},
+      {"t": "A client with Parkinson disease who has a resting tremor", "w": "A chronic, expected finding."}
+    ],
+    "why": "The medulla contains critical cardiovascular and respiratory circuits. Slow, irregular breathing is a breathing (B in ABC) problem and comes first.",
+    "trick": "Medulla = the life-support module (breathing and heart).",
+    "tip": "Priority: Airway, Breathing, Circulation before everything else."
+  },
+  {
+    "id": "N11-14", "sec": "ch11-cranial", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which cranial nerve facts are correct? Select all that apply.",
+    "opts": [
+      {"t": "I Olfactory: smell (sensory)", "c": true},
+      {"t": "II Optic: vision (sensory)", "c": true},
+      {"t": "VIII Vestibulocochlear: hearing and balance (sensory)", "c": true},
+      {"t": "XII Hypoglossal: facial expression", "w": "XII moves the tongue. Facial expression is VII (facial)."},
+      {"t": "X Vagus: purely sensory", "w": "The vagus is mixed, with major parasympathetic output."}
+    ],
+    "why": "I smell, II vision, III/IV/VI eye movements, V facial sensation and chewing, VII facial expression and anterior tongue taste, VIII hearing and balance, IX posterior tongue taste and swallowing, X vagus (visceral, parasympathetic), XI shoulder shrug and head turn, XII tongue movement.",
+    "trick": "Oh Oh Oh To Touch And Feel Very Good Velvet... Ah Heaven (I to XII).",
+    "tip": "Learn the number, name, and one action for each, as a set."
+  },
+  {
+    "id": "N11-15", "sec": "ch11-cranial", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "The nurse asks a client to smile, puff the cheeks, and raise the eyebrows. Which cranial nerve is being tested?",
+    "opts": [
+      {"t": "VII Facial", "c": true},
+      {"t": "V Trigeminal", "w": "V handles facial SENSATION and chewing."},
+      {"t": "XI Accessory", "w": "XI controls the sternocleidomastoid and trapezius (shrug, head turn)."},
+      {"t": "III Oculomotor", "w": "III moves most eye muscles and constricts the pupil."}
+    ],
+    "why": "The facial nerve (VII) controls the muscles of facial expression and carries taste from the front of the tongue.",
+    "trick": "VII = Seven = Smile.",
+    "tip": "Separate motor (moving the face, VII) from sensory (feeling the face, V)."
+  },
+  {
+    "id": "N11-16", "sec": "ch11-cranial", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about peripheral nerves are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Endoneurium surrounds each individual nerve fiber.", "c": true},
+      {"t": "Epineurium surrounds the whole nerve.", "c": true},
+      {"t": "The phrenic nerve to the diaphragm comes from the cervical plexus.", "c": true},
+      {"t": "The brachial plexus supplies the lower limb.", "w": "The brachial plexus serves the upper limb. Lumbar and sacral plexuses serve the lower body."},
+      {"t": "Perineurium surrounds each individual axon.", "w": "Perineurium surrounds fascicles (bundles)."}
+    ],
+    "why": "Nerve wrappings mirror muscle wrappings: endoneurium (each fiber), perineurium (each fascicle), epineurium (whole nerve). The ventral rami form the cervical (including the phrenic), brachial (upper limb), lumbar and sacral plexuses.",
+    "trick": "Same prefixes as muscle: Endo = inside, Peri = around bundles, Epi = outside.",
+    "tip": "Reuse what you learned for muscle coverings. The prefixes mean the same here."
+  },
+  {
+    "id": "N11-17", "sec": "ch11-autonomic", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "How does a somatic motor pathway differ from a typical autonomic motor pathway?",
+    "opts": [
+      {"t": "Somatic uses one neuron to skeletal muscle; autonomic uses a two-neuron chain with a ganglion.", "c": true},
+      {"t": "Somatic uses two neurons; autonomic uses one.", "w": "This is reversed."},
+      {"t": "Both use two neurons and a ganglion.", "w": "The somatic pathway goes straight from the CNS to skeletal muscle."},
+      {"t": "Autonomic pathways supply skeletal muscle.", "w": "Autonomic pathways supply smooth muscle, cardiac muscle, and glands."}
+    ],
+    "why": "A somatic motor neuron runs from the CNS directly to skeletal muscle (releasing ACh). Autonomic output uses a preganglionic neuron (cell body in the CNS) that synapses in a ganglion with a postganglionic neuron to smooth muscle, cardiac muscle, or glands.",
+    "trick": "Somatic = Single neuron. Autonomic = A relay of two.",
+    "tip": "Count the neurons in each pathway. That is the key difference."
+  },
+  {
+    "id": "N11-18", "sec": "ch11-autonomic", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Where do the sympathetic and parasympathetic divisions leave the CNS?",
+    "opts": [
+      {"t": "Sympathetic: thoracolumbar (about T1–L2). Parasympathetic: craniosacral.", "c": true},
+      {"t": "Sympathetic: craniosacral. Parasympathetic: thoracolumbar.", "w": "This is reversed."},
+      {"t": "Both leave only from the cervical spinal cord.", "w": "Neither is limited to the cervical cord."},
+      {"t": "Sympathetic: sacral only. Parasympathetic: thoracic only.", "w": "Not the correct origins."}
+    ],
+    "why": "Sympathetic output is thoracolumbar (T1–L2), with short preganglionic and long postganglionic fibers. Parasympathetic output is craniosacral (cranial nerves and S2–S4), with long preganglionic fibers and ganglia near the organs.",
+    "trick": "Sympathetic = Spine's middle (thoracolumbar), 'fight or flight'. Parasympathetic = Peripheral ends (cranial + sacral), 'rest and digest'.",
+    "tip": "Swapped answers are common here. Anchor 'thoraco-lumbar = sympathetic.'"
+  },
+  {
+    "id": "N11-19", "sec": "ch11-receptors", "focus": [0], "type": "sata", "diff": 3,
+    "stem": "Which statements about autonomic neurotransmitters are accurate? Select all that apply.",
+    "opts": [
+      {"t": "All preganglionic neurons release acetylcholine onto nicotinic receptors in ganglia.", "c": true},
+      {"t": "Parasympathetic postganglionic neurons usually release acetylcholine onto muscarinic receptors.", "c": true},
+      {"t": "Most sympathetic postganglionic neurons release norepinephrine.", "c": true},
+      {"t": "Sympathetic fibers to eccrine sweat glands release norepinephrine.", "w": "Sweat glands are the exception: their sympathetic fibers release acetylcholine (cholinergic)."},
+      {"t": "Acetylcholine is always inhibitory.", "w": "The effect depends on the receptor subtype and the target."}
+    ],
+    "why": "Preganglionic: ACh at nicotinic receptors (both divisions). Parasympathetic postganglionic: ACh at muscarinic receptors. Most sympathetic postganglionic: norepinephrine at adrenergic receptors, except eccrine sweat glands, which get ACh.",
+    "trick": "Sweat is the 'sneaky' sympathetic exception: it uses ACh.",
+    "tip": "Exceptions are a favorite exam target. Learn the sweat gland one."
+  },
+  {
+    "id": "N11-20", "sec": "ch11-receptors", "focus": [1, "ch11-disorders#0"], "type": "sata", "diff": 2,
+    "stem": "Which pairings of neurological disorder and mechanism are correct? Select all that apply.",
+    "opts": [
+      {"t": "Multiple sclerosis: immune-mediated damage to CNS myelin", "c": true},
+      {"t": "Parkinson disease: loss of dopamine neurons in movement circuits", "c": true},
+      {"t": "Stroke: brain injury from blocked blood flow or bleeding", "c": true},
+      {"t": "Myasthenia gravis: demyelination of the brain", "w": "Myasthenia gravis impairs neuromuscular transmission (ACh receptors). It is not demyelination."},
+      {"t": "Hydrocephalus: loss of dopamine neurons", "w": "Hydrocephalus involves abnormal CSF flow with enlarged ventricles."}
+    ],
+    "why": "Match each disorder to the structure affected: MS (CNS myelin), Parkinson (dopamine neurons), stroke (blood supply), myasthenia gravis (neuromuscular junction), hydrocephalus (CSF flow), meningitis (meninges), polio (motor neurons).",
+    "trick": "Ask 'what part is broken?': myelin, neurons, vessels, junction, or fluid.",
+    "tip": "Disorder-matching SATA: check the mechanism word in each option."
+  },
+  {
+    "id": "N11-21", "sec": "ch11-disorders", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a family about neurological conditions. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Everyone with cerebral palsy has exactly the same symptoms.\"", "c": true},
+      {"t": "\"Meningitis is inflammation of the brain's coverings, and it can have different causes.\"", "w": "Accurate."},
+      {"t": "\"Hydrocephalus involves abnormal CSF flow and enlarged ventricles.\"", "w": "Accurate."},
+      {"t": "\"The polio virus can damage motor neurons.\"", "w": "Accurate."}
+    ],
+    "why": "A disorder label alone doesn't describe every cause or symptom. Cerebral palsy covers a range of movement and posture problems that can change over time.",
+    "trick": "One label, many faces.",
+    "tip": "'Everyone' and 'exactly' are red-flag words."
+  }
+]

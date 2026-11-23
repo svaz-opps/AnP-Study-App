@@ -1,0 +1,310 @@
+[
+  {
+    "id": "N12-01", "sec": "ch12-receptors", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A sensory receptor converts stimulus energy, such as pressure, into an electrical signal. What is this step called?",
+    "opts": [
+      {"t": "Transduction", "c": true},
+      {"t": "Perception", "w": "Perception is the conscious interpretation, usually in the cerebral cortex."},
+      {"t": "Adaptation", "w": "Adaptation is a reduced response during a sustained stimulus."},
+      {"t": "Referred pain", "w": "Referred pain is pain felt away from its source."}
+    ],
+    "why": "Transduction is the receptor converting a stimulus into a cellular signal. Sensation is detecting and representing it in neural pathways. Perception is the conscious interpretation.",
+    "trick": "TRANSduction = TRANSlate the stimulus into nerve language.",
+    "tip": "Order of events: detect (transduction), then interpret (perception)."
+  },
+  {
+    "id": "N12-02", "sec": "ch12-receptors", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A client stops noticing their wristwatch a few minutes after putting it on. What explains this?",
+    "opts": [
+      {"t": "Sensory adaptation: rapidly adapting receptors respond less to a steady stimulus.", "c": true},
+      {"t": "The touch receptors in the wrist were damaged.", "w": "The receptors are fine. They respond less to a constant stimulus."},
+      {"t": "Referred pain", "w": "Referred pain is pain felt away from its source."},
+      {"t": "Nociceptors sensitizing", "w": "Sensitization INCREASES responses, often during inflammation."}
+    ],
+    "why": "Adaptation is a reduced response during sustained stimulation. Rapidly adapting receptors emphasize change. Pain receptors adapt little or slowly.",
+    "trick": "Adaptation = 'old news' gets tuned out.",
+    "tip": "Pick the normal explanation before assuming damage."
+  },
+  {
+    "id": "N12-03", "sec": "ch12-receptors", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which receptor-to-stimulus pairings are correct? Select all that apply.",
+    "opts": [
+      {"t": "Mechanoreceptors: deformation, such as touch and pressure", "c": true},
+      {"t": "Chemoreceptors: chemicals", "c": true},
+      {"t": "Photoreceptors: light", "c": true},
+      {"t": "Nociceptors: temperature only", "w": "Nociceptors respond to potentially damaging stimuli. Thermoreceptors sense temperature."},
+      {"t": "Proprioceptors: taste", "w": "Proprioceptors sense body position and movement."}
+    ],
+    "why": "Receptors are classified by stimulus: mechano (deformation), thermo (temperature), chemo (chemicals), photo (light), noci (potentially damaging stimuli), and proprioceptors (position and movement).",
+    "trick": "The prefix names the stimulus: photo = light, chemo = chemical, noci = harm.",
+    "tip": "Decode each prefix and the pairings sort themselves."
+  },
+  {
+    "id": "N12-04", "sec": "ch12-somatic", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which pairing of proprioceptor and what it senses is correct?",
+    "opts": [
+      {"t": "Muscle spindle: muscle length (stretch). Golgi tendon organ: tension.", "c": true},
+      {"t": "Muscle spindle: tension. Golgi tendon organ: muscle length.", "w": "This swaps the two."},
+      {"t": "Both sense light touch on the skin.", "w": "Light touch is sensed by tactile corpuscles."},
+      {"t": "Both sense temperature.", "w": "Temperature is sensed by thermoreceptors."}
+    ],
+    "why": "Muscle spindles (inside the muscle) detect length and stretch. Golgi tendon organs (at the muscle–tendon junction) monitor tension. Together they help coordinate posture and force.",
+    "trick": "Spindle = Stretch. Tendon organ = Tension.",
+    "tip": "Swapped pairs: match the location (inside the muscle vs at the tendon) to the job."
+  },
+  {
+    "id": "N12-05", "sec": "ch12-somatic", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A client having a heart attack feels pain in the left arm and jaw. Which explanation is accurate?",
+    "opts": [
+      {"t": "Referred pain: visceral and somatic signals converge on shared central circuits, so the brain maps the pain to the body surface.", "c": true},
+      {"t": "The heart itself is located in the arm.", "w": "The heart is in the mediastinum of the thorax."},
+      {"t": "Pain receptors in the arm are damaged.", "w": "The arm is fine. The brain misreads where the pain comes from."},
+      {"t": "Adaptation of cardiac nociceptors", "w": "Adaptation reduces responses. It doesn't move pain to another place."}
+    ],
+    "why": "Referred pain is felt away from its source, partly because visceral and somatic sensory signals converge on the same central circuits.",
+    "trick": "Referred pain = a 'call forwarded' to the wrong address.",
+    "tip": "When pain shows up far from the organ, think 'referred'."
+  },
+  {
+    "id": "N12-06", "sec": "ch12-somatic", "focus": [1], "type": "mcq", "diff": 3,
+    "stem": "A client stubs a toe and feels a quick sharp pain, followed by a slower, dull ache. Which fibers carry each type?",
+    "opts": [
+      {"t": "Fast sharp pain: myelinated A-delta fibers. Slow dull ache: unmyelinated C fibers.", "c": true},
+      {"t": "Fast sharp pain: unmyelinated C fibers. Slow dull ache: A-delta fibers.", "w": "This swaps them. Myelin makes A-delta fibers faster."},
+      {"t": "Both travel on the same fiber type.", "w": "Two fiber types explain the two-phase pain."},
+      {"t": "Fast pain is chronic pain; slow pain is acute pain.", "w": "Acute vs chronic describes how LONG pain lasts, not fiber speed."}
+    ],
+    "why": "Myelinated A-delta fibers carry fast, sharp pain. Unmyelinated C fibers carry slower, diffuse pain. Acute vs chronic is a separate idea about duration.",
+    "trick": "A-delta = fAst (myelin). C = Crawling (no myelin).",
+    "tip": "Myelin means speed. Use that to sort fast vs slow."
+  },
+  {
+    "id": "N12-07", "sec": "ch12-chemical", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the pathway of smell in order.",
+    "steps": [
+      "Odorants dissolve in the nasal mucus.",
+      "They bind receptors on olfactory neuron cilia.",
+      "Olfactory axons pass through the cribriform plate.",
+      "Signals reach the olfactory bulb.",
+      "The olfactory tract carries them to olfactory cortex and limbic areas."
+    ],
+    "why": "Smell begins with odorants dissolved in mucus binding olfactory receptor cilia. Axons pass through the ethmoid's cribriform plate to the olfactory bulb, then along the olfactory tract. Smell doesn't need the usual first thalamic relay.",
+    "trick": "Mucus, Cilia, Cribriform, Bulb, Tract: 'My Cat Came By Today.'",
+    "tip": "Follow the signal from outside the nose to inside the brain."
+  },
+  {
+    "id": "N12-08", "sec": "ch12-chemical", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about taste are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The five major taste qualities are sweet, sour, salty, bitter, and umami.", "c": true},
+      {"t": "The facial nerve (VII) carries taste from the front of the tongue.", "c": true},
+      {"t": "The glossopharyngeal nerve (IX) carries taste from the back of the tongue.", "c": true},
+      {"t": "Each taste is sensed only in its own zone of the tongue.", "w": "The rigid 'tongue map' is inaccurate."},
+      {"t": "The trigeminal nerve (V) is the main taste nerve.", "w": "V carries texture and irritation, not the main taste signals."}
+    ],
+    "why": "Taste buds detect sweet, sour, salty, bitter, and umami across many areas. Taste travels on VII (front of the tongue), IX (back of the tongue), and X (epiglottis and pharynx).",
+    "trick": "Taste nerves 7, 9, 10: 'Seven nine ten, taste again.'",
+    "tip": "Old myths (the tongue map) show up as distractors."
+  },
+  {
+    "id": "N12-09", "sec": "ch12-chemical", "focus": [], "type": "teaching", "diff": 1,
+    "stem": "A client with a bad cold complains that food has no flavor. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My cold can't affect flavor, because taste and smell are totally separate.\"", "c": true},
+      {"t": "\"Flavor comes from taste and smell working together.\"", "w": "Accurate."},
+      {"t": "\"A stuffy nose can make food seem bland.\"", "w": "Accurate. Loss of smell greatly reduces flavor."},
+      {"t": "\"Texture and temperature also affect flavor.\"", "w": "Accurate."}
+    ],
+    "why": "Flavor combines taste, smell, texture, temperature, and experience. Losing smell can greatly reduce flavor even when the taste receptors work.",
+    "trick": "Flavor = taste + smell (+ texture and temperature).",
+    "tip": "'Needs further teaching' = the statement that is false."
+  },
+  {
+    "id": "N12-10", "sec": "ch12-ear", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the path of sound through the ear in order, up to the inner ear.",
+    "steps": ["Auricle", "External auditory canal", "Tympanic membrane (eardrum)", "Malleus", "Incus", "Stapes", "Oval window"],
+    "why": "The auricle funnels sound down the canal to the eardrum. The ossicles (malleus, incus, stapes) carry the vibration across the air-filled middle ear, and the stapes pushes on the oval window of the cochlea.",
+    "trick": "Ossicles in order: MIS (Malleus, Incus, Stapes), like a Hammer, Anvil, Stirrup.",
+    "tip": "Outer, then middle, then inner: work from outside in."
+  },
+  {
+    "id": "N12-11", "sec": "ch12-ear", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which statement about the spaces of the ear is accurate?",
+    "opts": [
+      {"t": "The middle ear is filled with air; perilymph lies outside the membranous labyrinth, and endolymph fills it.", "c": true},
+      {"t": "The middle ear is filled with endolymph.", "w": "The middle ear is an air space. Endolymph is in the inner ear."},
+      {"t": "Perilymph fills the membranous labyrinth; endolymph surrounds it.", "w": "This swaps them."},
+      {"t": "The inner ear is filled with air.", "w": "The inner ear is fluid-filled."}
+    ],
+    "why": "The middle ear is an air-filled cavity with the ossicles. The inner ear is fluid-filled: perilymph surrounds the membranous labyrinth and endolymph fills it.",
+    "trick": "PERIlymph = PERImeter (outside). ENDOlymph = inside (endo).",
+    "tip": "Air (middle) vs fluid (inner) is the first split. Then sort the two fluids."
+  },
+  {
+    "id": "N12-12", "sec": "ch12-ear", "focus": [], "type": "mcq", "diff": 1,
+    "stem": "A child's ears hurt as an airplane descends. Which structure equalizes pressure in the middle ear?",
+    "opts": [
+      {"t": "The auditory (pharyngotympanic) tube", "c": true},
+      {"t": "The cochlea", "w": "The cochlea senses sound. It doesn't equalize pressure."},
+      {"t": "The semicircular canals", "w": "These sense head rotation."},
+      {"t": "The external auditory canal", "w": "The external canal leads to the eardrum from outside."}
+    ],
+    "why": "The auditory tube connects the middle ear to the nasopharynx. Swallowing or yawning opens it to equalize pressure on both sides of the eardrum.",
+    "trick": "Swallow to open the tube and pop the pressure.",
+    "tip": "'Pressure' in an ear question usually points to the auditory tube."
+  },
+  {
+    "id": "N12-13", "sec": "ch12-hearing", "focus": [0], "type": "mcq", "diff": 3,
+    "stem": "Where is the spiral organ (organ of Corti) located?",
+    "opts": [
+      {"t": "On the basilar membrane, with hair cells touching the tectorial membrane", "c": true},
+      {"t": "In the middle ear, attached to the stapes", "w": "The spiral organ is in the cochlea of the inner ear."},
+      {"t": "In the semicircular canals", "w": "The canals contain cristae for balance."},
+      {"t": "On the tympanic membrane", "w": "The eardrum is the boundary to the middle ear."}
+    ],
+    "why": "The cochlea has three channels. The spiral organ rests on the basilar membrane in the cochlear duct. When the basilar membrane moves, hair-cell stereocilia bend against the tectorial membrane, opening channels.",
+    "trick": "Corti sits on the Basement (basilar membrane) with a Tent (tectorial) overhead.",
+    "tip": "Hearing receptors are in the cochlea. Rule out middle-ear and balance structures."
+  },
+  {
+    "id": "N12-14", "sec": "ch12-hearing", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "After hair cells in the cochlea are stimulated, which nerve and cortical area process the sound?",
+    "opts": [
+      {"t": "Cranial nerve VIII to auditory cortex in the temporal lobe", "c": true},
+      {"t": "Cranial nerve II to the occipital lobe", "w": "That is the visual pathway."},
+      {"t": "Cranial nerve VII to the parietal lobe", "w": "VII is the facial nerve."},
+      {"t": "Cranial nerve V to the frontal lobe", "w": "V is the trigeminal nerve."}
+    ],
+    "why": "Vibration bends hair cells, which signal the cochlear branch of CN VIII. Signals relay through the brainstem, midbrain, and thalamus to the auditory cortex in the temporal lobe.",
+    "trick": "VIII = hear (8 sounds like 'ear-ate'). Temporal = by your temples, near your ears.",
+    "tip": "Pair the nerve and the lobe. Both halves must match the sense."
+  },
+  {
+    "id": "N12-15", "sec": "ch12-balance", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A client spins in a chair. Which structures detect this rotation (angular acceleration) of the head?",
+    "opts": [
+      {"t": "The cristae ampullaris in the semicircular canals", "c": true},
+      {"t": "The maculae of the utricle and saccule", "w": "Maculae detect gravity and LINEAR acceleration."},
+      {"t": "The cochlea", "w": "The cochlea detects sound."},
+      {"t": "The tympanic membrane", "w": "The eardrum vibrates with sound."}
+    ],
+    "why": "Semicircular canals have cristae ampullaris, where endolymph moving during rotation bends the cupula. Maculae (utricle and saccule) use otoliths to detect gravity and straight-line acceleration.",
+    "trick": "Canals = Circles = spinning. Maculae = gravity (static, linear).",
+    "tip": "Rotation vs straight-line motion decides cristae vs maculae."
+  },
+  {
+    "id": "N12-16", "sec": "ch12-balance", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "When a client turns their head, their eyes stay fixed on a target. Which reflex does this?",
+    "opts": [
+      {"t": "The vestibulo-ocular reflex", "c": true},
+      {"t": "The patellar reflex", "w": "This is a spinal stretch reflex in the leg."},
+      {"t": "The acoustic (tympanic) reflex", "w": "This tightens middle-ear muscles in response to loud sound."},
+      {"t": "The withdrawal reflex", "w": "This pulls a limb away from pain."}
+    ],
+    "why": "Vestibular signals travel on CN VIII to the vestibular nuclei and cerebellar circuits, which connect to eye-movement centers. The vestibulo-ocular reflex stabilizes gaze while the head moves.",
+    "trick": "Vestibulo (inner-ear balance) + Ocular (eyes) = steady eyes on a moving head.",
+    "tip": "Break the reflex name into parts to see what it links."
+  },
+  {
+    "id": "N12-17", "sec": "ch12-eye", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which statements about the layers (tunics) of the eye are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The fibrous tunic is the sclera and cornea.", "c": true},
+      {"t": "The vascular tunic includes the choroid, ciliary body, and iris.", "c": true},
+      {"t": "The neural tunic is the retina.", "c": true},
+      {"t": "The pupil is a solid lens.", "w": "The pupil is an opening in the iris."},
+      {"t": "The conjunctiva covers the transparent cornea.", "w": "The conjunctiva lines the eyelids and covers the anterior sclera, not the cornea."}
+    ],
+    "why": "Three tunics: fibrous (sclera + cornea), vascular (choroid, ciliary body, iris), and neural (retina). The pupil is a hole in the iris that changes the aperture.",
+    "trick": "Fibrous = the eye's coat, Vascular = blood and muscle middle, Neural = retina film.",
+    "tip": "Sort each structure into outer, middle, or inner."
+  },
+  {
+    "id": "N12-18", "sec": "ch12-eye", "focus": [1], "type": "mcq", "diff": 3,
+    "stem": "Which statement about the eye's fluid-filled spaces is accurate?",
+    "opts": [
+      {"t": "Aqueous humor fills the anterior cavity (in front of the lens); vitreous humor fills the larger cavity behind the lens.", "c": true},
+      {"t": "Vitreous humor fills the space between the cornea and the iris.", "w": "That space (the anterior chamber) holds aqueous humor."},
+      {"t": "The posterior chamber and the posterior (vitreous) cavity are the same thing.", "w": "The posterior chamber is between the iris and the lens and holds aqueous humor. The vitreous cavity is behind the lens."},
+      {"t": "Aqueous humor never circulates.", "w": "Aqueous humor circulates and drains at the anterior chamber angle."}
+    ],
+    "why": "The anterior cavity (anterior chamber between cornea and iris, posterior chamber between iris and lens) holds circulating aqueous humor. The much larger vitreous cavity behind the lens holds vitreous humor.",
+    "trick": "Aqueous = watery, in front, flows. Vitreous = glassy gel, in back.",
+    "tip": "Don't mix up 'posterior chamber' (front of the eye) and 'posterior cavity' (back of the eye)."
+  },
+  {
+    "id": "N12-19", "sec": "ch12-vision", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A client looks up from a distant sign to read a book. What happens in the eye to focus on the near object?",
+    "opts": [
+      {"t": "The ciliary muscle contracts, zonular tension decreases, and the lens becomes rounder.", "c": true},
+      {"t": "The ciliary muscle relaxes and the lens flattens.", "w": "That is focusing on DISTANT objects."},
+      {"t": "The retina moves forward.", "w": "Accommodation changes the lens shape. The retina doesn't move."},
+      {"t": "The cornea changes shape to focus.", "w": "The cornea bends light, but accommodation is done by the lens."}
+    ],
+    "why": "For near vision the ciliary muscle contracts, the suspensory ligaments (zonules) slacken, and the elastic lens rounds up, which increases its focusing power. For distance the muscle relaxes and the lens flattens.",
+    "trick": "Near = muscle tight, lens round ('reading makes the lens chubby').",
+    "tip": "Counterintuitive link: muscle CONTRACTS means zonules LOOSEN. Learn it as a chain."
+  },
+  {
+    "id": "N12-20", "sec": "ch12-vision", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about photoreceptors and the retina are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Rods are very sensitive in dim light.", "c": true},
+      {"t": "Cones provide color and sharp vision and are concentrated in the fovea.", "c": true},
+      {"t": "Ganglion cell axons form the optic nerve (CN II).", "c": true},
+      {"t": "The optic disc is packed with cones.", "w": "The optic disc has NO photoreceptors, which is the blind spot."},
+      {"t": "Rods give the best color vision.", "w": "Cones give color vision."}
+    ],
+    "why": "Rods favor dim light with little color or detail. Cones give color and acuity in bright light, densest at the fovea. Signals pass photoreceptors → bipolar cells → ganglion cells, whose axons form the optic nerve at the optic disc (blind spot).",
+    "trick": "Rods = dim Rooms. Cones = Color.",
+    "tip": "Watch the optic disc trap: where the nerve exits, there are no receptors."
+  },
+  {
+    "id": "N12-21", "sec": "ch12-vision", "focus": [], "type": "order", "diff": 2,
+    "stem": "Put the path of light through the eye in order.",
+    "steps": ["Cornea", "Aqueous humor", "Pupil", "Lens", "Vitreous humor", "Retina"],
+    "why": "Light passes through the cornea, aqueous humor, pupil, lens, and vitreous humor before reaching the retina. After transduction, the signal travels as nerve impulses, not light.",
+    "trick": "Can All People Love Very Real eyes? (Cornea, Aqueous, Pupil, Lens, Vitreous, Retina)",
+    "tip": "Front to back: clear window (cornea) first, film (retina) last."
+  },
+  {
+    "id": "N12-22", "sec": "ch12-phototransduction", "focus": [0], "type": "mcq", "diff": 3,
+    "stem": "What happens to a photoreceptor when light strikes it?",
+    "opts": [
+      {"t": "It hyperpolarizes and changes how much glutamate it releases.", "c": true},
+      {"t": "It depolarizes and fires an action potential down the optic nerve.", "w": "Photoreceptors hyperpolarize and don't send action potentials down the optic nerve. Ganglion cells do."},
+      {"t": "Its cGMP levels rise and more channels open.", "w": "Light LOWERS cGMP, which closes channels."},
+      {"t": "Nothing changes until the light is very bright.", "w": "Rods respond even in dim light."}
+    ],
+    "why": "In darkness, cGMP keeps channels open and the photoreceptor releases transmitter steadily. Light changes the pigment (retinal in an opsin), cGMP falls, channels close, and the cell hyperpolarizes, changing glutamate release onto bipolar cells.",
+    "trick": "Light turns photoreceptors 'down' (hyperpolarize). Darkness keeps them 'on'.",
+    "tip": "This is the opposite of most receptors, which is why exams love it."
+  },
+  {
+    "id": "N12-23", "sec": "ch12-phototransduction", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which descriptions of sensory changes are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Presbyopia: reduced ability to focus up close with age", "c": true},
+      {"t": "Cataract: clouding of the lens", "c": true},
+      {"t": "Glaucoma: optic nerve damage, often linked to high eye pressure", "c": true},
+      {"t": "Presbyopia and cataract are the same condition.", "w": "Presbyopia is reduced near focus. Cataract is a cloudy lens. They are different processes."},
+      {"t": "Tinnitus means complete hearing loss.", "w": "Tinnitus is hearing a sound with no external source."}
+    ],
+    "why": "Presbyopia (stiffer lens, harder near focus), cataract (cloudy lens), glaucoma (optic nerve damage, often with high pressure), retinal detachment (retina separates), macular degeneration (central vision loss), and tinnitus (phantom sound) are all different.",
+    "trick": "Presby = elder (age-related near focus). Cataract = cloudy curtain on the lens.",
+    "tip": "Similar-sounding conditions: match each to the structure affected."
+  },
+  {
+    "id": "N12-24", "sec": "ch12-phototransduction", "focus": [1], "type": "priority", "diff": 3,
+    "stem": "The nurse at the eye clinic receives four phone calls. Which client should the nurse call back first?",
+    "opts": [
+      {"t": "A client who suddenly sees a dark curtain over part of their vision", "c": true},
+      {"t": "A 50-year-old who needs to hold menus farther away to read", "w": "Gradual presbyopia is expected with age and not urgent."},
+      {"t": "A client with a known cataract whose vision is slowly getting cloudier", "w": "A slowly progressing, known condition."},
+      {"t": "A client asking about lubricating eye drops", "w": "A comfort question that can wait."}
+    ],
+    "why": "A sudden curtain over the vision can signal retinal detachment, where the neural retina separates from its supporting tissue. It is sudden and threatens vision, so it comes first.",
+    "trick": "Sudden + vision loss = urgent.",
+    "tip": "Priority: sudden changes beat gradual, expected ones."
+  }
+]

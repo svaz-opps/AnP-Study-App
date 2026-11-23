@@ -142,6 +142,26 @@ for (const v of views) {
   if (rot !== before) fail(v.name, 'question changed on rotation');
   await overflow(page, v.name, 'rotated chart');
   await page.screenshot({ path: `${out}/${v.name}-14-rotated.png` });
+  // every question renders and its answer key grades as correct
+  if (v.name === 'ipad-landscape') {
+    const bad = await page.evaluate(() => {
+      const { App, Content, Engine } = window.WR; const out = [];
+      for (const q of Content.all()) {
+        try {
+          const run = new (App.run.constructor)('review', { queue: [q.id] });
+          run.next(); App.run = run; App.rerender();
+          const n = document.querySelectorAll('.chart .opt').length;
+          const want = q.type === 'order' ? q.steps.length : q.opts.length;
+          if (n !== want) out.push(q.id + ' rendered ' + n + '/' + want);
+          const key = q.type === 'order' ? [...q.steps.keys()] : q.type === 'sata' ? q.opts.map((o, i) => (o.c ? i : -1)).filter((i) => i >= 0) : q.opts.findIndex((o) => o.c);
+          if (!Engine.grade(q, key).correct) out.push(q.id + ' key does not grade correct');
+        } catch (e) { out.push(q.id + ' threw ' + e.message); }
+      }
+      return { n: Content.all().length, out };
+    });
+    console.log(`  rendered ${bad.n} questions`);
+    bad.out.slice(0, 10).forEach((m) => fail(v.name, m));
+  }
   if (errors.length) fail(v.name, 'console errors: ' + errors.slice(0, 5).join(' | '));
   await browser.close();
 }

@@ -1,0 +1,203 @@
+[
+  {
+    "id": "N10-01", "sec": "ch10-divisions", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which structure belongs to the peripheral nervous system (PNS)?",
+    "opts": [
+      {"t": "A spinal nerve", "c": true},
+      {"t": "The spinal cord", "w": "The spinal cord is part of the CNS."},
+      {"t": "The brain", "w": "The brain is part of the CNS."},
+      {"t": "The cerebellum", "w": "The cerebellum is part of the brain, so it is CNS."}
+    ],
+    "why": "The CNS is the brain and spinal cord. The PNS is everything outside it: cranial and spinal nerves, ganglia, and peripheral receptors.",
+    "trick": "CNS = the Central command (brain + cord). PNS = the Phone lines out to the body.",
+    "tip": "If an option is part of the brain or cord, it is CNS. Cross it out."
+  },
+  {
+    "id": "N10-02", "sec": "ch10-divisions", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A neuron carries a signal from a skin receptor toward the spinal cord. What kind of neuron is it?",
+    "opts": [
+      {"t": "Afferent (sensory)", "c": true},
+      {"t": "Efferent (motor)", "w": "Efferent neurons carry commands AWAY from the CNS to effectors."},
+      {"t": "Interneuron", "w": "Interneurons connect neurons inside the CNS."},
+      {"t": "Autonomic motor", "w": "Autonomic motor neurons are efferent, going to glands and smooth or cardiac muscle."}
+    ],
+    "why": "Afferent (sensory) pathways carry information toward the CNS. Efferent (motor) pathways carry commands away. Interneurons integrate in between.",
+    "trick": "Afferent Arrives, Efferent Exits. (SAME: Sensory Afferent, Motor Efferent.)",
+    "tip": "Find the direction in the stem (toward the cord), then match the term."
+  },
+  {
+    "id": "N10-03", "sec": "ch10-neurons", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the path of a signal through one neuron in order.",
+    "steps": [
+      "Dendrites receive input.",
+      "The signal spreads through the cell body.",
+      "The axon initial segment (trigger zone) starts an action potential.",
+      "The axon conducts the action potential.",
+      "Axon terminals release neurotransmitter."
+    ],
+    "why": "Dendrites and the cell body receive input, the trigger zone at the start of the axon decides whether to fire, the axon conducts the action potential, and the terminals release transmitter.",
+    "trick": "Receive, Decide, Send, Release (dendrite, trigger zone, axon, terminal).",
+    "tip": "Follow the signal like water through a pipe: in at the dendrites, out at the terminals."
+  },
+  {
+    "id": "N10-04", "sec": "ch10-neurons", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A sensory neuron has a single process that splits into a peripheral branch and a central branch, and its cell body sits in a sensory ganglion. Which structural class is this?",
+    "opts": [
+      {"t": "Pseudounipolar", "c": true},
+      {"t": "Multipolar", "w": "Multipolar neurons have one axon and many dendrites, like motor neurons and most interneurons."},
+      {"t": "Bipolar", "w": "Bipolar neurons have two processes and appear in special-sense pathways."},
+      {"t": "Interneuron", "w": "Interneuron is a FUNCTIONAL class, not a structural one."}
+    ],
+    "why": "Structural classes count processes: multipolar (many), bipolar (two), pseudounipolar (one that splits). Functional classes (sensory, motor, interneuron) describe where information goes.",
+    "trick": "Pseudo-UNI-polar = one stalk that forks like a T.",
+    "tip": "Check whether the question asks about structure or function before choosing."
+  },
+  {
+    "id": "N10-05", "sec": "ch10-glia", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which statements about glial cells are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Oligodendrocytes myelinate segments of several CNS axons.", "c": true},
+      {"t": "Each Schwann cell forms one myelin segment around one PNS axon.", "c": true},
+      {"t": "Microglia provide immune surveillance and phagocytosis.", "c": true},
+      {"t": "Astrocytes line the ventricles.", "w": "Ependymal cells line the ventricles. Astrocytes regulate the environment around neurons and support the blood-brain barrier."},
+      {"t": "Satellite cells myelinate CNS axons.", "w": "Satellite cells surround cell bodies in PNS ganglia."}
+    ],
+    "why": "CNS glia: astrocytes (environment, blood-brain barrier support), oligodendrocytes (myelin for many axons), microglia (immune), ependymal cells (line ventricles). PNS glia: Schwann cells (myelin, one segment per cell) and satellite cells (around ganglion cell bodies).",
+    "trick": "Oligo = 'few' arms that wrap many CNS axons. Schwann = one wrap for one PNS axon.",
+    "tip": "Sort each glial cell into CNS or PNS first. That eliminates most traps."
+  },
+  {
+    "id": "N10-06", "sec": "ch10-glia", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "Why does white matter look white?",
+    "opts": [
+      {"t": "It contains many myelinated axons.", "c": true},
+      {"t": "It is made mostly of neuron cell bodies.", "w": "Cell bodies, dendrites and synapses make up gray matter."},
+      {"t": "It is filled with cerebrospinal fluid.", "w": "CSF is in the ventricles and subarachnoid space."},
+      {"t": "It has no blood supply.", "w": "Nervous tissue has a blood supply. Color comes from myelin."}
+    ],
+    "why": "Myelin is fatty and pale, so tissue packed with myelinated axons looks white. Gray matter holds cell bodies, dendrites and synapses.",
+    "trick": "White = wires (myelinated axons). Gray = the bodies doing the thinking.",
+    "tip": "Match the color to its cause: fatty myelin is pale."
+  },
+  {
+    "id": "N10-07", "sec": "ch10-impulse", "focus": [1, "ch10-glia#1"], "type": "mcq", "diff": 2,
+    "stem": "Which axon conducts action potentials the fastest?",
+    "opts": [
+      {"t": "A large-diameter myelinated axon", "c": true},
+      {"t": "A small-diameter unmyelinated axon", "w": "Both small size and no myelin slow conduction."},
+      {"t": "A small-diameter myelinated axon", "w": "Myelin helps, but a larger diameter is faster still."},
+      {"t": "A large-diameter unmyelinated axon", "w": "Without myelin, it can't use fast saltatory conduction."}
+    ],
+    "why": "Myelin lets the action potential jump from node to node (saltatory conduction), and a larger diameter lowers internal resistance. Having both gives the fastest conduction.",
+    "trick": "Wide and wrapped = fastest highway.",
+    "tip": "When two factors each help, the answer is the option with both."
+  },
+  {
+    "id": "N10-08", "sec": "ch10-resting", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which statement about a resting neuron is accurate?",
+    "opts": [
+      {"t": "The inside is about −70 mV, with potassium concentrated inside and sodium outside.", "c": true},
+      {"t": "A resting neuron has no electrical charge.", "w": "There is a voltage difference (about −70 mV) across the membrane."},
+      {"t": "Sodium is more concentrated inside the cell.", "w": "Sodium is high OUTSIDE. Potassium is high inside."},
+      {"t": "The sodium–potassium pump creates each action potential by itself.", "w": "The pump maintains gradients over time. Channels produce the action potential."}
+    ],
+    "why": "At rest the inside is about −70 mV. Potassium is concentrated inside and sodium outside, and potassium leak channels create much of the resting voltage. The Na⁺/K⁺ pump maintains the gradients.",
+    "trick": "K⁺ stays in (Kept inside). Na⁺ is outside (like a salty ocean around the cell).",
+    "tip": "Separate long-term gradients (pump) from moment-to-moment currents (channels)."
+  },
+  {
+    "id": "N10-09", "sec": "ch10-resting", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A neuron's membrane potential changes from −70 mV to −55 mV. What is this change called?",
+    "opts": [
+      {"t": "Depolarization", "c": true},
+      {"t": "Hyperpolarization", "w": "Hyperpolarization makes the inside MORE negative."},
+      {"t": "Repolarization", "w": "Repolarization returns toward rest after depolarization."},
+      {"t": "The refractory period", "w": "That is the time after an action potential when firing is blocked or harder."}
+    ],
+    "why": "Depolarization makes the membrane less negative (closer to zero). Hyperpolarization makes it more negative.",
+    "trick": "DEpolarize = DEcrease the negativity. HYPERpolarize = Hyper-negative.",
+    "tip": "Ask whether the number moves toward zero (depolarization) or away from it (hyperpolarization)."
+  },
+  {
+    "id": "N10-10", "sec": "ch10-resting", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about graded potentials are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Depolarization makes the inside of the membrane less negative.", "c": true},
+      {"t": "Hyperpolarization makes the inside more negative.", "c": true},
+      {"t": "Excitatory postsynaptic potentials bring the trigger zone closer to threshold.", "c": true},
+      {"t": "Hyperpolarization makes a neuron more likely to fire.", "w": "Moving away from threshold makes firing LESS likely."},
+      {"t": "Graded potentials never fade with distance.", "w": "Graded potentials decay with distance. Action potentials don't."}
+    ],
+    "why": "Graded potentials vary in size and fade with distance. Excitatory inputs depolarize toward threshold, and inhibitory inputs often hyperpolarize away from it. Their combined (summed) effect at the trigger zone decides whether the neuron fires.",
+    "trick": "Toward zero = toward firing. More negative = calmer.",
+    "tip": "'Never' is a red flag in SATA."
+  },
+  {
+    "id": "N10-11", "sec": "ch10-impulse", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the events of an action potential in order.",
+    "steps": [
+      "The trigger zone reaches threshold.",
+      "Voltage-gated sodium channels open and Na⁺ rushes in (depolarization).",
+      "Sodium channels inactivate and voltage-gated potassium channels open.",
+      "K⁺ flows out (repolarization).",
+      "A brief hyperpolarization occurs, then the membrane returns to rest."
+    ],
+    "why": "At threshold, sodium rushes in (depolarization). Sodium channels then shut and potassium leaves (repolarization), often overshooting briefly (after-hyperpolarization) before the membrane returns to rest.",
+    "trick": "Sodium in, potassium out: 'Na⁺ goes in first, K⁺ kicks out after.'",
+    "tip": "Ordering: depolarize before repolarize. 'Re' means again, back to rest."
+  },
+  {
+    "id": "N10-12", "sec": "ch10-impulse", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which ion movement causes the repolarization phase of an action potential?",
+    "opts": [
+      {"t": "Potassium ions flowing out of the cell", "c": true},
+      {"t": "Sodium ions flowing into the cell", "w": "Sodium influx causes DEpolarization."},
+      {"t": "Calcium ions flowing into the axon", "w": "Calcium entry matters at the axon terminal for transmitter release."},
+      {"t": "Chloride ions pumped by the Na⁺/K⁺ pump", "w": "The pump moves Na⁺ and K⁺, not chloride, and it doesn't produce repolarization."}
+    ],
+    "why": "Sodium influx depolarizes. Potassium efflux repolarizes as voltage-gated K⁺ channels open and positive charge leaves the cell.",
+    "trick": "K⁺ out = Kicks the voltage back down.",
+    "tip": "Depolarization and repolarization use different ions. Keep them in separate boxes."
+  },
+  {
+    "id": "N10-13", "sec": "ch10-synapses", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the events at a chemical synapse in order.",
+    "steps": [
+      "An action potential arrives at the presynaptic terminal.",
+      "Voltage-gated calcium channels open and Ca²⁺ enters.",
+      "Vesicles fuse and release neurotransmitter (exocytosis).",
+      "Neurotransmitter diffuses across the cleft and binds receptors.",
+      "Postsynaptic channels or signals change, producing a response."
+    ],
+    "why": "The action potential opens calcium channels, calcium triggers vesicle exocytosis, and the transmitter crosses the cleft and binds receptors. The signal crosses as a chemical, not as an electrical action potential.",
+    "trick": "Arrive, Calcium, Release, Bind, Respond.",
+    "tip": "Remember calcium is the trigger for release at every synapse."
+  },
+  {
+    "id": "N10-14", "sec": "ch10-synapses", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "How can a neurotransmitter's signal be ended at a synapse? Select all that apply.",
+    "opts": [
+      {"t": "An enzyme breaks it down (for example, acetylcholinesterase).", "c": true},
+      {"t": "Reuptake transporters remove it.", "c": true},
+      {"t": "It diffuses away from the synapse.", "c": true},
+      {"t": "It travels on through the cleft as an intact action potential.", "w": "Transmitters cross the cleft as chemicals, not as action potentials."},
+      {"t": "Calcium entering the terminal destroys it.", "w": "Calcium TRIGGERS release. It doesn't destroy the transmitter."}
+    ],
+    "why": "Signals end by enzymatic breakdown, reuptake into cells, or diffusion away. Many drugs work by changing these steps, such as blocking reuptake.",
+    "trick": "Break it, Bring it back, or let it Blow away.",
+    "tip": "SATA: rule out any option that confuses starting the signal with stopping it."
+  },
+  {
+    "id": "N10-15", "sec": "ch10-synapses", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "One neuron receives input from many different neurons. What is this circuit pattern called?",
+    "opts": [
+      {"t": "Convergence", "c": true},
+      {"t": "Divergence", "w": "Divergence is ONE input spreading out to MANY targets."},
+      {"t": "Reuptake", "w": "Reuptake removes neurotransmitter."},
+      {"t": "Repolarization", "w": "Repolarization is a phase of the action potential."}
+    ],
+    "why": "Convergence brings many inputs to one neuron. Divergence spreads one input to many targets. Neuronal pools combine both.",
+    "trick": "Converge = come together (many → one). Diverge = spread apart (one → many).",
+    "tip": "Picture arrows: many pointing to one means convergence."
+  }
+]
