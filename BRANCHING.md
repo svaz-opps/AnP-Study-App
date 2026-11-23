@@ -4,7 +4,8 @@
 |---|---|
 | `main` | The most up-to-date, working version of the app. Always safe to play. |
 | `beta` | Testing ground for features that could cause major bugs. |
-\nGoals are tracked as R1, R2, … in [ROADMAP.md](ROADMAP.md). Update it whenever a goal is added or finished.
+
+Goals are tracked as R1, R2, … in [ROADMAP.md](ROADMAP.md). Update it whenever a goal is added or finished.
 
 Workflow
 1. Small, safe fixes can go straight to `main`.
