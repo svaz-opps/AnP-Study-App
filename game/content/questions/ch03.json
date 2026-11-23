@@ -1,0 +1,250 @@
+[
+  {
+    "id": "N3-01", "sec": "ch3-membrane", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which substance crosses the lipid part of a cell membrane most easily, without a channel or carrier?",
+    "opts": [
+      {"t": "Oxygen", "c": true},
+      {"t": "Sodium ion", "w": "Ions are charged, so they need channels or carriers."},
+      {"t": "Glucose", "w": "Glucose is polar and usually needs a transporter."},
+      {"t": "A large protein", "w": "Large molecules can't slip through the bilayer."}
+    ],
+    "why": "Selective permeability depends on size, charge, and polarity. Small nonpolar molecules like oxygen cross the lipid bilayer readily. Ions and many polar solutes need channels or carriers.",
+    "trick": "Small and nonpolar slips through. Charged or big needs a door.",
+    "tip": "Rank options by size and charge. The smallest uncharged one wins."
+  },
+  {
+    "id": "N3-02", "sec": "ch3-membrane", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which cell-junction descriptions are correct? Select all that apply.",
+    "opts": [
+      {"t": "Tight junctions seal the space between neighboring cells.", "c": true},
+      {"t": "Desmosomes anchor cells together to resist stretching.", "c": true},
+      {"t": "Gap junctions connect the cytoplasm of neighboring cells so ions can pass.", "c": true},
+      {"t": "Gap junctions anchor cells against mechanical stress.", "w": "Anchoring is the desmosome's job. Gap junctions communicate."},
+      {"t": "Tight junctions let ions flow from one cell's cytoplasm into the next.", "w": "That is a gap junction. Tight junctions seal."}
+    ],
+    "why": "Three junctions, three jobs: tight junctions SEAL, desmosomes ANCHOR, gap junctions COMMUNICATE (channels between cytoplasms).",
+    "trick": "Tight = Tape (seal). Desmosome = Dowel (anchor). Gap = a Gateway for messages.",
+    "tip": "SATA: one swapped job makes an option false."
+  },
+  {
+    "id": "N3-03", "sec": "ch3-organelles", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the path of a secreted protein, such as a hormone, in order from where it is made to where it leaves the cell.",
+    "steps": [
+      "Ribosome on the rough ER makes the polypeptide.",
+      "The protein enters the rough endoplasmic reticulum.",
+      "A transport vesicle carries it to the Golgi apparatus.",
+      "The Golgi modifies, sorts, and packages it.",
+      "A secretory vesicle carries it to the plasma membrane.",
+      "The vesicle fuses with the membrane and releases the protein (exocytosis)."
+    ],
+    "why": "Secreted proteins follow ribosome → rough ER → transport vesicle → Golgi → secretory vesicle → plasma membrane. Cells that secrete a lot have plenty of rough ER and Golgi.",
+    "trick": "Make it, Ship it (ER), Wrap it (Golgi), Mail it (vesicle out).",
+    "tip": "Ordering: think like a factory. Build, then package, then ship."
+  },
+  {
+    "id": "N3-04", "sec": "ch3-organelles", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A liver cell is detoxifying a drug and must break down hydrogen peroxide. Which organelle, which contains catalase, does this?",
+    "opts": [
+      {"t": "Peroxisome", "c": true},
+      {"t": "Lysosome", "w": "Lysosomes digest engulfed material and worn parts with hydrolytic enzymes."},
+      {"t": "Mitochondrion", "w": "Mitochondria make ATP aerobically."},
+      {"t": "Golgi apparatus", "w": "The Golgi sorts and packages products."}
+    ],
+    "why": "Peroxisomes handle oxidation and detoxification and contain catalase to break down hydrogen peroxide. They are prominent in liver and kidney cells.",
+    "trick": "PEROXisome breaks down hydrogen PEROXide.",
+    "tip": "Sometimes the name of the answer is hidden in the stem. Look for matching words."
+  },
+  {
+    "id": "N3-05", "sec": "ch3-organelles", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "Heart muscle cells need huge amounts of ATP. Which organelle would the nurse expect them to have in large numbers?",
+    "opts": [
+      {"t": "Mitochondria", "c": true},
+      {"t": "Lysosomes", "w": "Lysosomes digest material. They don't supply energy."},
+      {"t": "Peroxisomes", "w": "Peroxisomes detoxify and oxidize substances."},
+      {"t": "Golgi apparatus", "w": "Lots of Golgi predicts heavy secretion, not high energy use."}
+    ],
+    "why": "Mitochondria carry out aerobic ATP production in their matrix and folded inner membrane (cristae). High energy demand predicts many mitochondria.",
+    "trick": "Mitochondria = the Mighty power plants.",
+    "tip": "Structure predicts function: match the cell's biggest need to the organelle."
+  },
+  {
+    "id": "N3-06", "sec": "ch3-nucleus", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which statement about the nucleus is accurate?",
+    "opts": [
+      {"t": "Nuclear pores regulate traffic in and out, and the nucleolus assembles ribosomal subunits.", "c": true},
+      {"t": "The nucleolus makes ATP for the nucleus.", "w": "Mitochondria make ATP. The nucleolus builds ribosomal subunits."},
+      {"t": "Nuclear pores let any molecule pass freely.", "w": "Pores REGULATE exchange, such as RNA export and protein import."},
+      {"t": "Chromatin assembles ribosomes.", "w": "Chromatin is DNA plus proteins. The nucleolus assembles ribosomal subunits."}
+    ],
+    "why": "The nucleus holds DNA inside a double-membrane envelope. Nuclear pores control what goes in and out, and the nucleolus uses ribosomal RNA and proteins to build ribosome subunits.",
+    "trick": "NucleOLus = the ribosome factOry.",
+    "tip": "Words like 'any' or 'freely' often signal a false statement."
+  },
+  {
+    "id": "N3-07", "sec": "ch3-nucleus", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which pairings of cell surface extension and function are correct? Select all that apply.",
+    "opts": [
+      {"t": "Microvilli increase absorptive surface area in the intestine.", "c": true},
+      {"t": "Cilia move mucus along the respiratory passages.", "c": true},
+      {"t": "A flagellum propels a sperm cell.", "c": true},
+      {"t": "Microvilli sweep mucus out of the airways.", "w": "Moving mucus is the job of cilia. Microvilli increase surface area."},
+      {"t": "Cilia exist mainly to increase absorption area.", "w": "That is microvilli. Cilia move material along a surface."}
+    ],
+    "why": "Microvilli (actin-supported) increase surface area for absorption. Motile cilia (microtubule-based) move material across a surface. A flagellum propels a whole cell, like a sperm.",
+    "trick": "Microvilli = Many tiny folds for absorbing. Cilia = Conveyor belt. Flagellum = a tail for swimming.",
+    "tip": "Different projections, different jobs. Don't give the same job to all three."
+  },
+  {
+    "id": "N3-08", "sec": "ch3-diffusion", "focus": [0, 1], "type": "mcq", "diff": 2,
+    "stem": "Glucose enters a cell through a carrier protein, moving from high to low concentration, with no ATP used. Which process is this?",
+    "opts": [
+      {"t": "Facilitated diffusion", "c": true},
+      {"t": "Primary active transport", "w": "Active transport uses ATP to move substances AGAINST a gradient."},
+      {"t": "Filtration", "w": "Filtration is driven by a pressure gradient."},
+      {"t": "Osmosis", "w": "Osmosis is the movement of water."}
+    ],
+    "why": "Facilitated diffusion uses a channel or carrier but stays passive: substances move down their gradient without direct ATP. Carriers can saturate when all are occupied.",
+    "trick": "Facilitated = a helper (protein) holds the door, but you still walk downhill for free.",
+    "tip": "Ask three things: Is there a protein? Is it down the gradient? Is ATP used?"
+  },
+  {
+    "id": "N3-09", "sec": "ch3-diffusion", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "In the kidney, blood pressure pushes water and small solutes out of the capillaries. Which process is this?",
+    "opts": [
+      {"t": "Filtration", "c": true},
+      {"t": "Simple diffusion", "w": "Diffusion follows a concentration gradient, not a pressure gradient."},
+      {"t": "Osmosis", "w": "Osmosis is water following effective solute concentration."},
+      {"t": "Active transport", "w": "Active transport uses ATP to move specific substances."}
+    ],
+    "why": "Filtration moves water and small solutes across a barrier because of a PRESSURE gradient. In the kidney, blood pressure drives glomerular filtration. Diffusion follows a CONCENTRATION gradient.",
+    "trick": "Filtration = Force (pressure). Diffusion = Different concentrations.",
+    "tip": "Find the driving force in the stem: pressure, concentration, or ATP."
+  },
+  {
+    "id": "N3-10", "sec": "ch3-osmosis", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A lab sample of red blood cells is placed in a hypertonic solution. What happens to the cells?",
+    "opts": [
+      {"t": "Water leaves the cells and they shrink (crenation).", "c": true},
+      {"t": "Water enters the cells and they swell and burst.", "w": "That happens in a HYPOtonic solution."},
+      {"t": "Nothing happens to their size.", "w": "That describes an isotonic solution."},
+      {"t": "Solute leaves the cells and they swell.", "w": "Water does the moving, toward the side with more effective solute."}
+    ],
+    "why": "A hypertonic solution has more effective solute outside, so water leaves the cell by osmosis and the cell shrinks. In red cells this is called crenation.",
+    "trick": "HYPER = more solute outside, so water exits and the cell shrinks. HYPO = the cell swells like a hippo.",
+    "tip": "Water moves toward more solute. Decide where the solute is, then where the water goes."
+  },
+  {
+    "id": "N3-11", "sec": "ch3-osmosis", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "A nurse is reviewing how IV solutions affect red blood cells. Which statements are accurate? Select all that apply.",
+    "opts": [
+      {"t": "In a hypertonic solution, cells lose water and shrink.", "c": true},
+      {"t": "In a hypotonic solution, cells gain water and may burst (hemolysis).", "c": true},
+      {"t": "In an isotonic solution, cell volume stays the same.", "c": true},
+      {"t": "In a hypotonic solution, cells shrink.", "w": "Hypotonic solutions make cells SWELL."},
+      {"t": "In an isotonic solution, water stops crossing the membrane completely.", "w": "Water still crosses both ways. The flows just balance."}
+    ],
+    "why": "Hypertonic shrinks, hypotonic swells (possibly to lysis), isotonic keeps volume steady. Even in isotonic fluid water keeps moving in both directions in equal amounts.",
+    "trick": "Hypo = Hippo (swells). Hyper = shrivels. Iso = Same.",
+    "tip": "SATA: watch for 'completely' and 'stops'. Molecules never stop moving."
+  },
+  {
+    "id": "N3-12", "sec": "ch3-osmosis", "focus": [1], "type": "mcq", "diff": 3,
+    "stem": "What determines a solution's tonicity?",
+    "opts": [
+      {"t": "Solutes that do not freely cross the cell membrane", "c": true},
+      {"t": "Every dissolved particle, including ones that enter cells quickly", "w": "That describes total osmolarity. Penetrating solutes don't count toward tonicity."},
+      {"t": "The temperature of the solution", "w": "Tonicity is about effective solutes, not temperature."},
+      {"t": "The color of the solution", "w": "Color has nothing to do with tonicity."}
+    ],
+    "why": "Tonicity depends on effective, relatively nonpenetrating solutes, the ones that stay outside and pull water. A solution can be iso-osmotic but not isotonic if its solute enters cells quickly.",
+    "trick": "Tonicity counts only the solutes that stay put and pull water.",
+    "tip": "Tonicity vs osmolarity is a classic trap: tonicity counts only what can't cross."
+  },
+  {
+    "id": "N3-13", "sec": "ch3-active", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which statement about the sodium–potassium pump is accurate?",
+    "opts": [
+      {"t": "It uses ATP to move 3 sodium ions out and 2 potassium ions in, maintaining ion gradients.", "c": true},
+      {"t": "It moves ions passively down their gradients.", "w": "The pump is primary ACTIVE transport and uses ATP."},
+      {"t": "It moves 3 potassium ions out and 2 sodium ions in.", "w": "The ions are swapped. Sodium goes out, potassium comes in."},
+      {"t": "It mainly transports glucose.", "w": "It transports sodium and potassium."}
+    ],
+    "why": "The Na⁺/K⁺ pump uses ATP directly to export 3 Na⁺ and import 2 K⁺ per cycle, against their gradients. It keeps sodium high outside and potassium high inside.",
+    "trick": "3 Na⁺ out, 2 K⁺ in: 'Salty outside, bananas (potassium) inside.'",
+    "tip": "Numbers and directions are easy to swap. Check both."
+  },
+  {
+    "id": "N3-14", "sec": "ch3-active", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A white blood cell engulfs a bacterium into a vesicle. Which process is this?",
+    "opts": [
+      {"t": "Phagocytosis", "c": true},
+      {"t": "Pinocytosis", "w": "Pinocytosis takes in droplets of fluid and dissolved substances."},
+      {"t": "Exocytosis", "w": "Exocytosis RELEASES vesicle contents out of the cell."},
+      {"t": "Facilitated diffusion", "w": "Large particles like bacteria can't diffuse through proteins."}
+    ],
+    "why": "Phagocytosis ('cell eating') engulfs large particles like bacteria. The phagosome then fuses with lysosomes for digestion. Pinocytosis is 'cell drinking', and exocytosis releases material.",
+    "trick": "Phago = eat. Pino = drink. Exo = exit.",
+    "tip": "Decode the prefix and the answer follows."
+  },
+  {
+    "id": "N3-15", "sec": "ch3-cycle", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which cell-cycle pairing is correct?",
+    "opts": [
+      {"t": "S phase: DNA is replicated. Anaphase: sister chromatids separate.", "c": true},
+      {"t": "Metaphase: DNA is replicated. Telophase: chromatids separate.", "w": "DNA replication happens in S phase, before mitosis starts."},
+      {"t": "Prophase: sister chromatids separate. G1: DNA is replicated.", "w": "Chromatids separate in anaphase, and DNA is replicated in S."},
+      {"t": "G2: chromatids separate. Anaphase: DNA is replicated.", "w": "Both halves are wrong."}
+    ],
+    "why": "DNA replication happens in S (synthesis) phase of interphase. During mitosis, sister chromatids are pulled apart in anaphase.",
+    "trick": "S = Synthesis of DNA. Anaphase = chromatids move Apart.",
+    "tip": "For two-part pairings, test each half. One wrong half makes the option wrong."
+  },
+  {
+    "id": "N3-16", "sec": "ch3-cycle", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the phases of mitosis in order.",
+    "steps": ["Prophase: chromosomes condense and the spindle forms", "Metaphase: chromosomes line up at the equator", "Anaphase: sister chromatids separate", "Telophase: new nuclei form as chromosomes decondense"],
+    "why": "Prophase (condense), metaphase (middle), anaphase (apart), telophase (two new nuclei). Cytokinesis then splits the cytoplasm.",
+    "trick": "PMAT: Pack, Middle, Apart, Two nuclei.",
+    "tip": "Use the first letter of each phase name as your clue."
+  },
+  {
+    "id": "N3-17", "sec": "ch3-cycle", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "Which process divides the cytoplasm to form two separate cells?",
+    "opts": [
+      {"t": "Cytokinesis", "c": true},
+      {"t": "Mitosis", "w": "Mitosis divides the nuclear material (chromosomes)."},
+      {"t": "S phase", "w": "S phase replicates DNA."},
+      {"t": "Interphase", "w": "Interphase is the growth and preparation stage."}
+    ],
+    "why": "Mitosis distributes the duplicated chromosomes into two nuclei. Cytokinesis physically splits the cytoplasm, usually with an actin cleavage furrow.",
+    "trick": "CYTOkinesis splits the CYTOplasm.",
+    "tip": "The word root 'cyto-' means cell or cytoplasm. Match roots to jobs."
+  },
+  {
+    "id": "N3-18", "sec": "ch3-differentiation", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A student asks why a nerve cell and a skin cell from the same person look and act so differently. Which explanation is accurate?",
+    "opts": [
+      {"t": "They activate different sets of genes from the same DNA.", "c": true},
+      {"t": "They contain completely different DNA.", "w": "Most nucleated body cells contain the same genetic information."},
+      {"t": "Nerve cells have more chromosomes.", "w": "Normal body cells have the same chromosome number."},
+      {"t": "Skin cells have no DNA.", "w": "Skin cells have nuclei and DNA."}
+    ],
+    "why": "Differentiation largely comes from differences in gene expression. Cells share nearly the same genome but switch different genes on and off.",
+    "trick": "Same cookbook, different recipes.",
+    "tip": "Be suspicious of options claiming body cells have different DNA."
+  },
+  {
+    "id": "N3-19", "sec": "ch3-differentiation", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about cell growth and tumors are accurate? Select all that apply.",
+    "opts": [
+      {"t": "A benign tumor stays localized and does not metastasize.", "c": true},
+      {"t": "A malignant tumor can invade nearby tissue and spread.", "c": true},
+      {"t": "Stem cells can self-renew and produce differentiated cells.", "c": true},
+      {"t": "Benign tumors are always harmless.", "w": "Their location can still make them harmful."},
+      {"t": "Every exposure to a carcinogen causes cancer.", "w": "An exposure is a risk factor, not proof every exposed cell becomes cancerous."}
+    ],
+    "why": "Benign = localized, no metastasis (but location can still matter). Malignant = invades and spreads. Stem cells both self-renew and give rise to specialized cells.",
+    "trick": "Benign = stays Behind. Malignant = Migrates.",
+    "tip": "'Always' and 'every' usually make an option false."
+  }
+]

@@ -1,0 +1,221 @@
+[
+  {
+    "id": "N6-01", "sec": "ch6-layers", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the layers (strata) of thick skin's epidermis in order, from deepest to most superficial.",
+    "steps": ["Stratum basale", "Stratum spinosum", "Stratum granulosum", "Stratum lucidum", "Stratum corneum"],
+    "why": "New keratinocytes are made in the basale and move outward through the spinosum and granulosum, filling with keratin. Thick skin adds the lucidum, then the dead, flat cells of the corneum shed from the surface.",
+    "trick": "Come, Let's Get Sun Burned (surface to deep: Corneum, Lucidum, Granulosum, Spinosum, Basale). Read it backward for this question.",
+    "tip": "Check which direction the question asks for (deep to superficial here), then use your mnemonic in that direction."
+  },
+  {
+    "id": "N6-02", "sec": "ch6-layers", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Where would the nurse expect to find a distinct stratum lucidum?",
+    "opts": [
+      {"t": "Thick skin of the palms and soles", "c": true},
+      {"t": "Thin skin of the scalp", "w": "Thin skin, like most of the body, lacks a distinct lucidum."},
+      {"t": "The dermis of the back", "w": "The lucidum is an epidermal layer, not dermis."},
+      {"t": "Every area of skin equally", "w": "The lucidum is specific to thick skin."}
+    ],
+    "why": "The stratum lucidum is a clear layer found only in thick skin: the palms and soles. Thick skin also has no hair follicles.",
+    "trick": "Lucidum = Lucid (clear) layer, only on the hands and feet that work hardest.",
+    "tip": "Absolute words like 'every area equally' are usually wrong in anatomy questions."
+  },
+  {
+    "id": "N6-03", "sec": "ch6-layers", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about the layers of skin are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The epidermis is avascular keratinized stratified squamous epithelium.", "c": true},
+      {"t": "The dermis is vascular connective tissue that holds follicles, glands, and nerves.", "c": true},
+      {"t": "The hypodermis contains adipose tissue that insulates and cushions.", "c": true},
+      {"t": "The epidermis has its own blood vessels.", "w": "The epidermis is avascular. Dermal vessels nourish it by diffusion."},
+      {"t": "The hypodermis is the outermost layer of skin.", "w": "The hypodermis lies BENEATH the dermis and isn't usually counted as skin proper."}
+    ],
+    "why": "Epidermis = outer epithelium, no blood vessels. Dermis = vascular connective tissue with sensory structures, follicles, glands. Hypodermis = areolar and adipose tissue underneath that anchors, cushions, stores fuel and insulates.",
+    "trick": "EPI = on top, no blood. DERMis = Deep and vascular. HYPOdermis = under (hypo) everything.",
+    "tip": "Prefixes give away the order: epi- (upon), hypo- (below)."
+  },
+  {
+    "id": "N6-04", "sec": "ch6-dermis", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which description matches the reticular layer of the dermis?",
+    "opts": [
+      {"t": "Dense irregular connective tissue with interwoven collagen and elastic fibers", "c": true},
+      {"t": "Areolar tissue with dermal papillae and capillary loops", "w": "That is the superficial papillary dermis."},
+      {"t": "Keratinized stratified squamous epithelium", "w": "That describes the epidermis."},
+      {"t": "Mostly adipose tissue for insulation", "w": "That describes the hypodermis."}
+    ],
+    "why": "The papillary dermis (superficial) is areolar with dermal papillae. The reticular dermis (deeper) is dense irregular connective tissue whose collagen and elastic fibers give skin strength and recoil.",
+    "trick": "Reticular = a net (reticulum) of tough fibers. Papillary = little bumps (papillae) on top.",
+    "tip": "Two layers, two tissue types: lock in one and the other follows."
+  },
+  {
+    "id": "N6-05", "sec": "ch6-dermis", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which receptor, found deep in the dermis with onion-like layers, detects vibration and changing deep pressure?",
+    "opts": [
+      {"t": "Lamellated (Pacinian) corpuscle", "c": true},
+      {"t": "Tactile (Meissner) corpuscle", "w": "Tactile corpuscles sit superficially in the dermal papillae and sense light touch."},
+      {"t": "Free nerve ending", "w": "Free nerve endings sense pain and temperature."},
+      {"t": "Melanocyte", "w": "Melanocytes make pigment. They are not receptors."}
+    ],
+    "why": "Lamellated (Pacinian) corpuscles lie deep in the dermis or subcutis and sense deep pressure and vibration. Their onion-like lamellae set them apart from superficial tactile corpuscles, which sense light touch.",
+    "trick": "Pacinian = Pressure, deeP. Meissner = Mild touch, near the surface.",
+    "tip": "Depth is the clue: deep receptor, deep pressure."
+  },
+  {
+    "id": "N6-06", "sec": "ch6-accessory", "focus": [0, 1], "type": "sata", "diff": 2,
+    "stem": "Which statements about hair, nails, and glands are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Hair and nails are made from epidermal cells.", "c": true},
+      {"t": "Arrector pili muscles are smooth muscle.", "c": true},
+      {"t": "Sebaceous glands use holocrine secretion: whole cells become part of the sebum.", "c": true},
+      {"t": "Arrector pili muscles are skeletal muscle under voluntary control.", "w": "They are smooth muscle, which is why goosebumps happen on their own."},
+      {"t": "The lunula is the only place where nails grow.", "w": "Nails grow from the nail matrix. The lunula is just the visible pale area."}
+    ],
+    "why": "Hair and nails are keratinized epidermal derivatives, even though follicles reach into the dermis. Arrector pili are smooth muscle (goosebumps). Sebaceous glands are holocrine: whole cells break down to form sebum.",
+    "trick": "HOLOcrine = the WHOLE cell goes. Goosebumps are involuntary, so smooth muscle.",
+    "tip": "If an action happens on its own (like goosebumps), the muscle is not skeletal."
+  },
+  {
+    "id": "N6-07", "sec": "ch6-sweat", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A client is exercising in a dry, cool gym. Which glands mainly help cool the body by releasing watery sweat onto the skin surface?",
+    "opts": [
+      {"t": "Eccrine sweat glands", "c": true},
+      {"t": "Apocrine sweat glands", "w": "Apocrine glands drain into follicles in the armpits and groin and are linked to odor and emotion."},
+      {"t": "Sebaceous glands", "w": "Sebaceous glands make oily sebum, not watery sweat."},
+      {"t": "Ceruminous glands", "w": "Ceruminous glands help make earwax."}
+    ],
+    "why": "Eccrine glands are coiled tubular glands spread over the body. Their ducts open onto the skin surface and release watery sweat. Cooling happens as that sweat evaporates.",
+    "trick": "Eccrine = Everywhere, Evaporates, cools.",
+    "tip": "Match the outlet to the job: onto the skin surface means evaporative cooling."
+  },
+  {
+    "id": "N6-08", "sec": "ch6-sweat", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A teenager asks why underarm odor started at puberty. Which explanation by the nurse is accurate?",
+    "opts": [
+      {"t": "Apocrine glands become active at puberty and drain into hair follicles; bacteria break down the secretion and cause the odor.", "c": true},
+      {"t": "Sweat smells strongly the moment it is released.", "w": "Apocrine secretion is initially fairly odorless."},
+      {"t": "Eccrine glands release oily sebum that smells.", "w": "Eccrine glands release watery sweat, and sebaceous glands make sebum."},
+      {"t": "Odor comes from dead skin cells in the stratum corneum.", "w": "Bacterial metabolism of apocrine secretion causes most of the odor."}
+    ],
+    "why": "Apocrine glands are concentrated in the axillae and groin, drain into follicles, and become more active around puberty. Their secretion starts out nearly odorless. Bacteria metabolize it, which produces the smell.",
+    "trick": "Apocrine = Armpits, Adolescence, And bacteria.",
+    "tip": "Eliminate options that put the right fact in the wrong gland."
+  },
+  {
+    "id": "N6-09", "sec": "ch6-temperature", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which structure acts as the control center for body temperature?",
+    "opts": [
+      {"t": "Hypothalamus", "c": true},
+      {"t": "Skin blood vessels", "w": "Skin vessels are effectors. They change heat transfer when told to."},
+      {"t": "Eccrine sweat glands", "w": "Sweat glands are effectors, not the control center."},
+      {"t": "Arrector pili muscles", "w": "These raise hairs, a minor effector in humans."}
+    ],
+    "why": "The hypothalamus integrates temperature signals and coordinates responses. The effectors, such as skin vessels (vasodilation or constriction), sweat glands and shivering muscles, carry out its orders.",
+    "trick": "Hypothalamus = the Home thermostat. Vessels and sweat glands are the vents and fans.",
+    "tip": "Feedback loops: separate the control center from the effectors before choosing."
+  },
+  {
+    "id": "N6-10", "sec": "ch6-temperature", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a construction worker about heat safety on hot, humid days. Which statement by the worker indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"As long as I'm sweating a lot, I'm definitely cooling down.\"", "c": true},
+      {"t": "\"Sweat cools me only when it evaporates.\"", "w": "Accurate."},
+      {"t": "\"High humidity makes it harder for sweat to evaporate.\"", "w": "Accurate."},
+      {"t": "\"Taking breaks in the shade helps my body lose heat.\"", "w": "Accurate."}
+    ],
+    "why": "Cooling happens when sweat evaporates, not just when it appears on the skin. Humidity reduces evaporation, so heavy sweating on a humid day doesn't guarantee cooling.",
+    "trick": "Sweat must take off (evaporate) to take heat with it.",
+    "tip": "'Needs further teaching' answers often contain an absolute ('definitely')."
+  },
+  {
+    "id": "N6-11", "sec": "ch6-pigment", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A client's lab results show high bilirubin, and the client's skin and the whites of the eyes look yellow. Which term describes this?",
+    "opts": [
+      {"t": "Jaundice", "c": true},
+      {"t": "Cyanosis", "w": "Cyanosis is a bluish color linked to poor oxygenation."},
+      {"t": "Carotene tone", "w": "Carotene can tint skin yellow-orange, but the stem points to bilirubin."},
+      {"t": "Vitiligo", "w": "Vitiligo is loss of pigment-producing cells in patches."}
+    ],
+    "why": "Jaundice reflects bilirubin building up. Other skin-color sources: melanin (pigment), carotene (yellow-orange from diet), hemoglobin and blood flow (redness, pallor), and changes in oxygenation (cyanosis).",
+    "trick": "Jaundice = bilirubin's yellow. Cyanosis = blue (cyan) from low oxygen.",
+    "tip": "Use the lab value in the stem. It names the cause."
+  },
+  {
+    "id": "N6-12", "sec": "ch6-pigment", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "A nurse is teaching about skin protection. Which statements are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Sustained pressure and shear can cut off blood flow over bony prominences.", "c": true},
+      {"t": "Ultraviolet radiation can damage DNA and raise the risk of skin cancer.", "c": true},
+      {"t": "Melanin absorbs some ultraviolet radiation.", "c": true},
+      {"t": "Melanin completely prevents UV damage.", "w": "Melanin absorbs SOME UV. It doesn't eliminate damage."},
+      {"t": "Redness and warmth always mean an infection.", "w": "Inflammation can cause redness and warmth without infection."}
+    ],
+    "why": "Pressure injuries form when pressure and shear impair perfusion, often over bony prominences. UV radiation contributes to skin cancers. Melanin helps but doesn't fully protect.",
+    "trick": "Pressure squeezes out blood. UV scrambles DNA.",
+    "tip": "Words like 'completely' and 'always' are usually wrong."
+  },
+  {
+    "id": "N6-13", "sec": "ch6-repair", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A client has a painful burn that extends into the dermis and has formed blisters. How is this burn classified?",
+    "opts": [
+      {"t": "Partial-thickness (second-degree) burn", "c": true},
+      {"t": "Superficial (first-degree) burn", "w": "Superficial burns affect only the epidermis, usually without blisters."},
+      {"t": "Full-thickness (third-degree) burn", "w": "Full-thickness burns destroy the entire skin thickness."},
+      {"t": "Pressure injury", "w": "Pressure injuries come from pressure and shear, not burns."}
+    ],
+    "why": "Superficial = epidermis only. Partial-thickness = into the dermis, often with blisters, and surviving appendages can help it regenerate. Full-thickness = all layers destroyed, so it can't regenerate normal skin on its own.",
+    "trick": "1st = top layer, 2nd = blisters into the dermis, 3rd = all the way through.",
+    "tip": "Match the depth clue (into the dermis, blisters) to the category."
+  },
+  {
+    "id": "N6-14", "sec": "ch6-repair", "focus": [0], "type": "priority", "diff": 2,
+    "stem": "The nurse on the burn unit receives four clients. Which client should the nurse see first?",
+    "opts": [
+      {"t": "A client with full-thickness burns over both legs", "c": true},
+      {"t": "A client with a superficial sunburn on the shoulders", "w": "Superficial burns affect only the epidermis and heal well."},
+      {"t": "A client with a small blistered burn on one finger", "w": "A small partial-thickness burn is stable."},
+      {"t": "A client with a healed burn scar asking about lotion", "w": "Teaching can wait."}
+    ],
+    "why": "Full-thickness burns destroy the whole skin and, over a large area, disrupt fluid balance, protection against infection, and temperature control. That makes this client the most unstable.",
+    "trick": "Deeper and bigger burns = bigger loss of the skin's jobs (fluid, defense, temperature).",
+    "tip": "Priority: the client who has lost the most body function comes first."
+  },
+  {
+    "id": "N6-15", "sec": "ch6-repair", "focus": [1], "type": "math", "diff": 1,
+    "stem": "An adult has burns covering the entire front and back of both legs. Using the rule of nines, what percentage of body surface area is burned?",
+    "opts": [
+      {"t": "36%", "c": true},
+      {"t": "18%", "w": "18% is ONE whole leg. The client burned both."},
+      {"t": "9%", "w": "9% is one arm, or the head and neck."},
+      {"t": "27%", "w": "27% would be one leg plus one arm."}
+    ],
+    "why": "Each whole leg = 18%. Two legs = 18% + 18% = 36%.",
+    "trick": "Adult rule of nines: head 9, each arm 9, each leg 18, front trunk 18, back trunk 18, perineum 1 = 100.",
+    "tip": "Check your sum: the whole adult body adds up to 100%."
+  },
+  {
+    "id": "N6-16", "sec": "ch6-repair", "focus": [1], "type": "math", "diff": 2,
+    "stem": "An adult was burned on the entire front of the trunk and the whole right arm. Using the rule of nines, what is the total body surface area burned?",
+    "opts": [
+      {"t": "27%", "c": true},
+      {"t": "18%", "w": "18% is only the front of the trunk. Add the arm."},
+      {"t": "36%", "w": "36% counts the whole trunk front and back. Only the front was burned."},
+      {"t": "45%", "w": "Recheck: front trunk 18% + one arm 9%."}
+    ],
+    "why": "Anterior trunk = 18%, one arm = 9%. 18 + 9 = 27%.",
+    "trick": "Front trunk 18, one arm 9.",
+    "tip": "List each burned area and its value before adding."
+  },
+  {
+    "id": "N6-17", "sec": "ch6-repair", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "What does the adult rule of nines estimate?",
+    "opts": [
+      {"t": "The percentage of an adult's body surface area that is burned", "c": true},
+      {"t": "The depth of a burn", "w": "The rule of nines measures surface area, not depth."},
+      {"t": "Burned surface area in young children", "w": "Children have different body proportions and need age-appropriate methods."},
+      {"t": "How painful a burn will be", "w": "The rule of nines doesn't measure pain."}
+    ],
+    "why": "The adult rule of nines estimates how much body surface area is burned. It does not measure depth or replace a full severity assessment, and children need different charts.",
+    "trick": "Nines = how MUCH skin (area), not how DEEP.",
+    "tip": "Separate 'how much' (extent) from 'how deep' (depth). They are different questions."
+  }
+]

@@ -1,0 +1,253 @@
+[
+  {
+    "id": "N2-01", "sec": "ch2-atoms", "focus": [0], "type": "math", "diff": 1,
+    "stem": "A chlorine atom has an atomic number of 17 and a mass number of 35. How many neutrons does it have?",
+    "opts": [
+      {"t": "18", "c": true},
+      {"t": "17", "w": "17 is the number of protons (the atomic number)."},
+      {"t": "35", "w": "35 is protons plus neutrons together."},
+      {"t": "52", "w": "Subtract, don't add: 35 − 17."}
+    ],
+    "why": "Mass number = protons + neutrons. Neutrons = 35 − 17 = 18.",
+    "trick": "Mass minus Atomic = Neutrons (M − A = N).",
+    "tip": "Write the formula first, then plug in. Don't guess from the numbers shown."
+  },
+  {
+    "id": "N2-02", "sec": "ch2-atoms", "focus": [0], "type": "math", "diff": 2,
+    "stem": "A sodium ion (Na⁺) has 11 protons. How many electrons does it have?",
+    "opts": [
+      {"t": "10", "c": true},
+      {"t": "11", "w": "11 electrons would be a neutral sodium ATOM, not the Na⁺ ion."},
+      {"t": "12", "w": "Gaining an electron would give a negative charge."},
+      {"t": "1", "w": "Only one electron was lost, not ten."}
+    ],
+    "why": "A neutral atom has equal protons and electrons. Na⁺ has lost one electron, so 11 − 1 = 10 electrons, which leaves a +1 charge.",
+    "trick": "Plus sign = lost electrons (electrons are negative, so losing them makes it positive).",
+    "tip": "Charge = protons − electrons. A +1 ion has one more proton than electrons."
+  },
+  {
+    "id": "N2-03", "sec": "ch2-atoms", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about atoms are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Isotopes of an element have the same number of protons but different numbers of neutrons.", "c": true},
+      {"t": "An ion forms when an atom gains or loses electrons.", "c": true},
+      {"t": "Mass number counts protons plus neutrons for one isotope.", "c": true},
+      {"t": "Isotopes of an element differ in their number of protons.", "w": "Changing protons changes the element itself."},
+      {"t": "The atomic mass on the periodic table is the mass number of the most common isotope.", "w": "It is an abundance-weighted average of all the isotopes."}
+    ],
+    "why": "Change protons and you get a new element. Change neutrons and you get an isotope. Change electrons and you get an ion. Periodic-table atomic mass is a weighted average of isotopes.",
+    "trick": "Protons = identity. Neutrons = isotope. Electrons = ion (charge).",
+    "tip": "Match each particle to the change it causes."
+  },
+  {
+    "id": "N2-04", "sec": "ch2-bonds", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Sodium gives an electron to chlorine, forming Na⁺ and Cl⁻, which attract each other. Which type of bond is this?",
+    "opts": [
+      {"t": "Ionic bond", "c": true},
+      {"t": "Nonpolar covalent bond", "w": "Covalent bonds SHARE electrons. Here an electron was transferred."},
+      {"t": "Polar covalent bond", "w": "Polar covalent bonds share electrons unequally, without full transfer."},
+      {"t": "Hydrogen bond", "w": "Hydrogen bonds are weak attractions involving a partially positive hydrogen."}
+    ],
+    "why": "Ionic bonds form after electron TRANSFER: the atoms become oppositely charged ions that attract. Covalent bonds SHARE electron pairs.",
+    "trick": "Ionic = I Own it now (transfer). Covalent = Co-operate (share).",
+    "tip": "'Gives' or 'transfers' means ionic. 'Shares' means covalent."
+  },
+  {
+    "id": "N2-05", "sec": "ch2-bonds", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which statement correctly describes the bonds involved with water?",
+    "opts": [
+      {"t": "Polar covalent bonds hold each water molecule together; hydrogen bonds attract neighboring water molecules.", "c": true},
+      {"t": "Hydrogen bonds hold each water molecule together; covalent bonds attract neighbors.", "w": "This swaps the two bond types."},
+      {"t": "Ionic bonds hold the oxygen and hydrogens together.", "w": "Water's O–H bonds are polar covalent, not ionic."},
+      {"t": "Only hydrogen bonds exist in water.", "w": "Each molecule's O–H bonds are covalent."}
+    ],
+    "why": "Inside one water molecule, oxygen and hydrogen share electrons unequally (polar covalent). Between molecules, the partially positive hydrogen of one attracts the partially negative oxygen of another (hydrogen bonds), which are weaker.",
+    "trick": "INside = covalent (strong). BETWEEN = hydrogen bonds (weak, like Velcro).",
+    "tip": "Swapped-pair options: check which bond is inside versus between molecules."
+  },
+  {
+    "id": "N2-06", "sec": "ch2-reactions", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which type of reaction is shown: AB → A + B?",
+    "opts": [
+      {"t": "Decomposition", "c": true},
+      {"t": "Synthesis", "w": "Synthesis combines parts: A + B → AB."},
+      {"t": "Exchange", "w": "Exchange swaps partners: AB + CD → AD + CB."},
+      {"t": "Reversible", "w": "A reversible reaction uses a double arrow (⇌)."}
+    ],
+    "why": "Decomposition breaks a larger compound into smaller parts. Synthesis builds, exchange swaps partners, and reversible reactions go both ways.",
+    "trick": "Decompose = break down, like leaves decomposing.",
+    "tip": "Look at the arrow: one thing becoming two is decomposition."
+  },
+  {
+    "id": "N2-07", "sec": "ch2-reactions", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "During digestion, a peptide is broken into amino acids by adding water. What is this reaction called?",
+    "opts": [
+      {"t": "Hydrolysis", "c": true},
+      {"t": "Dehydration synthesis", "w": "Dehydration synthesis BUILDS molecules and RELEASES water."},
+      {"t": "Exchange reaction", "w": "Exchange reactions swap partners."},
+      {"t": "Equilibrium", "w": "Equilibrium is when forward and reverse rates balance."}
+    ],
+    "why": "Hydrolysis uses water to break a bond (hydro = water, lysis = split). Dehydration synthesis is the opposite: it joins subunits and releases water.",
+    "trick": "Hydro-LYSIS = water Splits it. De-HYDRATION = water leaves as things join.",
+    "tip": "Break the word apart. Most chemistry terms describe themselves."
+  },
+  {
+    "id": "N2-08", "sec": "ch2-water", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which properties of water are important in the body? Select all that apply.",
+    "opts": [
+      {"t": "It dissolves ions and many polar substances.", "c": true},
+      {"t": "It is the medium for reactions and takes part in hydrolysis.", "c": true},
+      {"t": "Its high heat capacity limits rapid temperature changes.", "c": true},
+      {"t": "It dissolves oils easily.", "w": "Oils are nonpolar and don't mix well with water."},
+      {"t": "It dissolves every substance.", "w": "Water is not a universal solvent for everything."}
+    ],
+    "why": "Because water is polar, it dissolves ions and polar molecules, transports them, is the medium for reactions, takes part in hydrolysis, cushions and lubricates, and resists temperature change.",
+    "trick": "Like dissolves like: polar water dissolves polar things.",
+    "tip": "'Every' is an absolute. Absolutes are usually false."
+  },
+  {
+    "id": "N2-09", "sec": "ch2-water", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which of these will conduct an electric current?",
+    "opts": [
+      {"t": "Table salt (NaCl) dissolved in water", "c": true},
+      {"t": "Glucose dissolved in water", "w": "Glucose is a nonelectrolyte. It dissolves without forming ions."},
+      {"t": "A dry crystal of table salt", "w": "In a solid crystal the ions can't move."},
+      {"t": "Pure distilled water", "w": "Pure water has very few mobile ions."}
+    ],
+    "why": "A solution conducts current only when mobile charged particles (ions) are present. Dissolved NaCl dissociates into moving Na⁺ and Cl⁻ ions.",
+    "trick": "No moving ions, no current.",
+    "tip": "Ask two questions: are there ions, and can they move?"
+  },
+  {
+    "id": "N2-10", "sec": "ch2-ph", "focus": [0], "type": "math", "diff": 2,
+    "stem": "A client's blood pH drops from 7.4 to 6.4 in a lab experiment. How much has the hydrogen ion concentration changed?",
+    "opts": [
+      {"t": "About 10 times higher", "c": true},
+      {"t": "About 1 time higher (no real change)", "w": "pH is logarithmic. One unit is a big change."},
+      {"t": "About 100 times higher", "w": "100× would be a drop of two pH units."},
+      {"t": "About 10 times lower", "w": "Lower pH means MORE hydrogen ions, not fewer."}
+    ],
+    "why": "The pH scale is logarithmic: each 1-unit decrease means about 10 times more hydrogen ions. A real blood pH this low would not be survivable. Normal arterial blood is about 7.35 to 7.45.",
+    "trick": "Each pH step is ×10. Down in pH = up in H⁺.",
+    "tip": "Count the pH units, then multiply by 10 for each one."
+  },
+  {
+    "id": "N2-11", "sec": "ch2-ph", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Bicarbonate in the blood acts as a buffer. What does a buffer do?",
+    "opts": [
+      {"t": "It limits pH change by reversibly binding or releasing hydrogen ions.", "c": true},
+      {"t": "It amplifies pH changes so the body notices them.", "w": "Buffers RESIST change. They don't amplify it."},
+      {"t": "It prevents every change in pH completely.", "w": "Buffers limit change but can't prevent all of it."},
+      {"t": "It only works in the stomach.", "w": "Blood buffers like bicarbonate work throughout the body."}
+    ],
+    "why": "A buffer limits pH change by grabbing extra H⁺ or releasing H⁺ when it runs low. The bicarbonate system (CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻) works with the lungs and kidneys.",
+    "trick": "A buffer is a shock absorber for pH.",
+    "tip": "Watch for 'completely' and 'only'. Real systems limit change, they don't stop it."
+  },
+  {
+    "id": "N2-12", "sec": "ch2-ph", "focus": [], "type": "priority", "diff": 2,
+    "stem": "The nurse reviews arterial blood pH results for four clients. Which result needs attention first?",
+    "opts": [
+      {"t": "pH 7.25", "c": true},
+      {"t": "pH 7.38", "w": "Within the normal range of about 7.35 to 7.45."},
+      {"t": "pH 7.42", "w": "Within the normal range."},
+      {"t": "pH 7.40", "w": "Right in the middle of normal."}
+    ],
+    "why": "Normal arterial blood pH is about 7.35 to 7.45. A pH of 7.25 is below normal (acidic), so this client needs attention first.",
+    "trick": "Blood's sweet spot: 7.35 to 7.45, slightly alkaline.",
+    "tip": "Priority with lab values: the result outside the normal range comes first."
+  },
+  {
+    "id": "N2-13", "sec": "ch2-carbohydrates", "focus": [0, 1], "type": "sata", "diff": 2,
+    "stem": "A dietitian is reviewing carbohydrates with a client. Which statements are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Glucose is a monosaccharide.", "c": true},
+      {"t": "Sucrose is a disaccharide of glucose and fructose.", "c": true},
+      {"t": "Glycogen is the animal storage form of glucose, kept in the liver and muscles.", "c": true},
+      {"t": "Starch is the animal storage form of glucose.", "w": "Starch is PLANT storage. Glycogen is animal storage."},
+      {"t": "Lactose is a monosaccharide.", "w": "Lactose is a disaccharide (glucose + galactose)."}
+    ],
+    "why": "Mono = one sugar (glucose, fructose, galactose). Di = two (sucrose, lactose, maltose). Poly = many (starch in plants, glycogen in animals, cellulose for plant structure).",
+    "trick": "Glycogen = Glucose Go-bag stored in your liver and muscles. Starch = plants' pantry.",
+    "tip": "Plant vs animal is a common swap. Check each source carefully."
+  },
+  {
+    "id": "N2-14", "sec": "ch2-lipids", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which lipid has a polar head and two nonpolar tails and forms the cell membrane bilayer?",
+    "opts": [
+      {"t": "Phospholipid", "c": true},
+      {"t": "Triglyceride", "w": "Triglycerides (glycerol + three fatty acids) store energy."},
+      {"t": "Steroid", "w": "Steroids, like cholesterol, have four fused carbon rings."},
+      {"t": "Glycogen", "w": "Glycogen is a carbohydrate, not a lipid."}
+    ],
+    "why": "Phospholipids are amphipathic: a water-loving head and water-avoiding tails. In water they form bilayers with heads facing out and tails facing in. That is the membrane.",
+    "trick": "PHOSPHOlipid = the Head is PHOSPHate (water-loving), tails hide inside.",
+    "tip": "Match the structure (head and tails) to the job (membrane)."
+  },
+  {
+    "id": "N2-15", "sec": "ch2-lipids", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "What makes a fatty acid unsaturated?",
+    "opts": [
+      {"t": "It has one or more carbon–carbon double bonds.", "c": true},
+      {"t": "It has no carbon–carbon double bonds.", "w": "That describes a saturated fatty acid."},
+      {"t": "It is always solid at room temperature.", "w": "Physical state depends on composition and temperature. No absolute rule."},
+      {"t": "It contains no carbon.", "w": "All fatty acids are carbon chains."}
+    ],
+    "why": "Saturated fatty acids have no C=C double bonds (they're saturated with hydrogen). Unsaturated ones have one or more double bonds, which often bend the chain.",
+    "trick": "UNsaturated = UNfilled with hydrogen, so it has double bonds (kinks).",
+    "tip": "'Always' statements about physical state are traps."
+  },
+  {
+    "id": "N2-16", "sec": "ch2-proteins", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Hemoglobin is made of four polypeptide subunits fitted together. Which level of protein structure describes this?",
+    "opts": [
+      {"t": "Quaternary", "c": true},
+      {"t": "Primary", "w": "Primary structure is the amino acid sequence."},
+      {"t": "Secondary", "w": "Secondary structure is helices and sheets in one chain."},
+      {"t": "Tertiary", "w": "Tertiary is the 3D shape of ONE polypeptide."}
+    ],
+    "why": "Primary = sequence. Secondary = helices and sheets. Tertiary = one chain's 3D fold. Quaternary = several chains together, like hemoglobin. Not every protein has a quaternary level.",
+    "trick": "Quaternary = Quad = multiple chains teaming up.",
+    "tip": "Count the chains: one chain stops at tertiary, more than one means quaternary."
+  },
+  {
+    "id": "N2-17", "sec": "ch2-proteins", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A client has a very high fever. Why can extreme heat harm the body's enzymes?",
+    "opts": [
+      {"t": "Heat can denature proteins, changing their shape and impairing function.", "c": true},
+      {"t": "Heat breaks every peptide bond in the protein.", "w": "Denaturation changes the shape. It usually doesn't break all the peptide bonds."},
+      {"t": "Heat makes enzymes work better without limit.", "w": "Past a point, heat disrupts enzyme shape."},
+      {"t": "Heat changes the amino acid sequence.", "w": "Denaturation changes the fold, not the sequence."}
+    ],
+    "why": "Denaturation disrupts a protein's normal shape (from heat, extreme pH, and so on). An enzyme's active site depends on shape, so function can be lost. The amino acid sequence stays the same.",
+    "trick": "Denature = De-shape. The sequence stays, the shape goes.",
+    "tip": "Shape equals function for proteins. Look for the option about shape."
+  },
+  {
+    "id": "N2-18", "sec": "ch2-nucleic", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which statements comparing DNA and RNA are accurate? Select all that apply.",
+    "opts": [
+      {"t": "DNA contains the sugar deoxyribose and the base thymine.", "c": true},
+      {"t": "RNA contains the sugar ribose and the base uracil.", "c": true},
+      {"t": "In DNA, adenine pairs with thymine.", "c": true},
+      {"t": "RNA contains thymine.", "w": "RNA uses uracil instead of thymine."},
+      {"t": "DNA contains ribose.", "w": "DNA contains DEOXYribose."}
+    ],
+    "why": "DNA = deoxyribose + A, T, C, G, usually double-stranded. RNA = ribose + A, U, C, G, usually single-stranded. In DNA, A pairs with T and C pairs with G.",
+    "trick": "DNA has 'D' for Deoxyribose. RNA swaps T for U: 'U are in RNA.'",
+    "tip": "One-word swaps (ribose vs deoxyribose, T vs U) are the usual traps."
+  },
+  {
+    "id": "N2-19", "sec": "ch2-nucleic", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which bonds hold complementary base pairs together across the two strands of DNA?",
+    "opts": [
+      {"t": "Hydrogen bonds", "c": true},
+      {"t": "Covalent bonds", "w": "Covalent bonds hold each sugar–phosphate backbone together, not the base pairs."},
+      {"t": "Ionic bonds", "w": "Base pairing does not involve ionic bonds."},
+      {"t": "Peptide bonds", "w": "Peptide bonds link amino acids in proteins."}
+    ],
+    "why": "Hydrogen bonds connect complementary bases (A–T, C–G) between strands, so the strands can unzip for copying. Strong covalent bonds form each strand's sugar–phosphate backbone.",
+    "trick": "Hydrogen bonds = the zipper teeth (easy to open). Covalent = the zipper's strong fabric.",
+    "tip": "Ask where the bond is: across the strands (hydrogen) or along one strand (covalent)."
+  }
+]
