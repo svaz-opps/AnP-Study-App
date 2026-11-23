@@ -162,3 +162,5 @@
   in Settings → Pages → Source: "GitHub Actions".
 - Removed the merged leftover branches (ccr-dd43cba2-3w86f7, claude/dreamy-heisenberg-vtqdyh,
   claude/friendly-meitner-j5l8qj); the user deleted them on GitHub.
+- First deploy (a re-run of the original run) uploaded the site but deploy-pages found 0 artifacts. Bumped
+  checkout to v5 and upload-pages-artifact to v4 and pushed so a fresh run starts.
