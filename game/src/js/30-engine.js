@@ -105,8 +105,13 @@ const Engine = {
   missed(uid) {
     return Content.all().filter((q) => (!uid || q.unit === uid) && WR.state.items[q.id] && WR.state.items[q.id].miss);
   },
+  // The OR opens after a star in 4 rooms, or after 12 finished shifts, whichever comes first.
+  BOSS_ROOMS: 4,
+  BOSS_SHIFTS: 12,
+  shiftsDone() { return Object.values(WR.state.units).reduce((a, u) => a + (u.shifts || 0), 0); },
   bossUnlocked() {
-    return Content.units.filter((u) => this.mastery(u.id).stars >= 1).length >= Math.ceil(Content.units.length / 2);
+    const rooms = Content.units.filter((u) => this.mastery(u.id).stars >= 1).length;
+    return rooms >= this.BOSS_ROOMS || this.shiftsDone() >= this.BOSS_SHIFTS;
   },
 
   // ----- picking patients

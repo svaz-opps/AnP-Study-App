@@ -61,7 +61,7 @@ Screens.floor = {
     const units = Content.units;
     const bossOpen = Engine.bossUnlocked();
     const alarm = `<button class="alarm" data-action="codeblue" aria-label="Start a Code Blue timed round"><span class="light"></span>Code Blue</button>`;
-    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `Earn ★ in ${Math.ceil(units.length / 2)} rooms`}</small></span></button>`;
+    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `★ in ${Engine.BOSS_ROOMS} rooms or ${Engine.BOSS_SHIFTS} shifts (${Engine.shiftsDone()}/${Engine.BOSS_SHIFTS})`}</small></span></button>`;
     const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
@@ -145,7 +145,7 @@ Screens.floor = {
     codeblue() { startMode('codeblue'); },
     boss() {
       if (!Engine.bossUnlocked() && !WR.debug) {
-        App.modal(`<h2>The OR is locked</h2><p class="dim">The Superbug only fights nurses who have earned at least one star in ${Math.ceil(Content.units.length / 2)} rooms. A star means you've answered 60% of a room's patients right at least once.</p><div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>`);
+        App.modal(`<h2>The OR is locked</h2><p class="dim">The Superbug only fights experienced nurses. Earn a star in ${Engine.BOSS_ROOMS} rooms, or finish ${Engine.BOSS_SHIFTS} shifts (you've finished ${Engine.shiftsDone()}). A star means you've answered 60% of a room's patients right at least once.</p><div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>`);
         return;
       }
       startMode('boss');

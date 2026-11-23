@@ -22,7 +22,7 @@ function bindEvents() {
   }, 150);
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', onResize);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) Store._local.flush(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { Store._local.flush(); Store._cloud.flush(); } });
   window.addEventListener('pagehide', () => { Store._local.flush(); });
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }

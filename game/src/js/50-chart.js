@@ -204,6 +204,7 @@ Screens.chart = {
   tickTimer(dt) {
     const run = App.run;
     if (!run || run.mode !== 'codeblue' || run.over) { if (this.timerOff) { this.timerOff(); this.timerOff = null; } return; }
+    if (document.getElementById('modal-root').firstChild) return; // paused while a dialog is open
     run.timeLeft = Math.max(0, run.timeLeft - dt);
     const bar = $('#timer-bar'), num = $('#timer-num');
     if (bar) bar.style.width = (run.timeLeft / 60) * 100 + '%';

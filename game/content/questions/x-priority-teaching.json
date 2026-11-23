@@ -1,0 +1,327 @@
+[
+  {
+    "id": "P-01", "sec": "ch6-temperature", "focus": [0, 1], "type": "priority", "diff": 2,
+    "stem": "On a hot, humid afternoon, the nurse at an outdoor event receives four reports. Which client should the nurse see first?",
+    "opts": [
+      {"t": "A worker with hot skin who is confused and has a core temperature of 40 °C (104 °F)", "c": true},
+      {"t": "A spectator who is sweating after walking up the bleachers", "w": "Sweating after activity is a normal cooling response."},
+      {"t": "A volunteer with cool hands in an air-conditioned tent", "w": "Skin vessels constricting in a cool space is normal heat conservation."},
+      {"t": "A parent asking which sunscreen to use", "w": "Teaching can wait."}
+    ],
+    "why": "When heat gain exceeds heat loss, core temperature climbs (hyperthermia). High humidity limits evaporative cooling, so sweating may not be enough. A very high core temperature with confusion shows heat balance has failed. That makes it urgent.",
+    "trick": "Hot, humid, and confused = the cooling system has lost.",
+    "tip": "Priority: an unstable vital sign plus a change in mental status comes first."
+  },
+  {
+    "id": "P-02", "sec": "ch3-osmosis", "focus": [0], "type": "priority", "diff": 3,
+    "stem": "The nurse checks four IV infusions. Which client needs the nurse first?",
+    "opts": [
+      {"t": "A client mistakenly receiving plain sterile water through an IV", "c": true},
+      {"t": "A client receiving isotonic saline at the prescribed rate", "w": "Isotonic fluid causes no net change in cell volume."},
+      {"t": "A client asking for a cup of drinking water", "w": "A routine request that can wait."},
+      {"t": "A client whose IV is due to be changed tomorrow", "w": "Not urgent."}
+    ],
+    "why": "Plain water is extremely hypotonic. In the blood, water rushes into red blood cells, which swell and can burst (hemolysis). An isotonic solution keeps cell volume stable.",
+    "trick": "Hypotonic = hippo: cells swell, then can pop.",
+    "tip": "Priority: stop a harmful treatment that is still running before anything else."
+  },
+  {
+    "id": "P-03", "sec": "ch7-aging", "focus": [1], "type": "priority", "diff": 2,
+    "stem": "On a geriatric unit, which client should the nurse assess first?",
+    "opts": [
+      {"t": "An 82-year-old who fell, cannot bear weight, and has severe pain in the upper thigh and hip", "c": true},
+      {"t": "A 70-year-old with osteoporosis asking about vitamin D", "w": "Teaching can wait until the possible fracture is assessed."},
+      {"t": "A 75-year-old whose height has decreased slightly over 10 years", "w": "Gradual height loss from disc compression is expected with aging."},
+      {"t": "A 68-year-old who walks daily and wants to keep doing it", "w": "A healthy goal, not an urgent problem."}
+    ],
+    "why": "Spongy bone weakens sooner than compact bone, and the femoral neck has a lot of it, so hip (upper femur) fractures are common after falls in older adults. A new fall with severe pain and inability to bear weight is acute.",
+    "trick": "Older adult + fall + can't stand on it = check the hip first.",
+    "tip": "Priority: a new, acute injury beats chronic, expected changes."
+  },
+  {
+    "id": "P-04", "sec": "ch9-nmj", "focus": [], "type": "priority", "diff": 3,
+    "stem": "Which client on the neuro unit should the nurse see first?",
+    "opts": [
+      {"t": "A client with myasthenia gravis who now has trouble swallowing and breathing deeply", "c": true},
+      {"t": "A client with tendinitis of the elbow", "w": "Painful but stable."},
+      {"t": "A client with a healing hamstring strain", "w": "Stable and improving."},
+      {"t": "A client with Duchenne muscular dystrophy asking about wheelchairs", "w": "Important planning, not urgent."}
+    ],
+    "why": "In myasthenia gravis the immune system attacks acetylcholine receptors at the neuromuscular junction, causing muscle weakness. When it affects the muscles for swallowing and breathing, airway and breathing are at risk.",
+    "trick": "Weak NMJ + weak breathing muscles = airway first.",
+    "tip": "Airway and Breathing outrank everything else."
+  },
+  {
+    "id": "P-05", "sec": "ch11-cranial", "focus": [1], "type": "priority", "diff": 3,
+    "stem": "Four clients have injuries. Which client is at greatest risk for a breathing problem and should be seen first?",
+    "opts": [
+      {"t": "A client with a high cervical spinal cord injury near the origin of the phrenic nerve", "c": true},
+      {"t": "A client with a brachial plexus stretch injury in one arm", "w": "This affects arm function, not breathing."},
+      {"t": "A client with a sacral nerve injury", "w": "Sacral nerves serve the lower body, not the diaphragm."},
+      {"t": "A client with numbness in one finger", "w": "A minor, localized nerve problem."}
+    ],
+    "why": "The phrenic nerve, from the cervical plexus, supplies the diaphragm, the main breathing muscle. An injury high in the cervical cord can affect it.",
+    "trick": "C3, 4, 5 keeps the diaphragm alive (the phrenic nerve's roots).",
+    "tip": "Link the nerve to the organ. If the organ is for breathing, that client is the priority."
+  },
+  {
+    "id": "P-06", "sec": "ch11-receptors", "focus": [1], "type": "priority", "diff": 2,
+    "stem": "The nurse receives four calls. Which client needs help first?",
+    "opts": [
+      {"t": "A client with sudden weakness on one side of the body and slurred speech that started 20 minutes ago", "c": true},
+      {"t": "A client with Parkinson disease reporting their usual resting tremor", "w": "A chronic, expected symptom."},
+      {"t": "A client with multiple sclerosis asking about a support group", "w": "Not urgent."},
+      {"t": "A client with well-controlled epilepsy requesting a refill", "w": "Routine."}
+    ],
+    "why": "Sudden one-sided weakness and slurred speech suggest a stroke: brain injury from blocked blood flow or bleeding. It is acute and time-sensitive, unlike the stable chronic conditions.",
+    "trick": "Sudden + new neuro deficit = think stroke, act fast.",
+    "tip": "Priority: sudden new symptoms beat stable, long-term ones."
+  },
+  {
+    "id": "P-07", "sec": "ch11-protection", "focus": [], "type": "priority", "diff": 2,
+    "stem": "Which client in the clinic waiting room should the nurse see first?",
+    "opts": [
+      {"t": "A college student with fever, a severe headache, a stiff neck, and new confusion", "c": true},
+      {"t": "A client with a mild tension headache after studying", "w": "Uncomfortable but stable."},
+      {"t": "A client needing a booster vaccine", "w": "Routine."},
+      {"t": "A client with seasonal allergies", "w": "Not urgent."}
+    ],
+    "why": "Fever, headache, stiff neck, and confusion can signal meningitis, inflammation of the meninges that protect the brain and spinal cord. Infection near the CNS is urgent.",
+    "trick": "Meninges inflamed + mind changing = urgent.",
+    "tip": "Any new confusion moves a client up the priority list."
+  },
+  {
+    "id": "P-08", "sec": "ch6-pigment", "focus": [0], "type": "priority", "diff": 2,
+    "stem": "Which skin-color finding should the nurse act on first?",
+    "opts": [
+      {"t": "New bluish lips and nail beds in a client who is short of breath", "c": true},
+      {"t": "Yellowish skin in a client with long-standing, stable liver disease", "w": "Jaundice from bilirubin is known and stable here."},
+      {"t": "A yellow-orange tint on the palms of a client who eats lots of carrots", "w": "Carotene coloring is harmless."},
+      {"t": "Light patches of skin from vitiligo", "w": "Loss of pigment cells. Not urgent."}
+    ],
+    "why": "Cyanosis (a bluish color) reflects poor oxygenation. With shortness of breath, it is a breathing problem. Jaundice, carotene, and vitiligo are pigment changes, not oxygen emergencies.",
+    "trick": "Blue = Breathing problem.",
+    "tip": "Priority: a sign tied to oxygen beats color changes from pigment."
+  },
+  {
+    "id": "P-09", "sec": "ch10-synapses", "focus": [1], "type": "priority", "diff": 3,
+    "stem": "A farm clinic nurse has four clients. Which client should be seen first?",
+    "opts": [
+      {"t": "A worker exposed to a pesticide that blocks acetylcholinesterase, now with muscle twitching and trouble breathing", "c": true},
+      {"t": "A worker with a small cut on the hand", "w": "Minor and stable."},
+      {"t": "A worker with seasonal hay fever", "w": "Not urgent."},
+      {"t": "A worker asking about hearing protection", "w": "Teaching can wait."}
+    ],
+    "why": "Acetylcholinesterase normally breaks down acetylcholine. If it is blocked, ACh builds up and keeps stimulating muscles, which can impair breathing. That is a breathing emergency.",
+    "trick": "No ACh cleanup = muscles stuck 'on', including the breathing muscles.",
+    "tip": "Breathing trouble wins priority questions."
+  },
+  {
+    "id": "P-10", "sec": "ch8-synovial-structure", "focus": [1], "type": "priority", "diff": 3,
+    "stem": "Which client in the joint clinic should the nurse see first?",
+    "opts": [
+      {"t": "A client with a suddenly hot, red, swollen knee and a fever", "c": true},
+      {"t": "A client with osteoarthritis and usual morning stiffness", "w": "Chronic and expected."},
+      {"t": "A client with a healing ankle sprain", "w": "Stable and improving."},
+      {"t": "A client asking about knee braces for running", "w": "Teaching can wait."}
+    ],
+    "why": "A suddenly hot, swollen joint with fever suggests infection inside the joint cavity. The synovial membrane's phagocytes fight microbes, but an infected joint is acute and can be damaged quickly.",
+    "trick": "Hot joint + fever = possible infection: see first.",
+    "tip": "Fever with a new local problem points to infection, which is urgent."
+  },
+  {
+    "id": "T-01", "sec": "ch4-glycolysis", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client who just started weight training. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My muscles are sore three days later because lactic acid is still stuck in them.\"", "c": true},
+      {"t": "\"Creatine phosphate gives my muscles quick energy for a few seconds.\"", "w": "Accurate."},
+      {"t": "\"I keep breathing hard after a sprint to repay my oxygen debt.\"", "w": "Accurate."},
+      {"t": "\"Lactate can be used again by my body for energy.\"", "w": "Accurate. Lactate is a usable intermediate."}
+    ],
+    "why": "Lactate is a usable intermediate that is cleared and recycled. Soreness days after unfamiliar exercise is not explained by lactate lingering for days.",
+    "trick": "Lactate leaves fast. Days-later soreness is something else.",
+    "tip": "Look for the popular myth. It is often the 'needs teaching' answer."
+  },
+  {
+    "id": "T-02", "sec": "ch3-osmosis", "focus": [0], "type": "teaching", "diff": 2,
+    "stem": "A nursing student explains IV fluids to a classmate. Which statement shows the student needs more teaching?",
+    "opts": [
+      {"t": "\"A hypotonic solution makes red blood cells shrink.\"", "c": true},
+      {"t": "\"A hypertonic solution pulls water out of cells.\"", "w": "Accurate."},
+      {"t": "\"An isotonic solution keeps cell volume about the same.\"", "w": "Accurate."},
+      {"t": "\"Water moves toward the side with more solute that can't cross.\"", "w": "Accurate."}
+    ],
+    "why": "Hypotonic solutions make cells SWELL (water enters). Hypertonic solutions make them shrink (crenation). Isotonic solutions keep volume steady.",
+    "trick": "Hypo = hippo (swells).",
+    "tip": "One swapped direction is a classic error to catch."
+  },
+  {
+    "id": "T-03", "sec": "ch6-pigment", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches sun safety at a community fair. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My darker skin has more melanin, so UV can't damage it at all.\"", "c": true},
+      {"t": "\"UV radiation can damage DNA in skin cells.\"", "w": "Accurate."},
+      {"t": "\"Melanin absorbs some UV radiation.\"", "w": "Accurate."},
+      {"t": "\"Skin cancers can come from different kinds of skin cells.\"", "w": "Accurate: basal cell, squamous cell, and melanoma differ."}
+    ],
+    "why": "Melanin absorbs SOME ultraviolet radiation but doesn't eliminate UV damage. Everyone benefits from sun protection.",
+    "trick": "Melanin = a shield, not a force field.",
+    "tip": "Absolute claims ('at all', 'never') usually need correcting."
+  },
+  {
+    "id": "T-04", "sec": "ch6-repair", "focus": [0], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client with a large full-thickness burn. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My burn will grow new normal skin from the middle on its own, like a scrape.\"", "c": true},
+      {"t": "\"This burn destroyed all the layers of my skin.\"", "w": "Accurate."},
+      {"t": "\"Losing this much skin affects my fluid balance and infection risk.\"", "w": "Accurate."},
+      {"t": "\"Good nutrition and blood supply help healing.\"", "w": "Accurate."}
+    ],
+    "why": "Full-thickness burns destroy the whole skin and many regenerative structures. Large ones can't simply regrow normal skin from their center the way a superficial wound heals.",
+    "trick": "Full thickness = full loss of the skin's repair kit.",
+    "tip": "Match the depth of the injury to how it can heal."
+  },
+  {
+    "id": "T-05", "sec": "ch1-directions", "focus": [0], "type": "teaching", "diff": 1,
+    "stem": "A new nurse is documenting a client's wound location. Which statement shows a need for more teaching?",
+    "opts": [
+      {"t": "\"Right and left mean MY right and left as I face the client.\"", "c": true},
+      {"t": "\"Directional terms assume the client is in anatomical position.\"", "w": "Accurate."},
+      {"t": "\"The terms still apply even if the client is lying down.\"", "w": "Accurate."},
+      {"t": "\"In anatomical position, the palms face forward.\"", "w": "Accurate."}
+    ],
+    "why": "Right and left always refer to the CLIENT'S right and left, which may be on the viewer's left. Directional terms use anatomical position no matter how the client is lying.",
+    "trick": "It's their body, so it's their right.",
+    "tip": "Perspective errors are common. Always use the client's view."
+  },
+  {
+    "id": "T-06", "sec": "ch2-carbohydrates", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client with diabetes about carbohydrates. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My body stores glycogen mostly in my fat tissue.\"", "c": true},
+      {"t": "\"Liver glycogen helps keep my blood glucose steady.\"", "w": "Accurate."},
+      {"t": "\"Fiber comes from cellulose that I can't digest.\"", "w": "Accurate."},
+      {"t": "\"Table sugar (sucrose) is glucose joined to fructose.\"", "w": "Accurate."}
+    ],
+    "why": "Glycogen is stored mainly in the liver (to support blood glucose) and skeletal muscle (to fuel muscle). Fat tissue stores triglycerides.",
+    "trick": "Glycogen lives in the Liver and Muscles: 'LM'.",
+    "tip": "Watch for the right substance in the wrong storage place."
+  },
+  {
+    "id": "T-07", "sec": "ch2-lipids", "focus": [0], "type": "teaching", "diff": 2,
+    "stem": "A client asks about fats in the diet. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Cholesterol has no useful job in my body.\"", "c": true},
+      {"t": "\"Phospholipids make up my cell membranes.\"", "w": "Accurate."},
+      {"t": "\"Triglycerides store energy and insulate.\"", "w": "Accurate."},
+      {"t": "\"My body uses cholesterol to make steroid hormones.\"", "w": "Accurate."}
+    ],
+    "why": "Cholesterol stabilizes animal cell membranes and is a precursor of steroid hormones, bile acids, and vitamin D-related molecules. Its levels matter for health, but it has essential jobs.",
+    "trick": "Cholesterol: membranes, hormones, bile, vitamin D. It's not all bad.",
+    "tip": "'No useful job' is an absolute. It is usually wrong in physiology."
+  },
+  {
+    "id": "T-08", "sec": "ch5-connective", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client with a cartilage injury in the knee. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My cartilage will heal quickly because it has a lot of blood vessels.\"", "c": true},
+      {"t": "\"Cartilage heals slowly because it lacks blood vessels.\"", "w": "Accurate."},
+      {"t": "\"Hyaline cartilage covers the ends of my bones in the joint.\"", "w": "Accurate."},
+      {"t": "\"The menisci in my knee are fibrocartilage.\"", "w": "Accurate."}
+    ],
+    "why": "Cartilage is avascular, which is part of why it heals slowly. Bone, by contrast, is richly vascular.",
+    "trick": "No blood vessels = slow repairs.",
+    "tip": "Two statements that contradict each other: one of them is the answer."
+  },
+  {
+    "id": "T-09", "sec": "ch7-remodeling", "focus": [0], "type": "teaching", "diff": 2,
+    "stem": "A nurse reviews calcium regulation with a client. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Calcitonin raises my blood calcium.\"", "c": true},
+      {"t": "\"Parathyroid hormone raises my blood calcium.\"", "w": "Accurate."},
+      {"t": "\"Vitamin D helps me absorb calcium from food.\"", "w": "Accurate."},
+      {"t": "\"Osteoclasts release calcium from bone.\"", "w": "Accurate."}
+    ],
+    "why": "Calcitonin (from the thyroid) LOWERS blood calcium by inhibiting osteoclasts and helping osteoblasts deposit calcium in bone. PTH raises it.",
+    "trick": "CalciTONEin TONES it down. PTH Pulls it up.",
+    "tip": "Opposing hormones: check which way each one pushes."
+  },
+  {
+    "id": "T-10", "sec": "ch11-autonomic", "focus": [1], "type": "teaching", "diff": 1,
+    "stem": "A nursing student describes the autonomic nervous system. Which statement shows a need for more teaching?",
+    "opts": [
+      {"t": "\"The sympathetic division is the 'rest and digest' system.\"", "c": true},
+      {"t": "\"The sympathetic division often raises heart rate during a challenge.\"", "w": "Accurate."},
+      {"t": "\"The parasympathetic division supports digestion and saving energy.\"", "w": "Accurate."},
+      {"t": "\"Both divisions are active in normal daily regulation.\"", "w": "Accurate."}
+    ],
+    "why": "Sympathetic = mobilizes resources ('fight or flight'). Parasympathetic = digestion and energy conservation ('rest and digest'). Both work all the time.",
+    "trick": "Sympathetic = Stress. Parasympathetic = Peace.",
+    "tip": "Swapped labels are the classic autonomic error."
+  },
+  {
+    "id": "T-11", "sec": "ch12-phototransduction", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A 50-year-old client now needs reading glasses. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Needing reading glasses means I have cataracts.\"", "c": true},
+      {"t": "\"With age, my lens has a harder time focusing up close.\"", "w": "Accurate: presbyopia."},
+      {"t": "\"A cataract is a clouding of the lens.\"", "w": "Accurate."},
+      {"t": "\"Glaucoma involves damage to the optic nerve.\"", "w": "Accurate."}
+    ],
+    "why": "Presbyopia (reduced near focus with age) and cataract (clouding of the lens) are different processes. Needing reading glasses is presbyopia.",
+    "trick": "Presbyopia = arms too short to read. Cataract = foggy window.",
+    "tip": "Similar age-related conditions: match each to its exact change."
+  },
+  {
+    "id": "T-12", "sec": "ch12-ear", "focus": [], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches hearing protection to factory workers. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"My middle-ear muscles fully protect me from any sudden loud bang.\"", "c": true},
+      {"t": "\"The middle-ear reflex can soften some steady loud sounds.\"", "w": "Accurate."},
+      {"t": "\"Damage to hair cells can cause sensorineural hearing loss.\"", "w": "Accurate."},
+      {"t": "\"Wearing ear protection around loud machines is important.\"", "w": "Accurate."}
+    ],
+    "why": "The acoustic (tympanic) reflex tightens middle-ear muscles, but it has a delay and does not reliably protect against sudden loud impulses. Hearing protection is still needed.",
+    "trick": "The ear's reflex is a slow door. Sudden bangs get in first.",
+    "tip": "'Fully' and 'any' signal the false statement."
+  },
+  {
+    "id": "T-13", "sec": "ch10-synapses", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A student reviews neurotransmitters. Which statement shows a need for more teaching?",
+    "opts": [
+      {"t": "\"GABA is the brain's main excitatory neurotransmitter.\"", "c": true},
+      {"t": "\"Glutamate is a major excitatory transmitter in the CNS.\"", "w": "Accurate."},
+      {"t": "\"Acetylcholinesterase breaks down acetylcholine.\"", "w": "Accurate."},
+      {"t": "\"Endorphins help modulate pain.\"", "w": "Accurate."}
+    ],
+    "why": "Glutamate is the major excitatory CNS transmitter. GABA is a major INHIBITORY one. Glycine commonly mediates spinal inhibition.",
+    "trick": "GABA = 'Go Away, Brain Activity' (inhibitory).",
+    "tip": "Excitatory vs inhibitory pairs are easy to swap. Lock in one."
+  },
+  {
+    "id": "T-14", "sec": "ch3-differentiation", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A client is told a growth is benign. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Since it's benign, it can never cause any harm.\"", "c": true},
+      {"t": "\"A benign tumor doesn't spread to other parts of the body.\"", "w": "Accurate."},
+      {"t": "\"A malignant tumor can invade nearby tissue.\"", "w": "Accurate."},
+      {"t": "\"Where a tumor is located can matter, even if it's benign.\"", "w": "Accurate."}
+    ],
+    "why": "A benign tumor stays local and doesn't metastasize, but its location can still make it harmful, for example by pressing on nearby structures.",
+    "trick": "Benign = stays put, but 'put' can still be a bad spot.",
+    "tip": "'Never' and 'any' are red flags."
+  },
+  {
+    "id": "T-15", "sec": "ch9-disorders", "focus": [0], "type": "teaching", "diff": 1,
+    "stem": "A client's leg muscles shrank while in a cast for 8 weeks. Which statement indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Exercise won't help my muscle come back.\"", "c": true},
+      {"t": "\"My muscle shrank because I couldn't use it.\"", "w": "Accurate: disuse atrophy."},
+      {"t": "\"Disuse reduces the blood vessels and mitochondria in muscle.\"", "w": "Accurate."},
+      {"t": "\"Regular exercise helps keep muscles working as I age.\"", "w": "Accurate."}
+    ],
+    "why": "Disuse atrophy shrinks capillary networks, mitochondria, and actin and myosin filaments. Exercise is the best way to rebuild and maintain muscle.",
+    "trick": "Muscle follows 'use it or lose it', and you can use it to get it back.",
+    "tip": "A statement that would stop a client from getting better needs correcting."
+  }
+]
