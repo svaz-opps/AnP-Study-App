@@ -30,6 +30,7 @@ function defaultState() {
     unlocks: {},
     settings: { sound: true, motion: 'auto', text: 1, examDate: '', dailyGoal: 0 },
     openRun: null,      // autosaved round in progress: { at, run }
+    tips: {},           // one-time hints already dismissed, e.g. { iosSave: true }
   };
 }
 

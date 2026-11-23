@@ -61,6 +61,7 @@ async function start(hot) {
   if (!run) {
     if (WR.state.openRun) { WR.state.openRun = null; Store.save(); }
     App.show('floor');
+    SaveHelp.maybeRemind();
     return;
   }
   Store.holdRun = true;

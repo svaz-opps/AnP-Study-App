@@ -154,3 +154,11 @@ input[type="date"], input[type="text"] {
   .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal { animation: none !important; }
   .walker { transition: none !important; }
 }
+
+/* how-to-save guide (settings card + iPad reminder) */
+.save-help h3 { font-size: var(--fs-md, 1rem); margin: var(--s4) 0 var(--s2); }
+.modal .save-help > h3:first-child { margin-top: 0; }
+.save-help .steps { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; color: var(--text-dim, inherit); }
+.save-help .steps b { color: var(--text, inherit); }
+.save-help p .ic { width: 18px; height: 18px; vertical-align: -3px; color: var(--accent); }
+.modal .save-help { max-height: min(52vh, 420px); overflow-y: auto; margin: var(--s3) 0; padding-right: 4px; }

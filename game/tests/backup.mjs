@@ -44,6 +44,7 @@ const browser = await chromium.launch();
   await page.waitForTimeout(400);
   check(await page.evaluate(() => window.WR.Store.state.xp) === 1234, 'restoring the downloaded file brings progress back');
   fs.unlinkSync(saved);
+  check(await page.evaluate(() => !document.querySelector('#modal-root .modal')), 'no iPad reminder on desktop');
   check(errors.length === 0, 'no page errors (desktop)' + (errors.length ? ': ' + errors.join(' | ') : ''));
   await ctx.close();
 }
@@ -63,6 +64,18 @@ const browser = await chromium.launch();
   await page.waitForTimeout(400);
   const sh = await page.evaluate(() => window.__shared);
   check(sh && /\.json$/.test(sh.name) && JSON.parse(sh.text).save.xp === 1234, 'iPad backup opens the share sheet with the file');
+  // the how-to-save guide in Settings
+  const guide = await page.evaluate(() => document.querySelector('.card.save-help')?.innerText || '');
+  check(/How to save your game on iPad/.test(guide) && /Add to Home Screen/.test(guide) && /Save to Files/.test(guide), 'Settings shows the iPad save guide');
+  // one-time reminder in Safari: appears at start, "Remind me later" keeps it, "Got it" retires it
+  const reminder = async () => { await page.reload(); await page.waitForSelector('.floorplan'); await page.waitForTimeout(300); return page.evaluate(() => /Keep your progress safe/.test(document.querySelector('#modal-root')?.innerText || '')); };
+  check(await reminder(), 'iPad Safari shows the save reminder at start');
+  await page.click('#modal-root [data-m="later"]');
+  check(await reminder(), '"Remind me later" shows it again next time');
+  await page.click('#modal-root [data-m="ok"]');
+  await page.waitForTimeout(400);
+  check(!(await reminder()), '"Got it" stops the reminder');
+  await page.screenshot({ path: path.resolve(path.dirname(new URL(import.meta.url).pathname), '../dist/shots/ipad-save-guide.png') }).catch(() => {});
   check(errors.length === 0, 'no page errors (iPad)' + (errors.length ? ': ' + errors.join(' | ') : ''));
   await ctx.close();
 }

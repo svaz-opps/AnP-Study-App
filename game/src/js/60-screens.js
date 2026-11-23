@@ -162,11 +162,62 @@ Screens.stats = {
   },
 };
 
+// ----- how to keep progress safe (the hosted version saves only in this browser)
+const SaveHelp = {
+  hosted() { return !(window.claude && typeof window.claude.use === 'function'); },
+  ios() { return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); },
+  homeApp() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; },
+  // where the player is right now, in one line
+  status() {
+    if (!this.ios()) return 'Progress is saved in this browser on this computer only.';
+    if (this.homeApp()) return `${icon('check')} You are playing from the Home Screen icon, so Safari will not clear your progress.`;
+    return 'You are playing in Safari. Safari can erase saved progress if you go about a week without opening the game, so add it to your Home Screen.';
+  },
+  steps(inModal) {
+    const share = 'the <b>Share</b> button (a square with an arrow pointing up; on newer iPads it can be inside the <b>•••</b> menu)';
+    const homeSteps = this.homeApp() ? '' : `
+      <h3>1. Put the game on your Home Screen</h3>
+      <ol class="steps">
+        <li>In Safari, with this game open, tap ${share}.</li>
+        <li>Scroll down and tap <b>Add to Home Screen</b>, then tap <b>Add</b>.</li>
+        <li>From now on, always open Ward Rounds from its new icon (the red cross). It opens full screen and keeps its own save that Safari will not clear.</li>
+        <li><b>Already played here in Safari?</b> The icon starts with a fresh save. Move your progress first: tap ${inModal ? '<b>Back up now</b> below' : '<b>Download backup</b> above'} and choose <b>Save to Files</b>. Then open the new icon, go to Settings, tap <b>Restore from backup</b>, and pick that file.</li>
+      </ol>`;
+    const n = this.homeApp() ? '' : '2. ';
+    return `${homeSteps}
+      <h3>${n}Make a backup now and then</h3>
+      <ol class="steps">
+        <li>Go to Settings (the gear) and tap <b>Download backup</b>.</li>
+        <li>Choose <b>Save to Files</b>, then pick a folder (iCloud Drive keeps it safe even if you lose the iPad).</li>
+        <li>To bring progress back, or onto another iPad: Settings, <b>Restore from backup</b>, then pick the file.</li>
+      </ol>
+      <h3>Things that erase progress</h3>
+      <ul class="steps">
+        <li>Deleting the Home Screen icon (it deletes that icon's save).</li>
+        <li>Settings app, Safari, <b>Clear History and Website Data</b> (erases the save in Safari).</li>
+        <li>Playing in a <b>Private</b> tab (nothing is kept after you close it).</li>
+      </ul>`;
+  },
+  // shown once in Safari on an iPad, until "Got it"
+  maybeRemind() {
+    if (!this.hosted() || !this.ios() || this.homeApp() || WR.state.tips.iosSave) return;
+    App.modal(`<h2>Keep your progress safe</h2>
+      <p class="dim">Your progress is saved on this iPad only, and Safari can erase it if you go about a week without playing. Two quick habits keep it safe:</p>
+      <div class="save-help">${this.steps(true)}</div>
+      <div class="actions"><button class="btn" data-m="later">Remind me later</button><button class="btn" data-m="backup">${icon('download')}Back up now</button><button class="btn primary" data-m="ok" data-autofocus>Got it</button></div>`,
+    (m) => {
+      if (m === 'backup') { Screens.settings.act.backup(); return true; }
+      if (m === 'ok') { WR.state.tips.iosSave = true; Store.save(); }
+      return false;
+    });
+  },
+};
+
 // ----- settings
 Screens.settings = {
   render() {
     const st = WR.state.settings;
-    const cloud = Store.cloud.status === 'cloud' ? 'Progress autosaves to your Claude account after every tap, even mid-round, so it follows you to any device.' : 'Progress autosaves in this browser after every tap, even mid-round. It stays on this device only, so download a backup now and then. On iPad, add the game to your Home Screen (Share, then Add to Home Screen) and always open it from there so Safari does not clear it.';
+    const cloud = Store.cloud.status === 'cloud' ? 'Progress autosaves to your Claude account after every tap, even mid-round, so it follows you to any device.' : 'Progress autosaves in this browser after every tap, even mid-round. It stays on this device only: see below for how to keep it safe.';
     const seg = (key, opts) => `<div class="seg" role="group">${opts.map(([v, n]) => `<button class="${String(st[key]) === String(v) ? 'on' : ''}" data-action="setting" data-key="${key}" data-val="${v}" aria-pressed="${String(st[key]) === String(v)}">${n}</button>`).join('')}</div>`;
     return `${topbar('Settings')}
       <div class="narrow stack">
@@ -181,6 +232,8 @@ Screens.settings = {
           <label class="btn file-btn">${icon('upload')}Restore from backup<input type="file" id="restore" accept=".json,application/json"></label>
           <button class="btn" data-action="tutorial">${icon('book')}Show tutorial</button>
           <button class="btn danger" data-action="reset">Reset progress</button></div></div>
+        ${Store.cloud.status === 'cloud' || !SaveHelp.hosted() ? '' : `<div class="card save-help"><b>${SaveHelp.ios() ? 'How to save your game on iPad' : 'How to keep your progress'}</b>
+          <p class="dim">${SaveHelp.status()}</p>${SaveHelp.ios() ? SaveHelp.steps() : `<ol class="steps"><li>Tap <b>Download backup</b> now and then and keep the file.</li><li>To bring progress back, or onto another device, tap <b>Restore from backup</b> and pick the file.</li><li>Clearing this browser's history or site data, or playing in a private window, erases progress.</li></ol>`}</div>`}
         <p class="faint center">Ward Rounds · BIOL 2401 study guide edition · ${Content.all().length} patients</p>
       </div>`;
   },

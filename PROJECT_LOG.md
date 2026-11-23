@@ -180,3 +180,15 @@
   the BRANCHING checklist. All six suites pass.
 - Assumption: a Home Screen web app keeps its own storage, separate from Safari, and is exempt from Safari's 7-day
   storage cap (Apple's documented behaviour as far as known); not verifiable from here.
+
+## 2026-11-23 — In-game "how to save on iPad" instructions
+- Settings has a new card, shown only outside claude.ai (where there is no account save): "How to save your game on
+  iPad". It says where you are playing (Safari vs the Home Screen icon) and gives the steps: add to Home Screen,
+  move existing Safari progress with backup/restore, back up to Files now and then, and what erases progress.
+  Desktop browsers get a short generic version. Already in the Home Screen app, the Home Screen steps are hidden.
+- A one-time popup "Keep your progress safe" with the same steps appears at start in Safari on an iPad (hosted
+  version only, not in the Home Screen app, not when a resume prompt is showing). Buttons: Remind me later (shows
+  again next launch), Back up now, Got it (stored in the new `state.tips.iosSave`).
+- Assumption: iPad detection uses the user agent plus the "MacIntel with touch" check, since iPadOS Safari
+  reports itself as a Mac. The Share button may sit in the ••• menu on newer iPadOS, so the text mentions both.
+- backup.mjs extended (guide shown, reminder shown/re-shown/retired, none on desktop). All suites pass.
