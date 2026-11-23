@@ -1,0 +1,199 @@
+[
+  {
+    "id": "N4-01", "sec": "ch4-enzymes", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "How does an enzyme speed up a reaction?",
+    "opts": [
+      {"t": "It lowers the activation energy and is not used up.", "c": true},
+      {"t": "It is used up in the reaction, so the cell must replace it after each use.", "w": "Enzymes are reused. They aren't consumed."},
+      {"t": "It changes the reaction's equilibrium.", "w": "Enzymes speed up reaching equilibrium but don't change it."},
+      {"t": "It adds energy to the reactants.", "w": "Enzymes lower the energy barrier. They don't supply energy."}
+    ],
+    "why": "Enzymes are catalysts: they lower activation energy, speed up a specific reaction, and are reused. They don't change the overall energy difference or the equilibrium.",
+    "trick": "An enzyme is a tunnel through the mountain: same start and end, easier path.",
+    "tip": "Eliminate options saying enzymes are consumed or change equilibrium."
+  },
+  {
+    "id": "N4-02", "sec": "ch4-enzymes", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "When enough of a pathway's final product builds up, it slows an enzyme at an earlier step. What is this called?",
+    "opts": [
+      {"t": "Feedback inhibition", "c": true},
+      {"t": "Denaturation", "w": "Denaturation destroys an enzyme's shape. Feedback inhibition only regulates activity."},
+      {"t": "Positive feedback", "w": "Positive feedback amplifies a process. This slows one down."},
+      {"t": "Mutation", "w": "A mutation changes DNA, not enzyme activity in the moment."}
+    ],
+    "why": "In feedback inhibition, a pathway's end product reduces the activity of an earlier enzyme, so the cell doesn't waste resources making more than it needs.",
+    "trick": "The finished product tells the start of the line to slow down.",
+    "tip": "Separate regulating an enzyme (temporary) from destroying it (denaturation)."
+  },
+  {
+    "id": "N4-03", "sec": "ch4-enzymes", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which statements about enzymes are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The active site binds specific substrates.", "c": true},
+      {"t": "Some cofactors are metal ions.", "c": true},
+      {"t": "Many coenzymes are derived from vitamins.", "c": true},
+      {"t": "Every enzyme requires a vitamin to work.", "w": "Not all enzymes need a vitamin-derived coenzyme."},
+      {"t": "Lipase digests proteins.", "w": "Lipase acts on lipids. Enzyme names often show their substrate."}
+    ],
+    "why": "Enzymes are specific: the active site fits particular substrates (refined by induced fit). Helpers include cofactors (often metal ions) and coenzymes (organic, often from vitamins). The -ase name often shows the substrate: lipase acts on lipids, sucrase on sucrose.",
+    "trick": "Substrate + -ase = the enzyme that acts on it (lipid → lipase).",
+    "tip": "'Every' is a red flag in SATA options."
+  },
+  {
+    "id": "N4-04", "sec": "ch4-atp", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "NAD⁺ picks up electrons and becomes NADH. What has happened to NAD⁺?",
+    "opts": [
+      {"t": "It has been reduced.", "c": true},
+      {"t": "It has been oxidized.", "w": "Oxidation is LOSING electrons."},
+      {"t": "It has been phosphorylated.", "w": "Phosphorylation adds a phosphate group, not electrons."},
+      {"t": "It has been hydrolyzed.", "w": "Hydrolysis uses water to break a bond."}
+    ],
+    "why": "Oxidation = losing electrons. Reduction = gaining electrons. NAD⁺ and FAD gain electrons during fuel breakdown (becoming NADH and FADH₂) and later donate them to the electron transport chain.",
+    "trick": "OIL RIG: Oxidation Is Loss, Reduction Is Gain (of electrons).",
+    "tip": "Use OIL RIG every time. Don't go by how the word sounds."
+  },
+  {
+    "id": "N4-05", "sec": "ch4-atp", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "In the mitochondria, a proton gradient drives ATP synthase to make ATP. Which type of phosphorylation is this?",
+    "opts": [
+      {"t": "Oxidative phosphorylation", "c": true},
+      {"t": "Substrate-level phosphorylation", "w": "Substrate-level transfers a phosphate DIRECTLY to ADP, as in glycolysis."},
+      {"t": "Dehydration synthesis", "w": "That joins molecules by removing water. It isn't a type of phosphorylation."},
+      {"t": "Fermentation", "w": "Fermentation regenerates NAD⁺ without oxygen."}
+    ],
+    "why": "Oxidative phosphorylation links electron transfer and a proton gradient to ATP synthase and makes most aerobic ATP. Substrate-level phosphorylation transfers phosphate directly to ADP, as in glycolysis and the Krebs cycle.",
+    "trick": "Oxidative = Oxygen + ATP synthase turbine. Substrate-level = direct hand-off.",
+    "tip": "Key phrase match: 'ATP synthase' or 'proton gradient' = oxidative."
+  },
+  {
+    "id": "N4-06", "sec": "ch4-glycolysis", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "What does glycolysis produce from one molecule of glucose?",
+    "opts": [
+      {"t": "2 pyruvate, 2 net ATP, and 2 NADH", "c": true},
+      {"t": "About 36 ATP", "w": "That is a total for full aerobic respiration (older accounting), not glycolysis."},
+      {"t": "4 net ATP", "w": "Glycolysis MAKES 4 ATP but invests 2, so the net gain is 2."},
+      {"t": "6 CO₂", "w": "CO₂ is released later, in pyruvate oxidation and the Krebs cycle."}
+    ],
+    "why": "Glycolysis happens in the cytosol. It splits one six-carbon glucose into two three-carbon pyruvates, uses 2 ATP and makes 4 (net 2), and yields 2 NADH. It doesn't directly need oxygen.",
+    "trick": "Glycolysis = 'two of everything': 2 pyruvate, 2 ATP, 2 NADH.",
+    "tip": "'Net' means subtract what was invested (4 made − 2 used = 2)."
+  },
+  {
+    "id": "N4-07", "sec": "ch4-glycolysis", "focus": [1], "type": "mcq", "diff": 3,
+    "stem": "During a sprint, muscle cells convert pyruvate into lactate. What does this step accomplish?",
+    "opts": [
+      {"t": "It regenerates NAD⁺ so glycolysis can keep going, without making extra ATP.", "c": true},
+      {"t": "It makes a large amount of extra ATP.", "w": "Lactate formation itself produces no additional ATP."},
+      {"t": "It creates a toxic waste with no further use.", "w": "Lactate is a usable intermediate that can be oxidized or turned back into glucose."},
+      {"t": "It requires oxygen.", "w": "Lactate formation happens when NADH can't be reoxidized fast enough aerobically."}
+    ],
+    "why": "Glycolysis needs NAD⁺. When the mitochondria can't reoxidize NADH fast enough, lactate dehydrogenase passes NADH's electrons to pyruvate, making lactate and freeing NAD⁺. Glycolysis continues, but no extra ATP is made by that step.",
+    "trick": "Lactate is the NAD⁺ recycling bin.",
+    "tip": "Don't assume a step makes ATP just because it's in an energy pathway."
+  },
+  {
+    "id": "N4-08", "sec": "ch4-aerobic", "focus": [0], "type": "order", "diff": 2,
+    "stem": "Put the stages of aerobic cellular respiration in order.",
+    "steps": [
+      "Glycolysis in the cytosol",
+      "Pyruvate oxidation to acetyl-CoA in the mitochondrial matrix",
+      "Krebs (citric acid) cycle in the matrix",
+      "Electron transport chain and oxidative phosphorylation on the inner membrane"
+    ],
+    "why": "Glucose is split in the cytosol, pyruvate enters mitochondria and becomes acetyl-CoA, the Krebs cycle strips electrons and releases CO₂, and the electron transport chain uses those electrons to make most of the ATP.",
+    "trick": "Get Pyruvate, Kick off Krebs, Electrons Exit to oxygen (G, P, K, E).",
+    "tip": "Follow the location: cytosol first, then deeper into the mitochondrion."
+  },
+  {
+    "id": "N4-09", "sec": "ch4-aerobic", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "What is the final electron acceptor in the electron transport chain?",
+    "opts": [
+      {"t": "Oxygen, which forms water", "c": true},
+      {"t": "NAD⁺", "w": "NAD⁺ collects electrons early on. NADH then DONATES them to the chain."},
+      {"t": "Carbon dioxide", "w": "CO₂ is a waste product of the Krebs cycle, not an electron acceptor."},
+      {"t": "Glucose", "w": "Glucose is the fuel that is oxidized."}
+    ],
+    "why": "Electrons pass through the chain and pump protons. At the end, oxygen accepts the electrons and forms water. The proton gradient then powers ATP synthase. Without oxygen, the chain backs up and aerobic ATP production falls.",
+    "trick": "Oxygen is the last stop on the electron train, where water is made.",
+    "tip": "'Final' means the end of the line. Pick the substance that leaves as a product (water)."
+  },
+  {
+    "id": "N4-10", "sec": "ch4-fuels", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "Which molecule is the body's largest concentrated reserve of fuel?",
+    "opts": [
+      {"t": "Triglycerides (fat)", "c": true},
+      {"t": "Glycogen", "w": "Glycogen stores glucose in the liver and muscle, but in smaller amounts."},
+      {"t": "Protein", "w": "Proteins have structural jobs first and are not the main fuel store."},
+      {"t": "ATP", "w": "ATP is for immediate energy transfer, not long-term storage."}
+    ],
+    "why": "Fats (triglycerides) are the largest concentrated fuel reserve. Glycogen is a smaller, quicker glucose store in the liver (to keep blood glucose up) and in muscle (for its own use).",
+    "trick": "Glycogen = the wallet (quick cash). Fat = the savings account (big reserve).",
+    "tip": "'Largest' or 'long-term' storage points to fat. 'Quick' storage points to glycogen."
+  },
+  {
+    "id": "N4-11", "sec": "ch4-fuels", "focus": [1], "type": "sata", "diff": 3,
+    "stem": "Which statements about using different fuels are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Beta-oxidation converts fatty acids into acetyl-CoA.", "c": true},
+      {"t": "Glycerol from fats can enter carbohydrate pathways.", "c": true},
+      {"t": "After the amino group is removed, an amino acid's carbon skeleton can enter energy pathways.", "c": true},
+      {"t": "Humans can make every amino acid, so dietary protein isn't needed.", "w": "Humans can't make every amino acid. Essential amino acids must come from food."},
+      {"t": "The nitrogen from amino acids is burned as fuel.", "w": "The nitrogen must be handled and excreted."}
+    ],
+    "why": "Pathways share intermediates. Fatty acids become acetyl-CoA, glycerol enters carbohydrate pathways, and deaminated amino acid skeletons enter energy pathways while the nitrogen is excreted.",
+    "trick": "All roads lead to acetyl-CoA (and the Krebs cycle).",
+    "tip": "Watch for options that would mean 'no need to eat something'. They are usually false."
+  },
+  {
+    "id": "N4-12", "sec": "ch4-replication", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "DNA replication is called semiconservative. What does this mean?",
+    "opts": [
+      {"t": "Each new DNA double helix has one original strand and one newly made strand.", "c": true},
+      {"t": "Both strands of each new helix are brand new.", "w": "One parental strand is kept in each daughter helix."},
+      {"t": "Only half of the genes are copied.", "w": "The whole genome is copied."},
+      {"t": "DNA is copied into RNA.", "w": "That is transcription, not replication."}
+    ],
+    "why": "During S phase, helicase unzips DNA and DNA polymerases build new strands from each template. Each daughter helix keeps one old strand and one new strand: semiconservative.",
+    "trick": "Semi = half: half old, half new.",
+    "tip": "Don't confuse replication (DNA → DNA) with transcription (DNA → RNA)."
+  },
+  {
+    "id": "N4-13", "sec": "ch4-replication", "focus": [1], "type": "teaching", "diff": 2,
+    "stem": "A nurse teaches a client about DNA and genetic changes. Which statement by the client indicates a need for further teaching?",
+    "opts": [
+      {"t": "\"Every DNA mutation causes cancer.\"", "c": true},
+      {"t": "\"DNA is copied before a cell divides.\"", "w": "Accurate. Replication happens in S phase."},
+      {"t": "\"Transcription makes RNA from DNA.\"", "w": "Accurate."},
+      {"t": "\"Repair enzymes fix many copying errors.\"", "w": "Accurate. Proofreading and repair reduce errors."}
+    ],
+    "why": "A mutation is a change in DNA sequence. Depending on where it is, it may have no effect, change a protein or its expression, or contribute to disease. Not every mutation causes cancer.",
+    "trick": "A mutation is a typo. Some typos change nothing.",
+    "tip": "'Every' statements usually need correcting."
+  },
+  {
+    "id": "N4-14", "sec": "ch4-expression", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which pairing of process and description is correct?",
+    "opts": [
+      {"t": "Transcription makes RNA from a DNA template; translation builds a polypeptide at a ribosome.", "c": true},
+      {"t": "Translation makes RNA from DNA; transcription builds a polypeptide.", "w": "The two processes are swapped."},
+      {"t": "Replication builds a polypeptide at a ribosome.", "w": "Replication copies DNA."},
+      {"t": "DNA travels to the ribosome and becomes protein.", "w": "DNA stays a template. mRNA carries the message."}
+    ],
+    "why": "Transcription (in the nucleus) uses DNA to make RNA, then mRNA exits through nuclear pores. Translation (at ribosomes) reads mRNA codons, and tRNA delivers amino acids to build the polypeptide.",
+    "trick": "TranSCRIPTion = copy the script (same 'language' of nucleotides). TransLATion = translate into a new language (amino acids).",
+    "tip": "Swapped-pair questions: anchor one definition firmly, then check the other."
+  },
+  {
+    "id": "N4-15", "sec": "ch4-expression", "focus": [1], "type": "mcq", "diff": 3,
+    "stem": "A template DNA strand reads 3′-TAC GGA ATT-5′. What is the mRNA made from it?",
+    "opts": [
+      {"t": "5′-AUG CCU UAA-3′", "c": true},
+      {"t": "5′-ATG CCT TAA-3′", "w": "This uses T. RNA uses U instead of T."},
+      {"t": "5′-UAC GGA AUU-3′", "w": "This copies the template. mRNA is COMPLEMENTARY to the template."},
+      {"t": "3′-AUG CCU UAA-5′", "w": "The bases are right, but the direction is reversed. mRNA is written 5′ to 3′."}
+    ],
+    "why": "mRNA is complementary to the template and runs antiparallel: T→A, A→U, C→G, G→C. 3′-TAC GGA ATT-5′ gives 5′-AUG CCU UAA-3′ = methionine (start), proline, stop.",
+    "trick": "Pair up and swap T for U: A–U, T–A, C–G, G–C.",
+    "tip": "Check three things: complementary bases, U instead of T, and 5′→3′ direction."
+  }
+]

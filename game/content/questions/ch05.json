@@ -1,0 +1,200 @@
+[
+  {
+    "id": "N5-01", "sec": "ch5-epithelia", "focus": [0], "type": "sata", "diff": 2,
+    "stem": "Which statements about epithelial tissue are accurate? Select all that apply.",
+    "opts": [
+      {"t": "It is avascular, so nutrients diffuse from the connective tissue below.", "c": true},
+      {"t": "Its basal surface attaches to a basement membrane.", "c": true},
+      {"t": "Its apical surface faces a lumen or the outside.", "c": true},
+      {"t": "It has its own network of capillaries.", "w": "Epithelia are avascular."},
+      {"t": "It regenerates very slowly.", "w": "Many epithelia regenerate rapidly."}
+    ],
+    "why": "Epithelia are polar: an apical surface faces a lumen or the outside, and a basal surface rests on a basement membrane over vascular connective tissue. They have no blood vessels of their own and many replace themselves quickly.",
+    "trick": "Apical = Apex (top, facing out). Basal = Base (bottom, on the basement membrane).",
+    "tip": "SATA: check opposites (avascular vs vascular). Only one can be true."
+  },
+  {
+    "id": "N5-02", "sec": "ch5-epithelia", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "A stratified epithelium has round cells at its base and flat cells at its surface. How is it named?",
+    "opts": [
+      {"t": "Stratified squamous, because it is named for the cells at the free surface", "c": true},
+      {"t": "Stratified cuboidal, because it is named for the basal cells", "w": "Stratified tissues are named for their apical (surface) cells."},
+      {"t": "Simple squamous, because the top cells are flat", "w": "It has multiple layers, so it is stratified, not simple."},
+      {"t": "Pseudostratified, because the cells vary in shape", "w": "Pseudostratified is one layer where every cell touches the basement membrane."}
+    ],
+    "why": "Simple = one layer, stratified = many layers. The shape name (squamous, cuboidal, columnar) comes from the cells at the free (apical) surface.",
+    "trick": "Name it by the 'roof' cells, not the 'basement' cells.",
+    "tip": "Two decisions: how many layers, then what shape on top."
+  },
+  {
+    "id": "N5-03", "sec": "ch5-simple", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "The air sacs (alveoli) of the lungs need a very thin lining for fast gas exchange. Which epithelium lines them?",
+    "opts": [
+      {"t": "Simple squamous", "c": true},
+      {"t": "Stratified squamous", "w": "Multiple layers resist abrasion but would slow diffusion."},
+      {"t": "Simple columnar", "w": "Tall columnar cells absorb and secrete. They're too thick for fast diffusion."},
+      {"t": "Transitional", "w": "Transitional epithelium lines the stretchy urinary bladder."}
+    ],
+    "why": "Simple squamous epithelium is one thin layer of flat cells, ideal for diffusion and filtration. It lines the alveoli, blood vessels (endothelium), and serous membranes (mesothelium).",
+    "trick": "Squamous = squashed flat = short diffusion distance.",
+    "tip": "Match thickness to job: thin for exchange, thick and layered for protection."
+  },
+  {
+    "id": "N5-04", "sec": "ch5-simple", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Kidney tubules absorb and secrete substances. Which epithelium, a single layer of cells with round central nuclei, lines them?",
+    "opts": [
+      {"t": "Simple cuboidal", "c": true},
+      {"t": "Simple squamous", "w": "Simple squamous is for diffusion and filtration, not heavy absorption and secretion."},
+      {"t": "Stratified squamous", "w": "Stratified squamous protects against abrasion."},
+      {"t": "Pseudostratified columnar", "w": "This ciliated lining is found in the trachea."}
+    ],
+    "why": "Simple cuboidal epithelium (one layer of cube-shaped cells) has enough cytoplasm to absorb and secrete. It lines kidney tubules, thyroid follicles, and small gland ducts.",
+    "trick": "Cuboidal = cubes in the kidney tubules.",
+    "tip": "Absorption or secretion points to cuboidal or columnar. Diffusion points to squamous."
+  },
+  {
+    "id": "N5-05", "sec": "ch5-simple", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Under the microscope, the lining of the trachea looks multilayered because its nuclei sit at different heights. What is true about this pseudostratified epithelium?",
+    "opts": [
+      {"t": "It is a single layer: every cell touches the basement membrane.", "c": true},
+      {"t": "Every cell reaches the lumen.", "w": "Not every cell reaches the lumen, but every cell touches the basement membrane."},
+      {"t": "It truly has many layers of cells.", "w": "It only LOOKS layered ('pseudo' means false)."},
+      {"t": "It never has cilia.", "w": "The respiratory version is ciliated and has goblet cells."}
+    ],
+    "why": "Pseudostratified columnar epithelium looks stratified because the nuclei are at different heights, but it is one layer: all cells contact the basement membrane. In the airways it is ciliated with goblet cells that make mucus.",
+    "trick": "PSEUDO = fake layers. All feet on the same floor (basement membrane).",
+    "tip": "The prefix 'pseudo' tells you the appearance is misleading."
+  },
+  {
+    "id": "N5-06", "sec": "ch5-stratified", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which epithelium lines the moist surfaces of the mouth and esophagus?",
+    "opts": [
+      {"t": "Nonkeratinized stratified squamous", "c": true},
+      {"t": "Keratinized stratified squamous", "w": "The keratinized form makes up the epidermis of the skin."},
+      {"t": "Simple squamous", "w": "One thin layer couldn't stand up to the abrasion of food."},
+      {"t": "Transitional", "w": "Transitional epithelium lines urinary structures."}
+    ],
+    "why": "Stratified squamous resists abrasion. The keratinized form (dead, keratin-filled surface cells) is the epidermis. The nonkeratinized form protects moist surfaces like the mouth, esophagus, and vagina, and its surface cells keep their nuclei.",
+    "trick": "Keratin = dry skin armor. No keratin = moist inside linings.",
+    "tip": "Moist vs dry location decides keratinized vs nonkeratinized."
+  },
+  {
+    "id": "N5-07", "sec": "ch5-stratified", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "The urinary bladder lining must stretch as it fills while still forming a barrier against urine. Which epithelium is this?",
+    "opts": [
+      {"t": "Transitional epithelium (urothelium)", "c": true},
+      {"t": "Simple columnar", "w": "Simple columnar lines the intestine for absorption."},
+      {"t": "Simple squamous", "w": "Simple squamous is too thin to be a protective urinary barrier."},
+      {"t": "Pseudostratified columnar", "w": "This lines the airways."}
+    ],
+    "why": "Transitional epithelium lines the bladder and ureters. Its surface cells look dome-shaped when relaxed and flatten as the wall stretches, while multiple layers keep a protective barrier.",
+    "trick": "Transitional = Transforms its shape as the bladder fills.",
+    "tip": "The word 'stretch' plus 'urinary' points straight to transitional."
+  },
+  {
+    "id": "N5-08", "sec": "ch5-glands", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "The thyroid gland releases hormones into the interstitial fluid and blood, without ducts. Which type of gland is it?",
+    "opts": [
+      {"t": "Endocrine", "c": true},
+      {"t": "Exocrine", "w": "Exocrine glands deliver products through ducts onto a surface or into a lumen."},
+      {"t": "Holocrine", "w": "Holocrine describes a secretion method (whole cells break down), not whether ducts exist."},
+      {"t": "Goblet cell", "w": "A goblet cell is a one-cell exocrine gland that makes mucus."}
+    ],
+    "why": "Exocrine glands use ducts (sweat, salivary). Endocrine glands are ductless and release hormones into the fluid around them to circulate in the blood.",
+    "trick": "ENDOcrine = into (endo) the blood. EXOcrine = out (exo) through a duct.",
+    "tip": "Separate WHERE the product goes (endo/exo) from HOW it is released (mero/apo/holo)."
+  },
+  {
+    "id": "N5-09", "sec": "ch5-glands", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "In sebaceous glands, entire cells fill with product and then disintegrate to release it. What type of secretion is this?",
+    "opts": [
+      {"t": "Holocrine", "c": true},
+      {"t": "Merocrine", "w": "Merocrine releases product by exocytosis without losing the cell."},
+      {"t": "Apocrine", "w": "Classic apocrine secretion pinches off just the top (apical) part of the cell."},
+      {"t": "Serous", "w": "Serous describes a watery product, not the release method."}
+    ],
+    "why": "Holocrine secretion releases the contents of whole cells as they break down, as in sebaceous glands. Merocrine uses exocytosis and keeps the cell intact.",
+    "trick": "HOLOcrine = the WHOLE cell is sacrificed.",
+    "tip": "Decode the prefix: holo = whole, apo = top part, mero = a part (by exocytosis)."
+  },
+  {
+    "id": "N5-10", "sec": "ch5-matrix", "focus": [0, 1], "type": "sata", "diff": 2,
+    "stem": "Which statements about connective tissue are accurate? Select all that apply.",
+    "opts": [
+      {"t": "The matrix is made of ground substance plus fibers.", "c": true},
+      {"t": "Collagen fibers resist tension (pulling).", "c": true},
+      {"t": "Elastic fibers stretch and recoil.", "c": true},
+      {"t": "Reticular fibers are the main fibers that resist strong pulling forces.", "w": "Reticular fibers form fine supportive networks. Collagen resists tension."},
+      {"t": "Fibroblasts engulf microbes.", "w": "Macrophages engulf microbes. Fibroblasts make fibers and ground substance."}
+    ],
+    "why": "Connective tissue = cells scattered in an extracellular matrix of ground substance plus fibers. Collagen = strength against pulling, elastic = stretch and recoil, reticular = fine networks. Fibroblasts build the matrix and macrophages clean up.",
+    "trick": "Collagen = rope, Elastic = rubber band, Reticular = a fine net.",
+    "tip": "Give each fiber and cell its own job. One swapped job makes an option false."
+  },
+  {
+    "id": "N5-11", "sec": "ch5-matrix", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "A client has a red, itchy, swollen allergic reaction. Which connective tissue cell releases histamine?",
+    "opts": [
+      {"t": "Mast cell", "c": true},
+      {"t": "Fibroblast", "w": "Fibroblasts produce fibers and ground substance."},
+      {"t": "Macrophage", "w": "Macrophages phagocytose debris and microbes."},
+      {"t": "Plasma cell", "w": "Plasma cells produce antibodies."}
+    ],
+    "why": "Mast cells release mediators, including histamine, that contribute to inflammation, such as redness, swelling, and itching.",
+    "trick": "Mast cells = histaMine Makers.",
+    "tip": "Link each cell to one signature product: histamine (mast), antibodies (plasma), fibers (fibroblast)."
+  },
+  {
+    "id": "N5-12", "sec": "ch5-connective", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Tendons are pulled mostly in one direction. Which tissue, with parallel collagen bundles, forms them?",
+    "opts": [
+      {"t": "Dense regular connective tissue", "c": true},
+      {"t": "Dense irregular connective tissue", "w": "Interwoven collagen handles stress from many directions, as in the dermis."},
+      {"t": "Areolar connective tissue", "w": "Areolar is loose packing tissue under epithelia."},
+      {"t": "Elastic connective tissue", "w": "Elastic tissue recoils, as in large arteries."}
+    ],
+    "why": "Fiber arrangement predicts function. Parallel collagen (dense regular) resists tension along one axis: tendons and many ligaments. Interwoven collagen (dense irregular) resists tension from several directions: the dermis and capsules.",
+    "trick": "REGULAR = rows (parallel). IRREGULAR = in every direction.",
+    "tip": "One-direction pull points to regular. Multi-direction points to irregular."
+  },
+  {
+    "id": "N5-13", "sec": "ch5-connective", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about specialized connective tissues are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Hyaline cartilage covers joint surfaces and supports the trachea and nose.", "c": true},
+      {"t": "Elastic cartilage gives flexible support to the external ear and epiglottis.", "c": true},
+      {"t": "Fibrocartilage forms the intervertebral discs and pubic symphysis.", "c": true},
+      {"t": "Blood is not a connective tissue because its matrix is liquid.", "w": "Blood IS a connective tissue. Its matrix (plasma) just happens to be liquid."},
+      {"t": "Cartilage heals quickly because it has a rich blood supply.", "w": "Cartilage is avascular, so it heals slowly."}
+    ],
+    "why": "Three cartilages: hyaline (smooth, articular surfaces, trachea, nose), elastic (bendy, ear and epiglottis), and fibrocartilage (tough, discs and pubic symphysis). Cartilage heals slowly because it has no blood vessels. Blood is connective tissue with a liquid matrix.",
+    "trick": "Hyaline = glassy joints, Elastic = Ears, Fibro = discs that take a pounding.",
+    "tip": "Blood counts as connective tissue. It is a favorite trick question."
+  },
+  {
+    "id": "N5-14", "sec": "ch5-membranes", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which tissue membrane lacks a true epithelial layer?",
+    "opts": [
+      {"t": "Synovial membrane", "c": true},
+      {"t": "Mucous membrane", "w": "Mucous membranes have epithelium over a lamina propria."},
+      {"t": "Serous membrane", "w": "Serous membranes have a mesothelium (simple squamous epithelium)."},
+      {"t": "Cutaneous membrane", "w": "The skin has a keratinized epithelium (epidermis)."}
+    ],
+    "why": "Synovial membranes line movable joint capsules and are made only of connective tissue, with no true epithelium. Cutaneous (skin), mucous (open passages), and serous (closed cavities) membranes all have epithelium.",
+    "trick": "Synovial = the one with no epithelial 'skin'. Only connective tissue lines the joint.",
+    "tip": "'Lacks' questions: find the one that's built differently from the rest."
+  },
+  {
+    "id": "N5-15", "sec": "ch5-membranes", "focus": [1], "type": "mcq", "diff": 1,
+    "stem": "A biopsy from the wall of the stomach shows spindle-shaped cells with no striations and one central nucleus. Which tissue is this?",
+    "opts": [
+      {"t": "Smooth muscle", "c": true},
+      {"t": "Skeletal muscle", "w": "Skeletal fibers are long, striated, and multinucleated."},
+      {"t": "Cardiac muscle", "w": "Cardiac cells are striated, branched, and only in the heart."},
+      {"t": "Nervous tissue", "w": "Nervous tissue is neurons and glia, not contractile cells."}
+    ],
+    "why": "Smooth muscle has spindle-shaped, nonstriated cells with one nucleus. It is found in the walls of hollow organs and vessels and is involuntary.",
+    "trick": "Smooth = no stripes, and spindle-shaped like a smooth river stone.",
+    "tip": "Striations narrow the choice to skeletal or cardiac. No striations means smooth."
+  }
+]

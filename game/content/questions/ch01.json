@@ -1,0 +1,183 @@
+[
+  {
+    "id": "N1-01", "sec": "ch1-organization", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "The lung's air sacs have extremely thin walls. How does this structure help their function?",
+    "opts": [
+      {"t": "Thin walls allow oxygen and carbon dioxide to diffuse quickly.", "c": true},
+      {"t": "Thin walls make the lungs heavier and more stable.", "w": "Thin walls make diffusion fast. They aren't about weight."},
+      {"t": "Thin walls store more blood cells.", "w": "Blood cells are made in red bone marrow, not stored in the lung walls."},
+      {"t": "Structure and function are unrelated.", "w": "A core idea of A&P is that structure supports function."}
+    ],
+    "why": "Anatomy (structure) explains physiology (function). A thin exchange surface shortens the distance gases must travel, so diffusion is fast. If the structure changes, performance changes.",
+    "trick": "Form fits function: thin = fast exchange.",
+    "tip": "Look for the option that links the structure in the stem directly to a job."
+  },
+  {
+    "id": "N1-02", "sec": "ch1-organization", "focus": [1], "type": "order", "diff": 2,
+    "stem": "Put the levels of organization in order, from smallest to largest.",
+    "steps": ["Atom", "Molecule", "Organelle", "Cell", "Tissue", "Organ", "Organ system", "Organism"],
+    "why": "Atoms join into molecules, and macromolecules build organelles inside cells. Similar cells form tissues, two or more tissue types form an organ, organs work together as systems, and systems make up the organism.",
+    "trick": "All Monkeys Order Cake To Offer Our Optometrist (Atom, Molecule, Organelle, Cell, Tissue, Organ, Organ system, Organism).",
+    "tip": "Don't mix up organelle (inside a cell) with organ (made of tissues)."
+  },
+  {
+    "id": "N1-03", "sec": "ch1-life", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "After a meal, amino acids from digested protein cross the wall of the small intestine into the blood. Which life process is this?",
+    "opts": [
+      {"t": "Absorption", "c": true},
+      {"t": "Digestion", "w": "Digestion broke the protein INTO amino acids, the step before."},
+      {"t": "Assimilation", "w": "Assimilation is when cells build those amino acids into their own proteins, the step after."},
+      {"t": "Excretion", "w": "Excretion removes metabolic wastes."}
+    ],
+    "why": "The sequence is digestion (break food down), then absorption (move nutrients across a boundary into body fluids), then assimilation (build them into body structures). Excretion removes wastes.",
+    "trick": "Digest, Absorb, Assimilate: break it, take it in, make it yours.",
+    "tip": "Sequence questions: find where the stem sits in the chain (crossing the gut = absorption)."
+  },
+  {
+    "id": "N1-04", "sec": "ch1-life", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which statements about the requirements for life are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Nutrients supply energy and building materials.", "c": true},
+      {"t": "Oxygen accepts electrons during aerobic energy production.", "c": true},
+      {"t": "Pressure gradients drive breathing and filtration.", "c": true},
+      {"t": "Heat is a chemical nutrient.", "w": "Heat (temperature) is a physical condition, not a chemical nutrient."},
+      {"t": "Water is needed only to control body temperature.", "w": "Water also supports reactions and transport."}
+    ],
+    "why": "The five requirements: nutrients (energy, building blocks), oxygen (electron acceptor), water (reactions, transport), suitable heat (affects enzymes), and pressure (drives ventilation and filtration). Heat and pressure are physical conditions.",
+    "trick": "NOW HP: Nutrients, Oxygen, Water, Heat, Pressure.",
+    "tip": "'Only' in an option usually makes it false."
+  },
+  {
+    "id": "N1-05", "sec": "ch1-homeostasis", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Which is an example of positive feedback?",
+    "opts": [
+      {"t": "Activated platelets recruit more platelets until a clot seals the injury.", "c": true},
+      {"t": "Sweating when body temperature rises", "w": "Sweating cools the body, opposing the rise, so it is negative feedback."},
+      {"t": "Shivering when body temperature drops", "w": "Shivering makes heat to oppose the drop: negative feedback."},
+      {"t": "Skin vessels constricting in the cold", "w": "This limits heat loss to oppose the drop: negative feedback."}
+    ],
+    "why": "Negative feedback opposes a change (most homeostasis). Positive feedback amplifies a process until a separate event stops it, like platelets recruiting more platelets until the injury is sealed.",
+    "trick": "Negative = Neutralize the change. Positive = Pile on more.",
+    "tip": "Ask: does the response push back or push further? Three of these push back."
+  },
+  {
+    "id": "N1-06", "sec": "ch1-homeostasis", "focus": [1], "type": "order", "diff": 2,
+    "stem": "A client's core temperature rises. Put the steps of the negative feedback loop in order.",
+    "steps": [
+      "Stimulus: core body temperature rises above its normal range.",
+      "Receptors detect the change.",
+      "The hypothalamus (control center) compares it with the normal range.",
+      "Effectors respond: sweat glands release sweat and skin blood flow increases.",
+      "Response: temperature falls back toward normal."
+    ],
+    "why": "Every feedback loop runs stimulus, receptor, control center, effector, response. In negative feedback the response opposes the original change.",
+    "trick": "See it, Sense it, Decide, Do, Done (Stimulus, Receptor, Control center, Effector, Response).",
+    "tip": "Name each part of the loop before ordering. The control center always sits in the middle."
+  },
+  {
+    "id": "N1-07", "sec": "ch1-cavities", "focus": [0, 1], "type": "mcq", "diff": 2,
+    "stem": "Which statement about the pleura is accurate?",
+    "opts": [
+      {"t": "Visceral pleura covers the lung, parietal pleura lines the chest wall, and a thin film of fluid lies between them.", "c": true},
+      {"t": "The lung sits inside the pleural fluid space.", "w": "The lung is outside that thin potential space. Only fluid is inside it."},
+      {"t": "Parietal pleura covers the lung, and visceral pleura lines the chest wall.", "w": "This swaps the two layers."},
+      {"t": "The pleura surrounds the heart.", "w": "The pericardium surrounds the heart."}
+    ],
+    "why": "Serous membranes have two layers. Visceral covers an organ and parietal lines a cavity wall. The potential space between them holds a thin film of fluid that lets the organ move with little friction.",
+    "trick": "Visceral = Viscera (organs). Parietal = the Partition (wall).",
+    "tip": "Swapped-layer options are common. Anchor one layer and the other follows."
+  },
+  {
+    "id": "N1-08", "sec": "ch1-systems", "focus": [0, 1], "type": "sata", "diff": 2,
+    "stem": "Which organ-system statements are accurate? Select all that apply.",
+    "opts": [
+      {"t": "Red bone marrow of the skeletal system forms blood cells.", "c": true},
+      {"t": "The kidneys regulate blood composition and produce urine.", "c": true},
+      {"t": "The lymphatic system returns fluid and transports absorbed fats.", "c": true},
+      {"t": "The urinary bladder produces urine.", "w": "The bladder STORES urine. The kidneys produce it."},
+      {"t": "The endocrine system provides the body's fastest signaling.", "w": "The nervous system gives rapid control. Endocrine (hormone) control is slower."}
+    ],
+    "why": "Systems overlap: skeletal marrow makes blood cells for the cardiovascular system, the kidneys form urine and the bladder stores it, and the lymphatic system returns fluid and carries absorbed fats.",
+    "trick": "Kidneys Make it, the bladder Holds it.",
+    "tip": "Make vs store is a classic swap. Check which organ does which."
+  },
+  {
+    "id": "N1-09", "sec": "ch1-directions", "focus": [0, 1], "type": "mcq", "diff": 1,
+    "stem": "A nurse documents that a wound is between the client's elbow and wrist. Which statement is accurate?",
+    "opts": [
+      {"t": "The elbow is proximal to the wrist.", "c": true},
+      {"t": "The elbow is distal to the wrist.", "w": "Distal means farther from the limb's attachment. The wrist is distal."},
+      {"t": "The elbow is medial to the wrist.", "w": "Medial and lateral describe the midline, not a point along a limb."},
+      {"t": "The elbow is superficial to the wrist.", "w": "Superficial and deep describe distance from the body surface."}
+    ],
+    "why": "Proximal and distal compare distance from where a limb attaches to the trunk. The elbow is closer to the shoulder (proximal), and the wrist is farther away (distal).",
+    "trick": "Proximal = Proximity to the trunk. Distal = Distant.",
+    "tip": "Pick the right PAIR of terms first: along a limb means proximal/distal."
+  },
+  {
+    "id": "N1-10", "sec": "ch1-directions", "focus": [0], "type": "mcq", "diff": 2,
+    "stem": "Using anatomical position, which statement is accurate?",
+    "opts": [
+      {"t": "The thumb is lateral to the little finger.", "c": true},
+      {"t": "The nose is lateral to the eyes.", "w": "The nose is medial to the eyes (closer to the midline)."},
+      {"t": "The sternum is posterior to the heart.", "w": "The sternum is anterior to the heart."},
+      {"t": "The skin is deep to the muscle.", "w": "Skin is superficial to muscle."}
+    ],
+    "why": "In anatomical position the palms face forward, so the thumb is on the lateral side. Directional terms always use the subject's own position, even when the client is lying down.",
+    "trick": "Palms forward and thumbs out: anatomical position puts the thumb lateral.",
+    "tip": "Picture yourself in anatomical position (palms forward) before answering."
+  },
+  {
+    "id": "N1-11", "sec": "ch1-planes", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "An MRI image divides the body into front (anterior) and back (posterior) portions. Which plane is this?",
+    "opts": [
+      {"t": "Coronal (frontal) plane", "c": true},
+      {"t": "Sagittal plane", "w": "A sagittal plane divides right and left portions."},
+      {"t": "Transverse plane", "w": "A transverse plane divides upper and lower portions."},
+      {"t": "Midsagittal plane", "w": "Midsagittal divides equal right and left halves."}
+    ],
+    "why": "Sagittal = right and left. Coronal (frontal) = front and back. Transverse (horizontal) = top and bottom.",
+    "trick": "Coronal = a Crown worn across the head from ear to ear, splitting front from back.",
+    "tip": "Match the plane to the portions it creates, not to how the picture is drawn."
+  },
+  {
+    "id": "N1-12", "sec": "ch1-planes", "focus": [1], "type": "sata", "diff": 2,
+    "stem": "Which surface landmark terms are matched correctly? Select all that apply.",
+    "opts": [
+      {"t": "Popliteal: back of the knee", "c": true},
+      {"t": "Antecubital: front of the elbow", "c": true},
+      {"t": "Antebrachial: forearm", "c": true},
+      {"t": "Patellar: back of the knee", "w": "Patellar is the FRONT of the knee (the kneecap)."},
+      {"t": "Brachial: forearm", "w": "Brachial is the upper arm. The forearm is antebrachial."}
+    ],
+    "why": "Patellar = front of the knee, popliteal = back of the knee. Brachial = upper arm, antebrachial = forearm, antecubital = front of the elbow (a common IV and blood-draw site).",
+    "trick": "ANTE-brachial = before (below) the brachium. Popliteal = the 'pit' behind the knee.",
+    "tip": "Front vs back pairs (patellar vs popliteal) are the usual swaps."
+  },
+  {
+    "id": "N1-13", "sec": "ch1-regions", "focus": [0], "type": "mcq", "diff": 1,
+    "stem": "A client with suspected appendicitis points to their pain. In which quadrant is the appendix typically found?",
+    "opts": [
+      {"t": "Right lower quadrant", "c": true},
+      {"t": "Left lower quadrant", "w": "The sigmoid colon is in the left lower quadrant."},
+      {"t": "Right upper quadrant", "w": "The liver and gallbladder are in the right upper quadrant."},
+      {"t": "Left upper quadrant", "w": "The stomach and spleen are in the left upper quadrant."}
+    ],
+    "why": "The appendix is typically in the right lower quadrant (the right iliac region). 'Right' always means the client's own right, not the viewer's.",
+    "trick": "Appendix = Right Lower (RLQ). Think 'appendix is down to the right.'",
+    "tip": "Always use the client's right and left, not your own."
+  },
+  {
+    "id": "N1-14", "sec": "ch1-regions", "focus": [1], "type": "mcq", "diff": 2,
+    "stem": "Which abdominal region is directly superior to the umbilical region?",
+    "opts": [
+      {"t": "Epigastric", "c": true},
+      {"t": "Hypogastric (pubic)", "w": "The hypogastric region is INFERIOR to the umbilical region."},
+      {"t": "Right hypochondriac", "w": "This is in the upper row, but on the right side, not directly above."},
+      {"t": "Left lumbar", "w": "This is beside the umbilical region, not above it."}
+    ],
+    "why": "The middle column, from top to bottom, is epigastric, umbilical, hypogastric. 'Epi' means above and 'hypo' means below.",
+    "trick": "EPI = above the belly button. HYPO = below it.",
+    "tip": "Use prefixes: epi- (upon), hypo- (under)."
+  }
+]
