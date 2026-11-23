@@ -219,3 +219,16 @@
 - Tests: new `game/tests/whimsy.mjs` (tiers, chaos, settings, calm motion, events, daily, cards); `smoke.mjs` also
   visits the album. Fixed a flaky check in `lifeline.mjs` that failed when the first question was an ordering one.
   All suites pass.
+
+## 2026-11-23 — Safari fixes: intro overlap/slowness, clipped room-card patients
+- Intro: stepping through the onboarding tabs used `App.show()`, which keeps the old screen fading out for 220 ms
+  on top of the new one, so both steps' words overlapped, and two animated full-screen layers were heavy in Safari.
+  Steps now swap in place (`App.rerender()`) with a short opacity-only fade (`.ob-step`).
+- Floor: room cards were flex columns inside a `<button>`; when content was taller than the row, Safari clipped
+  the patient avatar and door strip. Cards are now grids: the door is pinned absolutely on the corridor side, the
+  blurb is the only part that gives way (row `minmax(0, 1fr)`, `contain: size` in landscape), and landscape rows
+  never shrink below header + name + patient (`minmax(auto, 1fr)`). On very short windows the floor scrolls a
+  little instead of clipping.
+- Assumption: Safari's exact flex-in-button behaviour could not be reproduced here (Chromium only); the new
+  layout avoids depending on it. Edits kept small and in place to merge cleanly with the parallel overhaul;
+  `game/dist/ward-rounds.html` will conflict and should just be rebuilt after merging.

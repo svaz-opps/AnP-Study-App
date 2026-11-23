@@ -217,7 +217,7 @@ svg { display: block; }
 
 /* ---------- floor plan ---------- */
 .floorplan { position: relative; flex: 1; display: grid; gap: 0; min-height: 0; }
-.floorplan.h { grid-template-rows: minmax(150px, 1fr) 132px minmax(150px, 1fr); }
+.floorplan.h { grid-template-rows: minmax(auto, 1fr) 132px minmax(auto, 1fr); } /* rows never shrink below a room's content */
 .floorplan.v { flex: none; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); grid-auto-rows: auto; row-gap: var(--s3); }
 .floorplan.v .room { min-height: 150px; }
 
@@ -225,7 +225,8 @@ svg { display: block; }
 .floorplan.v .rooms { display: contents; }
 
 .room {
-  position: relative; display: flex; flex-direction: column; min-width: 0;
+  /* grid, not flex: Safari does not shrink flex children of a <button> the same way, which clipped the patient */
+  position: relative; display: grid; grid-template-rows: 1fr; min-width: 0; min-height: 150px;
   background:
     repeating-linear-gradient(0deg, transparent 0 27px, rgba(255, 255, 255, .025) 27px 28px),
     repeating-linear-gradient(90deg, transparent 0 27px, rgba(255, 255, 255, .025) 27px 28px),
@@ -236,7 +237,8 @@ svg { display: block; }
 }
 .room:active { transform: scale(.985); }
 @media (hover: hover) { .room:hover { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); } }
-.room-body { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: var(--s3); min-height: 0; }
+/* only the blurb row (4) gives way when space is short; the patient row (5) is always shown */
+.room-body { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr) auto; align-content: start; gap: 6px; padding: var(--s3); overflow: hidden; }
 .room-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); }
 .room-plate { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-sm); background: var(--surface-3); color: var(--text); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--line); }
 .room-stars { display: flex; gap: 1px; color: var(--surface-3); }
@@ -244,9 +246,11 @@ svg { display: block; }
 .room-stars .on { color: var(--warn); }
 .room-ward { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-md); line-height: 1.1; overflow-wrap: anywhere; }
 .room-topic { font-size: var(--fs-sm); color: var(--text-dim); line-height: 1.2; }
-.room-blurb { font-size: var(--fs-xs); color: var(--text-faint); line-height: 1.3; margin-top: 2px; }
+.room-blurb { grid-row: 4; font-size: var(--fs-xs); color: var(--text-faint); line-height: 1.3; margin-top: 2px; min-height: 0; overflow: hidden; }
+/* landscape: the blurb takes only the space left over, so it never makes the row taller (old Safari ignores contain: rows just grow) */
+.floorplan.h .room-blurb { contain: size; }
 [data-size="compact"] .room-blurb { display: none; }
-.room-pt { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s2); }
+.room-pt { grid-row: 5; align-self: end; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s2); }
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
@@ -258,14 +262,16 @@ svg { display: block; }
 .room .room-dot ~ .room-body .room-stars { margin-right: 26px; }
 
 /* the door: a strip on the corridor side of the room that swings open */
-.door { height: 14px; flex: none; position: relative; background: var(--surface-2); border-top: 2px solid var(--line); perspective: 300px; }
+.door { height: 14px; position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface-2); border-top: 2px solid var(--line); perspective: 300px; }
 .door::before {
   content: ""; position: absolute; left: 22%; width: 56%; top: 2px; height: 8px; border-radius: 3px;
   background: linear-gradient(90deg, #6f86a8, #9ab0cc); transform-origin: left center;
   transition: transform .45s cubic-bezier(.4, 1.4, .5, 1);
 }
-.rooms-top .door { order: 2; }
-.rooms-bottom .door, .floorplan.v .door { order: -1; border-top: 0; border-bottom: 2px solid var(--line); }
+/* door pinned to the corridor side (absolute, so it never depends on flex order inside the button) */
+.rooms-top .room-body { padding-bottom: calc(var(--s3) + 14px); }
+.rooms-bottom .door, .floorplan.v .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
+.rooms-bottom .room-body, .floorplan.v .room-body { padding-top: calc(var(--s3) + 14px); }
 .room.open .door::before { transform: rotateY(-75deg); }
 .room.open { border-color: var(--accent); }
 
@@ -956,12 +962,13 @@ input[type="date"], input[type="text"] {
 .ob-card { width: 120px; height: 120px; border-radius: 32px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
 .ob-card svg { width: 64px; height: 64px; }
 .ob-text { font-size: var(--fs-lg); line-height: 1.5; }
+.ob-step { animation: fade-in .18s ease-out both; } /* opacity only: cheap in Safari */
 .ob-dots { display: flex; gap: 8px; }
 .ob-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-3); }
 .ob-dots i.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal { animation: none !important; }
+  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
   .walker { transition: none !important; }
 }
 
@@ -3982,7 +3989,12 @@ Screens.onboard = {
         return;
       }
       Store.save();
-      App.show('onboard', { step: to });
+      // swap the step in place: a full App.show() cross-fades two screens, so both steps' text overlapped (and was slow in Safari)
+      App.params = { step: to };
+      App.rerender();
+      App.el.scrollTop = 0;
+      const ob = $('.onboard', App.el);
+      if (ob) ob.classList.add('ob-step');
     },
     obset(d) { WR.state.profile.avatar[d.key] = +d.val; Sound.play('tap'); App.rerender(); },
   },

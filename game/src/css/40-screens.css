@@ -146,12 +146,13 @@ input[type="date"], input[type="text"] {
 .ob-card { width: 120px; height: 120px; border-radius: 32px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
 .ob-card svg { width: 64px; height: 64px; }
 .ob-text { font-size: var(--fs-lg); line-height: 1.5; }
+.ob-step { animation: fade-in .18s ease-out both; } /* opacity only: cheap in Safari */
 .ob-dots { display: flex; gap: 8px; }
 .ob-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-3); }
 .ob-dots i.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal { animation: none !important; }
+  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
   .walker { transition: none !important; }
 }
 

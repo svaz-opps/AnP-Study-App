@@ -357,7 +357,12 @@ Screens.onboard = {
         return;
       }
       Store.save();
-      App.show('onboard', { step: to });
+      // swap the step in place: a full App.show() cross-fades two screens, so both steps' text overlapped (and was slow in Safari)
+      App.params = { step: to };
+      App.rerender();
+      App.el.scrollTop = 0;
+      const ob = $('.onboard', App.el);
+      if (ob) ob.classList.add('ob-step');
     },
     obset(d) { WR.state.profile.avatar[d.key] = +d.val; Sound.play('tap'); App.rerender(); },
   },
