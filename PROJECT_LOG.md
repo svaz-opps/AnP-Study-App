@@ -68,3 +68,6 @@
 - Every question type now waits for Submit: tapping an option only selects it (tap another to change your mind);
   Enter also submits. Applies to all modes, including Code Blue and the exam. Smoke + hot-restore tests updated
   to assert a single-answer tap does not grade, and pass at all 4 sizes.
+- `game/dist/ward-rounds.html` (self-contained, works offline) is now committed so it can be downloaded straight
+  from GitHub. Rebuild it with `python3 game/build.py` and commit it whenever the game changes. The artifact page
+  was left as it was, at the user's request.
