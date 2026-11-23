@@ -932,6 +932,7 @@ function defaultState() {
     recent: [],
     unlocks: {},
     settings: { sound: true, motion: 'auto', text: 1, examDate: '', dailyGoal: 0 },
+    openRun: null,      // autosaved round in progress: { at, run }
   };
 }
 
@@ -964,6 +965,17 @@ const Store = {
     this.state.updatedAt = Date.now();
     this._local();
     if (opts.now) this._cloud.flush(); else this._cloud();
+  },
+
+  // autosave the round in progress (or clear it once the round is over / left)
+  holdRun: false,       // a saved round is waiting on Resume / Discard: don't clear it yet
+  saveRun() {
+    const run = App.run;
+    if (this.holdRun) { if (!run) return; this.holdRun = false; } // starting a new round replaces it
+    const next = run && !run.over && run.cur ? { at: Date.now(), run: run.serialize() } : null;
+    if (!next && !this.state.openRun) return;
+    this.state.openRun = next;
+    this.save();
   },
 
   _local: debounce(function () {
@@ -1991,6 +2003,7 @@ class Run {
     this.bonusXP = bonus;
     this.endBadges = Engine.checkBadges({ endOfRun: true, extra });
     this.newBadges.push(...this.endBadges);
+    s.openRun = null;
     Store.save({ now: true });
   }
 
@@ -2003,6 +2016,18 @@ class Run {
     const r = new Run(o.mode, { unit: o.unit, queue: o.queue });
     Object.assign(r, o);
     r.cfg = MODES[o.mode];
+    return r;
+  }
+
+  // a round brought back from the autosave; null if it can't continue (e.g. the question bank changed)
+  static resume(o) {
+    if (!o || !MODES[o.mode] || o.over || !o.cur) return null;
+    const r = Run.restore(o);
+    if (!r.q || r.results.some((x) => !Content.byId[x.qid])) return null;
+    // timed / no-feedback modes move on by themselves after an answer; do that now
+    if (r.cur.revealed && !r.cfg.feedback) {
+      if (r.isEnd() || !r.next()) { if (!r.over) r.finish(); return null; }
+    }
     return r;
   }
 }
@@ -2091,6 +2116,7 @@ const App = {
     if (scr.mount) scr.mount(sec, params);
     const focusEl = sec.querySelector('[data-autofocus]') || sec.querySelector('h1');
     if (focusEl && focusEl.focus && !('ontouchstart' in window)) focusEl.focus({ preventScroll: true });
+    Store.saveRun();
   },
 
   rerender() {
@@ -2108,8 +2134,11 @@ const App = {
   act(action, data, el, ev) {
     Sound.unlock();
     const scr = Screens[this.name];
-    if (scr && scr.act && scr.act[action]) return scr.act[action](data, el, ev);
-    if (Global[action]) return Global[action](data, el, ev);
+    let out;
+    if (scr && scr.act && scr.act[action]) out = scr.act[action](data, el, ev);
+    else if (Global[action]) out = Global[action](data, el, ev);
+    if (App.run) Store.saveRun();
+    return out;
   },
 
   toast(text, ms = 2600) {
@@ -2134,7 +2163,7 @@ const App = {
       const keep = onAct ? onAct(b.dataset.m, b, close) : false;
       if (!keep) close();
     });
-    const first = bg.querySelector('button');
+    const first = bg.querySelector('[data-autofocus]') || bg.querySelector('button');
     if (first) first.focus({ preventScroll: true });
     return close;
   },
@@ -2681,6 +2710,7 @@ Screens.chart = {
     if (!run.next()) { App.show('report'); return; }
     if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : 'start');
     App.rerender();
+    Store.saveRun();
     const sec = App.el;
     if (sec && !reducedMotion()) { const cb = $('#clipboard', sec); if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' }); }
     App.el.scrollTop = 0;
@@ -3033,7 +3063,7 @@ Screens.stats = {
 Screens.settings = {
   render() {
     const st = WR.state.settings;
-    const cloud = Store.cloud.status === 'cloud' ? 'Progress saves to your Claude account, so it follows you to any device.' : 'Progress saves in this browser. Download a backup now and then to be safe.';
+    const cloud = Store.cloud.status === 'cloud' ? 'Progress autosaves to your Claude account after every tap, even mid-round, so it follows you to any device.' : 'Progress autosaves in this browser after every tap, even mid-round. Download a backup now and then to be safe.';
     const seg = (key, opts) => `<div class="seg" role="group">${opts.map(([v, n]) => `<button class="${String(st[key]) === String(v) ? 'on' : ''}" data-action="setting" data-key="${key}" data-val="${v}" aria-pressed="${String(st[key]) === String(v)}">${n}</button>`).join('')}</div>`;
     return `${topbar('Settings')}
       <div class="narrow stack">
@@ -3178,8 +3208,8 @@ function bindEvents() {
   }, 150);
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', onResize);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { Store._local.flush(); Store._cloud.flush(); } });
-  window.addEventListener('pagehide', () => { Store._local.flush(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { if (App.run) Store.saveRun(); Store._local.flush(); Store._cloud.flush(); } });
+  window.addEventListener('pagehide', () => { if (App.run) Store.saveRun(); Store._local.flush(); });
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
@@ -3208,8 +3238,42 @@ async function start(hot) {
       return;
     } catch (e) { App.run = null; }
   }
-  if (!WR.state.profile.onboarded) App.show('onboard', { step: 0 });
-  else App.show('floor');
+  if (!WR.state.profile.onboarded) { App.show('onboard', { step: 0 }); return; }
+  const saved = WR.state.openRun;
+  let run = null;
+  try { run = saved && Run.resume(saved.run); } catch (e) { run = null; }
+  if (!run) {
+    if (WR.state.openRun) { WR.state.openRun = null; Store.save(); }
+    App.show('floor');
+    return;
+  }
+  Store.holdRun = true;
+  App.show('floor');
+  offerResume(run);
+}
+
+function offerResume(run) {
+  const title = run.mode === 'shift' ? Content.unitLabel(run.unit) : run.mode === 'review' ? run.label || 'Missed patients' : MODE_TITLE[run.mode];
+  const where = run.total ? `Patient ${run.idx + 1} of ${run.total}` : `Patient ${run.idx + 1}`;
+  const extra = run.mode === 'codeblue' ? ` · ${Math.ceil(run.timeLeft)}s left` : run.maxLives ? ` · ${run.lives} of ${run.maxLives} lives` : '';
+  App.modal(`<h2>Pick up where you left off?</h2>
+    <p class="dim">Your round was autosaved: <b>${esc(title)}</b>, ${where}${extra}. Score ${fmt(run.score)}.</p>
+    <div class="actions"><button class="btn" data-m="drop">Discard round</button><button class="btn primary" data-m="go" data-autofocus>Resume</button></div>`,
+  (m) => {
+    Store.holdRun = false;
+    if (m === 'go') {
+      App.run = run;
+      if (run.mode === 'codeblue') Sound.play('alarm');
+      App.show('chart', {}, 'zoom-in');
+    } else {
+      // answers already given stay saved; timed/boss rounds still count, as with Leave
+      if (run.mode === 'codeblue' || run.mode === 'boss') run.finish();
+      WR.state.openRun = null;
+      Store.save({ now: true });
+      App.toast('Round discarded. Answers you gave are still saved.');
+    }
+    return false;
+  });
 }
 
 (function boot() {

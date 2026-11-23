@@ -212,6 +212,7 @@ class Run {
     this.bonusXP = bonus;
     this.endBadges = Engine.checkBadges({ endOfRun: true, extra });
     this.newBadges.push(...this.endBadges);
+    s.openRun = null;
     Store.save({ now: true });
   }
 
@@ -224,6 +225,18 @@ class Run {
     const r = new Run(o.mode, { unit: o.unit, queue: o.queue });
     Object.assign(r, o);
     r.cfg = MODES[o.mode];
+    return r;
+  }
+
+  // a round brought back from the autosave; null if it can't continue (e.g. the question bank changed)
+  static resume(o) {
+    if (!o || !MODES[o.mode] || o.over || !o.cur) return null;
+    const r = Run.restore(o);
+    if (!r.q || r.results.some((x) => !Content.byId[x.qid])) return null;
+    // timed / no-feedback modes move on by themselves after an answer; do that now
+    if (r.cur.revealed && !r.cfg.feedback) {
+      if (r.isEnd() || !r.next()) { if (!r.over) r.finish(); return null; }
+    }
     return r;
   }
 }

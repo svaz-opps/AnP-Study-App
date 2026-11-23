@@ -29,6 +29,7 @@ function defaultState() {
     recent: [],
     unlocks: {},
     settings: { sound: true, motion: 'auto', text: 1, examDate: '', dailyGoal: 0 },
+    openRun: null,      // autosaved round in progress: { at, run }
   };
 }
 
@@ -61,6 +62,17 @@ const Store = {
     this.state.updatedAt = Date.now();
     this._local();
     if (opts.now) this._cloud.flush(); else this._cloud();
+  },
+
+  // autosave the round in progress (or clear it once the round is over / left)
+  holdRun: false,       // a saved round is waiting on Resume / Discard: don't clear it yet
+  saveRun() {
+    const run = App.run;
+    if (this.holdRun) { if (!run) return; this.holdRun = false; } // starting a new round replaces it
+    const next = run && !run.over && run.cur ? { at: Date.now(), run: run.serialize() } : null;
+    if (!next && !this.state.openRun) return;
+    this.state.openRun = next;
+    this.save();
   },
 
   _local: debounce(function () {

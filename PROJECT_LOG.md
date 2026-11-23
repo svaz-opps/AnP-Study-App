@@ -71,3 +71,16 @@
 - `game/dist/ward-rounds.html` (self-contained, works offline) is now committed so it can be downloaded straight
   from GitHub. Rebuild it with `python3 game/build.py` and commit it whenever the game changes. The artifact page
   was left as it was, at the user's request.
+
+## 2026-11-23 — Autosave for rounds in progress
+- Overall progress already saved after every answer; now the open round does too (`state.openRun`), after every
+  tap, screen change, next patient, and when the app is backgrounded or closed. It rides along in the normal save,
+  so it reaches the Claude-account save and backup files as well.
+- On launch, a saved round brings up "Pick up where you left off?" (Resume / Discard). Dismissing the prompt keeps
+  the save until a new round starts. Discarding a Code Blue/boss round still counts it, same as Leave.
+- Resume restores the patient, unsubmitted selections, lives, lifelines, score, streak and the Code Blue clock.
+  Code Blue/exam questions that were already answered move on to the next patient (those modes have no feedback
+  screen to return to). A saved round whose questions no longer exist in the bank is dropped quietly.
+- Assumptions: the Code Blue clock is paused while the game is closed (resumes with the time it had); Resume
+  has default keyboard focus so Enter doesn't discard by accident.
+- New `game/tests/autosave.mjs` (12 checks) passes, along with the smoke and hot-restore suites.

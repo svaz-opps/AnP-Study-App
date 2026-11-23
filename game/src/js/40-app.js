@@ -42,6 +42,7 @@ const App = {
     if (scr.mount) scr.mount(sec, params);
     const focusEl = sec.querySelector('[data-autofocus]') || sec.querySelector('h1');
     if (focusEl && focusEl.focus && !('ontouchstart' in window)) focusEl.focus({ preventScroll: true });
+    Store.saveRun();
   },
 
   rerender() {
@@ -59,8 +60,11 @@ const App = {
   act(action, data, el, ev) {
     Sound.unlock();
     const scr = Screens[this.name];
-    if (scr && scr.act && scr.act[action]) return scr.act[action](data, el, ev);
-    if (Global[action]) return Global[action](data, el, ev);
+    let out;
+    if (scr && scr.act && scr.act[action]) out = scr.act[action](data, el, ev);
+    else if (Global[action]) out = Global[action](data, el, ev);
+    if (App.run) Store.saveRun();
+    return out;
   },
 
   toast(text, ms = 2600) {
@@ -85,7 +89,7 @@ const App = {
       const keep = onAct ? onAct(b.dataset.m, b, close) : false;
       if (!keep) close();
     });
-    const first = bg.querySelector('button');
+    const first = bg.querySelector('[data-autofocus]') || bg.querySelector('button');
     if (first) first.focus({ preventScroll: true });
     return close;
   },
