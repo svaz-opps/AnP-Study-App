@@ -192,3 +192,16 @@
 - Assumption: iPad detection uses the user agent plus the "MacIntel with touch" check, since iPadOS Safari
   reports itself as a Mac. The Share button may sit in the ••• menu on newer iPadOS, so the text mentions both.
 - backup.mjs extended (guide shown, reminder shown/re-shown/retired, none on desktop). All suites pass.
+
+## 2026-11-23 — Safari fixes: intro overlap/slowness, clipped room-card patients
+- Intro: stepping through the onboarding tabs used `App.show()`, which keeps the old screen fading out for 220 ms
+  on top of the new one, so both steps' words overlapped, and two animated full-screen layers were heavy in Safari.
+  Steps now swap in place (`App.rerender()`) with a short opacity-only fade (`.ob-step`).
+- Floor: room cards were flex columns inside a `<button>`; when content was taller than the row, Safari clipped
+  the patient avatar and door strip. Cards are now grids: the door is pinned absolutely on the corridor side, the
+  blurb is the only part that gives way (row `minmax(0, 1fr)`, `contain: size` in landscape), and landscape rows
+  never shrink below header + name + patient (`minmax(auto, 1fr)`). On very short windows the floor scrolls a
+  little instead of clipping.
+- Assumption: Safari's exact flex-in-button behaviour could not be reproduced here (Chromium only); the new
+  layout avoids depending on it. Edits kept small and in place to merge cleanly with the parallel overhaul;
+  `game/dist/ward-rounds.html` will conflict and should just be rebuilt after merging.
