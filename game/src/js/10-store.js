@@ -28,7 +28,7 @@ function defaultState() {
     days: { last: '', streak: 0, today: '', answered: 0, active: [] },
     recent: [],
     unlocks: {},
-    settings: { sound: true, motion: 'auto', text: 1, examDate: '', dailyGoal: 0 },
+    settings: { sound: true, motion: 'auto', whimsy: 'full', text: 1, examDate: '', dailyGoal: 0 },
     openRun: null,      // autosaved round in progress: { at, run }
   };
 }

@@ -104,7 +104,7 @@ Screens.locker = {
       Sound.play('tap'); Store.save(); App.rerender();
     },
     poke() {
-      const moods = ['happy', 'cheer', 'focus', 'sleepy', 'worried', 'neutral'];
+      const moods = ['happy', 'cheer', 'focus', 'cool', 'silly', 'starry', 'sleepy', 'worried', 'dizzy', 'neutral'];
       Screens.locker.mood = moods[(moods.indexOf(Screens.locker.mood) + 1) % moods.length];
       Sound.play('tap'); App.rerender();
     },
@@ -172,6 +172,7 @@ Screens.settings = {
       <div class="narrow stack">
         <div class="card set-row"><div><b>Sound</b><p class="dim">Chimes, buzzers, and the Code Blue alarm.</p></div>${seg('sound', [[true, 'On'], [false, 'Off']])}</div>
         <div class="card set-row"><div><b>Motion</b><p class="dim">"Calm" turns off walking, shaking, and confetti.</p></div>${seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']])}</div>
+        <div class="card set-row"><div><b>Silly patients</b><p class="dim">How wild patients get on a hot streak (and when things go wrong).</p></div>${seg('whimsy', [['full', 'Full'], ['mild', 'Mild'], ['off', 'Off']])}</div>
         <div class="card set-row"><div><b>Text size</b></div>${seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']])}</div>
         <div class="card set-row"><div><b>Exam date</b><p class="dim">Powers the countdown and your daily target.</p></div>
           <input type="date" id="exam-date" value="${esc(st.examDate)}" aria-label="Exam date"></div>
@@ -202,7 +203,7 @@ Screens.settings = {
   act: {
     setting(d) {
       let v = d.val;
-      if (v === 'true') v = true; else if (v === 'false') v = false; else if (!isNaN(+v) && d.key !== 'motion') v = +v;
+      if (v === 'true') v = true; else if (v === 'false') v = false; else if (!isNaN(+v) && d.key !== 'motion' && d.key !== 'whimsy') v = +v;
       WR.state.settings[d.key] = v;
       Store.save(); applySettings(); Sound.play('tap'); App.rerender();
     },

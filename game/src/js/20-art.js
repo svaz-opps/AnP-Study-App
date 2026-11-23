@@ -40,7 +40,18 @@ function face(cx, cy, mood, eyeStyle, scale = 1) {
   const s = scale, ex = 12 * s, ey = cy + 2 * s;
   let eyes = '';
   const dark = '#2a2230';
-  if (mood === 'cheer' || mood === 'happy' && eyeStyle === 3) {
+  if (mood === 'dizzy') {
+    // spiral eyes: half-circle arcs of growing radius
+    eyes = [cx - ex, cx + ex].map((x) => `<path d="M${x - 1 * s} ${ey} a${1 * s} ${1 * s} 0 1 1 ${2 * s} 0 a${2 * s} ${2 * s} 0 1 1 ${-4 * s} 0 a${3 * s} ${3 * s} 0 1 1 ${6 * s} 0 a${4 * s} ${4 * s} 0 1 1 ${-8 * s} 0" stroke="${dark}" stroke-width="${1.5 * s}" fill="none" stroke-linecap="round"/>`).join('');
+  } else if (mood === 'starry') {
+    eyes = [cx - ex, cx + ex].map((x) => `<path d="M${x} ${ey - 6 * s} l${1.8 * s} ${4 * s} ${4.2 * s} ${0.5 * s} -${3.1 * s} ${2.9 * s} ${0.9 * s} ${4.2 * s} -${3.8 * s} -${2.1 * s} -${3.8 * s} ${2.1 * s} ${0.9 * s} -${4.2 * s} -${3.1 * s} -${2.9 * s} ${4.2 * s} -${0.5 * s}z" fill="#ffd36b" stroke="${dark}" stroke-width="${1.1 * s}" stroke-linejoin="round"/>`).join('');
+  } else if (mood === 'shock') {
+    eyes = [cx - ex, cx + ex].map((x) => `<circle cx="${x}" cy="${ey}" r="${6 * s}" fill="#fff" stroke="${dark}" stroke-width="${1.6 * s}"/><circle cx="${x}" cy="${ey}" r="${1.8 * s}" fill="${dark}"/>`).join('');
+  } else if (mood === 'cool') {
+    eyes = `<path d="M${cx - ex - 8 * s} ${ey - 4 * s} h${16 * s} v${4 * s} q0 ${6 * s} ${-8 * s} ${6 * s} q${-8 * s} 0 ${-8 * s} ${-6 * s}z M${cx + ex - 8 * s} ${ey - 4 * s} h${16 * s} v${4 * s} q0 ${6 * s} ${-8 * s} ${6 * s} q${-8 * s} 0 ${-8 * s} ${-6 * s}z" fill="#1b1d2a"/><path d="M${cx - ex + 8 * s} ${ey - 3 * s} h${2 * ex - 16 * s}" stroke="#1b1d2a" stroke-width="${2 * s}"/><path d="M${cx - ex - 5 * s} ${ey - 2 * s} l${4 * s} 0" stroke="#fff" stroke-width="${1.4 * s}" stroke-linecap="round" opacity=".7"/>`;
+  } else if (mood === 'silly') {
+    eyes = `<path d="M${cx - ex - 5 * s} ${ey + 1 * s} q${5 * s} ${-6 * s} ${10 * s} 0" stroke="${dark}" stroke-width="${2.6 * s}" fill="none" stroke-linecap="round"/><ellipse cx="${cx + ex}" cy="${ey}" rx="${3.6 * s}" ry="${4.2 * s}" fill="${dark}"/><circle cx="${cx + ex + 1.2 * s}" cy="${ey - 1.3 * s}" r="${1.1 * s}" fill="#fff"/>`;
+  } else if (mood === 'cheer' || mood === 'happy' && eyeStyle === 3) {
     eyes = `<path d="M${cx - ex - 5 * s} ${ey + 1 * s} q${5 * s} ${-6 * s} ${10 * s} 0 M${cx + ex - 5 * s} ${ey + 1 * s} q${5 * s} ${-6 * s} ${10 * s} 0" stroke="${dark}" stroke-width="${2.6 * s}" fill="none" stroke-linecap="round"/>`;
   } else if (eyeStyle === 3 || mood === 'sleepy') {
     eyes = `<path d="M${cx - ex - 5 * s} ${ey} q${5 * s} ${4 * s} ${10 * s} 0 M${cx + ex - 5 * s} ${ey} q${5 * s} ${4 * s} ${10 * s} 0" stroke="${dark}" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/>`;
@@ -51,7 +62,7 @@ function face(cx, cy, mood, eyeStyle, scale = 1) {
       (eyeStyle === 2 ? `<path d="M${x - 5 * s} ${ey - 4 * s} l-2.5 ${-2 * s} M${x + 5 * s} ${ey - 4 * s} l2.5 ${-2 * s}" stroke="${dark}" stroke-width="${1.6 * s}" stroke-linecap="round"/>` : '')).join('');
   }
   let brows = '';
-  if (mood === 'worried' || mood === 'sad') brows = `<path d="M${cx - ex - 5 * s} ${ey - 9 * s} l${9 * s} ${-3 * s} M${cx + ex + 5 * s} ${ey - 9 * s} l${-9 * s} ${-3 * s}" stroke="${dark}" stroke-width="${2 * s}" stroke-linecap="round" opacity=".75"/>`;
+  if (mood === 'worried' || mood === 'sad' || mood === 'shock') brows = `<path d="M${cx - ex - 5 * s} ${ey - 9 * s} l${9 * s} ${-3 * s} M${cx + ex + 5 * s} ${ey - 9 * s} l${-9 * s} ${-3 * s}" stroke="${dark}" stroke-width="${2 * s}" stroke-linecap="round" opacity=".75"/>`;
   else if (mood === 'focus') brows = `<path d="M${cx - ex - 5 * s} ${ey - 11 * s} l${9 * s} ${3 * s} M${cx + ex + 5 * s} ${ey - 11 * s} l${-9 * s} ${3 * s}" stroke="${dark}" stroke-width="${2.2 * s}" stroke-linecap="round" opacity=".8"/>`;
   const my = cy + 14 * s;
   let mouth;
@@ -62,6 +73,10 @@ function face(cx, cy, mood, eyeStyle, scale = 1) {
     case 'sad': mouth = `<path d="M${cx - 6 * s} ${my + 4 * s} q${6 * s} ${-6 * s} ${12 * s} 0" stroke="#7a2b3a" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/>`; break;
     case 'focus': mouth = `<path d="M${cx - 5 * s} ${my + 1 * s} h${10 * s}" stroke="#7a2b3a" stroke-width="${2.4 * s}" stroke-linecap="round"/>`; break;
     case 'pain': mouth = `<path d="M${cx - 6 * s} ${my + 2 * s} l${3 * s} ${-2 * s} l${3 * s} ${2 * s} l${3 * s} ${-2 * s} l${3 * s} ${2 * s}" stroke="#7a2b3a" stroke-width="${2 * s}" fill="none" stroke-linejoin="round"/>`; break;
+    case 'starry': mouth = `<path d="M${cx - 7 * s} ${my - 1 * s} q${7 * s} ${10 * s} ${14 * s} 0 z" fill="#7a2b3a"/>`; break;
+    case 'shock': case 'dizzy': mouth = `<ellipse cx="${cx}" cy="${my + 2 * s}" rx="${4 * s}" ry="${5 * s}" fill="#7a2b3a"/>`; break;
+    case 'cool': mouth = `<path d="M${cx - 5 * s} ${my + 1 * s} q${6 * s} ${4 * s} ${11 * s} ${-2 * s}" stroke="#7a2b3a" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/>`; break;
+    case 'silly': mouth = `<path d="M${cx - 6 * s} ${my} q${6 * s} ${7 * s} ${12 * s} 0" stroke="#7a2b3a" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/><path d="M${cx - 1 * s} ${my + 3 * s} q${3 * s} ${7 * s} ${6 * s} 0z" fill="#ff8fa3" stroke="#7a2b3a" stroke-width="${1 * s}"/>`; break;
     default: mouth = `<path d="M${cx - 4 * s} ${my} q${4 * s} ${4 * s} ${8 * s} 0" stroke="#7a2b3a" stroke-width="${2.2 * s}" fill="none" stroke-linecap="round"/>`;
   }
   const blush = `<ellipse cx="${cx - 19 * s}" cy="${ey + 8 * s}" rx="${5 * s}" ry="${3 * s}" fill="#ff7f9c" opacity=".35"/><ellipse cx="${cx + 19 * s}" cy="${ey + 8 * s}" rx="${5 * s}" ry="${3 * s}" fill="#ff7f9c" opacity=".35"/>`;
@@ -208,23 +223,35 @@ function patientHead(p, mood = 'neutral', size = 'bust') {
   return s;
 }
 
+// Patient lying in bed. viewBox 0 0 160 110. Parts sit in named groups so whimsy
+// reactions (22-whimsy.js, 35-whimsy.css) can move them on their own:
+// .pt-all (everything) > .pt-bed, .pt-person (> .pt-legs, .pt-head > .pt-hair, .pt-body, .pt-arm-*), .pt-iv, .pt-theme, .pt-props
 function patientInBed(p, mood = 'neutral') {
   const skin = AVATAR.skin[p.skin];
   const hcol = AVATAR.hairColor[p.hair].c;
-  let s = `<svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Patient in bed">`;
-  s += `<rect x="128" y="6" width="3" height="80" fill="#8fa3bd"/><rect x="120" y="8" width="18" height="22" rx="5" fill="#d9ecff" stroke="#8fa3bd"/><path d="M129 30 q0 30 -28 34" stroke="#b8d4ef" stroke-width="1.6" fill="none"/>`;
-  s += `<rect x="8" y="58" width="132" height="12" rx="4" fill="#5d708d"/><rect x="8" y="40" width="8" height="54" rx="3" fill="#6f84a3"/><rect x="132" y="50" width="8" height="44" rx="3" fill="#6f84a3"/>`;
-  s += `<rect x="12" y="50" width="124" height="14" rx="7" fill="#eef3f9"/>`;
-  s += `<ellipse cx="38" cy="48" rx="22" ry="9" fill="#ffffff" stroke="#d3deeb"/>`;
   const cx = 40, cy = 34, r = p.kid ? 15 : 16;
-  s += `<path d="M${cx - r - 2} ${cy + 2} q-2 -18 ${r + 2} -18 q${r + 4} 0 ${r + 2} 18z" fill="${hcol}"/>`;
+  let s = `<svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Patient in bed" class="pt-svg">`;
+  s += `<g class="pt-all">`;
+  s += `<g class="pt-bed"><rect x="8" y="58" width="132" height="12" rx="4" fill="#5d708d"/><rect x="8" y="40" width="8" height="54" rx="3" fill="#6f84a3"/><rect x="132" y="50" width="8" height="44" rx="3" fill="#6f84a3"/>`;
+  s += `<circle cx="12" cy="97" r="3.5" fill="#3b4b63"/><circle cx="136" cy="97" r="3.5" fill="#3b4b63"/>`;
+  s += `<rect x="12" y="50" width="124" height="14" rx="7" fill="#eef3f9"/><ellipse cx="38" cy="48" rx="22" ry="9" fill="#ffffff" stroke="#d3deeb"/></g>`;
+  s += `<g class="pt-person">`;
+  // legs only show in the upside-down gag
+  s += `<g class="pt-legs"><rect x="112" y="62" width="7" height="22" rx="3.5" fill="${skin}"/><rect x="123" y="62" width="7" height="22" rx="3.5" fill="${skin}"/><rect x="110" y="80" width="11" height="7" rx="3.5" fill="#f4f6f8"/><rect x="121" y="80" width="11" height="7" rx="3.5" fill="#f4f6f8"/></g>`;
+  s += `<g class="pt-head"><path d="M${cx - r - 2} ${cy + 2} q-2 -18 ${r + 2} -18 q${r + 4} 0 ${r + 2} 18z" fill="${hcol}"/>`;
   s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}"/>`;
   s += face(cx, cy, mood, p.kid ? 1 : 0, r / 34);
-  if (p.glasses) s += `<g fill="none" stroke="#3b3044" stroke-width="1.3"><circle cx="${cx - 6}" cy="${cy + 1}" r="4"/><circle cx="${cx + 6}" cy="${cy + 1}" r="4"/></g>`;
-  s += `<path d="M${cx - r - 1} ${cy + 1} q-1 -17 ${r + 1} -17 q${r + 2} 0 ${r + 1} 17 q-5 -8 -11 -9 q-5 5 -12 3 q-5 2 -${r - 6} 6z" fill="${hcol}"/>`;
-  s += `<path d="M52 44 q40 -6 84 2 v18 h-90z" fill="${p.gown}"/><path d="M52 44 q40 -6 84 2" stroke="#0002" fill="none"/>`;
-  s += `<rect x="70" y="50" width="62" height="5" rx="2.5" fill="#fff6"/>`;
-  s += `</svg>`;
+  if (p.glasses && mood !== 'cool') s += `<g fill="none" stroke="#3b3044" stroke-width="1.3"><circle cx="${cx - 6}" cy="${cy + 1}" r="4"/><circle cx="${cx + 6}" cy="${cy + 1}" r="4"/></g>`;
+  s += `<g class="pt-hair"><path d="M${cx - r - 1} ${cy + 1} q-1 -17 ${r + 1} -17 q${r + 2} 0 ${r + 1} 17 q-5 -8 -11 -9 q-5 5 -12 3 q-5 2 -${r - 6} 6z" fill="${hcol}"/></g></g>`;
+  s += `<g class="pt-body"><path d="M52 44 q40 -6 84 2 v18 h-90z" fill="${p.gown}"/><path d="M52 44 q40 -6 84 2" stroke="#0002" fill="none"/><rect x="70" y="50" width="62" height="5" rx="2.5" fill="#fff6"/></g>`;
+  // arms only show in some reactions (thumbs up, dancing, finger guns)
+  s += `<g class="pt-arm pt-arm-r"><rect x="56" y="26" width="7" height="22" rx="3.5" fill="${p.gown}" stroke="#0002"/><circle cx="59.5" cy="24" r="4.6" fill="${skin}"/><rect x="58" y="15" width="3.2" height="7" rx="1.6" fill="${skin}"/></g>`;
+  s += `<g class="pt-arm pt-arm-l"><rect x="70" y="27" width="7" height="21" rx="3.5" fill="${p.gown}" stroke="#0002"/><circle cx="73.5" cy="25" r="4.6" fill="${skin}"/></g>`;
+  s += `</g>`;
+  s += `<g class="pt-iv"><rect x="128" y="6" width="3" height="80" fill="#8fa3bd"/><rect x="120" y="8" width="18" height="22" rx="5" fill="#d9ecff" stroke="#8fa3bd"/><path d="M129 30 q0 30 -28 34" stroke="#b8d4ef" stroke-width="1.6" fill="none"/><rect x="122" y="84" width="16" height="3" rx="1.5" fill="#8fa3bd"/></g>`;
+  s += `<g class="pt-theme">${typeof themeProps === 'function' ? themeProps(p, 'bed') : ''}</g>`;
+  s += `<g class="pt-props"></g>`;
+  s += `</g></svg>`;
   return s;
 }
 

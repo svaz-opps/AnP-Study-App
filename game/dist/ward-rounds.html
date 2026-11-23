@@ -398,7 +398,7 @@ svg { display: block; }
 
 /* compact + regular: condensed bedside strip */
 [data-size="compact"] .patient-card, [data-size="regular"] .patient-card { padding: var(--s2) var(--s3); gap: var(--s3); }
-[data-size="compact"] .patient-card .bed, [data-size="regular"] .patient-card .bed { width: 84px; height: 60px; }
+[data-size="compact"] .patient-card .bed, [data-size="regular"] .patient-card .bed { width: 100px; height: 70px; }
 [data-size="compact"] .bedside-row, [data-size="regular"] .bedside-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s3); align-items: stretch; }
 [data-size="compact"] .bedside-row { grid-template-columns: 1fr; }
 [data-size="compact"] .monitor canvas, [data-size="regular"] .monitor canvas { height: 56px; }
@@ -578,6 +578,128 @@ details.more[open] summary::before { transform: rotate(90deg); }
 [data-size="compact"] .vitals { min-width: 44px; }
 [data-size="compact"] .score { font-size: var(--fs-lg); }
 [data-size="compact"] .bedside { gap: var(--s2); }
+
+/* ---------- whimsy: silly patient reactions (see 22-whimsy.js) ---------- */
+/* The card clips everything, so stunts can leave the bed's box without widening the page. */
+.patient-card { position: relative; overflow: hidden; }
+.patient-card .bed { position: relative; z-index: 0; }
+.patient-card .pt-info { position: relative; z-index: 1; }
+.patient-card .bed svg { overflow: visible; }
+.pt-svg g { transform-box: view-box; }
+.pt-all { transform-origin: 74px 60px; }
+.pt-iv { transform-origin: 129px 86px; }
+.pt-person { transform-origin: 80px 46px; }
+.pt-head { transform-origin: 40px 46px; }
+.pt-hair { transform-origin: 40px 30px; }
+.pt-body { transform-origin: 94px 54px; }
+.pt-arm-r { transform-origin: 59.5px 47px; }
+.pt-arm-l { transform-origin: 73.5px 47px; }
+.pt-arm, .pt-legs { opacity: 0; }
+.pt-props text.wh-word { font-family: var(--font-display); font-weight: 700; fill: #ffd36b; stroke: #3b2a00; stroke-width: .6px; paint-order: stroke; }
+
+/* ----- final poses (also what reduced motion shows) */
+.wh-thumbs .pt-arm-r, .wh-dance .pt-arm, .wh-fingerguns .pt-arm, .wh-party .pt-arm-l, .wh-surf .pt-arm { opacity: 1; }
+.wh-upside .pt-legs { opacity: 1; }
+.wh-fingerguns .pt-arm-r { transform: rotate(60deg); }
+.wh-fingerguns .pt-arm-l { transform: rotate(50deg); }
+.wh-surf .pt-arm-r { transform: rotate(-50deg); }
+.wh-surf .pt-arm-l { transform: rotate(50deg); }
+.wh-upside .pt-person { transform: rotate(180deg); }
+.wh-pill { transform: translate(40px, 20px); }
+
+/* ----- right answers */
+.wh-thumbs .pt-arm-r { animation: wh-pop-up .45s cubic-bezier(.2, 1.6, .4, 1) both; }
+.wh-wiggle .pt-head { animation: wh-wiggle .9s ease-in-out; }
+.wh-hearts .pt-head { animation: wh-nod .6s ease-in-out 2; }
+.wh-dance .pt-head { animation: wh-bob .35s ease-in-out 4 alternate; }
+.wh-dance .pt-arm-r { animation: wh-wave .35s ease-in-out 4 alternate; }
+.wh-dance .pt-arm-l { animation: wh-wave .35s ease-in-out 4 alternate-reverse; }
+.wh-dance .pt-body { animation: wh-shimmy .35s ease-in-out 4 alternate; }
+.wh-fingerguns .pt-arm { animation: wh-pew .3s ease-out 3; }
+.wh-ivtwirl .pt-iv { animation: wh-twirl 1s ease-in-out; transform-origin: 129px 46px; }
+.wh-backflip .pt-person { animation: wh-backflip 1.1s cubic-bezier(.45, 0, .3, 1); }
+.wh-surf .pt-all { animation: wh-surf 1.3s ease-in-out; }
+.wh-surf .pt-props .wh-waves { animation: wh-wave-roll 1.3s linear; }
+.wh-party .pt-head { animation: wh-bob .3s ease-in-out 4 alternate; }
+.wh-party .pt-arm-l { animation: wh-wave .3s ease-in-out 4 alternate; }
+.wh-party .wh-blower { transform-box: view-box; transform-origin: 48px 49px; animation: wh-blow .35s ease-in-out 3 alternate; }
+.wh-wheelie .pt-all { animation: wh-wheelie 1.4s cubic-bezier(.3, 1.4, .5, 1); transform-origin: 136px 97px; }
+.wh-rocket .pt-all { animation: wh-rocket 1.4s ease-in-out; }
+.wh-rocket .wh-flames { transform-box: view-box; transform-origin: 74px 101px; animation: wh-flicker .12s linear infinite alternate; }
+
+/* ----- misses */
+.wh-poof .pt-hair { animation: wh-poof 1s cubic-bezier(.2, 1.5, .4, 1); }
+.wh-poof .pt-head { animation: wh-jolt .3s ease-out; }
+.wh-bonk .wh-pill { animation: wh-pill .8s cubic-bezier(.3, 0, .6, 1) both; }
+.wh-bonk .pt-head { animation: wh-bonk .5s ease-out .28s; }
+.wh-sneeze .pt-head { animation: wh-sneeze .7s ease-in-out; }
+.wh-blanket .pt-body { animation: wh-blanket 1.1s ease-in-out; }
+.wh-roll .pt-all { animation: wh-roll 1.15s ease-in-out; }
+.wh-roll .wh-speed { animation: wh-fade 1.1s ease-out both; }
+.wh-dizzy .pt-head { animation: wh-wobble .4s ease-in-out 3 alternate; }
+.wh-dizzy .wh-orbit { transform-box: view-box; transform-origin: 40px 14px; animation: wh-orbit .6s linear 2; }
+.wh-topple .pt-iv { animation: wh-topple 1.15s cubic-bezier(.5, 0, .7, 1); }
+.wh-topple .pt-head { animation: wh-bonk .5s ease-out .5s; }
+.wh-spin .pt-all { animation: wh-spin 1.1s cubic-bezier(.4, 0, .3, 1); }
+.wh-upside .pt-person { animation: wh-flip .5s cubic-bezier(.3, 1.4, .5, 1) both; }
+.wh-upside .pt-legs { animation: wh-kick .2s ease-in-out .5s 4 alternate; transform-origin: 121px 64px; }
+
+/* ----- prop motion */
+.wh-float { animation: wh-float 1.1s ease-out both; }
+.wh-pop { transform-box: fill-box; transform-origin: center; animation: wh-pop-up .35s cubic-bezier(.2, 1.6, .4, 1) both; }
+.wh-twinkle { transform-box: fill-box; transform-origin: center; animation: wh-twinkle .5s ease-in-out 2 alternate both; }
+.wh-confetti { transform-box: fill-box; transform-origin: center; animation: wh-confetti 1.2s cubic-bezier(.1, .7, .3, 1) both; }
+.wh-puff { transform-box: fill-box; transform-origin: center; animation: wh-puff .8s ease-out both; }
+.wh-spray { animation: wh-spray .5s ease-out .2s both; }
+
+.wh-banner {
+  position: absolute; left: var(--s2); top: 50%; z-index: 2; pointer-events: none; white-space: nowrap;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: #ffd36b; text-shadow: 0 2px 0 #7a2b00;
+  animation: wh-banner 1.5s ease both;
+}
+.monitor.wh-sneeze { animation: shake .45s cubic-bezier(.36, .07, .19, .97) .2s both; }
+
+@keyframes wh-pop-up { from { opacity: 0; transform: scale(.2); } }
+@keyframes wh-wiggle { 20% { transform: rotate(-14deg); } 40% { transform: rotate(12deg); } 60% { transform: rotate(-9deg); } 80% { transform: rotate(6deg); } }
+@keyframes wh-nod { 50% { transform: translateY(-3px) rotate(-6deg); } }
+@keyframes wh-bob { from { transform: translate(-2px, 0) rotate(-8deg); } to { transform: translate(3px, -6px) rotate(8deg); } }
+@keyframes wh-wave { from { transform: rotate(-35deg); } to { transform: rotate(30deg); } }
+@keyframes wh-shimmy { from { transform: translateX(-2px); } to { transform: translateX(2px); } }
+@keyframes wh-pew { 40% { translate: 2px -2px; } }
+@keyframes wh-twirl { 0% { transform: scaleX(1); } 25% { transform: scaleX(-1); } 50% { transform: scaleX(1); } 75% { transform: scaleX(-1); } 100% { transform: scaleX(1); } }
+@keyframes wh-backflip { 0% { transform: none; } 30% { transform: translateY(-40px) rotate(-120deg); } 60% { transform: translateY(-40px) rotate(-300deg); } 85% { transform: translateY(0) rotate(-360deg); } 92% { transform: translateY(-4px) rotate(-360deg); } 100% { transform: rotate(-360deg); } }
+@keyframes wh-surf { 0%, 100% { transform: none; } 20% { transform: translate(-6px, -8px) rotate(-6deg); } 45% { transform: translate(8px, -14px) rotate(5deg); } 70% { transform: translate(-4px, -8px) rotate(-4deg); } }
+@keyframes wh-wave-roll { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+@keyframes wh-blow { from { transform: scaleX(.4); } to { transform: scaleX(1.2); } }
+@keyframes wh-wheelie { 0% { transform: none; } 25% { transform: rotate(16deg); } 45% { transform: rotate(11deg); } 65% { transform: rotate(17deg); } 90% { transform: rotate(-2deg); } 100% { transform: none; } }
+@keyframes wh-rocket { 0% { transform: none; } 15% { transform: translate(-2px, 1px); } 20% { transform: translate(2px, -1px); } 25% { transform: translate(-2px, 1px); } 55% { transform: translateY(-26px); } 75% { transform: translateY(-22px); } 100% { transform: none; } }
+@keyframes wh-flicker { from { transform: scaleY(.7); } to { transform: scaleY(1.2); } }
+@keyframes wh-poof { 0% { transform: none; } 30% { transform: scale(1.45, 1.6); } 70% { transform: scale(1.3, 1.45); } 100% { transform: none; } }
+@keyframes wh-jolt { 40% { transform: translateY(-4px); } }
+@keyframes wh-pill { 0% { transform: translate(160px, 10px) rotate(0); } 45% { transform: translate(44px, 22px) rotate(-280deg); } 100% { transform: translate(70px, -30px) rotate(-520deg); opacity: 0; } }
+@keyframes wh-bonk { 25% { transform: rotate(-16deg) translateX(-3px); } 60% { transform: rotate(6deg); } }
+@keyframes wh-sneeze { 30% { transform: rotate(-12deg) translateY(-2px); } 45% { transform: rotate(10deg) translate(3px, 1px); } 70% { transform: rotate(-3deg); } }
+@keyframes wh-blanket { 0% { transform: none; } 35% { transform: translate(34px, -46px) rotate(28deg); } 65% { transform: translate(30px, -40px) rotate(-10deg); } 100% { transform: none; } }
+@keyframes wh-roll { 0% { transform: none; } 40% { transform: translateX(-110px) rotate(-2deg); } 55% { transform: translateX(-100px); } 100% { transform: none; } }
+@keyframes wh-fade { from { opacity: 1; } to { opacity: 0; transform: translateX(-30px); } }
+@keyframes wh-wobble { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
+@keyframes wh-orbit { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes wh-topple { 0% { transform: none; } 45% { transform: rotate(-62deg); } 55% { transform: rotate(-54deg); } 70% { transform: rotate(-62deg); } 100% { transform: none; } }
+@keyframes wh-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes wh-flip { from { transform: rotate(0); } }
+@keyframes wh-kick { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+@keyframes wh-float { from { opacity: 0; transform: translateY(8px); } 25% { opacity: 1; } to { opacity: 0; transform: translateY(-18px); } }
+@keyframes wh-twinkle { from { opacity: .2; transform: scale(.4); } to { opacity: 1; transform: scale(1.2); } }
+@keyframes wh-confetti { from { transform: translate(0, 0) rotate(0); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
+@keyframes wh-puff { from { opacity: 0; transform: scale(.3); } 40% { opacity: .95; } to { opacity: 0; transform: scale(1.6); } }
+@keyframes wh-spray { from { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(14px, 2px); } }
+@keyframes wh-banner { 0% { opacity: 0; transform: translateY(-50%) scale(.5) rotate(-6deg); } 15% { opacity: 1; transform: translateY(-50%) scale(1.1) rotate(-4deg); } 80% { opacity: 1; transform: translateY(-50%) scale(1) rotate(-4deg); } 100% { opacity: 0; transform: translateY(-80%) rotate(-4deg); } }
+
+/* Calm motion (setting or system): poses and props, no movement */
+.wh-still *, .wh-still .wh-banner, .patient-card:has(.wh-still) .wh-banner { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .pt-svg *, .wh-banner, .monitor.wh-sneeze { animation: none !important; }
+}
 
 /* ---------- shared bits ---------- */
 .stack { display: flex; flex-direction: column; gap: var(--s4); }
@@ -931,7 +1053,7 @@ function defaultState() {
     days: { last: '', streak: 0, today: '', answered: 0, active: [] },
     recent: [],
     unlocks: {},
-    settings: { sound: true, motion: 'auto', text: 1, examDate: '', dailyGoal: 0 },
+    settings: { sound: true, motion: 'auto', whimsy: 'full', text: 1, examDate: '', dailyGoal: 0 },
     openRun: null,      // autosaved round in progress: { at, run }
   };
 }
@@ -1089,7 +1211,25 @@ const Sound = {
     o.start(t0); o.stop(t0 + dur + 0.05);
   },
 
-  play(name) {
+  // short filtered noise burst (the sneeze)
+  noise(start, dur, vol = 0.5, freq = 2400) {
+    const ctx = this.ctx, t0 = ctx.currentTime + start;
+    const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = freq; f.Q.value = 0.8;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(f); f.connect(g); g.connect(this.master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  },
+
+  play(name, delay = 0) {
+    if (delay) { setTimeout(() => this.play(name), delay); return; }
     if (!this.on()) return;
     try {
       switch (name) {
@@ -1107,6 +1247,14 @@ const Sound = {
         case 'win': [523, 659, 784, 1046].forEach((f, i) => this.tone(f, i * 0.11, 0.3, 'triangle', 0.7)); break;
         case 'rank': [392, 523, 659, 784, 1046, 1318].forEach((f, i) => this.tone(f, i * 0.09, 0.32, 'triangle', 0.6)); break;
         case 'lose': [392, 349, 311, 262].forEach((f, i) => this.tone(f, i * 0.16, 0.3, 'triangle', 0.5)); break;
+        case 'boing': this.tone(180, 0, 0.32, 'sine', 0.7, 620); this.tone(620, 0.16, 0.2, 'sine', 0.3, 400); break;
+        case 'kazoo': [523, 587, 659, 523, 784].forEach((f, i) => this.tone(f, i * 0.1, 0.12, 'sawtooth', 0.18, f * 1.03)); break;
+        case 'slide': this.tone(300, 0, 0.5, 'sine', 0.55, 1400); break;
+        case 'slidedown': this.tone(1300, 0, 0.55, 'sine', 0.5, 220); break;
+        case 'honk': this.tone(330, 0, 0.16, 'square', 0.3, 300); this.tone(330, 0.2, 0.22, 'square', 0.3, 290); break;
+        case 'sneeze': this.tone(500, 0, 0.18, 'triangle', 0.25, 900); this.noise(0.2, 0.28, 0.6, 3000); break;
+        case 'pop': this.tone(900, 0, 0.06, 'sine', 0.5, 1500); break;
+        case 'tada': [523, 659, 784].forEach((f, i) => this.tone(f, i * 0.08, 0.14, 'triangle', 0.6)); [523, 659, 784, 1046].forEach((f) => this.tone(f, 0.3, 0.55, 'triangle', 0.4)); break;
         case 'badge': this.tone(988, 0, 0.12, 'sine', 0.6); this.tone(1318, 0.1, 0.3, 'sine', 0.6); break;
       }
     } catch (e) { /* audio is optional */ }
@@ -1156,7 +1304,18 @@ function face(cx, cy, mood, eyeStyle, scale = 1) {
   const s = scale, ex = 12 * s, ey = cy + 2 * s;
   let eyes = '';
   const dark = '#2a2230';
-  if (mood === 'cheer' || mood === 'happy' && eyeStyle === 3) {
+  if (mood === 'dizzy') {
+    // spiral eyes: half-circle arcs of growing radius
+    eyes = [cx - ex, cx + ex].map((x) => `<path d="M${x - 1 * s} ${ey} a${1 * s} ${1 * s} 0 1 1 ${2 * s} 0 a${2 * s} ${2 * s} 0 1 1 ${-4 * s} 0 a${3 * s} ${3 * s} 0 1 1 ${6 * s} 0 a${4 * s} ${4 * s} 0 1 1 ${-8 * s} 0" stroke="${dark}" stroke-width="${1.5 * s}" fill="none" stroke-linecap="round"/>`).join('');
+  } else if (mood === 'starry') {
+    eyes = [cx - ex, cx + ex].map((x) => `<path d="M${x} ${ey - 6 * s} l${1.8 * s} ${4 * s} ${4.2 * s} ${0.5 * s} -${3.1 * s} ${2.9 * s} ${0.9 * s} ${4.2 * s} -${3.8 * s} -${2.1 * s} -${3.8 * s} ${2.1 * s} ${0.9 * s} -${4.2 * s} -${3.1 * s} -${2.9 * s} ${4.2 * s} -${0.5 * s}z" fill="#ffd36b" stroke="${dark}" stroke-width="${1.1 * s}" stroke-linejoin="round"/>`).join('');
+  } else if (mood === 'shock') {
+    eyes = [cx - ex, cx + ex].map((x) => `<circle cx="${x}" cy="${ey}" r="${6 * s}" fill="#fff" stroke="${dark}" stroke-width="${1.6 * s}"/><circle cx="${x}" cy="${ey}" r="${1.8 * s}" fill="${dark}"/>`).join('');
+  } else if (mood === 'cool') {
+    eyes = `<path d="M${cx - ex - 8 * s} ${ey - 4 * s} h${16 * s} v${4 * s} q0 ${6 * s} ${-8 * s} ${6 * s} q${-8 * s} 0 ${-8 * s} ${-6 * s}z M${cx + ex - 8 * s} ${ey - 4 * s} h${16 * s} v${4 * s} q0 ${6 * s} ${-8 * s} ${6 * s} q${-8 * s} 0 ${-8 * s} ${-6 * s}z" fill="#1b1d2a"/><path d="M${cx - ex + 8 * s} ${ey - 3 * s} h${2 * ex - 16 * s}" stroke="#1b1d2a" stroke-width="${2 * s}"/><path d="M${cx - ex - 5 * s} ${ey - 2 * s} l${4 * s} 0" stroke="#fff" stroke-width="${1.4 * s}" stroke-linecap="round" opacity=".7"/>`;
+  } else if (mood === 'silly') {
+    eyes = `<path d="M${cx - ex - 5 * s} ${ey + 1 * s} q${5 * s} ${-6 * s} ${10 * s} 0" stroke="${dark}" stroke-width="${2.6 * s}" fill="none" stroke-linecap="round"/><ellipse cx="${cx + ex}" cy="${ey}" rx="${3.6 * s}" ry="${4.2 * s}" fill="${dark}"/><circle cx="${cx + ex + 1.2 * s}" cy="${ey - 1.3 * s}" r="${1.1 * s}" fill="#fff"/>`;
+  } else if (mood === 'cheer' || mood === 'happy' && eyeStyle === 3) {
     eyes = `<path d="M${cx - ex - 5 * s} ${ey + 1 * s} q${5 * s} ${-6 * s} ${10 * s} 0 M${cx + ex - 5 * s} ${ey + 1 * s} q${5 * s} ${-6 * s} ${10 * s} 0" stroke="${dark}" stroke-width="${2.6 * s}" fill="none" stroke-linecap="round"/>`;
   } else if (eyeStyle === 3 || mood === 'sleepy') {
     eyes = `<path d="M${cx - ex - 5 * s} ${ey} q${5 * s} ${4 * s} ${10 * s} 0 M${cx + ex - 5 * s} ${ey} q${5 * s} ${4 * s} ${10 * s} 0" stroke="${dark}" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/>`;
@@ -1167,7 +1326,7 @@ function face(cx, cy, mood, eyeStyle, scale = 1) {
       (eyeStyle === 2 ? `<path d="M${x - 5 * s} ${ey - 4 * s} l-2.5 ${-2 * s} M${x + 5 * s} ${ey - 4 * s} l2.5 ${-2 * s}" stroke="${dark}" stroke-width="${1.6 * s}" stroke-linecap="round"/>` : '')).join('');
   }
   let brows = '';
-  if (mood === 'worried' || mood === 'sad') brows = `<path d="M${cx - ex - 5 * s} ${ey - 9 * s} l${9 * s} ${-3 * s} M${cx + ex + 5 * s} ${ey - 9 * s} l${-9 * s} ${-3 * s}" stroke="${dark}" stroke-width="${2 * s}" stroke-linecap="round" opacity=".75"/>`;
+  if (mood === 'worried' || mood === 'sad' || mood === 'shock') brows = `<path d="M${cx - ex - 5 * s} ${ey - 9 * s} l${9 * s} ${-3 * s} M${cx + ex + 5 * s} ${ey - 9 * s} l${-9 * s} ${-3 * s}" stroke="${dark}" stroke-width="${2 * s}" stroke-linecap="round" opacity=".75"/>`;
   else if (mood === 'focus') brows = `<path d="M${cx - ex - 5 * s} ${ey - 11 * s} l${9 * s} ${3 * s} M${cx + ex + 5 * s} ${ey - 11 * s} l${-9 * s} ${3 * s}" stroke="${dark}" stroke-width="${2.2 * s}" stroke-linecap="round" opacity=".8"/>`;
   const my = cy + 14 * s;
   let mouth;
@@ -1178,6 +1337,10 @@ function face(cx, cy, mood, eyeStyle, scale = 1) {
     case 'sad': mouth = `<path d="M${cx - 6 * s} ${my + 4 * s} q${6 * s} ${-6 * s} ${12 * s} 0" stroke="#7a2b3a" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/>`; break;
     case 'focus': mouth = `<path d="M${cx - 5 * s} ${my + 1 * s} h${10 * s}" stroke="#7a2b3a" stroke-width="${2.4 * s}" stroke-linecap="round"/>`; break;
     case 'pain': mouth = `<path d="M${cx - 6 * s} ${my + 2 * s} l${3 * s} ${-2 * s} l${3 * s} ${2 * s} l${3 * s} ${-2 * s} l${3 * s} ${2 * s}" stroke="#7a2b3a" stroke-width="${2 * s}" fill="none" stroke-linejoin="round"/>`; break;
+    case 'starry': mouth = `<path d="M${cx - 7 * s} ${my - 1 * s} q${7 * s} ${10 * s} ${14 * s} 0 z" fill="#7a2b3a"/>`; break;
+    case 'shock': case 'dizzy': mouth = `<ellipse cx="${cx}" cy="${my + 2 * s}" rx="${4 * s}" ry="${5 * s}" fill="#7a2b3a"/>`; break;
+    case 'cool': mouth = `<path d="M${cx - 5 * s} ${my + 1 * s} q${6 * s} ${4 * s} ${11 * s} ${-2 * s}" stroke="#7a2b3a" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/>`; break;
+    case 'silly': mouth = `<path d="M${cx - 6 * s} ${my} q${6 * s} ${7 * s} ${12 * s} 0" stroke="#7a2b3a" stroke-width="${2.4 * s}" fill="none" stroke-linecap="round"/><path d="M${cx - 1 * s} ${my + 3 * s} q${3 * s} ${7 * s} ${6 * s} 0z" fill="#ff8fa3" stroke="#7a2b3a" stroke-width="${1 * s}"/>`; break;
     default: mouth = `<path d="M${cx - 4 * s} ${my} q${4 * s} ${4 * s} ${8 * s} 0" stroke="#7a2b3a" stroke-width="${2.2 * s}" fill="none" stroke-linecap="round"/>`;
   }
   const blush = `<ellipse cx="${cx - 19 * s}" cy="${ey + 8 * s}" rx="${5 * s}" ry="${3 * s}" fill="#ff7f9c" opacity=".35"/><ellipse cx="${cx + 19 * s}" cy="${ey + 8 * s}" rx="${5 * s}" ry="${3 * s}" fill="#ff7f9c" opacity=".35"/>`;
@@ -1324,23 +1487,35 @@ function patientHead(p, mood = 'neutral', size = 'bust') {
   return s;
 }
 
+// Patient lying in bed. viewBox 0 0 160 110. Parts sit in named groups so whimsy
+// reactions (22-whimsy.js, 35-whimsy.css) can move them on their own:
+// .pt-all (everything) > .pt-bed, .pt-person (> .pt-legs, .pt-head > .pt-hair, .pt-body, .pt-arm-*), .pt-iv, .pt-theme, .pt-props
 function patientInBed(p, mood = 'neutral') {
   const skin = AVATAR.skin[p.skin];
   const hcol = AVATAR.hairColor[p.hair].c;
-  let s = `<svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Patient in bed">`;
-  s += `<rect x="128" y="6" width="3" height="80" fill="#8fa3bd"/><rect x="120" y="8" width="18" height="22" rx="5" fill="#d9ecff" stroke="#8fa3bd"/><path d="M129 30 q0 30 -28 34" stroke="#b8d4ef" stroke-width="1.6" fill="none"/>`;
-  s += `<rect x="8" y="58" width="132" height="12" rx="4" fill="#5d708d"/><rect x="8" y="40" width="8" height="54" rx="3" fill="#6f84a3"/><rect x="132" y="50" width="8" height="44" rx="3" fill="#6f84a3"/>`;
-  s += `<rect x="12" y="50" width="124" height="14" rx="7" fill="#eef3f9"/>`;
-  s += `<ellipse cx="38" cy="48" rx="22" ry="9" fill="#ffffff" stroke="#d3deeb"/>`;
   const cx = 40, cy = 34, r = p.kid ? 15 : 16;
-  s += `<path d="M${cx - r - 2} ${cy + 2} q-2 -18 ${r + 2} -18 q${r + 4} 0 ${r + 2} 18z" fill="${hcol}"/>`;
+  let s = `<svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Patient in bed" class="pt-svg">`;
+  s += `<g class="pt-all">`;
+  s += `<g class="pt-bed"><rect x="8" y="58" width="132" height="12" rx="4" fill="#5d708d"/><rect x="8" y="40" width="8" height="54" rx="3" fill="#6f84a3"/><rect x="132" y="50" width="8" height="44" rx="3" fill="#6f84a3"/>`;
+  s += `<circle cx="12" cy="97" r="3.5" fill="#3b4b63"/><circle cx="136" cy="97" r="3.5" fill="#3b4b63"/>`;
+  s += `<rect x="12" y="50" width="124" height="14" rx="7" fill="#eef3f9"/><ellipse cx="38" cy="48" rx="22" ry="9" fill="#ffffff" stroke="#d3deeb"/></g>`;
+  s += `<g class="pt-person">`;
+  // legs only show in the upside-down gag
+  s += `<g class="pt-legs"><rect x="112" y="62" width="7" height="22" rx="3.5" fill="${skin}"/><rect x="123" y="62" width="7" height="22" rx="3.5" fill="${skin}"/><rect x="110" y="80" width="11" height="7" rx="3.5" fill="#f4f6f8"/><rect x="121" y="80" width="11" height="7" rx="3.5" fill="#f4f6f8"/></g>`;
+  s += `<g class="pt-head"><path d="M${cx - r - 2} ${cy + 2} q-2 -18 ${r + 2} -18 q${r + 4} 0 ${r + 2} 18z" fill="${hcol}"/>`;
   s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}"/>`;
   s += face(cx, cy, mood, p.kid ? 1 : 0, r / 34);
-  if (p.glasses) s += `<g fill="none" stroke="#3b3044" stroke-width="1.3"><circle cx="${cx - 6}" cy="${cy + 1}" r="4"/><circle cx="${cx + 6}" cy="${cy + 1}" r="4"/></g>`;
-  s += `<path d="M${cx - r - 1} ${cy + 1} q-1 -17 ${r + 1} -17 q${r + 2} 0 ${r + 1} 17 q-5 -8 -11 -9 q-5 5 -12 3 q-5 2 -${r - 6} 6z" fill="${hcol}"/>`;
-  s += `<path d="M52 44 q40 -6 84 2 v18 h-90z" fill="${p.gown}"/><path d="M52 44 q40 -6 84 2" stroke="#0002" fill="none"/>`;
-  s += `<rect x="70" y="50" width="62" height="5" rx="2.5" fill="#fff6"/>`;
-  s += `</svg>`;
+  if (p.glasses && mood !== 'cool') s += `<g fill="none" stroke="#3b3044" stroke-width="1.3"><circle cx="${cx - 6}" cy="${cy + 1}" r="4"/><circle cx="${cx + 6}" cy="${cy + 1}" r="4"/></g>`;
+  s += `<g class="pt-hair"><path d="M${cx - r - 1} ${cy + 1} q-1 -17 ${r + 1} -17 q${r + 2} 0 ${r + 1} 17 q-5 -8 -11 -9 q-5 5 -12 3 q-5 2 -${r - 6} 6z" fill="${hcol}"/></g></g>`;
+  s += `<g class="pt-body"><path d="M52 44 q40 -6 84 2 v18 h-90z" fill="${p.gown}"/><path d="M52 44 q40 -6 84 2" stroke="#0002" fill="none"/><rect x="70" y="50" width="62" height="5" rx="2.5" fill="#fff6"/></g>`;
+  // arms only show in some reactions (thumbs up, dancing, finger guns)
+  s += `<g class="pt-arm pt-arm-r"><rect x="56" y="26" width="7" height="22" rx="3.5" fill="${p.gown}" stroke="#0002"/><circle cx="59.5" cy="24" r="4.6" fill="${skin}"/><rect x="58" y="15" width="3.2" height="7" rx="1.6" fill="${skin}"/></g>`;
+  s += `<g class="pt-arm pt-arm-l"><rect x="70" y="27" width="7" height="21" rx="3.5" fill="${p.gown}" stroke="#0002"/><circle cx="73.5" cy="25" r="4.6" fill="${skin}"/></g>`;
+  s += `</g>`;
+  s += `<g class="pt-iv"><rect x="128" y="6" width="3" height="80" fill="#8fa3bd"/><rect x="120" y="8" width="18" height="22" rx="5" fill="#d9ecff" stroke="#8fa3bd"/><path d="M129 30 q0 30 -28 34" stroke="#b8d4ef" stroke-width="1.6" fill="none"/><rect x="122" y="84" width="16" height="3" rx="1.5" fill="#8fa3bd"/></g>`;
+  s += `<g class="pt-theme">${typeof themeProps === 'function' ? themeProps(p, 'bed') : ''}</g>`;
+  s += `<g class="pt-props"></g>`;
+  s += `</g></svg>`;
   return s;
 }
 
@@ -1376,6 +1551,137 @@ function starRow(n, of = 3) {
   for (let i = 0; i < of; i++) s += `<span class="${i < n ? 'on' : ''}">${icon('star')}</span>`;
   return s;
 }
+
+/* ---- 22-whimsy.js ---- */
+// ---------- whimsy: silly patient reactions ----------
+// A right answer streak makes the patient sillier (tiers 1-4, the same steps as the score
+// multiplier, plus 15+). A run of misses makes the bedside more chaotic (levels 1-3).
+// Everything plays inside the patient card only, lasts under 1.5 s, and never delays the
+// explanation. Moves live in 35-whimsy.css; this file picks a reaction and stages it.
+
+// props are SVG drawn in the bed's viewBox (0 0 160 110); the head sits at (40, 34)
+const WH_PROPS = {
+  hearts: () => [[34, 14, 0], [48, 10, 0.18], [26, 8, 0.34]].map(([x, y, d]) =>
+    `<path class="wh-float" style="animation-delay:${d}s" d="M${x} ${y} q-4 -4 0 -7 q2 -1 3 1 q1 -2 3 -1 q4 3 0 7 l-3 3z" fill="#ff6b8a"/>`).join(''),
+  pew: () => `<g class="wh-pop"><path d="M64 16 l6 -3 M66 22 l7 0 M64 28 l6 3" stroke="#ffd36b" stroke-width="2" stroke-linecap="round"/><path d="M78 18 l6 -3 M80 24 l7 0 M78 30 l6 3" stroke="#ffd36b" stroke-width="2" stroke-linecap="round"/></g>`,
+  notes: () => [[60, 12, 0], [76, 6, 0.2], [92, 14, 0.4]].map(([x, y, d]) =>
+    `<g class="wh-float" style="animation-delay:${d}s"><circle cx="${x}" cy="${y + 6}" r="2.6" fill="#8fa8ff"/><path d="M${x + 2.4} ${y + 6} v-9 l5 2" stroke="#8fa8ff" stroke-width="1.6" fill="none"/></g>`).join(''),
+  sparkles: () => [[118, 4], [146, 18], [104, 26]].map(([x, y], i) =>
+    `<path class="wh-twinkle" style="animation-delay:${i * 0.15}s" d="M${x} ${y - 5} l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4z" fill="#ffd36b"/>`).join(''),
+  party: () => `<g class="wh-pop"><path d="M30 20 L41 -4 L51 20 z" fill="#f6bd52" stroke="#c98a1a" stroke-width="1"/><path d="M34 13 l12 -2 M37 6 l7 -1" stroke="#ff6b8a" stroke-width="2.2"/><circle cx="41" cy="-4" r="3.2" fill="#ff6b8a"/></g>
+    <g class="wh-blower"><path d="M48 49 h14" stroke="#5cd6c0" stroke-width="3" stroke-linecap="round"/><path d="M62 49 q8 0 8 -6 q0 -4 -4 -4" stroke="#5cd6c0" stroke-width="3" fill="none" stroke-linecap="round"/></g>`,
+  waves: () => `<g class="wh-waves"><path d="M-20 100 q10 -8 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 v12 h-180z" fill="#5fb4ff" opacity=".85"/><path d="M-20 104 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="#fff" stroke-width="1.6" fill="none" opacity=".8"/></g>`,
+  confetti: () => {
+    const cols = ['#5cd6c0', '#f6bd52', '#ff6b7a', '#8fa8ff', '#52f0a4', '#ffffff'];
+    let s = '';
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2;
+      const dx = Math.round(Math.cos(a) * (36 + (i % 3) * 12)), dy = Math.round(Math.sin(a) * (26 + (i % 2) * 10) - 10);
+      s += `<rect class="wh-confetti" x="127" y="17" width="4" height="2.6" fill="${cols[i % cols.length]}" style="--dx:${dx}px;--dy:${dy}px;--rot:${(i * 67) % 360}deg"/>`;
+    }
+    return s;
+  },
+  rocket: () => `<g class="wh-flames"><path d="M20 101 q6 14 12 0 M60 101 q6 16 12 0 M100 101 q6 14 12 0" fill="#ff9f43" stroke="#ff6b3d" stroke-width="1.5"/></g>`,
+  puffs: () => [[22, 14], [40, 8], [58, 14], [30, 4], [50, 3]].map(([x, y], i) =>
+    `<circle class="wh-puff" style="animation-delay:${i * 0.06}s" cx="${x}" cy="${y}" r="5" fill="#dfe6ef" opacity=".9"/>`).join(''),
+  pill: () => `<g class="wh-pill"><rect x="-6" y="-3" width="12" height="6" rx="3" fill="#ff6b7a"/><rect x="0" y="-3" width="6" height="6" rx="0" fill="#fff"/><rect x="0" y="-3" width="6" height="6" rx="3" fill="#fff"/></g>
+    <text class="wh-pop wh-word" x="62" y="12" font-size="11">BONK!</text>`,
+  achoo: () => `<text class="wh-pop wh-word" x="58" y="20" font-size="12">ACHOO!</text>` +
+    [[58, 40], [66, 46], [62, 32], [72, 38]].map(([x, y], i) => `<circle class="wh-spray" style="animation-delay:${i * 0.04}s" cx="${x}" cy="${y}" r="1.8" fill="#8fd3ff"/>`).join(''),
+  speed: () => `<g class="wh-speed"><path d="M140 40 h18 M136 52 h24 M142 64 h16" stroke="#cfd8e3" stroke-width="2.2" stroke-linecap="round"/></g>`,
+  stars: () => `<g class="wh-orbit">${[0, 120, 240].map((d) => { const a = (d * Math.PI) / 180; const x = 40 + Math.cos(a) * 20, y = 14 + Math.sin(a) * 6; return `<path d="M${x} ${y - 4} l1.2 2.8 2.8 .4 -2.1 2 .6 2.9 -2.5 -1.4 -2.5 1.4 .6 -2.9 -2.1 -2 2.8 -.4z" fill="#ffd36b"/>`; }).join('')}</g>`,
+  clang: () => `<text class="wh-pop wh-word" x="74" y="16" font-size="12">CLANG!</text>`,
+  swirl: () => `<text class="wh-pop wh-word" x="58" y="14" font-size="11">WHEEE!</text>`,
+};
+
+const WHIMSY = [
+  // ----- right answers, by streak tier
+  { id: 'thumbs', kind: 'good', tier: 1, mood: 'happy', sound: 'boing', ms: 1100 },
+  { id: 'wiggle', kind: 'good', tier: 1, mood: 'silly', sound: 'boing', ms: 1000 },
+  { id: 'hearts', kind: 'good', tier: 1, mood: 'cheer', sound: 'pop', props: 'hearts', ms: 1300 },
+  { id: 'dance', kind: 'good', tier: 2, mood: 'cheer', sound: 'kazoo', props: 'notes', ms: 1400 },
+  { id: 'fingerguns', kind: 'good', tier: 2, mood: 'cool', sound: 'slide', props: 'pew', ms: 1200 },
+  { id: 'ivtwirl', kind: 'good', tier: 2, mood: 'starry', sound: 'slide', props: 'sparkles', ms: 1200 },
+  { id: 'backflip', kind: 'good', tier: 3, mood: 'cheer', sound: 'slide', props: 'swirl', ms: 1300 },
+  { id: 'surf', kind: 'good', tier: 3, mood: 'cool', sound: 'kazoo', props: 'waves', ms: 1400 },
+  { id: 'party', kind: 'good', tier: 3, mood: 'starry', sound: 'honk', props: 'party', ms: 1400 },
+  { id: 'wheelie', kind: 'good', tier: 4, mood: 'starry', sound: 'tada', props: 'confetti', banner: 'LEGENDARY!', ms: 1500 },
+  { id: 'rocket', kind: 'good', tier: 4, mood: 'cool', sound: 'slide', props: 'rocket', banner: 'UNSTOPPABLE!', ms: 1500 },
+  // ----- misses, by how many in a row
+  { id: 'poof', kind: 'chaos', tier: 1, mood: 'shock', sound: 'boing', props: 'puffs', ms: 1000 },
+  { id: 'bonk', kind: 'chaos', tier: 1, mood: 'shock', sound: 'honk', props: 'pill', ms: 1000 },
+  { id: 'sneeze', kind: 'chaos', tier: 1, mood: 'shock', sound: 'sneeze', props: 'achoo', sneeze: true, ms: 1000 },
+  { id: 'blanket', kind: 'chaos', tier: 2, mood: 'shock', sound: 'slidedown', ms: 1200 },
+  { id: 'roll', kind: 'chaos', tier: 2, mood: 'worried', sound: 'slide', props: 'speed', ms: 1200 },
+  { id: 'dizzy', kind: 'chaos', tier: 2, mood: 'dizzy', sound: 'boing', props: 'stars', ms: 1200 },
+  { id: 'topple', kind: 'chaos', tier: 3, mood: 'shock', sound: 'slidedown', props: 'clang', ms: 1200 },
+  { id: 'spin', kind: 'chaos', tier: 3, mood: 'dizzy', sound: 'slide', ms: 1200 },
+  { id: 'upside', kind: 'chaos', tier: 3, mood: 'dizzy', sound: 'boing', ms: 1200 },
+];
+
+window.WHIMSY_LIST = WHIMSY;
+const Whimsy = {
+  timer: null,
+
+  setting() { return (WR.state.settings && WR.state.settings.whimsy) || 'full'; },
+
+  // streak tier: 0 below 3, then the score multiplier's steps (×1.5, ×2, ×3), then 15+
+  tier(streak) {
+    if (streak >= 15) return 4;
+    const m = Engine.multiplier(streak);
+    return m >= 3 ? 3 : m >= 2 ? 2 : m > 1 ? 1 : 0;
+  },
+  chaos(wrongRun) { return Math.min(3, wrongRun); },
+
+  // which reaction (or null) this answer earns
+  choose(run, res) {
+    const mode = this.setting();
+    if (mode === 'off' || run.mode === 'exam' || run.mode === 'boss') return null;
+    let kind, level;
+    if (res.correct) { kind = 'good'; level = this.tier(run.streak); }
+    else if (res.frac > 0) return null; // partly right: stay calm, read the why
+    else { kind = 'chaos'; level = this.chaos(run.wrongRun); }
+    const cap = run.mode === 'codeblue' ? 1 : mode === 'mild' ? (kind === 'good' ? 2 : 1) : 4;
+    level = Math.min(level, cap);
+    if (!level) return null;
+    let pool = WHIMSY.filter((w) => w.kind === kind && w.tier === level);
+    if (pool.length > 1) pool = pool.filter((w) => w.id !== run.lastWh);
+    return pick(pool);
+  },
+
+  clear(bed) {
+    clearTimeout(this.timer);
+    const el = bed || document.getElementById('bed');
+    if (!el) return;
+    el.className = el.className.split(/\s+/).filter((c) => c && c !== 'wh' && c !== 'wh-still' && !c.startsWith('wh-')).join(' ');
+    const props = el.querySelector('.pt-props'); if (props) props.innerHTML = '';
+    const card = el.closest('.patient-card'); if (card) card.querySelectorAll('.wh-banner').forEach((b) => b.remove());
+    const mon = document.getElementById('monitor'); if (mon) mon.classList.remove('wh-sneeze');
+  },
+
+  // stage a reaction on the bedside patient; returns the reaction (or null)
+  react(run, res) {
+    const bed = document.getElementById('bed');
+    if (!bed || !run.cur) return null;
+    const w = this.choose(run, res);
+    if (!w) return null;
+    this.clear(bed);
+    run.lastWh = w.id;
+    run.cur.wh = w.id;
+    bed.innerHTML = patientInBed(run.cur.patient, w.mood);
+    const props = bed.querySelector('.pt-props');
+    if (w.props && props) props.innerHTML = WH_PROPS[w.props](run.cur.patient);
+    const still = reducedMotion();
+    bed.classList.add('wh', 'wh-' + w.id);
+    if (still) bed.classList.add('wh-still');
+    const card = bed.closest('.patient-card');
+    if (w.banner && card) { const b = document.createElement('div'); b.className = 'wh-banner'; b.textContent = w.banner; b.setAttribute('aria-hidden', 'true'); card.appendChild(b); }
+    if (w.sneeze && !still) { const mon = document.getElementById('monitor'); if (mon) { mon.classList.remove('wh-sneeze'); void mon.offsetWidth; mon.classList.add('wh-sneeze'); } }
+    if (w.sound) Sound.play(w.sound, 260); // after the right/wrong chime
+    this.timer = setTimeout(() => this.clear(bed), w.ms);
+    return w;
+  },
+};
 
 /* ---- 25-fx.js ---- */
 // ---------- one animation loop for everything that ticks ----------
@@ -2599,6 +2905,7 @@ Screens.chart = {
     if (run.cur.revealed && run.cfg.feedback) { const f = $('#feedback', el); if (f) f.scrollTop = 0; }
   },
   leave() {
+    Whimsy.clear();
     if (this.ecg) { this.ecg.destroy(); this.ecg = null; }
     if (this.timerOff && App.name !== 'chart') { this.timerOff(); this.timerOff = null; }
     clearTimeout(this.autoT);
@@ -2674,6 +2981,7 @@ Screens.chart = {
     }
     if (run.mode === 'boss') this.bossFx(c);
     this.refresh(['paper', 'tray', 'prog', 'score', 'bed', 'talk']);
+    Whimsy.react(run, res);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
     if (run.mode === 'codeblue') {
       const tm = $('#timer', el);
@@ -3016,7 +3324,7 @@ Screens.locker = {
       Sound.play('tap'); Store.save(); App.rerender();
     },
     poke() {
-      const moods = ['happy', 'cheer', 'focus', 'sleepy', 'worried', 'neutral'];
+      const moods = ['happy', 'cheer', 'focus', 'cool', 'silly', 'starry', 'sleepy', 'worried', 'dizzy', 'neutral'];
       Screens.locker.mood = moods[(moods.indexOf(Screens.locker.mood) + 1) % moods.length];
       Sound.play('tap'); App.rerender();
     },
@@ -3084,6 +3392,7 @@ Screens.settings = {
       <div class="narrow stack">
         <div class="card set-row"><div><b>Sound</b><p class="dim">Chimes, buzzers, and the Code Blue alarm.</p></div>${seg('sound', [[true, 'On'], [false, 'Off']])}</div>
         <div class="card set-row"><div><b>Motion</b><p class="dim">"Calm" turns off walking, shaking, and confetti.</p></div>${seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']])}</div>
+        <div class="card set-row"><div><b>Silly patients</b><p class="dim">How wild patients get on a hot streak (and when things go wrong).</p></div>${seg('whimsy', [['full', 'Full'], ['mild', 'Mild'], ['off', 'Off']])}</div>
         <div class="card set-row"><div><b>Text size</b></div>${seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']])}</div>
         <div class="card set-row"><div><b>Exam date</b><p class="dim">Powers the countdown and your daily target.</p></div>
           <input type="date" id="exam-date" value="${esc(st.examDate)}" aria-label="Exam date"></div>
@@ -3114,7 +3423,7 @@ Screens.settings = {
   act: {
     setting(d) {
       let v = d.val;
-      if (v === 'true') v = true; else if (v === 'false') v = false; else if (!isNaN(+v) && d.key !== 'motion') v = +v;
+      if (v === 'true') v = true; else if (v === 'false') v = false; else if (!isNaN(+v) && d.key !== 'motion' && d.key !== 'whimsy') v = +v;
       WR.state.settings[d.key] = v;
       Store.save(); applySettings(); Sound.play('tap'); App.rerender();
     },
@@ -3228,7 +3537,7 @@ function bindEvents() {
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run });
 
 async function start(hot) {
   App.measure();

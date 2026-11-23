@@ -47,7 +47,7 @@
 
 /* compact + regular: condensed bedside strip */
 [data-size="compact"] .patient-card, [data-size="regular"] .patient-card { padding: var(--s2) var(--s3); gap: var(--s3); }
-[data-size="compact"] .patient-card .bed, [data-size="regular"] .patient-card .bed { width: 84px; height: 60px; }
+[data-size="compact"] .patient-card .bed, [data-size="regular"] .patient-card .bed { width: 100px; height: 70px; }
 [data-size="compact"] .bedside-row, [data-size="regular"] .bedside-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s3); align-items: stretch; }
 [data-size="compact"] .bedside-row { grid-template-columns: 1fr; }
 [data-size="compact"] .monitor canvas, [data-size="regular"] .monitor canvas { height: 56px; }

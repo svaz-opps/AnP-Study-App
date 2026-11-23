@@ -197,6 +197,7 @@ Screens.chart = {
     if (run.cur.revealed && run.cfg.feedback) { const f = $('#feedback', el); if (f) f.scrollTop = 0; }
   },
   leave() {
+    Whimsy.clear();
     if (this.ecg) { this.ecg.destroy(); this.ecg = null; }
     if (this.timerOff && App.name !== 'chart') { this.timerOff(); this.timerOff = null; }
     clearTimeout(this.autoT);
@@ -272,6 +273,7 @@ Screens.chart = {
     }
     if (run.mode === 'boss') this.bossFx(c);
     this.refresh(['paper', 'tray', 'prog', 'score', 'bed', 'talk']);
+    Whimsy.react(run, res);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
     if (run.mode === 'codeblue') {
       const tm = $('#timer', el);

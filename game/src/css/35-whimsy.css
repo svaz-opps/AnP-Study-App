@@ -1,0 +1,121 @@
+/* ---------- whimsy: silly patient reactions (see 22-whimsy.js) ---------- */
+/* The card clips everything, so stunts can leave the bed's box without widening the page. */
+.patient-card { position: relative; overflow: hidden; }
+.patient-card .bed { position: relative; z-index: 0; }
+.patient-card .pt-info { position: relative; z-index: 1; }
+.patient-card .bed svg { overflow: visible; }
+.pt-svg g { transform-box: view-box; }
+.pt-all { transform-origin: 74px 60px; }
+.pt-iv { transform-origin: 129px 86px; }
+.pt-person { transform-origin: 80px 46px; }
+.pt-head { transform-origin: 40px 46px; }
+.pt-hair { transform-origin: 40px 30px; }
+.pt-body { transform-origin: 94px 54px; }
+.pt-arm-r { transform-origin: 59.5px 47px; }
+.pt-arm-l { transform-origin: 73.5px 47px; }
+.pt-arm, .pt-legs { opacity: 0; }
+.pt-props text.wh-word { font-family: var(--font-display); font-weight: 700; fill: #ffd36b; stroke: #3b2a00; stroke-width: .6px; paint-order: stroke; }
+
+/* ----- final poses (also what reduced motion shows) */
+.wh-thumbs .pt-arm-r, .wh-dance .pt-arm, .wh-fingerguns .pt-arm, .wh-party .pt-arm-l, .wh-surf .pt-arm { opacity: 1; }
+.wh-upside .pt-legs { opacity: 1; }
+.wh-fingerguns .pt-arm-r { transform: rotate(60deg); }
+.wh-fingerguns .pt-arm-l { transform: rotate(50deg); }
+.wh-surf .pt-arm-r { transform: rotate(-50deg); }
+.wh-surf .pt-arm-l { transform: rotate(50deg); }
+.wh-upside .pt-person { transform: rotate(180deg); }
+.wh-pill { transform: translate(40px, 20px); }
+
+/* ----- right answers */
+.wh-thumbs .pt-arm-r { animation: wh-pop-up .45s cubic-bezier(.2, 1.6, .4, 1) both; }
+.wh-wiggle .pt-head { animation: wh-wiggle .9s ease-in-out; }
+.wh-hearts .pt-head { animation: wh-nod .6s ease-in-out 2; }
+.wh-dance .pt-head { animation: wh-bob .35s ease-in-out 4 alternate; }
+.wh-dance .pt-arm-r { animation: wh-wave .35s ease-in-out 4 alternate; }
+.wh-dance .pt-arm-l { animation: wh-wave .35s ease-in-out 4 alternate-reverse; }
+.wh-dance .pt-body { animation: wh-shimmy .35s ease-in-out 4 alternate; }
+.wh-fingerguns .pt-arm { animation: wh-pew .3s ease-out 3; }
+.wh-ivtwirl .pt-iv { animation: wh-twirl 1s ease-in-out; transform-origin: 129px 46px; }
+.wh-backflip .pt-person { animation: wh-backflip 1.1s cubic-bezier(.45, 0, .3, 1); }
+.wh-surf .pt-all { animation: wh-surf 1.3s ease-in-out; }
+.wh-surf .pt-props .wh-waves { animation: wh-wave-roll 1.3s linear; }
+.wh-party .pt-head { animation: wh-bob .3s ease-in-out 4 alternate; }
+.wh-party .pt-arm-l { animation: wh-wave .3s ease-in-out 4 alternate; }
+.wh-party .wh-blower { transform-box: view-box; transform-origin: 48px 49px; animation: wh-blow .35s ease-in-out 3 alternate; }
+.wh-wheelie .pt-all { animation: wh-wheelie 1.4s cubic-bezier(.3, 1.4, .5, 1); transform-origin: 136px 97px; }
+.wh-rocket .pt-all { animation: wh-rocket 1.4s ease-in-out; }
+.wh-rocket .wh-flames { transform-box: view-box; transform-origin: 74px 101px; animation: wh-flicker .12s linear infinite alternate; }
+
+/* ----- misses */
+.wh-poof .pt-hair { animation: wh-poof 1s cubic-bezier(.2, 1.5, .4, 1); }
+.wh-poof .pt-head { animation: wh-jolt .3s ease-out; }
+.wh-bonk .wh-pill { animation: wh-pill .8s cubic-bezier(.3, 0, .6, 1) both; }
+.wh-bonk .pt-head { animation: wh-bonk .5s ease-out .28s; }
+.wh-sneeze .pt-head { animation: wh-sneeze .7s ease-in-out; }
+.wh-blanket .pt-body { animation: wh-blanket 1.1s ease-in-out; }
+.wh-roll .pt-all { animation: wh-roll 1.15s ease-in-out; }
+.wh-roll .wh-speed { animation: wh-fade 1.1s ease-out both; }
+.wh-dizzy .pt-head { animation: wh-wobble .4s ease-in-out 3 alternate; }
+.wh-dizzy .wh-orbit { transform-box: view-box; transform-origin: 40px 14px; animation: wh-orbit .6s linear 2; }
+.wh-topple .pt-iv { animation: wh-topple 1.15s cubic-bezier(.5, 0, .7, 1); }
+.wh-topple .pt-head { animation: wh-bonk .5s ease-out .5s; }
+.wh-spin .pt-all { animation: wh-spin 1.1s cubic-bezier(.4, 0, .3, 1); }
+.wh-upside .pt-person { animation: wh-flip .5s cubic-bezier(.3, 1.4, .5, 1) both; }
+.wh-upside .pt-legs { animation: wh-kick .2s ease-in-out .5s 4 alternate; transform-origin: 121px 64px; }
+
+/* ----- prop motion */
+.wh-float { animation: wh-float 1.1s ease-out both; }
+.wh-pop { transform-box: fill-box; transform-origin: center; animation: wh-pop-up .35s cubic-bezier(.2, 1.6, .4, 1) both; }
+.wh-twinkle { transform-box: fill-box; transform-origin: center; animation: wh-twinkle .5s ease-in-out 2 alternate both; }
+.wh-confetti { transform-box: fill-box; transform-origin: center; animation: wh-confetti 1.2s cubic-bezier(.1, .7, .3, 1) both; }
+.wh-puff { transform-box: fill-box; transform-origin: center; animation: wh-puff .8s ease-out both; }
+.wh-spray { animation: wh-spray .5s ease-out .2s both; }
+
+.wh-banner {
+  position: absolute; left: var(--s2); top: 50%; z-index: 2; pointer-events: none; white-space: nowrap;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); color: #ffd36b; text-shadow: 0 2px 0 #7a2b00;
+  animation: wh-banner 1.5s ease both;
+}
+.monitor.wh-sneeze { animation: shake .45s cubic-bezier(.36, .07, .19, .97) .2s both; }
+
+@keyframes wh-pop-up { from { opacity: 0; transform: scale(.2); } }
+@keyframes wh-wiggle { 20% { transform: rotate(-14deg); } 40% { transform: rotate(12deg); } 60% { transform: rotate(-9deg); } 80% { transform: rotate(6deg); } }
+@keyframes wh-nod { 50% { transform: translateY(-3px) rotate(-6deg); } }
+@keyframes wh-bob { from { transform: translate(-2px, 0) rotate(-8deg); } to { transform: translate(3px, -6px) rotate(8deg); } }
+@keyframes wh-wave { from { transform: rotate(-35deg); } to { transform: rotate(30deg); } }
+@keyframes wh-shimmy { from { transform: translateX(-2px); } to { transform: translateX(2px); } }
+@keyframes wh-pew { 40% { translate: 2px -2px; } }
+@keyframes wh-twirl { 0% { transform: scaleX(1); } 25% { transform: scaleX(-1); } 50% { transform: scaleX(1); } 75% { transform: scaleX(-1); } 100% { transform: scaleX(1); } }
+@keyframes wh-backflip { 0% { transform: none; } 30% { transform: translateY(-40px) rotate(-120deg); } 60% { transform: translateY(-40px) rotate(-300deg); } 85% { transform: translateY(0) rotate(-360deg); } 92% { transform: translateY(-4px) rotate(-360deg); } 100% { transform: rotate(-360deg); } }
+@keyframes wh-surf { 0%, 100% { transform: none; } 20% { transform: translate(-6px, -8px) rotate(-6deg); } 45% { transform: translate(8px, -14px) rotate(5deg); } 70% { transform: translate(-4px, -8px) rotate(-4deg); } }
+@keyframes wh-wave-roll { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
+@keyframes wh-blow { from { transform: scaleX(.4); } to { transform: scaleX(1.2); } }
+@keyframes wh-wheelie { 0% { transform: none; } 25% { transform: rotate(16deg); } 45% { transform: rotate(11deg); } 65% { transform: rotate(17deg); } 90% { transform: rotate(-2deg); } 100% { transform: none; } }
+@keyframes wh-rocket { 0% { transform: none; } 15% { transform: translate(-2px, 1px); } 20% { transform: translate(2px, -1px); } 25% { transform: translate(-2px, 1px); } 55% { transform: translateY(-26px); } 75% { transform: translateY(-22px); } 100% { transform: none; } }
+@keyframes wh-flicker { from { transform: scaleY(.7); } to { transform: scaleY(1.2); } }
+@keyframes wh-poof { 0% { transform: none; } 30% { transform: scale(1.45, 1.6); } 70% { transform: scale(1.3, 1.45); } 100% { transform: none; } }
+@keyframes wh-jolt { 40% { transform: translateY(-4px); } }
+@keyframes wh-pill { 0% { transform: translate(160px, 10px) rotate(0); } 45% { transform: translate(44px, 22px) rotate(-280deg); } 100% { transform: translate(70px, -30px) rotate(-520deg); opacity: 0; } }
+@keyframes wh-bonk { 25% { transform: rotate(-16deg) translateX(-3px); } 60% { transform: rotate(6deg); } }
+@keyframes wh-sneeze { 30% { transform: rotate(-12deg) translateY(-2px); } 45% { transform: rotate(10deg) translate(3px, 1px); } 70% { transform: rotate(-3deg); } }
+@keyframes wh-blanket { 0% { transform: none; } 35% { transform: translate(34px, -46px) rotate(28deg); } 65% { transform: translate(30px, -40px) rotate(-10deg); } 100% { transform: none; } }
+@keyframes wh-roll { 0% { transform: none; } 40% { transform: translateX(-110px) rotate(-2deg); } 55% { transform: translateX(-100px); } 100% { transform: none; } }
+@keyframes wh-fade { from { opacity: 1; } to { opacity: 0; transform: translateX(-30px); } }
+@keyframes wh-wobble { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
+@keyframes wh-orbit { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes wh-topple { 0% { transform: none; } 45% { transform: rotate(-62deg); } 55% { transform: rotate(-54deg); } 70% { transform: rotate(-62deg); } 100% { transform: none; } }
+@keyframes wh-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes wh-flip { from { transform: rotate(0); } }
+@keyframes wh-kick { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+@keyframes wh-float { from { opacity: 0; transform: translateY(8px); } 25% { opacity: 1; } to { opacity: 0; transform: translateY(-18px); } }
+@keyframes wh-twinkle { from { opacity: .2; transform: scale(.4); } to { opacity: 1; transform: scale(1.2); } }
+@keyframes wh-confetti { from { transform: translate(0, 0) rotate(0); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
+@keyframes wh-puff { from { opacity: 0; transform: scale(.3); } 40% { opacity: .95; } to { opacity: 0; transform: scale(1.6); } }
+@keyframes wh-spray { from { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(14px, 2px); } }
+@keyframes wh-banner { 0% { opacity: 0; transform: translateY(-50%) scale(.5) rotate(-6deg); } 15% { opacity: 1; transform: translateY(-50%) scale(1.1) rotate(-4deg); } 80% { opacity: 1; transform: translateY(-50%) scale(1) rotate(-4deg); } 100% { opacity: 0; transform: translateY(-80%) rotate(-4deg); } }
+
+/* Calm motion (setting or system): poses and props, no movement */
+.wh-still *, .wh-still .wh-banner, .patient-card:has(.wh-still) .wh-banner { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .pt-svg *, .wh-banner, .monitor.wh-sneeze { animation: none !important; }
+}
