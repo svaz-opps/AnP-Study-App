@@ -1,0 +1,21 @@
+{
+ "G-F111": {"trick": "Sensory adaptation = you stop feeling your socks, but you'd notice a pebble right away.", "tip": "Receptors respond most to change. A steady harmless stimulus fades; a new one gets noticed."},
+ "G-F112": {"trick": "Golgi TENDON organ = senses TENSION (both start with T). Muscle spindle = senses stretch/length.", "tip": "Tension at the tendon = Golgi tendon organ. Length or stretch in the muscle belly = muscle spindle."},
+ "G-F113": {"trick": "Referred pain = crossed phone lines: the brain blames the skin for the organ's call (heart attack → left arm).", "tip": "Visceral and skin nerves share spinal pathways, so the brain mislabels where pain comes from."},
+ "G-F114": {"trick": "Flavor = taste + smell. Hold your nose and an apple tastes like a potato.", "tip": "Most \"taste\" complaints after a cold are really loss of smell. Taste buds can still sense sweet, salty, sour, bitter, umami."},
+ "G-F115": {"trick": "Front of tongue: Facial (VII) = Flavor (taste); Trigeminal (V) = Touch.", "tip": "Same body part, different senses, different nerves. Match the type of sensation to the cranial nerve."},
+ "G-F116": {"trick": "Eustachian (auditory) tube = the ear's pressure valve to the back of the nose (nasopharynx). Pops when you yawn.", "tip": "This tube explains why throat infections spread to the middle ear, especially in kids with short, flat tubes."},
+ "G-F117": {"trick": "Hair cells = tiny microphones that turn wiggles into nerve signals.", "tip": "Transduction in hearing happens at cochlear hair cells, which signal CN VIII (vestibulocochlear)."},
+ "G-F118": {"trick": "Semicircular canals = spinning (\"circles for circling\"); the cupula sways like seaweed in the fluid.", "tip": "Rotation = cristae in the semicircular ducts. Tilt or straight-line motion = maculae in the utricle and saccule."},
+ "G-F119": {"trick": "Aqueous = watery front fluid. POSTERIOR chamber = the tiny gap behind the iris but in front of the lens.", "tip": "Aqueous humor fills both the anterior and posterior chambers. Vitreous humor fills the big space behind the lens."},
+ "G-F120": {"trick": "Near vision: ciliary muscle Contracts → zonules go slack → lens gets Chubby (round).", "tip": "Near focus = rounder lens. Far focus = ciliary muscle relaxes, zonules pull tight, lens flattens."},
+ "C-ch12-receptors": {"trick": "TRANSduction = TRANSlating a stimulus (light, sound, pressure) into a nerve signal.", "tip": "Transduction happens at the receptor. Perception (knowing what it is) happens in the brain."},
+ "C-ch12-somatic": {"trick": "PROPRIOception = knowing your own (proprio) position, like touching your nose with eyes closed.", "tip": "Proprioceptors include muscle spindles, Golgi tendon organs and joint receptors."},
+ "C-ch12-chemical": {"trick": "OLFACTion = the OLFACTory nerve (CN I): \"Oh, what's that smell?\"", "tip": "Smell is the only sense that doesn't relay through the thalamus first."},
+ "C-ch12-ear": {"trick": "AURicle = the AURal (ear) flap you can see; it funnels sound into the canal.", "tip": "Sound path: auricle → ear canal → eardrum → ossicles (malleus, incus, stapes) → oval window."},
+ "C-ch12-hearing": {"trick": "COCHLEA = snail shell (cochlea = snail) where hearing happens.", "tip": "Cochlea = hearing. Vestibule and semicircular canals = balance."},
+ "C-ch12-balance": {"trick": "MACULA = Moving in a straight line or tilting (gravity). Crista = spinning.", "tip": "Maculae sit in the utricle and saccule and sense head position and linear acceleration."},
+ "C-ch12-eye": {"trick": "RETINA = the movie screen at the back of the eye, covered in rods and cones.", "tip": "Eye tunics: fibrous (sclera, cornea), vascular (choroid, ciliary body, iris), neural (retina)."},
+ "C-ch12-vision": {"trick": "ACCOMMODATION = the lens accommodates (adjusts its shape) for near vs far.", "tip": "Losing accommodation with age is presbyopia, which is why many adults over 40 need reading glasses."},
+ "C-ch12-phototransduction": {"trick": "PHOTO-transduction = light (photo) changed into a nerve signal by rods and cones.", "tip": "Unusual fact: light HYPERpolarizes photoreceptors and reduces their transmitter release."}
+}

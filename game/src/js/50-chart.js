@@ -122,7 +122,7 @@ Screens.chart = {
     if (c.revealed) return '';
     let s = '';
     if (run.cfg.lifelines) {
-      s += `<button class="life-btn" data-action="colleague" ${run.lifelines.colleague ? '' : 'disabled'} aria-label="Ask a colleague: removes half the wrong options. ${run.lifelines.colleague} left">${icon('users')}<span class="t">Ask a colleague</span><span class="n">${run.lifelines.colleague}</span></button>`;
+      s += `<button class="life-btn" data-action="colleague" ${run.canColleague() ? '' : 'disabled'} aria-label="Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, half the wrong options go; on ordering, the first step is placed). ${run.lifelines.colleague} left">${icon('users')}<span class="t">Ask a colleague</span><span class="n">${run.lifelines.colleague}</span></button>`;
       s += `<button class="life-btn" data-action="coffee" ${run.lifelines.coffee && run.lives < run.maxLives ? '' : 'disabled'} aria-label="Coffee break: gain one life. ${run.lifelines.coffee} left">${icon('coffee')}<span class="t">Coffee break</span><span class="n">${run.lifelines.coffee}</span></button>`;
     }
     s += '<span class="grow"></span>';

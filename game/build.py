@@ -5,6 +5,7 @@ Inputs
   ../study-guide/data/source-content.json   the guide (sections, focus points, callouts, 232 questions)
   content/units.json                        room / ward metadata, one per chapter
   content/questions/*.json                  new ATI-style questions written for the game
+  content/guide-extras/*.json               a memory trick + ATI tip for each guide question (by id)
   src/template.html, src/css/*.css, src/js/*.js
 
 Outputs (dist/)
@@ -13,7 +14,8 @@ Outputs (dist/)
   ward-rounds.html  one fully self-contained file (page + data inlined) for offline use
 
 Run from anywhere:  python3 game/build.py [--strict]
-  --strict  fail the build when any instructor focus point has no new question covering it
+  --strict  fail the build when any instructor focus point has no new question covering it,
+            or any guide question has no trick + tip
 """
 import hashlib
 import html
@@ -189,6 +191,20 @@ def main():
             errors.append(f"{f.name}: invalid JSON ({e})")
     new = validate_new(new_raw, sections, errors)
     guide = import_guide(src, sections)
+    # memory trick + ATI tip written for each guide question (content/guide-extras/*.json, keyed by id)
+    extras = {}
+    for f in sorted((GAME / "content" / "guide-extras").glob("*.json")):
+        try:
+            extras.update(json.loads(f.read_text()))
+        except json.JSONDecodeError as e:
+            errors.append(f"{f.name}: invalid JSON ({e})")
+    guide_ids = {q["id"] for q in guide}
+    errors += [f"guide-extras: unknown question id {k}" for k in extras if k not in guide_ids]
+    for q in guide:
+        for k in ("trick", "tip"):
+            if extras.get(q["id"], {}).get(k):
+                q[k] = extras[q["id"]][k]
+    missing_extras = [q["id"] for q in guide if not (q.get("trick") and q.get("tip"))]
     questions = new + guide
 
     ids = Counter(q["id"] for q in questions)
@@ -215,7 +231,9 @@ def main():
         cov = sum(1 for k in uf if k in covered)
         print(f"  {u['room']}   {u['id']:<5} {by_unit[u['id']]:>3}  {by_unit_g[u['id']]:>5}  {cov:>3}/{len(uf)}")
     print("  types (new):", dict(Counter(q["type"] for q in new)))
+    print("  types (all):", dict(Counter(q["type"] for q in questions)))
     print(f"  focus points covered: {len(all_focus) - len(gaps)}/{len(all_focus)}")
+    print(f"  guide questions with their own trick + tip: {len(guide) - len(missing_extras)}/{len(guide)}")
     if gaps and ("--gaps" in sys.argv or strict):
         for sid, i in gaps:
             print(f"    GAP {sid}#{i}: {sections[sid]['focus'][i][:90]}")
@@ -227,6 +245,9 @@ def main():
         sys.exit(1)
     if strict and gaps:
         print("\nStrict mode: uncovered focus points.")
+        sys.exit(1)
+    if strict and missing_extras:
+        print("\nStrict mode: guide questions without a trick + tip:", ", ".join(missing_extras[:20]))
         sys.exit(1)
 
     # ---- assemble

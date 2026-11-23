@@ -1,0 +1,21 @@
+{
+ "G-F011": {"trick": "Protons = Personal ID (never change). Electrons come and go and change the charge.", "tip": "In atom questions, count each particle separately. Losing a negative electron makes the charge MORE positive."},
+ "G-F012": {"trick": "Isotopes = same Protons, different Neutrons. \"Neutrons make the Number heavier.\"", "tip": "Mass number = protons + neutrons. If protons match, any mass difference must come from neutrons."},
+ "G-F013": {"trick": "POLAR = a tug-of-war one atom is winning. The winner gets a little negative charge.", "tip": "\"Unequal sharing\" means polar covalent. Equal sharing means nonpolar, and electrons fully given away make an ionic bond."},
+ "G-F014": {"trick": "DEHYDRATION synthesis = building by taking water OUT. HYDROlysis = breaking by putting water IN.", "tip": "Look at what happens to water in the stem. Water removed means joining; water added means splitting."},
+ "G-F015": {"trick": "Sugar dissolves but stays whole; salt dissolves AND splits into ions. Only ions carry current.", "tip": "Don't assume \"dissolved\" means \"ionized\". Electrolytes split into ions; nonelectrolytes like glucose do not."},
+ "G-F016": {"trick": "A buffer is a sponge for H+: it soaks up extra acid so pH barely moves.", "tip": "Buffers resist pH change. They don't stop it completely and they never make it bigger."},
+ "G-F017": {"trick": "Plants store STARCH (think potatoes); animals store GLYCOGEN (think \"GLYcogen in the liver GLands\").", "tip": "Storage questions often pair plant vs animal forms. Cellulose is plant structure, not storage."},
+ "G-F018": {"trick": "Four rings = steroid. CHOLESTEROL is the parent ring that steroid hormones are made from.", "tip": "If the stem mentions rings plus hormone precursors, think steroid lipid: cholesterol."},
+ "G-F019": {"trick": "QUATernary = a QUARTET of chains playing together (like hemoglobin's 4 subunits).", "tip": "Primary = sequence, secondary = coils/sheets, tertiary = one chain's 3-D fold, quaternary = more than one chain."},
+ "G-F020": {"trick": "ATP = the cell's cash in hand. Fat and glycogen are the savings account.", "tip": "ATP is immediate energy for work like pumps. Pick it over long-term fuel stores when the stem describes active work."},
+ "C-ch2-atoms": {"trick": "ATOM = a-TOM (Greek: uncuttable). Smallest piece that still IS that element.", "tip": "Atom = keeps an element's identity. Molecule = two or more atoms bonded. Ion = an atom with a charge."},
+ "C-ch2-bonds": {"trick": "CATions are PAWsitive (cats have paws). ANions are A Negative ION.", "tip": "A positive ion has lost electrons. Na+, K+, Ca2+ are common body cations."},
+ "C-ch2-reactions": {"trick": "ANAbolism = ADD on and build. CATAbolism = CUT apart.", "tip": "Building big molecules costs energy (anabolism). Breaking them down releases energy (catabolism)."},
+ "C-ch2-water": {"trick": "HYDRO-PHILIC = water-LOVING (like \"philosophy\" = love of wisdom).", "tip": "Hydrophilic = polar or charged, mixes with water. Hydrophobic = nonpolar, avoids water (like fats)."},
+ "C-ch2-ph": {"trick": "Lower pH = more H+ = more acid. Each step down is 10× more acidic.", "tip": "pH runs backward: as H+ goes up, the pH number goes down. Normal blood pH is 7.35–7.45."},
+ "C-ch2-carbohydrates": {"trick": "MONO = one sugar. DI = two. POLY = many (a chain like starch).", "tip": "Glucose, fructose and galactose are monosaccharides; sucrose and lactose are disaccharides."},
+ "C-ch2-lipids": {"trick": "TRI-glyceride = 3 fatty-acid tails on one glycerol, like a 3-pronged fork.", "tip": "Triglyceride = energy storage. Phospholipid = 2 tails + phosphate head (membranes). Steroid = rings."},
+ "C-ch2-proteins": {"trick": "PEPTIDE bond = the PEPper-glue between amino acids in a chain.", "tip": "Peptide bonds are covalent and hold the primary sequence. Folding is held mostly by weaker bonds like hydrogen bonds."},
+ "C-ch2-nucleic": {"trick": "DNA = Deoxyribose, double helix, has Thymine. RNA = Ribose, single strand, has Uracil.", "tip": "If the stem says inherited information, pick DNA. RNA carries copies of instructions to make proteins."}
+}

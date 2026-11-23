@@ -138,20 +138,35 @@ class Run {
     return false;
   }
 
+  // wrong options the colleague would cross out (none for ordering, or when only 2 options are left)
+  colleagueCuts() {
+    const c = this.cur, q = this.q;
+    if (!c || q.type === 'order') return [];
+    const wrong = c.order.filter((i) => !q.opts[i].c && c.gone.indexOf(i) === -1);
+    const n = q.type === 'sata' ? Math.ceil(wrong.length / 2) : wrong.length - 1;
+    return shuffle(wrong).slice(0, Math.max(0, n));
+  }
+  canColleague() {
+    const c = this.cur;
+    return !!(this.lifelines.colleague && c && !c.revealed && (this.q.type === 'order' ? c.sel[0] !== 0 || c.sel.length !== 1 : this.colleagueCuts().length));
+  }
+
   useColleague() {
     const c = this.cur, q = this.q;
-    if (!this.lifelines.colleague || !c || c.revealed) return false;
-    this.lifelines.colleague--; this.usedLifeline = true;
+    if (!this.canColleague()) return false;
     if (q.type === 'order') {
+      this.lifelines.colleague--; this.usedLifeline = true;
       c.sel = [0];
       c.gone = [];
       c.hint = 'Your colleague placed the first step for you.';
     } else {
-      const wrong = c.order.filter((i) => !q.opts[i].c && c.gone.indexOf(i) === -1);
-      const remove = shuffle(wrong).slice(0, Math.max(1, Math.floor(wrong.length / 2)));
+      // single answer: a true 50/50 (the right answer + one wrong one stay)
+      // select all that apply: half the wrong options go, rounded up
+      const remove = this.colleagueCuts();
+      this.lifelines.colleague--; this.usedLifeline = true;
       c.gone.push(...remove);
       c.sel = c.sel.filter((i) => remove.indexOf(i) === -1);
-      c.hint = `Your colleague crossed out ${remove.length} wrong option${remove.length > 1 ? 's' : ''}.`;
+      c.hint = q.type === 'sata' ? `Your colleague crossed out ${remove.length} wrong option${remove.length > 1 ? 's' : ''}.` : "Your colleague narrowed it down to two. It's one of these.";
     }
     return true;
   }

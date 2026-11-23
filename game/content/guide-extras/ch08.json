@@ -1,0 +1,23 @@
+{
+ "G-F071": {"trick": "SYNOVIAL = a joint with a fluid-filled \"bubble\" (cavity) wrapped in a capsule.", "tip": "Cavity + capsule + cartilage + fluid = synovial. Fibrous and cartilaginous joints have no cavity."},
+ "G-F072": {"trick": "LIGAMENTS Link bone to bone. TENDONS Tie muscle to bone.", "tip": "Ligament vs tendon is a favorite distractor. Bone-to-bone always means ligament."},
+ "G-F073": {"trick": "PIVOT = shaking your head \"no\" at the atlas and axis.", "tip": "Rotation around one axis = pivot (atlas–axis, radius–ulna). A hinge only bends and straightens."},
+ "G-F074": {"trick": "Ball-and-socket = a joystick: moves every direction and can draw circles.", "tip": "Only the shoulder and hip are ball-and-socket. They allow movement in all planes plus rotation."},
+ "G-F075": {"trick": "ABduction = ABduct (take away) from the body. ADDuction = ADD back to the body.", "tip": "Movement away from the midline is abduction. Picture doing a jumping jack."},
+ "G-F076": {"trick": "SUPination = holding a bowl of SOUP. Pronation = palm down, pouring it out.", "tip": "Supination = palm up (anatomical position). Pronation = palm down."},
+ "G-F077": {"trick": "DORSiflexion = toes up toward the DORSum (top), like walking on your heels.", "tip": "Dorsiflexion = top of foot toward shin. Plantar flexion = pointing toes, like pressing a gas pedal."},
+ "G-F078": {"trick": "Menisci = shock-absorbing cushions that make the round femur sit better on the flat tibia.", "tip": "Menisci spread the load and improve fit. Ligaments, not menisci, are the main stabilizers."},
+ "G-F079": {"trick": "Hip = a deep cup (acetabulum) for stability. Shoulder = a shallow saucer for range of motion.", "tip": "Weight-bearing joints trade mobility for stability. The hip is more stable but less mobile than the shoulder."},
+ "G-F080": {"trick": "Cartilage has no blood supply, so its repair crew can't get there.", "tip": "Avascular tissues heal slowly. That's why cartilage damage (like osteoarthritis) tends to progress."},
+ "C-ch8-overview": {"trick": "FUNCTIONAL = how much it FUNCTIONS (moves). STRUCTURAL = what it's made of.", "tip": "Words about movement (freely, slightly, immovable) = functional classification."},
+ "C-ch8-functional": {"trick": "Syn = Stuck, Amphi = A bit, Di = Do anything (synarthrosis, amphiarthrosis, diarthrosis).", "tip": "\"Slightly movable\" = amphiarthrotic. Watch out for structural words like \"synovial\" in a functional question."},
+ "C-ch8-fibrous": {"trick": "GOMPHOSIS = a tooth bolted (gomphos = bolt) into its socket.", "tip": "Fibrous joints: suture (skull), syndesmosis (ligament between bones), gomphosis (tooth)."},
+ "C-ch8-cartilaginous": {"trick": "SynCHONDROsis = joined by hyaline cartilage (chondro). SymPHYSIS = fibrocartilage pad.", "tip": "Epiphyseal plate and first rib–sternum = synchondrosis. Pubic symphysis and discs = symphysis."},
+ "C-ch8-synovial-structure": {"trick": "BURSA = a little purse (bursa) of fluid that stops rubbing.", "tip": "Kneeling pain over the kneecap suggests bursitis. Bursae reduce friction between skin, tendon and bone."},
+ "C-ch8-types": {"trick": "Wide circles + rotation = ball-and-socket (hip or shoulder).", "tip": "Circumduction plus rotation narrows it to ball-and-socket joints."},
+ "C-ch8-movements": {"trick": "Heels down, toes up = DORSiflexion (toward the top/dorsum).", "tip": "Standing on heels = dorsiflexion. Standing on tiptoes = plantar flexion."},
+ "C-ch8-examples": {"trick": "ACL = Anterior Cruciate: stops the tibia from sliding Anteriorly (forward).", "tip": "Name tells direction: the anterior cruciate stops forward slide; the posterior cruciate stops backward slide."},
+ "C-ch8-aging": {"trick": "Aging cartilage is like an old sponge: drier and stiffer.", "tip": "Gradual stiffness with no injury in older adults points to normal aging of cartilage and collagen."},
+ "C-ch8-disorders": {"trick": "Tick + bull's-eye rash + swollen knee = Lyme.", "tip": "Clue words decide arthritis type: tick (Lyme), autoimmune (RA), uric acid (gout), wear-and-tear (OA)."},
+ "C-ch8-summary": {"trick": "AMPHI = A bit of movement. Discs and the pubic symphysis give a little.", "tip": "Both answers must match. Rule out any pair that includes a freely movable (synovial) joint."}
+}
