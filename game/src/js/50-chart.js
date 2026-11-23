@@ -160,7 +160,7 @@ Screens.chart = {
     if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? ': +15 bonus XP' : ''}${c.evSafe ? '. No life lost' : ''}.`);
     if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×1.5 points.`);
     if (c.lostLife) notes.push(`${icon('heart')} You lost a life.`);
-    if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!`);
+    if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
     if (c.bonusCoffee) notes.push(`${icon('coffee')} 10 in a row earned you an extra coffee break.`);
     if (c.dmg) notes.push(`${icon('sparkle')} ${c.dmg} damage to the Superbug.`);
@@ -183,6 +183,7 @@ Screens.chart = {
       <div class="fb-answer"><span class="label">${ansLabel}</span>${answer}</div>
       <p class="fb-why">${esc(q.why)}</p>
       <div class="fb-tips">${tips}</div>
+      ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
       ${others}${guide}
       <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
   },
@@ -289,6 +290,7 @@ Screens.chart = {
       return;
     }
     this.refresh(['feedback']);
+    if (c.card) Sound.play('tada', 500);
     celebrate(run);
     if (c.badges && c.badges.length) badgeToast(c.badges);
     void prevLives;

@@ -195,3 +195,34 @@
 @media (prefers-reduced-motion: reduce) {
   .bedside.ev-rapid .patient-card, .outage-dark, .ev-banner, .visitor { animation: none !important; }
 }
+
+/* ---------- thank-you cards ---------- */
+.tycard {
+  display: flex; gap: var(--s3); align-items: flex-start; padding: var(--s3) var(--s4); border-radius: var(--r-md);
+  background: linear-gradient(135deg, #fffaf0, #fdf1f4); color: var(--ink); border: 2px solid var(--card-tint, #f1c0b6);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+}
+.tycard.reveal { animation: ty-flip .7s cubic-bezier(.2, 1.2, .4, 1) .25s both; transform-origin: 50% 50%; }
+.tyc-face { width: 64px; height: 64px; flex: none; border-radius: 50%; background: var(--card-tint, #f1c0b6); overflow: hidden; }
+.tyc-face svg { width: 100%; height: 100%; }
+.tyc-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tycard .label { color: #8a6b74; }
+.tyc-joke { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-md); line-height: 1.35; }
+.tyc-sign { display: block; font-family: var(--font-body); font-weight: 700; font-size: var(--fs-xs); color: var(--ink-dim); margin-top: 2px; }
+.tyc-sign::before { content: "— "; }
+.tyc-fact { display: flex; gap: 8px; align-items: flex-start; font-size: var(--fs-sm); color: var(--ink-dim); font-weight: 700; }
+.tyc-fact svg { width: 18px; height: 18px; flex: none; color: #c98a1a; margin-top: 1px; }
+.tyc-stem { margin-top: var(--s3); }
+.tyc-stem .label { display: block; margin-bottom: 4px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: var(--s2); margin-top: var(--s3); }
+.card-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px 6px; border-radius: var(--r-md);
+  background: linear-gradient(160deg, #fffaf0, #fdf1f4); border: 2px solid var(--card-tint, #f1c0b6); color: var(--ink);
+  font-size: var(--fs-xs); font-weight: 800; min-height: 92px; justify-content: center;
+}
+.card-tile svg { width: 54px; height: 54px; }
+.card-tile.ghost { background: var(--surface-2); border: 2px dashed var(--line); color: var(--text-faint); }
+.card-tile.ghost svg { width: 24px; height: 24px; }
+@keyframes ty-flip { from { opacity: 0; transform: perspective(600px) rotateY(90deg) scale(.9); } }
+[data-calm="1"] .tycard.reveal { animation: none; }
+@media (prefers-reduced-motion: reduce) { .tycard.reveal { animation: none; } }

@@ -33,12 +33,14 @@ const out = await page.evaluate(() => {
 // it also works through the UI: tap the lifeline on the current question
 await page.evaluate(() => { const r = window.WR.App.run; r.lifelines.colleague = 1; });
 await page.click('[data-action="colleague"]');
-const ui = await page.evaluate(() => ({ gone: document.querySelectorAll('.opt.gone').length, hint: !!document.querySelector('.paper-hint') }));
+const ui = await page.evaluate(() => ({ gone: document.querySelectorAll('.opt.gone').length, hint: !!document.querySelector('.paper-hint'), order: window.WR.App.run.q.type === 'order', placed: document.querySelectorAll('.opt.placed').length }));
 console.log('  checked', JSON.stringify(out.n));
 out.bad.slice(0, 10).forEach((m) => console.log('  FAIL ' + m));
-if (!ui.hint || !ui.gone) console.log('  FAIL lifeline tap did not update the chart', JSON.stringify(ui));
+// ordering questions place the first step instead of crossing options out
+if (!(ui.hint && (ui.order ? ui.placed === 1 : ui.gone))) console.log('  FAIL lifeline tap did not update the chart', JSON.stringify(ui));
 if (errors.length) console.log('  FAIL page errors: ' + errors.join(' | '));
-const ok = !out.bad.length && ui.hint && ui.gone && !errors.length;
+const uiOk = ui.hint && (ui.order ? ui.placed === 1 : ui.gone);
+const ok = !out.bad.length && uiOk && !errors.length;
 console.log(ok ? 'LIFELINE PASSED' : 'LIFELINE FAILED');
 await browser.close();
 process.exit(ok ? 0 : 1);

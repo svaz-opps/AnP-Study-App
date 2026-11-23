@@ -43,7 +43,7 @@ async function start(hot) {
   bindEvents();
   Store.onChange(() => {
     applySettings();
-    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker') App.rerender();
+    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker' || App.name === 'cards') App.rerender();
   });
   if (hot && hot.run && hot.screen) {
     try {

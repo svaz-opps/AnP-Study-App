@@ -777,6 +777,37 @@ details.more[open] summary::before { transform: rotate(90deg); }
   .bedside.ev-rapid .patient-card, .outage-dark, .ev-banner, .visitor { animation: none !important; }
 }
 
+/* ---------- thank-you cards ---------- */
+.tycard {
+  display: flex; gap: var(--s3); align-items: flex-start; padding: var(--s3) var(--s4); border-radius: var(--r-md);
+  background: linear-gradient(135deg, #fffaf0, #fdf1f4); color: var(--ink); border: 2px solid var(--card-tint, #f1c0b6);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+}
+.tycard.reveal { animation: ty-flip .7s cubic-bezier(.2, 1.2, .4, 1) .25s both; transform-origin: 50% 50%; }
+.tyc-face { width: 64px; height: 64px; flex: none; border-radius: 50%; background: var(--card-tint, #f1c0b6); overflow: hidden; }
+.tyc-face svg { width: 100%; height: 100%; }
+.tyc-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.tycard .label { color: #8a6b74; }
+.tyc-joke { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-md); line-height: 1.35; }
+.tyc-sign { display: block; font-family: var(--font-body); font-weight: 700; font-size: var(--fs-xs); color: var(--ink-dim); margin-top: 2px; }
+.tyc-sign::before { content: "— "; }
+.tyc-fact { display: flex; gap: 8px; align-items: flex-start; font-size: var(--fs-sm); color: var(--ink-dim); font-weight: 700; }
+.tyc-fact svg { width: 18px; height: 18px; flex: none; color: #c98a1a; margin-top: 1px; }
+.tyc-stem { margin-top: var(--s3); }
+.tyc-stem .label { display: block; margin-bottom: 4px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: var(--s2); margin-top: var(--s3); }
+.card-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px 6px; border-radius: var(--r-md);
+  background: linear-gradient(160deg, #fffaf0, #fdf1f4); border: 2px solid var(--card-tint, #f1c0b6); color: var(--ink);
+  font-size: var(--fs-xs); font-weight: 800; min-height: 92px; justify-content: center;
+}
+.card-tile svg { width: 54px; height: 54px; }
+.card-tile.ghost { background: var(--surface-2); border: 2px dashed var(--line); color: var(--text-faint); }
+.card-tile.ghost svg { width: 24px; height: 24px; }
+@keyframes ty-flip { from { opacity: 0; transform: perspective(600px) rotateY(90deg) scale(.9); } }
+[data-calm="1"] .tycard.reveal { animation: none; }
+@media (prefers-reduced-motion: reduce) { .tycard.reveal { animation: none; } }
+
 /* ---------- shared bits ---------- */
 .stack { display: flex; flex-direction: column; gap: var(--s4); }
 .center { text-align: center; }
@@ -1046,6 +1077,7 @@ const ICON_PATHS = {
   pill: '<rect x="2.8" y="8.5" width="18.4" height="7" rx="3.5" transform="rotate(-35 12 12)"/><path d="M9.3 8.2l5.4 7.6"/>',
   stethoscope: '<path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/>',
   brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h1V4zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-1V4z"/>',
+  card: '<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M12 15.6s-3.6-2.2-3.6-4.5c0-1.3 1-2.1 2-2.1.7 0 1.3.4 1.6.9.3-.5.9-.9 1.6-.9 1 0 2 .8 2 2.1 0 2.3-3.6 4.5-3.6 4.5z" fill="currentColor" stroke="none"/>',
   bug: '<rect x="7" y="7" width="10" height="13" rx="5"/><path d="M9 7a3 3 0 0 1 6 0M3 12h4M17 12h4M4 7l3 2M20 7l-3 2M4 18l3-2M20 18l-3-2M12 11v9"/>',
 };
 function icon(name, cls = '') {
@@ -2064,6 +2096,9 @@ const BADGES = [
   { id: 'daily1', n: 'Daily Dose', d: 'Finish a daily challenge.', ico: 'calendar' },
   { id: 'daily3', n: 'Habit Forming', d: 'Finish the daily challenge 3 days in a row.', ico: 'calendar' },
   { id: 'daily7', n: 'Daily Devotion', d: 'Finish the daily challenge 7 days in a row.', ico: 'trophy' },
+  { id: 'cards10', n: 'Fan Mail', d: 'Collect 10 thank-you cards.', ico: 'card' },
+  { id: 'cards25', n: 'Beloved', d: 'Collect 25 thank-you cards.', ico: 'card' },
+  { id: 'cards50', n: 'Patient Favorite', d: 'Collect 50 thank-you cards.', ico: 'card' },
   { id: 'rapid', n: 'Cross-Trained', d: 'Get both Rapid Response questions right in one shift.', ico: 'alarm' },
 ];
 
@@ -2272,6 +2307,10 @@ const Engine = {
     give('math', ts('math') >= 5);
     give('order', ts('order') >= 5);
     give('discharge25', s.discharged >= 25);
+    const nCards = Object.keys(s.cards || {}).length;
+    give('cards10', nCards >= 10);
+    give('cards25', nCards >= 25);
+    give('cards50', nCards >= 50);
     give('daystreak3', s.days.streak >= 3);
     give('daystreak7', s.days.streak >= 7);
     give('night', new Date().getHours() >= 22);
@@ -2462,6 +2501,7 @@ class Run {
     if (this.streak > 0 && this.streak % 10 === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
+    c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / 10 + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
     const up = Engine.addXP(xp);
@@ -2772,6 +2812,7 @@ const Global = {
   stats() { App.show('stats'); },
   settings() { App.show('settings'); },
   missed() { App.show('missed'); },
+  cards() { App.show('cards'); },
 };
 
 function celebrate(run) {
@@ -2851,6 +2892,7 @@ function dockHTML() {
   return `<nav class="dock wrap" aria-label="Main">
     <button data-action="missed">${icon('bed')}<span class="t">Missed patients</span>${nMissed ? `<span class="count num">${nMissed}</span>` : ''}</button>
     <button data-action="exam">${icon('clipboard')}<span class="t">Exam simulation</span></button>
+    <button data-action="cards">${icon('card')}<span class="t">Get-well cards</span>${Cards.count() ? `<span class="count num" style="background:var(--accent);color:var(--accent-ink)">${Cards.count()}</span>` : ''}</button>
     <button data-action="locker">${icon('shirt')}<span class="t">Locker room</span></button>
     <button data-action="stats">${icon('chart')}<span class="t">Report card</span></button>
     <button data-action="settings" aria-label="Settings">${icon('gear')}<span class="t">Settings</span></button>
@@ -3155,7 +3197,7 @@ Screens.chart = {
     if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? ': +15 bonus XP' : ''}${c.evSafe ? '. No life lost' : ''}.`);
     if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×1.5 points.`);
     if (c.lostLife) notes.push(`${icon('heart')} You lost a life.`);
-    if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!`);
+    if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
     if (c.bonusCoffee) notes.push(`${icon('coffee')} 10 in a row earned you an extra coffee break.`);
     if (c.dmg) notes.push(`${icon('sparkle')} ${c.dmg} damage to the Superbug.`);
@@ -3178,6 +3220,7 @@ Screens.chart = {
       <div class="fb-answer"><span class="label">${ansLabel}</span>${answer}</div>
       <p class="fb-why">${esc(q.why)}</p>
       <div class="fb-tips">${tips}</div>
+      ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
       ${others}${guide}
       <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
   },
@@ -3284,6 +3327,7 @@ Screens.chart = {
       return;
     }
     this.refresh(['feedback']);
+    if (c.card) Sound.play('tada', 500);
     celebrate(run);
     if (c.badges && c.badges.length) badgeToast(c.badges);
     void prevLives;
@@ -3861,6 +3905,99 @@ Screens.onboard = {
   },
 };
 
+/* ---- 65-cards.js ---- */
+// ---------- thank-you cards ----------
+// A patient discharged from Missed Patients (right on 2 different days after a miss) leaves a
+// thank-you card: their face, a pun, the fact behind their question, and the room. Cards are
+// collected in an album, so the hardest-won facts become the ones you keep looking at.
+const CARD_JOKES = {
+  ch1: ['Thanks for keeping me in homeostasis. My set point is "grateful."', 'You found my anatomical position: lying in bed, palms up, very happy.', 'My negative feedback about you? There isn\'t any.'],
+  ch2: ['You have great chemistry with patients. Ionic, even.', 'I was acidic before you came. Now I\'m a steady pH 7.4.', 'Thanks for the bond. Covalent, I hope. We shared so much.'],
+  ch3: ['You really got me out of a hypertonic situation.', 'My mitochondria are powered by gratitude now.', 'Thanks for the active transport home. No gradient required.'],
+  ch4: ['You broke my worries down like glycolysis.', 'Thanks! I\'m feeling about 32 ATP better.', 'Catabolize the bad days, anabolize the good ones. Thanks, nurse!'],
+  ch5: ['You\'ve got connective-tissue energy. You hold everything together.', 'My epithelium is stratified with joy.', 'Thanks for not being squamish about my case.'],
+  ch6: ['You got under my skin, in the best way. Dermis-deep gratitude.', 'Thanks for the TLC: Total Layer Care, all five epidermal layers.', 'Warmest regards, regulated by my sweat glands.'],
+  ch7: ['Thanks for having my back. And my femur.', 'I found you very humerus.', 'You were osteo-fantastic. No bones about it.'],
+  ch8: ['We really clicked. Like a joint, but healthy.', 'Thanks for the support. I\'d hug you, but... range of motion.', 'You\'re the hinge my whole recovery turned on.'],
+  ch9: ['Thanks for the pull! Actin and myosin approve.', 'My gratitude is in sustained tetany.', 'Thanks for flexing those nursing skills.'],
+  ch10: ['You gave me an action potential of happiness: all or nothing, and it\'s ALL.', 'Thanks for crossing the synapse to help me.', 'My neurons are firing "thank you" at max frequency.'],
+  ch11: ['You were on my mind. Specifically, the frontal lobe.', 'Thanks for using your cerebrum. My cerebellum is dancing.', 'Choosing you as my nurse? A no-brainer.'],
+  ch12: ['I see you, I hear you, I appreciate you. That\'s three senses.', 'Thanks for the rods and cones of support.', 'You were ear-resistible. Cochlea-ly the best.'],
+};
+const CARD_JOKES_ANY = [
+  'Discharged and delighted. Thank you, nurse!', 'Thanks for remembering me after I stumped you!', 'You came back for me. That\'s what good nurses do.',
+  'From missed to mastered. We did it!', 'The jello was okay. You were great.', 'Thanks for reading the "why." I could tell.',
+  'I\'ll tell everyone at bingo about you.', 'Second time\'s the charm. Thanks for the re-round!', 'You turned my chart around!',
+  'Out of bed and out the door. Thank you!', 'Your memory trick saved the day.', 'Two right days, one hero. Thanks!',
+];
+
+const Cards = {
+  joke(q) {
+    const pool = (CARD_JOKES[q.unit] || []).concat(CARD_JOKES_ANY);
+    return pool[hashStr('card:' + q.id) % pool.length];
+  },
+  fact(q) {
+    if (q.trick) return q.trick;
+    const m = /^.*?[.!?](\s|$)/.exec(q.why || '');
+    return (m ? m[0] : q.why || '').trim();
+  },
+  patient(q) { return patientFor(q, 'card'); },
+  count() { return Object.keys(WR.state.cards || {}).filter((id) => Content.byId[id]).length; },
+  give(q) {
+    const s = WR.state;
+    if (s.cards[q.id]) return false;
+    s.cards[q.id] = { d: todayStr() };
+    return true;
+  },
+  // the card itself; reveal = the flip-in version shown in the explanation panel
+  html(q, opts = {}) {
+    const p = this.patient(q), u = Content.unitById[q.unit];
+    return `<div class="tycard ${opts.reveal ? 'reveal' : ''}" style="--card-tint:${p.gown}">
+      <div class="tyc-face">${patientHead(p, 'cheer')}</div>
+      <div class="tyc-body"><span class="label">Thank-you card · Room ${u.room} ${esc(u.ward)}</span>
+        <p class="tyc-joke">“${esc(this.joke(q))}”<span class="tyc-sign">${esc(p.name)}</span></p>
+        <p class="tyc-fact">${icon('bulb')}<span>${esc(this.fact(q))}</span></p></div>
+    </div>`;
+  },
+};
+
+// ----- the album
+Screens.cards = {
+  cls: 'cards-screen',
+  render() {
+    const s = WR.state;
+    const n = Cards.count();
+    const missed = Engine.missed();
+    const rooms = Content.units.map((u) => {
+      const got = Object.keys(s.cards).filter((id) => Content.byId[id] && Content.byId[id].unit === u.id)
+        .sort((a, b) => (s.cards[a].d < s.cards[b].d ? 1 : -1));
+      const waiting = missed.filter((q) => q.unit === u.id).length;
+      if (!got.length && !waiting) return '';
+      const tiles = got.map((id) => {
+        const q = Content.byId[id], p = Cards.patient(q);
+        return `<button class="card-tile" data-action="openCard" data-q="${esc(id)}" aria-label="Card from ${esc(p.name)}" style="--card-tint:${p.gown}">${patientHead(p, 'cheer')}<span>${esc(p.name)}</span></button>`;
+      }).join('');
+      const ghosts = Array.from({ length: Math.min(waiting, 6) }, () => `<span class="card-tile ghost" aria-hidden="true">${icon('lock')}</span>`).join('');
+      return `<div class="card album-room"><div class="mr-head"><span class="room-plate">${u.room}</span><b>${esc(u.ward)} · ${esc(u.topic)}</b>
+        <span class="chip">${got.length} card${got.length === 1 ? '' : 's'}</span>${waiting ? `<span class="chip faint">${waiting} still in Missed Patients</span>` : ''}</div>
+        <div class="card-grid">${tiles}${ghosts}</div></div>`;
+    }).join('');
+    const empty = `<div class="card empty">${patientHead(patientFor({ id: 'card-empty', stem: '' }), 'cheer')}<h2>No cards yet</h2>
+      <p class="dim">Miss a question and the patient goes to Missed Patients. Get it right on 2 different days to discharge them, and they leave you a thank-you card with the fact you learned.</p></div>`;
+    return `${topbar('Get-well cards', `${n} collected · from patients you discharged`)}
+      <div class="narrow stack">${rooms || empty}${rooms && missed.length ? `<button class="btn primary" data-action="missed">${icon('bed')}Re-round missed patients to earn more</button>` : ''}</div>`;
+  },
+  act: {
+    openCard(d) {
+      const q = Content.byId[d.q];
+      if (!q) return;
+      Sound.play('pop');
+      App.modal(`${Cards.html(q, { reveal: true })}<p class="dim tyc-stem"><span class="label">Their question</span>${esc(q.stem)}</p>
+        <div class="actions"><button class="btn primary" data-m="ok">Close</button></div>`);
+    },
+  },
+};
+
 /* ---- 90-boot.js ---- */
 // ---------- boot ----------
 function bindEvents() {
@@ -3907,7 +4044,7 @@ async function start(hot) {
   bindEvents();
   Store.onChange(() => {
     applySettings();
-    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker') App.rerender();
+    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker' || App.name === 'cards') App.rerender();
   });
   if (hot && hot.run && hot.screen) {
     try {

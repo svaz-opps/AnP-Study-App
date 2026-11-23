@@ -37,6 +37,9 @@ const BADGES = [
   { id: 'daily1', n: 'Daily Dose', d: 'Finish a daily challenge.', ico: 'calendar' },
   { id: 'daily3', n: 'Habit Forming', d: 'Finish the daily challenge 3 days in a row.', ico: 'calendar' },
   { id: 'daily7', n: 'Daily Devotion', d: 'Finish the daily challenge 7 days in a row.', ico: 'trophy' },
+  { id: 'cards10', n: 'Fan Mail', d: 'Collect 10 thank-you cards.', ico: 'card' },
+  { id: 'cards25', n: 'Beloved', d: 'Collect 25 thank-you cards.', ico: 'card' },
+  { id: 'cards50', n: 'Patient Favorite', d: 'Collect 50 thank-you cards.', ico: 'card' },
   { id: 'rapid', n: 'Cross-Trained', d: 'Get both Rapid Response questions right in one shift.', ico: 'alarm' },
 ];
 
@@ -245,6 +248,10 @@ const Engine = {
     give('math', ts('math') >= 5);
     give('order', ts('order') >= 5);
     give('discharge25', s.discharged >= 25);
+    const nCards = Object.keys(s.cards || {}).length;
+    give('cards10', nCards >= 10);
+    give('cards25', nCards >= 25);
+    give('cards50', nCards >= 50);
     give('daystreak3', s.days.streak >= 3);
     give('daystreak7', s.days.streak >= 7);
     give('night', new Date().getHours() >= 22);

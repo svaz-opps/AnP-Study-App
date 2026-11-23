@@ -176,6 +176,35 @@ await page.waitForSelector('.report-wrap');
 const dd = await page.evaluate(() => ({ d: WR.state.daily, badge: !!WR.state.badges.daily1, title: document.querySelector('.report-wrap h1').textContent }));
 if (dd.d.streak !== 1 || dd.d.last !== dd.d.date || !dd.badge) fail('daily: streak/badge not recorded ' + JSON.stringify(dd)); else ok(`daily: done, streak 1, badge earned ("${dd.title}")`);
 
+// ----- thank-you cards
+console.log('== thank-you cards');
+await page.click('.report-actions [data-action="home"]');
+await page.waitForSelector('.floorplan');
+const qid = await page.evaluate(() => {
+  const q = WR.Content.byUnit.ch9.find((x) => x.type === 'mcq');
+  const y = new Date(Date.now() - 86400000); const p = (n) => String(n).padStart(2, '0');
+  WR.state.items[q.id] = { s: 2, r: 1, w: 1, ok: 1, od: `${y.getFullYear()}-${p(y.getMonth() + 1)}-${p(y.getDate())}`, ld: '', miss: true };
+  delete WR.state.cards[q.id];
+  const { App, Run } = WR;
+  App.run = new Run('review', { queue: [q.id] }); App.run.label = 'Missed patients'; App.run.next(); App.show('chart');
+  return q.id;
+});
+await page.waitForSelector('.chart .opt');
+await answer(true);
+await page.waitForTimeout(400);
+const cardState = await page.evaluate((qid) => ({ have: !!WR.state.cards[qid], shown: !!document.querySelector('#feedback .tycard') }), qid);
+if (!cardState.have) fail('discharge did not award a card'); else ok('discharge awards a thank-you card');
+if (!cardState.shown) fail('card not shown in the explanation panel'); else ok('card revealed in the explanation panel');
+await next();
+await page.waitForSelector('.report-wrap');
+await page.click('.report-actions [data-action="home"]');
+await page.click('.dock [data-action="cards"]');
+await page.waitForSelector('.card-tile');
+await page.click(`.card-tile[data-q="${qid}"]`);
+await page.waitForSelector('.modal .tycard');
+ok('album lists the card and opens it');
+await page.click('[data-m="ok"]');
+
 const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
 if (overflow > 1) fail('horizontal overflow ' + overflow);
 

@@ -98,7 +98,7 @@ for (const v of views) {
   await page.waitForSelector('.floorplan');
   const after = await page.evaluate(() => window.WR.state.xp);
   if (after !== saved.xp) fail(v.name, `xp not persisted: ${after} vs ${saved.xp}`);
-  for (const [act, sel, shot] of [['missed', '.missed-rooms, .empty', '07-missed'], ['locker', '.locker', '08-locker'], ['stats', '.unit-bars', '09-stats'], ['settings', '.set-row', '10-settings']]) {
+  for (const [act, sel, shot] of [['missed', '.missed-rooms, .empty', '07-missed'], ['locker', '.locker', '08-locker'], ['stats', '.unit-bars', '09-stats'], ['cards', '.album-room, .cards-screen .empty', '09b-cards'], ['settings', '.set-row', '10-settings']]) {
     await page.click(`.dock [data-action="${act}"]`);
     await page.waitForSelector(sel);
     await page.waitForTimeout(300);

@@ -173,6 +173,7 @@ class Run {
     if (this.streak > 0 && this.streak % 10 === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
+    c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / 10 + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
     const up = Engine.addXP(xp);

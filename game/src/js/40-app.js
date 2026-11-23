@@ -110,6 +110,7 @@ const Global = {
   stats() { App.show('stats'); },
   settings() { App.show('settings'); },
   missed() { App.show('missed'); },
+  cards() { App.show('cards'); },
 };
 
 function celebrate(run) {

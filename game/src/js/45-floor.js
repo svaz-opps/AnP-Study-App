@@ -57,6 +57,7 @@ function dockHTML() {
   return `<nav class="dock wrap" aria-label="Main">
     <button data-action="missed">${icon('bed')}<span class="t">Missed patients</span>${nMissed ? `<span class="count num">${nMissed}</span>` : ''}</button>
     <button data-action="exam">${icon('clipboard')}<span class="t">Exam simulation</span></button>
+    <button data-action="cards">${icon('card')}<span class="t">Get-well cards</span>${Cards.count() ? `<span class="count num" style="background:var(--accent);color:var(--accent-ink)">${Cards.count()}</span>` : ''}</button>
     <button data-action="locker">${icon('shirt')}<span class="t">Locker room</span></button>
     <button data-action="stats">${icon('chart')}<span class="t">Report card</span></button>
     <button data-action="settings" aria-label="Settings">${icon('gear')}<span class="t">Settings</span></button>
