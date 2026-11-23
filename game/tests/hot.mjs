@@ -14,7 +14,7 @@ await page.goto(file);
 await page.waitForSelector('.onboard');
 for (const t of ['1', '2', '3', '4', '5']) await page.click(`[data-to="${t}"]`);
 await page.waitForSelector('.chart .opt');
-await page.evaluate(() => { const q = window.WR.App.run.q; if (q.type === 'mcq' || q.type === 'priority' || q.type === 'teaching' || q.type === 'math') document.querySelector(`.opt[data-i="${q.opts.findIndex((o) => o.c)}"]`).click(); });
+await page.evaluate(() => { const q = window.WR.App.run.q; if (q.type === 'mcq' || q.type === 'priority' || q.type === 'teaching' || q.type === 'math') document.querySelector(`.opt[data-i="${q.opts.findIndex((o) => o.c)}"]`).click(); const s = document.querySelector('[data-action="submit"]'); if (s && !s.disabled) s.click(); });
 const before = await page.evaluate(() => ({ snap: JSON.parse(JSON.stringify(window.__snap())), qid: window.WR.App.run.cur.qid, score: window.WR.App.run.score, idx: window.WR.App.run.idx }));
 await page.close();
 page = await ctx.newPage();

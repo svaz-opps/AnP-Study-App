@@ -61,3 +61,10 @@
 - QA: automated overlap check of every new correct answer against its cited guide section (lowest overlap items were
   hand-checked paraphrases); `tests/hot.mjs` confirms an open round survives a live page update; full smoke suite
   passes at 4 sizes and renders all 505 questions.
+
+## 2026-11-23 — Branch workflow + Submit button on every question
+- Branches: `main` holds the newest stable app; risky features go to `beta` first, get tested, then are merged into
+  `main`. Both were started from `claude/dreamy-heisenberg-vtqdyh` (the newest work). See `BRANCHING.md`.
+- Every question type now waits for Submit: tapping an option only selects it (tap another to change your mind);
+  Enter also submits. Applies to all modes, including Code Blue and the exam. Smoke + hot-restore tests updated
+  to assert a single-answer tap does not grade, and pass at all 4 sizes.

@@ -110,7 +110,7 @@ Screens.chart = {
   },
   paperHTML(run) {
     const q = run.q, c = run.cur, sec = Content.section(q.sec);
-    const help = q.type === 'sata' ? 'Select all that apply, then tap Submit.' : q.type === 'order' ? 'Tap the steps in order. Tap a placed step to take it back.' : '';
+    const help = q.type === 'sata' ? 'Select all that apply, then tap Submit.' : q.type === 'order' ? 'Tap the steps in order, then tap Submit. Tap a placed step to take it back.' : 'Choose an answer, then tap Submit.';
     return `<div class="paper-head"><span class="qtype ${q.type}">${TYPE_INFO[q.type].label}</span><span class="paper-topic">${q.origin === 'guide' ? 'From your study guide' : 'ATI-style'} · ${esc(sec.num)}</span></div>
       <p class="stem" id="stem">${esc(q.stem)}</p>
       ${help && !c.revealed ? `<p class="paper-help">${help}</p>` : ''}
@@ -127,7 +127,7 @@ Screens.chart = {
     }
     s += '<span class="grow"></span>';
     if (q.type === 'order') s += `<button class="btn" data-action="undo" ${c.sel.length ? '' : 'disabled'}>${icon('undo')}Undo</button>`;
-    if (q.type === 'sata' || q.type === 'order') s += `<button class="btn primary big" data-action="submit" ${run.ready() ? '' : 'disabled'}>Submit</button>`;
+    s += `<button class="btn primary big" data-action="submit" ${run.ready() ? '' : 'disabled'}>Submit</button>`;
     return s;
   },
   chartsideHTML(run) {
@@ -330,21 +330,16 @@ Screens.chart = {
 
   act: {
     pick(d) {
-      const run = App.run, q = run.q;
+      const run = App.run;
       if (!run || run.cur.revealed) return;
-      const i = +d.i;
-      run.toggle(i);
-      if (q.type === 'sata' || q.type === 'order') {
-        Sound.play('tap');
-        Screens.chart.refresh(['paper', 'tray']);
-      } else {
-        const res = run.submit();
-        Screens.chart.afterSubmit(res);
-      }
+      // every question type waits for Submit; tapping an option only selects it
+      run.toggle(+d.i);
+      Sound.play('tap');
+      Screens.chart.refresh(['paper', 'tray']);
     },
     submit() {
       const run = App.run;
-      if (!run.ready()) return;
+      if (!run || !run.ready()) return;
       const res = run.submit();
       Screens.chart.afterSubmit(res);
     },
@@ -385,7 +380,7 @@ Screens.chart = {
     const k = e.key.toUpperCase();
     if (k === 'ENTER') {
       if (run.cur.revealed && run.cfg.feedback) { e.preventDefault(); this.advance(); }
-      else if (run.ready() && (run.q.type === 'sata' || run.q.type === 'order')) { e.preventDefault(); this.act.submit(); }
+      else if (run.ready()) { e.preventDefault(); this.act.submit(); }
       return;
     }
     let pos = LETTERS.indexOf(k);
