@@ -41,6 +41,8 @@ async function answerCurrent(page, wantRight) {
     } else {
       const i = q.opts.findIndex((o) => (wantRight ? o.c : !o.c));
       click(i);
+      if (run.cur.revealed) throw new Error('single-answer question submitted on tap');
+      document.querySelector('[data-action="submit"]').click();
     }
     return { type: q.type, revealed: run.cur.revealed, lives: run.lives };
   }, wantRight);
