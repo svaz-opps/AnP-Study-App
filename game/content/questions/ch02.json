@@ -120,14 +120,14 @@
   },
   {
     "id": "N2-10", "sec": "ch2-ph", "focus": [0], "type": "math", "diff": 2,
-    "stem": "A client's blood pH drops from 7.4 to 6.4 in a lab experiment. How much has the hydrogen ion concentration changed?",
+    "stem": "In a lab demonstration, a solution's pH drops from 7.4 to 6.4. How much has the hydrogen ion concentration changed?",
     "opts": [
       {"t": "About 10 times higher", "c": true},
       {"t": "About 1 time higher (no real change)", "w": "pH is logarithmic. One unit is a big change."},
       {"t": "About 100 times higher", "w": "100× would be a drop of two pH units."},
       {"t": "About 10 times lower", "w": "Lower pH means MORE hydrogen ions, not fewer."}
     ],
-    "why": "The pH scale is logarithmic: each 1-unit decrease means about 10 times more hydrogen ions. A real blood pH this low would not be survivable. Normal arterial blood is about 7.35 to 7.45.",
+    "why": "The pH scale is logarithmic: each 1-unit decrease means about 10 times more hydrogen ions. (For comparison, normal arterial blood is about 7.35 to 7.45, so even small pH shifts in the body matter.)",
     "trick": "Each pH step is ×10. Down in pH = up in H⁺.",
     "tip": "Count the pH units, then multiply by 10 for each one."
   },

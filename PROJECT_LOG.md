@@ -35,3 +35,17 @@
   partial SATA credit uses +/− scoring and only a perfect answer keeps the streak; a missed item is "discharged"
   after being answered right on 2 different days; boss unlocks at ★ in 6 rooms (`#debug` in the URL bypasses it);
   the page is dark-only by choice (the user asked for a dark look).
+
+## 2026-11-23 (overnight) — Question bank complete
+- 248 new ATI-style questions in `game/content/questions/ch01–ch12.json` + the guide's 232 = 480 patients.
+  `python3 game/build.py --strict` confirms all 239 instructor focus points are covered (it fails otherwise).
+- Every new item cites its section and focus point(s), has a plain-words "why", a reason for each wrong option,
+  a memory trick, and an ATI test tip. Tips copied from the guide are labeled "From your guide".
+- Type mix (new): 158 MCQ, 51 SATA, 17 ordering, 8 needs-further-teaching, 7 priority, 7 med math.
+- Smoke test now renders all 480 questions and checks each answer key grades as correct.
+- Assumptions: where a guide focus point was an "all of the above" item, it became a SATA (the game bans
+  "all/none of the above"); med math stays A&P-relevant (rule of nines, pH, membrane potential, mg dosing,
+  atomic particles); a few clinical framings (compartment syndrome, dislocation, retinal detachment) use standard
+  nursing priority logic on top of the guide's facts.
+- Known gaps for the next pass: priority and teaching items are below the plan's ~10% each; a real iPad Safari
+  check is still needed (tests run in Chromium); hot-reload restore of an open round is untested.
