@@ -66,6 +66,7 @@ svg { display: block; }
   transition: transform .12s ease, background-color .15s ease, opacity .15s ease;
 }
 .btn:active { transform: scale(.97); }
+.btn svg { width: 20px; height: 20px; flex: none; }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
 .btn.danger { background: var(--code); color: #fff; border-color: transparent; }
 .btn.ghost { background: transparent; }

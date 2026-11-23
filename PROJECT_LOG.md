@@ -49,3 +49,15 @@
   nursing priority logic on top of the guide's facts.
 - Known gaps for the next pass: priority and teaching items are below the plan's ~10% each; a real iPad Safari
   check is still needed (tests run in Chromium); hot-reload restore of an open round is untested.
+
+## 2026-11-23 (6am polish)
+- Added 10 priority and 15 needs-further-teaching questions (`game/content/questions/x-priority-teaching.json`):
+  505 patients total; type mix now 17 priority / 23 teaching (was 7 / 8).
+- Balance: the OR (boss) unlocks at a star in 4 rooms OR 12 finished shifts (was a star in 6 rooms, which would
+  take ~25 shifts). Assumption: with the final a few weeks away, the boss should be reachable sooner.
+- Fixes: Code Blue clock pauses while a dialog is open; cloud save flushes when the app goes to the background;
+  Locker/onboarding screens no longer inherit their inner layout class (squeezed layout); button icons sized;
+  head-only avatar crop shows buns; faint text contrast raised.
+- QA: automated overlap check of every new correct answer against its cited guide section (lowest overlap items were
+  hand-checked paraphrases); `tests/hot.mjs` confirms an open round survives a live page update; full smoke suite
+  passes at 4 sizes and renders all 505 questions.

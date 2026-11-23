@@ -53,6 +53,7 @@ const LOCKER_TABS = [
 ];
 
 Screens.locker = {
+  cls: 'locker-screen',
   tab: 'hair',
   mood: 'happy',
   render() {
@@ -235,6 +236,7 @@ const TUTORIAL = [
 ];
 
 Screens.onboard = {
+  cls: 'onboard-screen',
   render(p) {
     const step = p.step || 0, s = WR.state, av = s.profile.avatar;
     const dots = `<div class="ob-dots">${[0, 1, 2, 3, 4].map((i) => `<i class="${i === step ? 'on' : ''}"></i>`).join('')}</div>`;

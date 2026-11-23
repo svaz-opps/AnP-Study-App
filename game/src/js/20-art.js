@@ -122,7 +122,7 @@ function nurseSVG(av, mood = 'neutral', opts = {}) {
   const pat = patternDefs(uid + 'p', av.pattern, scrub);
   const headOnly = opts.headOnly;
 
-  let s = `<svg viewBox="${headOnly ? '14 4 92 92' : '0 0 120 150'}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(opts.label || 'Your nurse')}">`;
+  let s = `<svg viewBox="${headOnly ? '6 -10 108 108' : '0 0 120 150'}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(opts.label || 'Your nurse')}">`;
   s += `<defs>${pat}</defs>`;
   if (!headOnly) {
     s += `<ellipse cx="60" cy="146" rx="30" ry="4" fill="#000" opacity=".25"/>`;
