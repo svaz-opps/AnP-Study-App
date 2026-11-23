@@ -1,6 +1,6 @@
 {
  "G-F081": {"trick": "EPI = on top of everything (whole muscle), PERI = around a bundle (fascicle), ENDO = inside, on each fiber.", "tip": "Wrap order from outside in: epimysium → perimysium → endomysium. Match the size of what's wrapped."},
- "G-F082": {"trick": "SARCOMERE = the smallest \"Sarcastic\" unit that contracts: Z line to Z line.", "tip": "The sarcomere is the functional unit of contraction. Its repeating pattern makes the striations."},
+ "G-F082": {"trick": "SARCO-MERE = muscle (sarco) part (mere): the smallest repeating unit that contracts, Z line to Z line.", "tip": "The sarcomere is the functional unit of contraction. Its repeating pattern makes the striations."},
  "G-F083": {"trick": "ACh = \"Activate Contraction, hey!\" It's the go signal at every skeletal neuromuscular junction.", "tip": "Skeletal muscle is always triggered by acetylcholine binding nicotinic receptors on the motor end plate."},
  "G-F084": {"trick": "Calcium is the key: it turns the TROPONIN lock, and the TROPOMYOSIN chain slides off actin's sites.", "tip": "Order matters: Ca2+ binds troponin → tropomyosin moves → myosin binds actin."},
  "G-F085": {"trick": "ATP = the \"let go\" button for myosin. No ATP = rigor mortis (stuck grip).", "tip": "People often think ATP only powers the pull. Its binding is also what releases the myosin head."},

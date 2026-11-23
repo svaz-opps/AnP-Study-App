@@ -225,7 +225,7 @@
   ],
   "type": "teaching",
   "diff": 2,
-  "stem": "A nurse explains how substances cross a cell membrane. Which statement by the student needs correction?",
+  "stem": "A nursing student explains how substances cross a cell membrane. Which statement by the student needs correction?",
   "opts": [
    {
     "t": "\"Large charged ions pass straight through the lipid layer easily.\"",
@@ -970,7 +970,7 @@
    }
   ],
   "why": "RODS work in dim light but don't see color. CONES need brighter light and give color and detail. That's why colors fade at night.",
-  "trick": "Rods = Rough (dim, gray) light. Cones = Color.",
+  "trick": "Rods = dim Rooms (night vision, gray). Cones = Color.",
   "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
  },
  {

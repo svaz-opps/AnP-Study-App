@@ -51,7 +51,7 @@ def load_sections(src):
                 lab = re.search(r'<p class="callout-label">(.*?)</p>', body, re.S)
                 label = strip(lab.group(1)) if lab else kind.title()
                 text = strip(re.sub(r'<p class="callout-label">.*?</p>', "", body, flags=re.S))
-                if kind in ("mnemonic", "tip", "clinical", "note") and text:
+                if kind in ("mnemonic", "tip", "clinical", "note") and text and "(*)" not in text:  # (*) tips refer to the printed outline
                     tips.append({"kind": kind, "label": label, "text": text})
             sections[s["id"]] = {
                 "title": strip(s["title"]),

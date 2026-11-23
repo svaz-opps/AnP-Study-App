@@ -1,0 +1,430 @@
+[
+ {
+  "id": "P3-01",
+  "sec": "ch1-cavities",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "A trauma nurse receives four clients from a highway collision. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with muffled heart sounds, low blood pressure, and bulging neck veins",
+    "c": true
+   },
+   {
+    "t": "A client with a seat-belt bruise across the chest and normal vital signs",
+    "w": "Stable; keep monitoring."
+   },
+   {
+    "t": "A client with a sprained ankle",
+    "w": "Stable injury."
+   },
+   {
+    "t": "A client who is anxious and asking to call family",
+    "w": "Emotional support can follow."
+   }
+  ],
+  "why": "The pericardial cavity is a thin space between the layers around the heart. If blood fills it, it squeezes the heart so it can't fill (cardiac tamponade). Muffled heart sounds, low blood pressure and bulging neck veins are the warning signs.",
+  "trick": "Muffled heart + low BP + big neck veins = the sac is squeezing the heart.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-02",
+  "sec": "ch3-osmosis",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse at a marathon medical tent receives four runners. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A runner who drank large amounts of plain water, now confused with a headache and vomiting",
+    "c": true
+   },
+   {
+    "t": "A runner with sore thighs who is walking and talking normally",
+    "w": "Expected after a race."
+   },
+   {
+    "t": "A runner who is thirsty and drinking a sports drink",
+    "w": "Being managed."
+   },
+   {
+    "t": "A runner with a blister on one heel",
+    "w": "Minor."
+   }
+  ],
+  "why": "Drinking too much plain water dilutes blood sodium, making the blood hypotonic. Water then moves into cells, and swelling brain cells cause headache, vomiting and confusion.",
+  "trick": "Too much plain water = hypotonic blood = swollen brain cells.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-03",
+  "sec": "ch2-ph",
+  "focus": [],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse checks four clients 30 minutes after pain medicine was given. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who received an opioid and is very drowsy with 8 breaths per minute",
+    "c": true
+   },
+   {
+    "t": "A client who received an opioid, is resting comfortably, and has 16 breaths per minute",
+    "w": "Expected response."
+   },
+   {
+    "t": "A client who says pain is now 3 out of 10",
+    "w": "Pain is controlled."
+   },
+   {
+    "t": "A client who feels mildly itchy after the opioid",
+    "w": "A common, minor side effect."
+   }
+  ],
+  "why": "Slow breathing lets carbon dioxide build up in the blood. Carbon dioxide forms carbonic acid, so the pH falls (respiratory acidosis). Breathing this slowly is an airway and breathing emergency.",
+  "trick": "Slow breathing = CO2 piles up = acid.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-04",
+  "sec": "ch6-repair",
+  "focus": [],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The emergency nurse receives four clients from a house fire. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with singed nose hairs, soot around the mouth, and a hoarse voice",
+    "c": true
+   },
+   {
+    "t": "A client with a red, painful superficial burn on one hand",
+    "w": "Painful but stable."
+   },
+   {
+    "t": "A client with a partial-thickness burn on the forearm with blisters",
+    "w": "Needs care, but the airway comes first."
+   },
+   {
+    "t": "A client who is coughing a little but speaking in full sentences with normal breathing",
+    "w": "Moving air well; reassess."
+   }
+  ],
+  "why": "Hot air and smoke can burn the airway. Singed nose hairs, soot and a hoarse voice warn that the airway may swell shut within hours, so this client is seen first even though the skin burns of others look worse.",
+  "trick": "Hoarse voice + soot + singed nose hair = airway burn.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-05",
+  "sec": "ch7-marrow",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "Four clients on the orthopedic unit call for help at the same time. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with a femur fracture who is suddenly short of breath and confused, with tiny red spots on the chest",
+    "c": true
+   },
+   {
+    "t": "A client with a femur fracture whose pain is 4 out of 10 after medication",
+    "w": "Controlled."
+   },
+   {
+    "t": "A client in a cast asking how long it will stay on",
+    "w": "Teaching can wait."
+   },
+   {
+    "t": "A client with a wrist fracture whose fingers are pink and warm",
+    "w": "Good circulation."
+   }
+  ],
+  "why": "Yellow marrow in long bones stores fat. After a long-bone fracture, fat droplets can enter the blood and lodge in the lungs and brain (fat embolism). Sudden breathlessness, confusion and tiny red spots are the warning signs.",
+  "trick": "Long-bone break + breathless + confused + red dots = fat embolism.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-06",
+  "sec": "ch9-responses",
+  "focus": [
+   3
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse at a sports clinic receives four calls. Which client should the nurse speak to first?",
+  "opts": [
+   {
+    "t": "A client with severe muscle pain and cola-colored urine after an extreme workout",
+    "c": true
+   },
+   {
+    "t": "A client with mild muscle soreness 2 days after starting a new routine",
+    "w": "Delayed soreness is expected."
+   },
+   {
+    "t": "A client with a muscle cramp that went away after stretching",
+    "w": "Resolved."
+   },
+   {
+    "t": "A client asking about protein shakes",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Muscle fibers, especially red fibers, contain myoglobin. When many fibers break down (rhabdomyolysis), myoglobin spills into the blood and urine, turning it dark, and it can damage the kidneys.",
+  "trick": "Dark cola urine after a brutal workout = muscle breaking down.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P3-07",
+  "sec": "ch11-cerebrum",
+  "focus": [],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a neuro unit hears four call lights. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who has been having a seizure for more than 5 minutes",
+    "c": true
+   },
+   {
+    "t": "A client with epilepsy who had a brief seizure an hour ago and is now sleepy but easy to wake",
+    "w": "Expected after a seizure."
+   },
+   {
+    "t": "A client asking when the next dose of seizure medicine is due",
+    "w": "Can wait briefly."
+   },
+   {
+    "t": "A client with a mild headache",
+    "w": "Stable."
+   }
+  ],
+  "why": "A seizure is abnormal, uncontrolled firing of brain neurons. A seizure lasting more than 5 minutes (status epilepticus) can starve the brain of oxygen and is an emergency.",
+  "trick": "Seizure over 5 minutes = emergency.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-08",
+  "sec": "ch4-glycolysis",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse reviews four clients with infections. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with an infection whose blood pressure is 82/48 mm Hg and whose lactate level is rising",
+    "c": true
+   },
+   {
+    "t": "A client with an infection on antibiotics whose vital signs are normal",
+    "w": "Stable and being treated."
+   },
+   {
+    "t": "A client with a low-grade fever of 37.9 °C (100.2 °F) who is eating",
+    "w": "Mild."
+   },
+   {
+    "t": "A client asking when the IV antibiotic will finish",
+    "w": "Can wait."
+   }
+  ],
+  "why": "When tissues don't get enough blood and oxygen, cells rely on glycolysis and turn pyruvate into lactate. A rising lactate with low blood pressure suggests tissues are being starved of oxygen (septic shock).",
+  "trick": "Low BP + rising lactate = cells running without oxygen.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-09",
+  "sec": "ch9-contraction",
+  "focus": [
+   2
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse in the recovery room receives four clients after surgery. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client after general anesthesia whose temperature is rising quickly, with rigid muscles and a fast heart rate",
+    "c": true
+   },
+   {
+    "t": "A client who is shivering slightly and asks for a warm blanket",
+    "w": "Common after anesthesia."
+   },
+   {
+    "t": "A client with a sore throat from the breathing tube",
+    "w": "Expected."
+   },
+   {
+    "t": "A client who is drowsy but wakes easily and has stable vital signs",
+    "w": "Expected recovery."
+   }
+  ],
+  "why": "Calcium released from the sarcoplasmic reticulum triggers contraction. In malignant hyperthermia, certain anesthetics cause uncontrolled calcium release, so muscles stay contracted, make huge amounts of heat, and temperature climbs fast.",
+  "trick": "Anesthesia + rigid muscles + soaring temperature = malignant hyperthermia.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-10",
+  "sec": "ch1-systems",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a gastrointestinal unit receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who is vomiting bright red blood and feels light-headed",
+    "c": true
+   },
+   {
+    "t": "A client with mild nausea after breakfast",
+    "w": "Mild."
+   },
+   {
+    "t": "A client who has not had a bowel movement in 2 days",
+    "w": "Can be addressed later."
+   },
+   {
+    "t": "A client with heartburn after a large meal",
+    "w": "Common and mild."
+   }
+  ],
+  "why": "Bright red blood in vomit means active bleeding in the upper digestive tract. Light-headedness suggests blood volume is dropping, which is a circulation emergency.",
+  "trick": "Vomiting fresh blood + light-headed = circulation first.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-11",
+  "sec": "ch11-receptors",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The school nurse receives four students. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A student with hives, swollen lips and tongue, and wheezing after a bee sting",
+    "c": true
+   },
+   {
+    "t": "A student with a red, itchy bump at the sting site only",
+    "w": "A local reaction."
+   },
+   {
+    "t": "A student with a scraped elbow from recess",
+    "w": "Minor."
+   },
+   {
+    "t": "A student who feels nervous before a test",
+    "w": "Not urgent."
+   }
+  ],
+  "why": "Anaphylaxis is a severe allergic reaction that narrows the airway and drops blood pressure. Epinephrine, acting on adrenergic receptors, opens the airways and tightens blood vessels, so it is given right away.",
+  "trick": "Sting + swollen tongue + wheeze = anaphylaxis: epinephrine now.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-12",
+  "sec": "ch5-connective",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a hematology unit reviews lab results. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with a hemoglobin of 6.5 g/dL who is dizzy and has chest pain",
+    "c": true
+   },
+   {
+    "t": "A client with a hemoglobin of 13.5 g/dL",
+    "w": "Within the normal range."
+   },
+   {
+    "t": "A client with a hemoglobin of 11 g/dL who is resting comfortably",
+    "w": "Mildly low but stable."
+   },
+   {
+    "t": "A client asking about iron-rich foods",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Blood is a connective tissue, and its red cells carry oxygen using hemoglobin. A very low hemoglobin with dizziness and chest pain means the heart and brain aren't getting enough oxygen.",
+  "trick": "Very low hemoglobin + chest pain = organs starving for oxygen.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P3-13",
+  "sec": "ch3-differentiation",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The oncology nurse receives four phone calls. Which client should the nurse call back first?",
+  "opts": [
+   {
+    "t": "A client with known cancer who has new back pain and new weakness in both legs",
+    "c": true
+   },
+   {
+    "t": "A client with cancer who feels tired after treatment",
+    "w": "Expected side effect."
+   },
+   {
+    "t": "A client asking about a support group",
+    "w": "Can wait."
+   },
+   {
+    "t": "A client with mild nausea controlled by medicine",
+    "w": "Being managed."
+   }
+  ],
+  "why": "Metastasis is cancer spreading to new sites. Cancer that spreads to the spine can press on the spinal cord. New back pain with leg weakness is an emergency, because delays can cause permanent paralysis.",
+  "trick": "Cancer + new back pain + weak legs = spinal cord compression.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P3-14",
+  "sec": "ch11-protection",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse caring for four clients after abdominal surgery receives report. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with an epidural catheter for pain control who has new back pain and new weakness in both legs",
+    "c": true
+   },
+   {
+    "t": "A client with an epidural catheter whose pain is controlled and who can move both legs",
+    "w": "Expected."
+   },
+   {
+    "t": "A client with mild itching from pain medicine",
+    "w": "Common and minor."
+   },
+   {
+    "t": "A client asking when the catheter will be removed",
+    "w": "Can wait."
+   }
+  ],
+  "why": "The epidural space lies outside the dura around the spinal cord. Bleeding there (an epidural hematoma) can press on the cord. New back pain with leg weakness needs to be reported immediately.",
+  "trick": "Epidural catheter + new leg weakness = check for bleeding pressing on the cord.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ }
+]

@@ -28,5 +28,7 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 | R9 | Autosave rounds in progress | ✅ | Resume / Discard prompt on launch; `game/tests/autosave.mjs`. |
 | R10 | "Ask a colleague" is a true 50/50 | ✅ | Single-answer: the right answer + one wrong stay. SATA: half the wrong options go (rounded up). Ordering: first step placed. Greyed out when there is nothing to remove. `game/tests/lifeline.mjs`. |
 | R11 | Memory trick + ATI tip on all 232 study-guide questions | ✅ | `game/content/guide-extras/`; `build.py --strict` fails if any guide question lacks one. |
-| R12 | More "needs further teaching" and "see first" questions | ✅ | +32 teaching (now 55, ~9.6%) and +29 priority (now 46, ~8%) of 575. |
+| R12 | More "needs further teaching" and "see first" questions | ✅ | +32 teaching and +29 priority (then 55 and 46 of 575). |
 | R15 | More med-math questions | ✅ | +9 (now 16): atoms/ions, pH, rule of nines, tablet dosing, % solution, membrane potential, ATP yield. |
+| R17 | "See first" questions up to 10% | ✅ | +14 priority (`x-r17-priority.json`): 60 of 589 = 10.2%. Teaching is 55 (9.3%). |
+| R18 | Accuracy review of all learning material | ✅ | Read all 589 questions (stems, every option, wrong-option reasons, explanations, tricks, tips), the 26 guide tips and the game's own teaching text. 15 fixes, no wrong answer keys. Details in the project log. |

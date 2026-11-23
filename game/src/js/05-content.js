@@ -30,7 +30,7 @@ const Content = {
   all() { return this.data.questions; },
   unitLabel(uid) { const u = this.unitById[uid]; return u ? `Room ${u.room} · ${u.ward}` : ''; },
   section(sid) { return this.sections[sid]; },
-  // single-tap types work under a ticking clock
+  // single-answer types work under a ticking clock
   isQuick(q) { return q.type === 'mcq' || q.type === 'priority' || q.type === 'teaching' || q.type === 'math'; },
 };
 

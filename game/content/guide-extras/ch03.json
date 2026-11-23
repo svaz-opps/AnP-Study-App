@@ -13,7 +13,7 @@
  "C-ch3-organelles": {"trick": "ORGAN-elle = a tiny organ inside the cell.", "tip": "Each organelle has one main job. Know them: ribosome makes protein, mitochondria make ATP, Golgi packages."},
  "C-ch3-nucleus": {"trick": "CHROMATIN = loose spaghetti DNA; it coils into chromosomes only for division.", "tip": "Chromatin = DNA + proteins, spread out between divisions. Chromosomes = condensed chromatin during mitosis."},
  "C-ch3-diffusion": {"trick": "Diffusion = a drop of food coloring spreading in water: high to low, no energy needed.", "tip": "Down the gradient = passive (no ATP). Against the gradient = active (needs energy)."},
- "C-ch3-osmosis": {"trick": "Osmosis = water chasing salt across a membrane.", "tip": "Osmosis is only about WATER moving. If a solute moves, it is diffusion or transport instead."},
+ "C-ch3-osmosis": {"trick": "Osmosis = water chasing solute (like salt) across a membrane.", "tip": "Osmosis is only about WATER moving. If a solute moves, it is diffusion or transport instead."},
  "C-ch3-active": {"trick": "Active transport = pushing a cart uphill: it needs fuel (ATP).", "tip": "\"Against the gradient\" means active transport. The Na+/K+ pump moves 3 Na+ out and 2 K+ in using ATP."},
  "C-ch3-cycle": {"trick": "INTERphase = the cell's \"in-between\" prep time: Grow (G1), Synthesize DNA (S), Get ready (G2).", "tip": "DNA copies during the S phase of interphase, not during mitosis."},
  "C-ch3-differentiation": {"trick": "Stem cell = a blank tree trunk that can grow any branch AND keep the trunk.", "tip": "Two features define a stem cell: it renews itself and it can make specialized cells."}
