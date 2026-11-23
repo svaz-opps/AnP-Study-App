@@ -164,3 +164,31 @@
   claude/friendly-meitner-j5l8qj); the user deleted them on GitHub.
 - First deploy (a re-run of the original run) uploaded the site but deploy-pages found 0 artifacts. Bumped
   checkout to v5 and upload-pages-artifact to v4 and pushed so a fresh run starts.
+
+## 2026-11-23 — R20–R23 whimsy and gameplay
+- Plan agreed with the user: whimsy driven by both the in-round streak and the end-of-shift score; wrong answers get
+  escalating chaos; all four gameplay additions (room themes, thank-you cards, shift events, daily challenge). The user
+  asked that Rapid Response be a learning tool: questions from other rooms to force recall and give a "shock".
+- R20 `src/js/22-whimsy.js` + `src/css/35-whimsy.css`: the bed patient is split into movable groups (bed, IV, person,
+  head, hair, body, arms, legs, props). 11 right-answer reactions in 4 streak tiers (same steps as the ×1.5/×2/×3
+  multiplier, plus 15+) and 9 chaos reactions in 3 miss levels. New face moods (dizzy, starry, shock, cool, silly),
+  synthesized gag sounds, and a "Silly patients" setting. Partly-right answers get no gag (assumption: stay calm so
+  the student reads which options they missed). Exam and boss modes have none; Code Blue is capped at level 1.
+- Assumption: reactions run only inside the patient card (clipped), never over the question or the explanation, and
+  the explanation is never delayed. The phone-width bed stays 54×40 px because a bigger one wrapped the patient info.
+- R21 room themes (`UNIT_THEME` in `20-art.js`) and the discharge parade on the report (`55-report.js`); no parade
+  for exam simulations.
+- R22 events (`EVENTS` in `35-run.js`): 25% of shifts. Rapid Response picks via `Engine.rapidPicks`: due or fading
+  items from other rooms first (missed and not seen today, or right once and 3+ days old), then rooms already played
+  but not seen today, then easier items anywhere; never two from one room. Rapid and visitor questions cost no life
+  (assumption: a surprise question shouldn't end a shift), but misses still go to Missed Patients. Their answers count
+  toward the other room's items normally; the current room's stars are unaffected. Shifts with Rapid Response or a
+  visitor are 12 or 11 questions long.
+- Daily challenge: the 5 questions are stored in `state.daily` the first time they're picked that day, so they stay
+  the same all day even as the missed list changes. Replays are allowed but don't add to the daily streak or bonus.
+- R23 `src/js/65-cards.js`: cards are awarded on discharge (`Engine.record` → `Cards.give`). The album shows earned
+  cards plus locked tiles for patients still in Missed Patients (assumption: showing a silhouette for every
+  question in the bank would be ~590 tiles and not meaningful). The card is placed under the explanation and tips.
+- Tests: new `game/tests/whimsy.mjs` (tiers, chaos, settings, calm motion, events, daily, cards); `smoke.mjs` also
+  visits the album. Fixed a flaky check in `lifeline.mjs` that failed when the first question was an ordering one.
+  All suites pass.
