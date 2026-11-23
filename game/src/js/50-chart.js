@@ -323,6 +323,7 @@ Screens.chart = {
     if (!run.next()) { App.show('report'); return; }
     if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : 'start');
     App.rerender();
+    Store.saveRun();
     const sec = App.el;
     if (sec && !reducedMotion()) { const cb = $('#clipboard', sec); if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' }); }
     App.el.scrollTop = 0;

@@ -166,7 +166,7 @@ Screens.stats = {
 Screens.settings = {
   render() {
     const st = WR.state.settings;
-    const cloud = Store.cloud.status === 'cloud' ? 'Progress saves to your Claude account, so it follows you to any device.' : 'Progress saves in this browser. Download a backup now and then to be safe.';
+    const cloud = Store.cloud.status === 'cloud' ? 'Progress autosaves to your Claude account after every tap, even mid-round, so it follows you to any device.' : 'Progress autosaves in this browser after every tap, even mid-round. Download a backup now and then to be safe.';
     const seg = (key, opts) => `<div class="seg" role="group">${opts.map(([v, n]) => `<button class="${String(st[key]) === String(v) ? 'on' : ''}" data-action="setting" data-key="${key}" data-val="${v}" aria-pressed="${String(st[key]) === String(v)}">${n}</button>`).join('')}</div>`;
     return `${topbar('Settings')}
       <div class="narrow stack">
