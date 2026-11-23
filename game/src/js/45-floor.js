@@ -19,7 +19,7 @@ function hudHTML() {
       <div class="bar" role="progressbar" aria-valuenow="${Math.round(rp.frac * 100)}" aria-valuemin="0" aria-valuemax="100" aria-label="Progress to next rank"><i style="width:${Math.round(rp.frac * 100)}%"></i></div>
     </div>
     <div class="hud-chips">
-      <span class="chip streak" title="Days in a row">${icon('flame')}<span class="num">${s.days.streak || 0}</span>-day streak</span>
+      <span class="chip streak" title="Days in a row">${icon('flame')}<span><span class="num">${s.days.streak || 0}</span>-day streak</span></span>
       <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
       ${examChip}
     </div>
@@ -37,6 +37,7 @@ function roomHTML(u) {
       <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span></span>
       <span class="room-ward">${esc(u.ward)}</span>
       <span class="room-topic">${esc(u.topic)}</span>
+      <span class="room-blurb">${esc(u.blurb)}</span>
       <span class="room-pt"><span class="pt">${patientHead(p, mood)}</span><span class="room-meta"><span class="num">${m.solid}/${m.total}</span><br>mastered</span></span>
     </span>
     <span class="door"></span>

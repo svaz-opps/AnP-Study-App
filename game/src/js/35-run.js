@@ -210,7 +210,8 @@ class Run {
     const up = Engine.addXP(bonus);
     if (up != null) this.rankUp = up;
     this.bonusXP = bonus;
-    this.newBadges.push(...Engine.checkBadges({ endOfRun: true, extra }));
+    this.endBadges = Engine.checkBadges({ endOfRun: true, extra });
+    this.newBadges.push(...this.endBadges);
     Store.save({ now: true });
   }
 

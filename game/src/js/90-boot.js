@@ -1,0 +1,66 @@
+// ---------- boot ----------
+function bindEvents() {
+  const root = document.getElementById('app');
+  root.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-action]');
+    if (!b || !root.contains(b) || b.disabled) return;
+    App.act(b.dataset.action, b.dataset, b, e);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (App.name === 'chart') Screens.chart.key(e);
+    if (e.key === 'Escape') { const m = document.getElementById('modal-root'); if (m.firstChild) m.innerHTML = ''; }
+  });
+  const onResize = debounce(() => {
+    const changed = App.measure();
+    if (changed) App.rerender();
+    else {
+      if (App.name === 'chart' && Screens.chart.ecg) Screens.chart.ecg.resize();
+      if (App.name === 'floor') Screens.floor.placeWalker(false);
+    }
+  }, 150);
+  window.addEventListener('resize', onResize);
+  window.addEventListener('orientationchange', onResize);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) Store._local.flush(); });
+  window.addEventListener('pagehide', () => { Store._local.flush(); });
+  ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
+}
+
+Object.assign(WR, { App, Engine, Content, Store, Screens });
+
+async function start(hot) {
+  App.measure();
+  try {
+    await Content.load();
+  } catch (e) {
+    document.getElementById('app').innerHTML = `<div class="boot"><p>${esc(e.message || 'Could not load the game.')}</p><button class="btn primary" onclick="location.reload()">Try again</button></div>`;
+    return;
+  }
+  Store.init();
+  applySettings();
+  WR.debug = location.hash === '#debug';
+  bindEvents();
+  Store.onChange(() => {
+    applySettings();
+    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker') App.rerender();
+  });
+  if (hot && hot.run && hot.screen) {
+    try {
+      App.run = Run.restore(hot.run);
+      App.show(hot.screen === 'chart' && App.run.cur ? 'chart' : hot.screen === 'report' ? 'report' : 'floor');
+      return;
+    } catch (e) { App.run = null; }
+  }
+  if (!WR.state.profile.onboarded) App.show('onboard', { step: 0 });
+  else App.show('floor');
+}
+
+(function boot() {
+  const hot = window.claude && window.claude.hot;
+  if (hot && hot.snapshot) {
+    try { hot.snapshot(() => ({ screen: App.name, run: App.run ? App.run.serialize() : null })); } catch (e) { /* optional */ }
+  }
+  const go = (data) => { start(data || {}); };
+  if (hot && hot.ready) hot.ready(go); else go(hot && hot.data);
+})();

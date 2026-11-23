@@ -15,7 +15,8 @@
 /* ---------- floor plan ---------- */
 .floorplan { position: relative; flex: 1; display: grid; gap: 0; min-height: 0; }
 .floorplan.h { grid-template-rows: minmax(150px, 1fr) 132px minmax(150px, 1fr); }
-.floorplan.v { grid-template-columns: 1fr 64px 1fr; grid-auto-rows: minmax(112px, auto); row-gap: var(--s3); }
+.floorplan.v { flex: none; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); grid-auto-rows: auto; row-gap: var(--s3); }
+.floorplan.v .room { min-height: 150px; }
 
 .rooms { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s2); }
 .floorplan.v .rooms { display: contents; }
@@ -40,6 +41,8 @@
 .room-stars .on { color: var(--warn); }
 .room-ward { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-md); line-height: 1.1; overflow-wrap: anywhere; }
 .room-topic { font-size: var(--fs-sm); color: var(--text-dim); line-height: 1.2; }
+.room-blurb { font-size: var(--fs-xs); color: var(--text-faint); line-height: 1.3; margin-top: 2px; }
+[data-size="compact"] .room-blurb { display: none; }
 .room-pt { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s2); }
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
@@ -99,7 +102,9 @@
 }
 .bubble::before { content: ""; position: absolute; left: -7px; bottom: 16px; border: 8px solid transparent; border-left: 0; border-right-color: var(--paper); }
 .bubble.pop { animation: pop-in .3s cubic-bezier(.2, .9, .3, 1.3) both; }
-.floor .bubble { margin-left: 92px; }
+.floor .station .bubble { margin-left: 92px; }
+.station-card { align-items: center; gap: var(--s3); }
+.station-card .station-desk { height: 64px; }
 
 .alarm {
   display: flex; align-items: center; gap: var(--s2); padding: 10px 16px; min-height: var(--tap);

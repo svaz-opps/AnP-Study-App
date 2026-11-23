@@ -23,3 +23,15 @@
 - Assumptions: single self-contained HTML published as a private Artifact; vanilla JS, no CDN, works offline once
   loaded; progress saved to artifact storage if available, else localStorage, plus a backup file (Safari can evict
   localStorage after ~7 days without a visit); exam date is set inside the app rather than hard-coded.
+
+## 2026-11-23 — First playable preview of Ward Rounds
+- Engine, all screens (floor, chart, report, missed patients, locker, report card, settings, onboarding), Code Blue,
+  boss fight, exam simulation, lifelines, ranks, badges, review scheduling.
+- Published as a private Artifact: https://claude.ai/artifact/UaFKWV2HJ2jGDdnFTvUXEw (page + data.json beside it;
+  capabilities db + user + downloads). `game/dist/ward-rounds.html` is the fully self-contained offline copy.
+- `node game/tests/smoke.mjs` plays full shifts, Code Blue, a boss win, reload persistence and a rotation at
+  iPad landscape (1180×820), portrait (820×1180), iPad mini landscape and Split View compact (375 wide): all pass.
+- Assumptions: single-answer questions submit on tap (fast, matches "tap to answer"); SATA/order use Submit;
+  partial SATA credit uses +/− scoring and only a perfect answer keeps the streak; a missed item is "discharged"
+  after being answered right on 2 different days; boss unlocks at ★ in 6 rooms (`#debug` in the URL bypasses it);
+  the page is dark-only by choice (the user asked for a dark look).

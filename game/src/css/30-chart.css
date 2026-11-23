@@ -140,7 +140,7 @@
   box-shadow: var(--shadow);
 }
 .feedback[hidden] { display: none; }
-[data-size="wide"] .feedback { position: absolute; inset: 0 0 auto 0; min-height: 100%; z-index: 5; animation: slide-in .32s cubic-bezier(.2, .8, .2, 1) both; }
+[data-size="wide"] .feedback { animation: slide-in .32s cubic-bezier(.2, .8, .2, 1) both; scroll-margin-bottom: 16px; }
 [data-size="regular"] .feedback, [data-size="compact"] .feedback {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 82%; overflow-y: auto;
   border-radius: var(--r-lg) var(--r-lg) 0 0; border-bottom: 0;
@@ -181,6 +181,8 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .why-list li.c { border-left-color: var(--good); }
 .focus-list { margin: 4px 0 0; padding-left: 1.2em; font-size: var(--fs-sm); color: var(--text-dim); }
 .focus-list li.hit { color: var(--text); font-weight: 700; }
+.fb-actions .btn { white-space: nowrap; }
+.fb-actions .btn svg { width: 18px; height: 18px; }
 .fb-actions { display: flex; gap: var(--s3); justify-content: flex-end; position: sticky; bottom: 0; padding-top: var(--s2); }
 [data-size="wide"] .fb-actions { margin-top: auto; }
 
@@ -212,3 +214,16 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .phase-banner { position: absolute; left: 0; right: 0; top: 40%; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-2xl); color: #ffd36b; text-shadow: 0 3px 0 #7a2b00; animation: banner 1.8s ease both; pointer-events: none; }
 @keyframes banner { 0% { opacity: 0; transform: scale(.6); } 15% { opacity: 1; transform: scale(1.08); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); } }
 .projectile { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle, #fff, var(--accent) 60%, transparent 70%); pointer-events: none; z-index: 4; }
+
+/* compact (Split View / phone): keep the question high on the screen */
+[data-size="compact"] .bedside-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+[data-size="compact"] .patient-card { gap: var(--s2); }
+[data-size="compact"] .patient-card .bed { width: 54px; height: 40px; }
+[data-size="compact"] .pt-topic, [data-size="compact"] .band { display: none; }
+[data-size="compact"] .pt-info b { font-size: var(--fs-md); }
+[data-size="compact"] .monitor { padding: 4px 8px; }
+[data-size="compact"] .monitor canvas { height: 44px; }
+[data-size="compact"] .vitals b { font-size: 1.2rem; }
+[data-size="compact"] .vitals { min-width: 44px; }
+[data-size="compact"] .score { font-size: var(--fs-lg); }
+[data-size="compact"] .bedside { gap: var(--s2); }
