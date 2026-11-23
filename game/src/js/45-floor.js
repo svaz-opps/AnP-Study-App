@@ -28,7 +28,7 @@ function hudHTML() {
 
 function roomHTML(u) {
   const m = Engine.mastery(u.id);
-  const p = patientFor({ id: 'room-' + u.id, stem: '' });
+  const p = patientFor({ id: 'room-' + u.id, stem: '', unit: u.id });
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
   const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${m.missed ? ` ${m.missed} missed patients waiting.` : ''}`;
   return `<button class="room" data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">

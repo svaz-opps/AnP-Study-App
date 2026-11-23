@@ -119,6 +119,7 @@ const Whimsy = {
     const still = reducedMotion();
     bed.classList.add('wh', 'wh-' + w.id);
     if (still) bed.classList.add('wh-still');
+    if (w.kind === 'good' && w.tier >= 2) bed.classList.add('wh-hi'); // room-theme gags join in
     const card = bed.closest('.patient-card');
     if (w.banner && card) { const b = document.createElement('div'); b.className = 'wh-banner'; b.textContent = w.banner; b.setAttribute('aria-hidden', 'true'); card.appendChild(b); }
     if (w.sneeze && !still) { const mon = document.getElementById('monitor'); if (mon) { mon.classList.remove('wh-sneeze'); void mon.offsetWidth; mon.classList.add('wh-sneeze'); } }

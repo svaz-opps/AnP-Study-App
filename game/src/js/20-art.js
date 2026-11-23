@@ -182,6 +182,70 @@ const PT_NAMES = ['Rosa', 'Malik', 'Ana', 'Jun', 'Priya', 'Diego', 'Grace', 'Oma
   'Imani', 'Hugo', 'Zara', 'Eli', 'Amara', 'Noah', 'Ines', 'Raj'];
 const PT_INITIALS = 'ABCDEGHJKLMNOPRSTVW';
 
+// ---------- room themes: props that match the patient's ward ----------
+// head: drawn on the bed patient's head (head centre 40,34, r 16) and, scaled, on patient busts
+// body / bed / iv: drawn on the bed patient's blanket, bed frame and IV pole (viewBox 0 0 160 110)
+// bust: drawn on patient busts (viewBox 0 0 100 100)
+const UNIT_THEME = {
+  ch1: {
+    bed: '<path d="M136 50v5" stroke="#8fa3bd" stroke-width="1.2"/><rect class="th-tag" x="131" y="55" width="10" height="13" rx="1.5" fill="#ffd36b" stroke="#c98a1a"/><path d="M133 59h6M133 62h4" stroke="#8a5a00" stroke-width="1"/>',
+    bust: '<path d="M72 74v6" stroke="#8fa3bd" stroke-width="1.4"/><rect x="66" y="80" width="12" height="15" rx="2" fill="#ffd36b" stroke="#c98a1a"/><path d="M69 85h6M69 89h4" stroke="#8a5a00" stroke-width="1.2"/>',
+  },
+  ch2: {
+    head: '<path d="M24 25 q16 -6 32 0" stroke="#3b4b63" stroke-width="2" fill="none"/><rect x="28" y="21" width="10" height="7" rx="3" fill="#bfe6ff" fill-opacity=".85" stroke="#3b4b63"/><rect x="42" y="21" width="10" height="7" rx="3" fill="#bfe6ff" fill-opacity=".85" stroke="#3b4b63"/>',
+    body: '<g class="th-tube"><rect x="100" y="24" width="5" height="16" rx="2.5" fill="#e3f4ff" stroke="#3b4b63" stroke-width=".8"/><rect x="100.6" y="31" width="3.8" height="8.4" rx="1.9" fill="#7dffb2"/><circle class="th-bubble" cx="102.5" cy="21" r="1.3" fill="#7dffb2"/><circle class="th-bubble" cx="101.5" cy="16" r="1" fill="#7dffb2"/></g>',
+  },
+  ch3: {
+    iv: '<rect x="122" y="14" width="14" height="13" rx="3" fill="#ffe08a" opacity=".6"/><g class="th-drip"><circle cx="129" cy="34" r="1.4" fill="#8fd3ff"/><circle cx="129" cy="39" r="1.1" fill="#8fd3ff"/></g>',
+    bust: '<path d="M100 58 q-22 4 -30 26" stroke="#b8d4ef" stroke-width="2.2" fill="none"/><rect x="66" y="82" width="9" height="6" rx="1" fill="#fff" stroke="#d3deeb"/>',
+  },
+  ch4: {
+    body: '<rect x="82" y="38" width="32" height="4" rx="2" fill="#c9d5e6"/><g class="th-donut"><circle cx="91" cy="34.5" r="4.6" fill="#e7a35a"/><circle cx="91" cy="34" r="4" fill="#ff8fb5"/><circle cx="91" cy="34" r="1.4" fill="#e7a35a"/></g><rect x="103" y="30" width="6" height="8" rx="1.5" fill="#fff" stroke="#c9d5e6"/>',
+    bust: '<g transform="translate(26 84)"><circle r="8.5" fill="#e7a35a"/><circle r="7.4" cy="-.6" fill="#ff8fb5"/><circle r="2.6" cy="-.6" fill="#e7a35a"/></g>',
+  },
+  ch5: {
+    body: '<rect x="94" y="38" width="13" height="3" rx="1" fill="#3b4b63"/><rect x="99" y="26" width="4" height="13" rx="1.2" fill="#5d708d" transform="rotate(-20 101 32)"/><circle cx="97" cy="25" r="2.2" fill="#3b4b63"/><rect x="103" y="33" width="5" height="2" fill="#8fa3bd"/>',
+    bust: '<g transform="translate(70 76)"><rect x="0" y="16" width="16" height="4" rx="1" fill="#3b4b63"/><rect x="5" y="0" width="5" height="17" rx="1.5" fill="#5d708d" transform="rotate(-20 7 9)"/><circle cx="3" cy="0" r="3" fill="#3b4b63"/></g>',
+  },
+  ch6: {
+    head: '<circle cx="40" cy="36" r="13" fill="#ff5a5a" opacity=".22"/><ellipse cx="40" cy="38.6" rx="2.4" ry="1.7" fill="#f2fff4"/><circle cx="31" cy="39" r="1.3" fill="#f2fff4"/>',
+  },
+  ch7: {
+    bed: '<path d="M114 22V3M96 3h36" stroke="#8fa3bd" stroke-width="1.6"/>',
+    body: '<g class="th-cast"><path d="M108 46 L114 23" stroke="#f4f6f8" stroke-width="10" stroke-linecap="round"/><path d="M108 46 L114 23" stroke="#d3deeb" stroke-width="10" stroke-linecap="round" stroke-dasharray="1 4" opacity=".6"/><path d="M110 24 h9" stroke="#8fa3bd" stroke-width="2"/></g>',
+    bust: '<path d="M28 76 L72 92 L32 98z" fill="#fff" stroke="#d3deeb" stroke-width="1.4"/>',
+  },
+  ch8: {
+    body: '<g class="th-ice"><rect x="104" y="35" width="15" height="8" rx="3" fill="#8fd3ff" stroke="#5fb4ff"/><path d="M111.5 36v6M108.5 39h6" stroke="#fff" stroke-width="1"/></g>',
+    bust: '<rect x="62" y="72" width="18" height="10" rx="3.5" fill="#8fd3ff" stroke="#5fb4ff"/><path d="M71 73.5v7M67.5 77h7" stroke="#fff" stroke-width="1.2"/>',
+  },
+  ch9: {
+    body: '<g class="th-dumbbell"><rect x="90" y="36" width="16" height="2.6" fill="#5d708d"/><rect x="87" y="32" width="4" height="10" rx="1" fill="#2b2f36"/><rect x="105" y="32" width="4" height="10" rx="1" fill="#2b2f36"/></g>',
+    bust: '<g transform="translate(22 84)"><rect x="0" y="-1.5" width="18" height="3" fill="#5d708d"/><rect x="-3" y="-6" width="5" height="12" rx="1.2" fill="#2b2f36"/><rect x="16" y="-6" width="5" height="12" rx="1.2" fill="#2b2f36"/></g>',
+  },
+  ch10: {
+    head: '<path class="th-bolt" d="M28 16 l4 -6 h-3 l4 -7" stroke="#ffd36b" stroke-width="2" fill="none" stroke-linejoin="round"/><path class="th-bolt" d="M50 16 l-3 -6 h3 l-3 -7" stroke="#ffd36b" stroke-width="2" fill="none" stroke-linejoin="round"/>',
+  },
+  ch11: {
+    head: '<path d="M24.6 27 q15.4 -8 30.8 0 v5.5 q-15.4 -8 -30.8 0z" fill="#fff" stroke="#d3deeb" stroke-width=".8"/><circle cx="50" cy="27.5" r="1.8" fill="#ff8a8a"/>',
+  },
+  ch12: {
+    head: '<path d="M25 29 L56 37" stroke="#1b1d2a" stroke-width="1.1"/><ellipse cx="45.6" cy="35" rx="4" ry="3.6" fill="#1b1d2a"/>',
+  },
+};
+
+// SVG for one part of a patient's room theme ('' if none)
+function themeProps(p, part) {
+  const t = p && p.theme && UNIT_THEME[p.theme];
+  return (t && t[part]) || '';
+}
+// the head-level theme props, scaled onto a bust whose head is at (cx, cy) with radius r
+function themeOnBust(p, cx, cy, r) {
+  const h = themeProps(p, 'head');
+  const k = r / 16;
+  return (h ? `<g transform="translate(${cx} ${cy}) scale(${k}) translate(-40 -34)">${h}</g>` : '') + themeProps(p, 'bust');
+}
+
 function patientFor(q, salt = '') {
   const r = rng(q.id + salt);
   const m = /(\d{1,3})-year-old/.exec(q.stem);
@@ -198,6 +262,7 @@ function patientFor(q, salt = '') {
     gown: ['#9cc6e8', '#a8d8c8', '#c9b6e8', '#f1c0b6'][Math.floor(r() * 4)],
     old, kid,
     glasses: old ? r() < 0.6 : r() < 0.15,
+    theme: q.unit || null,
   };
   return p;
 }
@@ -219,13 +284,15 @@ function patientHead(p, mood = 'neutral', size = 'bust') {
   if (p.glasses) s += `<g fill="none" stroke="#3b3044" stroke-width="1.8"><circle cx="${cx - 10}" cy="${cy + 2}" r="7"/><circle cx="${cx + 10}" cy="${cy + 2}" r="7"/><path d="M${cx - 3} ${cy + 1} h6"/></g>`;
   if (style !== 5) s += `<path d="M${cx - r - 1} ${cy + 2} q-2 -32 ${r + 1} -32 q${r + 3} 0 ${r + 1} 32 q-8 -14 -18 -16 q-8 8 -22 6 q-8 4 -12 10z" fill="${hcol}"/>`;
   else s += `<path d="M${cx - r + 2} ${cy - 8} q4 -22 ${r - 2} -22 q${r - 2} 0 ${r - 2} 22 q-10 -10 -${r - 2} -12 q-14 2 -${r - 4} 12z" fill="${hcol}"/>`;
+  s += themeOnBust(p, cx, cy, r);
   s += `</svg>`;
   return s;
 }
 
 // Patient lying in bed. viewBox 0 0 160 110. Parts sit in named groups so whimsy
 // reactions (22-whimsy.js, 35-whimsy.css) can move them on their own:
-// .pt-all (everything) > .pt-bed, .pt-person (> .pt-legs, .pt-head > .pt-hair, .pt-body, .pt-arm-*), .pt-iv, .pt-theme, .pt-props
+// .pt-all (everything) > .pt-bed, .pt-person (> .pt-legs, .pt-head > .pt-hair, .pt-body, .pt-arm-*), .pt-iv, .pt-props.
+// Room-theme props (UNIT_THEME) ride along inside the part they belong to.
 function patientInBed(p, mood = 'neutral') {
   const skin = AVATAR.skin[p.skin];
   const hcol = AVATAR.hairColor[p.hair].c;
@@ -234,7 +301,7 @@ function patientInBed(p, mood = 'neutral') {
   s += `<g class="pt-all">`;
   s += `<g class="pt-bed"><rect x="8" y="58" width="132" height="12" rx="4" fill="#5d708d"/><rect x="8" y="40" width="8" height="54" rx="3" fill="#6f84a3"/><rect x="132" y="50" width="8" height="44" rx="3" fill="#6f84a3"/>`;
   s += `<circle cx="12" cy="97" r="3.5" fill="#3b4b63"/><circle cx="136" cy="97" r="3.5" fill="#3b4b63"/>`;
-  s += `<rect x="12" y="50" width="124" height="14" rx="7" fill="#eef3f9"/><ellipse cx="38" cy="48" rx="22" ry="9" fill="#ffffff" stroke="#d3deeb"/></g>`;
+  s += `<rect x="12" y="50" width="124" height="14" rx="7" fill="#eef3f9"/><ellipse cx="38" cy="48" rx="22" ry="9" fill="#ffffff" stroke="#d3deeb"/>${themeProps(p, 'bed')}</g>`;
   s += `<g class="pt-person">`;
   // legs only show in the upside-down gag
   s += `<g class="pt-legs"><rect x="112" y="62" width="7" height="22" rx="3.5" fill="${skin}"/><rect x="123" y="62" width="7" height="22" rx="3.5" fill="${skin}"/><rect x="110" y="80" width="11" height="7" rx="3.5" fill="#f4f6f8"/><rect x="121" y="80" width="11" height="7" rx="3.5" fill="#f4f6f8"/></g>`;
@@ -242,14 +309,13 @@ function patientInBed(p, mood = 'neutral') {
   s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}"/>`;
   s += face(cx, cy, mood, p.kid ? 1 : 0, r / 34);
   if (p.glasses && mood !== 'cool') s += `<g fill="none" stroke="#3b3044" stroke-width="1.3"><circle cx="${cx - 6}" cy="${cy + 1}" r="4"/><circle cx="${cx + 6}" cy="${cy + 1}" r="4"/></g>`;
-  s += `<g class="pt-hair"><path d="M${cx - r - 1} ${cy + 1} q-1 -17 ${r + 1} -17 q${r + 2} 0 ${r + 1} 17 q-5 -8 -11 -9 q-5 5 -12 3 q-5 2 -${r - 6} 6z" fill="${hcol}"/></g></g>`;
-  s += `<g class="pt-body"><path d="M52 44 q40 -6 84 2 v18 h-90z" fill="${p.gown}"/><path d="M52 44 q40 -6 84 2" stroke="#0002" fill="none"/><rect x="70" y="50" width="62" height="5" rx="2.5" fill="#fff6"/></g>`;
+  s += `<g class="pt-hair"><path d="M${cx - r - 1} ${cy + 1} q-1 -17 ${r + 1} -17 q${r + 2} 0 ${r + 1} 17 q-5 -8 -11 -9 q-5 5 -12 3 q-5 2 -${r - 6} 6z" fill="${hcol}"/></g>${themeProps(p, 'head')}</g>`;
+  s += `<g class="pt-body"><path d="M52 44 q40 -6 84 2 v18 h-90z" fill="${p.gown}"/><path d="M52 44 q40 -6 84 2" stroke="#0002" fill="none"/><rect x="70" y="50" width="62" height="5" rx="2.5" fill="#fff6"/>${themeProps(p, 'body')}</g>`;
   // arms only show in some reactions (thumbs up, dancing, finger guns)
   s += `<g class="pt-arm pt-arm-r"><rect x="56" y="26" width="7" height="22" rx="3.5" fill="${p.gown}" stroke="#0002"/><circle cx="59.5" cy="24" r="4.6" fill="${skin}"/><rect x="58" y="15" width="3.2" height="7" rx="1.6" fill="${skin}"/></g>`;
   s += `<g class="pt-arm pt-arm-l"><rect x="70" y="27" width="7" height="21" rx="3.5" fill="${p.gown}" stroke="#0002"/><circle cx="73.5" cy="25" r="4.6" fill="${skin}"/></g>`;
   s += `</g>`;
-  s += `<g class="pt-iv"><rect x="128" y="6" width="3" height="80" fill="#8fa3bd"/><rect x="120" y="8" width="18" height="22" rx="5" fill="#d9ecff" stroke="#8fa3bd"/><path d="M129 30 q0 30 -28 34" stroke="#b8d4ef" stroke-width="1.6" fill="none"/><rect x="122" y="84" width="16" height="3" rx="1.5" fill="#8fa3bd"/></g>`;
-  s += `<g class="pt-theme">${typeof themeProps === 'function' ? themeProps(p, 'bed') : ''}</g>`;
+  s += `<g class="pt-iv"><rect x="128" y="6" width="3" height="80" fill="#8fa3bd"/><rect x="120" y="8" width="18" height="22" rx="5" fill="#d9ecff" stroke="#8fa3bd"/><path d="M129 30 q0 30 -28 34" stroke="#b8d4ef" stroke-width="1.6" fill="none"/><rect x="122" y="84" width="16" height="3" rx="1.5" fill="#8fa3bd"/>${themeProps(p, 'iv')}</g>`;
   s += `<g class="pt-props"></g>`;
   s += `</g></svg>`;
   return s;

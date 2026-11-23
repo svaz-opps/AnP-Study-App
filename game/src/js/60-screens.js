@@ -227,6 +227,7 @@ Screens.settings = {
 
 function applySettings() {
   document.documentElement.style.setProperty('--text-scale', WR.state.settings.text || 1);
+  document.documentElement.dataset.calm = reducedMotion() ? '1' : '0';
 }
 
 // ----- onboarding

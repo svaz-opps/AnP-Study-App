@@ -27,6 +27,33 @@ function resultListHTML(run, onlyMissed) {
   }).join('')}</ul>`;
 }
 
+// ---------- discharge parade: this round's patients celebrate, scaled by the score ----------
+// level 1 (<50%): polite waves · 2 (50-79%): conga line · 3 (80-99%): conga + hats in the air
+// level 4 (100%, or the Superbug beaten): full parade, the nurse crowd-surfs over everyone
+function paradeLevel(run) {
+  const n = run.results.length;
+  if (!n || run.mode === 'exam') return 0;
+  if (run.mode === 'boss') return run.won ? 4 : 1;
+  const pct = run.results.filter((r) => r.correct).length / n;
+  return pct === 1 && n >= 5 ? 4 : pct >= 0.8 ? 3 : pct >= 0.5 ? 2 : 1;
+}
+function paradeHTML(run) {
+  const lv = paradeLevel(run);
+  if (!lv || (WR.state.settings.whimsy || 'full') === 'off') return '';
+  const seen = new Set();
+  const rows = run.results.filter((r) => !seen.has(r.qid) && seen.add(r.qid)).slice(-12);
+  const happy = lv >= 3 ? 'starry' : lv === 2 ? 'cheer' : 'happy';
+  const hat = '<svg class="pp-hat" viewBox="0 0 20 24" aria-hidden="true"><path d="M2 22 L10 2 L18 22z" fill="#f6bd52" stroke="#c98a1a"/><path d="M5 15 l10 -2 M7 9 l6 -1" stroke="#ff6b8a" stroke-width="2"/><circle cx="10" cy="2.5" r="2.5" fill="#ff6b8a"/></svg>';
+  const people = rows.map((r, k) => {
+    const q = Content.byId[r.qid];
+    const p = patientFor(q, String(run.seed));
+    // missed patients look sheepish but cheerful
+    return `<span class="pp ${r.correct ? '' : 'missed'}" style="--i:${k}">${lv >= 3 && r.correct ? hat : ''}${patientHead(p, r.correct ? happy : 'silly')}</span>`;
+  }).join('');
+  const surfer = lv === 4 ? `<span class="pp-surfer">${nurseSVG(WR.state.profile.avatar, 'cheer', { headOnly: true })}</span>` : '';
+  return `<div class="parade lv-${lv}" aria-hidden="true"><div class="parade-track">${people}</div>${surfer}</div>`;
+}
+
 Screens.report = {
   cls: 'report',
   render() {
@@ -82,6 +109,7 @@ Screens.report = {
         <div><span class="label">${esc(MODE_TITLE[run.mode] || (run.mode === 'review' ? 'Missed patients' : 'Shift report'))}</span><h1 tabindex="-1">${esc(title)}</h1><p class="dim">${esc(sub)}</p>
         ${run.mode === 'exam' ? `<p class="exam-pct num">${pct}%</p>` : ''}</div>
       </div>
+      ${paradeHTML(run)}
       <div class="stat-grid">${stats.map(([k, v]) => `<div class="stat"><span class="label">${k}</span><b class="num">${v}</b></div>`).join('')}</div>
       ${extra}
       ${badges.length ? `<div class="card"><span class="label">New badges</span><div class="badge-row">${badges.map((b) => `<div class="badge on">${icon(b.ico)}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`).join('')}</div></div>` : ''}
@@ -93,7 +121,8 @@ Screens.report = {
     const run = App.run;
     if (!run) return;
     const good = run.mode === 'boss' ? run.won : run.results.length && run.results.filter((r) => r.correct).length / run.results.length >= 0.8;
-    if (good) { Sound.play('win'); FX.confetti(); } else if (run.mode === 'boss' || (run.maxLives && run.lives <= 0)) Sound.play('lose');
+    if (paradeLevel(run) === 4 && (WR.state.settings.whimsy || 'full') !== 'off') { Sound.play('tada'); FX.confetti(); }
+    else if (good) { Sound.play('win'); FX.confetti(); } else if (run.mode === 'boss' || (run.maxLives && run.lives <= 0)) Sound.play('lose');
     celebrate(run);
     badgeToast(run.endBadges || []);
     run.endBadges = [];
