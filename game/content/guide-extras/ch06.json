@@ -1,0 +1,19 @@
+{
+ "G-F051": {"trick": "DERMIS = the \"Deep\" layer with the plumbing (vessels). EPIdermis on top has none.", "tip": "If it has blood vessels, it is not epithelium. Epidermis is avascular; dermis is vascular connective tissue."},
+ "G-F052": {"trick": "Epidermis = an escalator: new cells step on at the bottom while old ones fall off the top.", "tip": "Normal thickness needs balance. Too much production or too little shedding thickens the skin."},
+ "G-F053": {"trick": "MEISSNER = light touch, near the surface (\"Mice step lightly\"). PACINIAN = deep Pressure and vibration.", "tip": "Receptor questions usually turn on depth and stimulus type: superficial light touch vs deep pressure/vibration."},
+ "G-F054": {"trick": "Hair you see is dead, like a nail clipping. Only the root in the follicle is alive.", "tip": "That's why cutting hair doesn't hurt: the visible shaft is dead keratinized cells."},
+ "G-F055": {"trick": "SEBACEOUS = holocrine: the Whole cell bursts (\"holo\" = whole). ECCRINE = merocrine: just squirts out.", "tip": "Holocrine glands lose the whole cell. Merocrine glands release product by exocytosis and the cell survives."},
+ "G-F056": {"trick": "CONDUCTION = Contact. Touching a cold rail pulls heat straight out of your hand.", "tip": "Conduction = direct touch, convection = moving air/water, radiation = infrared waves, evaporation = sweat drying."},
+ "G-F057": {"trick": "Dilated skin vessels = rolling down the car windows to let heat out.", "tip": "Vasodilation brings warm blood to the skin to lose heat. It works best when the air is cooler than the skin."},
+ "G-F058": {"trick": "MELANOcytes make MELANin and hand it up to keratinocytes like umbrellas over the nucleus.", "tip": "Melanin = brown-black UV shield made in the stratum basale. Carotene (yellow) and hemoglobin (red) also color skin."},
+ "G-F059": {"trick": "FIBROblasts BUILD FIBERS: the construction crew that lays down collagen and scar.", "tip": "-blast = builder. Fibroblasts build connective tissue; osteoblasts build bone."},
+ "G-F060": {"trick": "Rule of nines tells you HOW MUCH skin, not HOW DEEP. You need both.", "tip": "Don't over-conclude. Burn size (%TBSA) and burn depth are separate pieces of information."},
+ "C-ch6-layers": {"trick": "EPI-dermis = ON the dermis. Top layer, no blood vessels.", "tip": "Strata from surface to deep: \"Come, Let's Get Sun Burned\" = Corneum, Lucidum (thick skin only), Granulosum, Spinosum, Basale."},
+ "C-ch6-dermis": {"trick": "MEISSNER = Mini touch near the surface (fingertips, lips).", "tip": "Meissner = superficial, light touch. Pacinian = deep, pressure and fast vibration."},
+ "C-ch6-accessory": {"trick": "SEBUM = oil (think \"sebaceous = slippery\"). It keeps hair and skin soft.", "tip": "Sebaceous glands release sebum into hair follicles. Blocked glands contribute to acne."},
+ "C-ch6-sweat": {"trick": "ECCRINE = Everywhere, Evaporative cooling. APOCRINE = Armpits, odor (with bacteria).", "tip": "Eccrine sweat opens onto the skin and cools you. Apocrine sweat drains into follicles in the armpits and groin."},
+ "C-ch6-temperature": {"trick": "Vaso-DILATION = vessels get wider (dilate like pupils in the dark).", "tip": "Vasodilation = heat loss and flushed skin. Vasoconstriction = heat saved and pale, cool skin."},
+ "C-ch6-pigment": {"trick": "Melanin = the skin's built-in sunscreen.", "tip": "Melanin absorbs UV and protects DNA in the nucleus. Everyone has about the same number of melanocytes; activity differs."},
+ "C-ch6-repair": {"trick": "Re-EPITHELIALIZATION = re-roofing the house: new epithelium creeps over the wound.", "tip": "Shallow wounds re-epithelialize from surviving basal cells and hair follicles. Full-thickness wounds scar or need grafts."}
+}

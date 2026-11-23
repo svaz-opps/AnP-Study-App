@@ -1,0 +1,21 @@
+{
+ "G-F101": {"trick": "Arachnoid granulations = one-way drains that let CSF seep back into the venous sinus blood.", "tip": "CSF path ends at the arachnoid granulations → dural venous sinus. Blocked drainage can cause hydrocephalus."},
+ "G-F102": {"trick": "Ventral horn = motor \"Vroom\" neurons that send commands out. Dorsal horn = sensory input.", "tip": "Gray horns hold cell bodies. White columns hold long tracts. Ventral = motor, dorsal = sensory."},
+ "G-F103": {"trick": "CAUDA EQUINA = horse's tail: loose nerve roots below where the cord ends (around L1–L2).", "tip": "A lumbar puncture goes below L2 because only floating nerve roots (cauda equina) are there, not the cord."},
+ "G-F104": {"trick": "Interneuron = the middleman connecting incoming sensory and outgoing motor neurons.", "tip": "Interneurons live entirely in the CNS and integrate signals. Monosynaptic reflexes skip them."},
+ "G-F105": {"trick": "OCCIPITAL = the Optic lobe at the back of your head (\"eyes in the back of your head\").", "tip": "Lobes: frontal (planning, motor), parietal (touch), temporal (hearing), occipital (vision)."},
+ "G-F106": {"trick": "MEDULLA = the Main line that connects brain to spinal cord and runs breathing and heart rate.", "tip": "Brainstem order, top to bottom: midbrain → pons → medulla oblongata → spinal cord."},
+ "G-F107": {"trick": "THALAMUS = the Train station: most sensory trains stop here before going to the cortex.", "tip": "Thalamus relays sensation (except smell). Hypothalamus runs homeostasis (temperature, hunger, hormones)."},
+ "G-F108": {"trick": "LR6 SO4, the rest are 3: Lateral Rectus = CN VI (abducens ABducts the eye).", "tip": "Can't look outward to one side? Think abducens nerve (VI)."},
+ "G-F109": {"trick": "PARAsympathetic = CRANIOsacral, ganglia right next to the organ (long first neuron, short second).", "tip": "Sympathetic = thoracolumbar, ganglia near the spinal cord. Parasympathetic = craniosacral, ganglia near the target."},
+ "G-F110": {"trick": "At every autonomic ganglion, ACh hits Nicotinic receptors: \"Ganglia go Nic.\"", "tip": "Both divisions use ACh on nicotinic receptors at the ganglion. They differ at the target organ."},
+ "C-ch11-protection": {"trick": "CSF = the brain's water cushion and shock absorber.", "tip": "CSF is made by choroid plexuses in the ventricles and flows in the subarachnoid space."},
+ "C-ch11-cord": {"trick": "CONUS = cone-shaped tip where the cord ends (about L1–L2).", "tip": "Below the conus medullaris lie the cauda equina and the filum terminale."},
+ "C-ch11-reflex": {"trick": "Reflex arc in 5 steps: Receptor → Sensory neuron → Integration center → Motor neuron → Effector (\"Real Smart Interns Make Errors\").", "tip": "Reflexes are fast and automatic. Know all five parts and their order."},
+ "C-ch11-cerebrum": {"trick": "CORTEX = the bark (cortex) on the outside of the brain: thin gray matter.", "tip": "Gray matter = cell bodies (cortex, nuclei). White matter = myelinated tracts underneath."},
+ "C-ch11-brainstem": {"trick": "THALAMUS = sensory switchboard (relay to cortex).", "tip": "Thalamus = relay. Hypothalamus = homeostasis. Cerebellum = coordination and balance."},
+ "C-ch11-cranial": {"trick": "PLEXUS = a braided rope: nerves weave and regroup (cervical, brachial, lumbar, sacral).", "tip": "A plexus mixes fibers from several spinal nerves, so one root injury rarely paralyzes a whole limb."},
+ "C-ch11-autonomic": {"trick": "ANS = Automatic Nervous System: heart, smooth muscle, glands, without you thinking.", "tip": "Autonomic = involuntary targets with a two-neuron chain. Somatic = skeletal muscle with one neuron."},
+ "C-ch11-receptors": {"trick": "CHOLINergic = uses aCetylCHOLINe.", "tip": "Cholinergic = ACh. Adrenergic = norepinephrine/epinephrine."},
+ "C-ch11-disorders": {"trick": "HYDRO-CEPHALUS = water (hydro) on the brain (cephalus): CSF builds up and ventricles swell.", "tip": "In infants, hydrocephalus shows as a growing head and bulging fontanels because skull sutures aren't fused."}
+}

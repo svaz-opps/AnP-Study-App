@@ -1,0 +1,19 @@
+{
+ "G-F031": {"trick": "An enzyme digs a tunnel through the hill: same start and end, easier path (lower activation energy).", "tip": "Enzymes speed reactions by lowering activation energy. They don't change how much energy the reaction releases overall."},
+ "G-F032": {"trick": "Lock and key: an inhibitor is a wrong key jammed in the lock, so the right key can't fit.", "tip": "Selective effects come from shape fit at the active site. Specific shape = specific substrate."},
+ "G-F033": {"trick": "OIL RIG: Oxidation Is Loss, Reduction Is Gain (of electrons).", "tip": "Don't let the word \"oxidation\" fool you into thinking oxygen must be added. Focus on electrons."},
+ "G-F034": {"trick": "Glycolysis: spend 2, earn 4, keep 2.", "tip": "\"Net\" means subtract what was invested. Always check whether a question asks gross or net yield."},
+ "G-F035": {"trick": "Citric acid (Krebs) cycle: acetyl (2C) + oxaloacetate (4C) = citrate (6C), and the 4C comes back around.", "tip": "If a cycle in the mitochondrial matrix regenerates its starting molecule, it is the Krebs/citric acid cycle."},
+ "G-F036": {"trick": "Proton gradient = water behind a dam. A leak lets water bypass the turbine (ATP synthase): less power.", "tip": "Electron transport builds the gradient; ATP synthase uses it. Break the gradient and ATP output falls."},
+ "G-F037": {"trick": "DE-amination = remove the AMINE (nitrogen) tag, then burn the carbon body.", "tip": "Proteins become fuel only after deamination. The removed nitrogen becomes ammonia, then urea."},
+ "G-F038": {"trick": "Lagging strand = building a fence walking backward: short pieces (Okazaki fragments) glued by ligase.", "tip": "DNA polymerase only builds 5′→3′. That one rule explains the leading strand and the lagging-strand fragments."},
+ "G-F039": {"trick": "Stop codon = the period at the end of the sentence. UAA, UAG, UGA: \"U Are Away, U Are Gone, U Go Away\".", "tip": "Stop codons don't code an amino acid. They bring release factors that free the finished chain."},
+ "G-F040": {"trick": "The code has synonyms: several codons \"spell\" the same amino acid, like color and colour.", "tip": "A silent mutation changes DNA but not the protein. This works because the code is redundant (degenerate)."},
+ "C-ch4-enzymes": {"trick": "SUBSTRATE = the SUBJECT the enzyme works on. Enzyme + substrate → products.", "tip": "The substrate binds the active site. The enzyme comes out unchanged and can be reused."},
+ "C-ch4-atp": {"trick": "OIL RIG: Oxidation Is Loss of electrons.", "tip": "When a molecule is oxidized, another must be reduced. They always happen as a pair (redox)."},
+ "C-ch4-glycolysis": {"trick": "GLYCO-LYSIS = sugar-splitting. 1 glucose → 2 pyruvate, in the cytosol, no oxygen needed.", "tip": "Glycolysis happens in the cytoplasm and doesn't need oxygen. Krebs and the electron transport chain are in the mitochondria."},
+ "C-ch4-aerobic": {"trick": "Krebs cycle = the mitochondrial merry-go-round that strips electrons off acetyl groups.", "tip": "Location matters: Krebs is in the matrix; the electron transport chain is on the inner membrane."},
+ "C-ch4-fuels": {"trick": "BETA-oxidation chops fat into 2-carbon pieces, like slicing a baguette.", "tip": "Fatty acids are broken down by beta-oxidation into acetyl-CoA, which then enters the Krebs cycle."},
+ "C-ch4-replication": {"trick": "Gene = one recipe in the DNA cookbook.", "tip": "A gene is a DNA segment that codes for a protein or a functional RNA. It is not the whole chromosome."},
+ "C-ch4-expression": {"trick": "TRANSCRIPTION = TRANSCRIBE (copy in the same language: DNA→RNA). TRANSLATION = TRANSLATE to a new language (RNA→protein).", "tip": "Transcription happens in the nucleus; translation happens at ribosomes in the cytoplasm."}
+}

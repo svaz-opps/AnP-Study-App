@@ -1,0 +1,20 @@
+{
+ "G-F021": {"trick": "Like dissolves like: small, oily (nonpolar) molecules slip right through the oily membrane.", "tip": "O2 and CO2 cross by simple diffusion. Ions and big polar molecules need a protein channel or carrier."},
+ "G-F022": {"trick": "TIGHT junction = a zip-lock seal. Desmosome = a rivet. GAP junction = a doorway.", "tip": "Match the junction to the job: seal (tight), hold together under stress (desmosome), pass signals (gap)."},
+ "G-F023": {"trick": "LYSOsome = LYSE (break apart). It's the cell's recycling and garbage center.", "tip": "Undigested debris building up points to lysosomes. Peroxisomes detoxify; mitochondria make ATP."},
+ "G-F024": {"trick": "MICROvilli = a fuzzy bath towel: lots of little folds = lots of surface to soak things up.", "tip": "Microvilli absorb (more surface), cilia sweep (motion), a flagellum swims. Don't mix up absorption and movement."},
+ "G-F025": {"trick": "Diffusion hates distance: a thicker wall = a longer trip = slower rate.", "tip": "Diffusion is faster with more area, a bigger concentration difference, and a thinner barrier."},
+ "G-F026": {"trick": "HYPO-tonic = the cell swells like a HIPPO (water rushes in).", "tip": "Water moves toward more solute. A cell that swells or bursts was in a hypotonic solution."},
+ "G-F027": {"trick": "SECONDARY active = riding someone else's wave. Sodium rolls downhill and drags the other solute up.", "tip": "If the carrier itself doesn't use ATP but moves something uphill using an ion gradient, it is secondary active transport."},
+ "G-F028": {"trick": "EXOcytosis = EXIT the cell. ENDOcytosis = ENTER the cell.", "tip": "Vesicle fusing with the membrane and dumping contents outside = exocytosis (how hormones and neurotransmitters leave)."},
+ "G-F029": {"trick": "PMAT order. TELOphase = TWO new nuclei form at the far ends (telo = end).", "tip": "Prophase condenses, metaphase lines up, anaphase pulls apart, telophase rebuilds the nuclei."},
+ "G-F030": {"trick": "Benign = stays put, but even a quiet tenant can crowd the house.", "tip": "Benign means no invasion and no spread. It can still cause harm by pressing on nearby structures."},
+ "C-ch3-membrane": {"trick": "The plasma membrane is a bouncer: it picks who gets in (selectively permeable).", "tip": "\"Selectively permeable\" is the key phrase for the plasma membrane. It is made of phospholipids and proteins."},
+ "C-ch3-organelles": {"trick": "ORGAN-elle = a tiny organ inside the cell.", "tip": "Each organelle has one main job. Know them: ribosome makes protein, mitochondria make ATP, Golgi packages."},
+ "C-ch3-nucleus": {"trick": "CHROMATIN = loose spaghetti DNA; it coils into chromosomes only for division.", "tip": "Chromatin = DNA + proteins, spread out between divisions. Chromosomes = condensed chromatin during mitosis."},
+ "C-ch3-diffusion": {"trick": "Diffusion = a drop of food coloring spreading in water: high to low, no energy needed.", "tip": "Down the gradient = passive (no ATP). Against the gradient = active (needs energy)."},
+ "C-ch3-osmosis": {"trick": "Osmosis = water chasing salt across a membrane.", "tip": "Osmosis is only about WATER moving. If a solute moves, it is diffusion or transport instead."},
+ "C-ch3-active": {"trick": "Active transport = pushing a cart uphill: it needs fuel (ATP).", "tip": "\"Against the gradient\" means active transport. The Na+/K+ pump moves 3 Na+ out and 2 K+ in using ATP."},
+ "C-ch3-cycle": {"trick": "INTERphase = the cell's \"in-between\" prep time: Grow (G1), Synthesize DNA (S), Get ready (G2).", "tip": "DNA copies during the S phase of interphase, not during mitosis."},
+ "C-ch3-differentiation": {"trick": "Stem cell = a blank tree trunk that can grow any branch AND keep the trunk.", "tip": "Two features define a stem cell: it renews itself and it can make specialized cells."}
+}

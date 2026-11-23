@@ -1,0 +1,18 @@
+{
+ "G-F091": {"trick": "SAME DAVE: Sensory = Afferent (Arrives), Motor = Efferent (Exits).", "tip": "Direction is about the CNS: toward it = afferent, away from it = efferent. Ignore how the drawing is laid out."},
+ "G-F092": {"trick": "NISSL bodies = rough ER \"nibbles\" in the cell body making proteins.", "tip": "Nissl substance is rough ER found in the soma and dendrites, never in the axon."},
+ "G-F093": {"trick": "Schwann = Single segment, PNS. Oligodendrocyte = One cell, many CNS axons (oligo = few branches).", "tip": "Myelin maker: Schwann cells in the PNS, oligodendrocytes in the CNS."},
+ "G-F094": {"trick": "EPENDYMAL cells = the lining of the brain's fluid caves (ventricles), with cilia to stir CSF.", "tip": "CNS glia: astrocytes (support, blood–brain barrier), microglia (immune), oligodendrocytes (myelin), ependymal (line ventricles, CSF)."},
+ "G-F095": {"trick": "HYPER-polarized = extra negative = farther from the firing line.", "tip": "More negative than rest = hyperpolarization = less likely to fire. Toward zero = depolarization = more likely."},
+ "G-F096": {"trick": "Na+/K+ pump: \"3 Salty Out, 2 Potassium In\" (3 Na+ out, 2 K+ in).", "tip": "Remember the ratio 3:2 and the directions: sodium leaves, potassium enters, one ATP per cycle."},
+ "G-F097": {"trick": "Action potentials are like a light switch, not a dimmer: all-or-none. Stronger stimulus = flicks faster.", "tip": "A stronger stimulus raises the firing frequency, not the size of each spike."},
+ "G-F098": {"trick": "Sodium rushes IN to rise; Potassium POURS out to fall.", "tip": "Depolarization = Na+ in. Repolarization = K+ out. Overshoot past rest = hyperpolarization."},
+ "G-F099": {"trick": "Block reuptake = leave the music on longer: the transmitter stays in the cleft.", "tip": "This is how SSRIs work: blocking reuptake keeps serotonin acting longer."},
+ "G-F100": {"trick": "CONvergence = many roads COming together into one town.", "tip": "Convergence = many → one. Divergence = one → many."},
+ "C-ch10-divisions": {"trick": "CNS = the Central command (brain + cord). PNS = the Phone lines out to the body.", "tip": "Brain and spinal cord only = CNS. Nerves and ganglia outside them = PNS."},
+ "C-ch10-neurons": {"trick": "Neuron = the body's messenger wire: dendrites listen, axon talks.", "tip": "Neurons send signals; glial cells support them. Mature neurons rarely divide."},
+ "C-ch10-glia": {"trick": "Myelin = insulation tape on a wire that lets the signal jump node to node (saltatory = leaping).", "tip": "Myelin makes white matter white and speeds conduction. Loss of myelin (as in MS) slows signals."},
+ "C-ch10-resting": {"trick": "RMP ≈ −70 mV: the inside of a resting neuron is negative, like a charged battery.", "tip": "Resting potential is kept by the Na+/K+ pump and K+ leak channels."},
+ "C-ch10-impulse": {"trick": "Threshold ≈ −55 mV: the point of no return, like a toilet that flushes once you push past the click.", "tip": "Reach threshold and a full action potential fires. Below threshold, nothing fires."},
+ "C-ch10-synapses": {"trick": "SYN-apse = where two cells \"clasp\" (synapse = junction) without touching.", "tip": "Chemical synapse order: impulse arrives → Ca2+ enters → vesicles release transmitter → receptors respond."}
+}
