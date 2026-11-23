@@ -107,10 +107,10 @@
     "id": "P-09", "sec": "ch10-synapses", "focus": [1], "type": "priority", "diff": 3,
     "stem": "A farm clinic nurse has four clients. Which client should be seen first?",
     "opts": [
-      {"t": "A worker exposed to a pesticide that blocks acetylcholinesterase, now with muscle twitching and trouble breathing", "c": true},
-      {"t": "A worker with a small cut on the hand", "w": "Minor and stable."},
-      {"t": "A worker with seasonal hay fever", "w": "Not urgent."},
-      {"t": "A worker asking about hearing protection", "w": "Teaching can wait."}
+      {"t": "A worker exposed to a pesticide that blocks acetylcholinesterase, now short of breath", "c": true},
+      {"t": "A worker with a small cut on the hand that stopped bleeding after a bandage", "w": "Minor and stable."},
+      {"t": "A worker with seasonal hay fever whose eyes are itchy and watery this morning", "w": "Not urgent."},
+      {"t": "A worker asking which hearing protection to wear near the loud grain dryer", "w": "Teaching can wait."}
     ],
     "why": "Acetylcholinesterase normally breaks down acetylcholine. If it is blocked, ACh builds up and keeps stimulating muscles, which can impair breathing. That is a breathing emergency.",
     "trick": "No ACh cleanup = muscles stuck 'on', including the breathing muscles.",

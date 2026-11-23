@@ -475,19 +475,19 @@
   "stem": "The nurse at an urgent care clinic triages four clients. Which client should the nurse see first?",
   "opts": [
    {
-    "t": "A 58-year-old with pressure in the chest spreading to the left arm and jaw, and sweating",
+    "t": "A 58-year-old with chest pressure spreading to the left arm and jaw",
     "c": true
    },
    {
-    "t": "A client with a paper cut that stings",
+    "t": "A client with a paper cut on one finger that stings when washing hands",
     "w": "Minor."
    },
    {
-    "t": "A client with a sore lower back after gardening",
+    "t": "A client with a sore lower back after a weekend of gardening",
     "w": "Stable muscle strain."
    },
    {
-    "t": "A client with a chronic knee ache from arthritis",
+    "t": "A client with a chronic arthritis knee ache that is worse in cold weather",
     "w": "Chronic and stable."
    }
   ],
@@ -659,19 +659,19 @@
   "stem": "The emergency nurse receives four clients after a family picnic. Which client should the nurse see first?",
   "opts": [
    {
-    "t": "A client who ate home-canned beans and now has drooping eyelids, double vision, and trouble swallowing",
+    "t": "A client who ate home-canned beans and now has droopy eyelids and trouble swallowing",
     "c": true
    },
    {
-    "t": "A client with mild stomach upset after eating a lot",
+    "t": "A client with mild stomach upset after eating a lot at the picnic buffet",
     "w": "Uncomfortable but stable."
    },
    {
-    "t": "A client with tired eyes after hours on a phone",
+    "t": "A client with tired, dry eyes after spending hours looking at a phone",
     "w": "Eye strain."
    },
    {
-    "t": "A client with a sore throat who swallows normally",
+    "t": "A client with a scratchy sore throat who is swallowing food and drinks normally",
     "w": "Stable airway."
    }
   ],
@@ -690,19 +690,19 @@
   "stem": "The nurse on a neuro unit receives report. Which client should the nurse see first?",
   "opts": [
    {
-    "t": "A client whose weakness started in the feet 3 days ago, has climbed to the chest, and who now breathes shallowly",
+    "t": "A client whose leg weakness has climbed to the chest over 3 days, now breathing shallowly",
     "c": true
    },
    {
-    "t": "A client with tingling in one hand after sleeping on it",
+    "t": "A client with tingling in one hand that started after sleeping on that arm all night",
     "w": "Temporary pressure on a nerve."
    },
    {
-    "t": "A client with stable, long-term numbness in both feet",
+    "t": "A client with long-term numbness in both feet that has not changed in a year",
     "w": "Chronic and unchanged."
    },
    {
-    "t": "A client asking about physical therapy times",
+    "t": "A client asking what time physical therapy will come to help with walking",
     "w": "Can wait."
    }
   ],

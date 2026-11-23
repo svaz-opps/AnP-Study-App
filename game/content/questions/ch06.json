@@ -91,10 +91,10 @@
     "id": "N6-08", "sec": "ch6-sweat", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "A teenager asks why underarm odor started at puberty. Which explanation by the nurse is accurate?",
     "opts": [
-      {"t": "Apocrine glands become active at puberty and drain into hair follicles; bacteria break down the secretion and cause the odor.", "c": true},
-      {"t": "Sweat smells strongly the moment it is released.", "w": "Apocrine secretion is initially fairly odorless."},
-      {"t": "Eccrine glands release oily sebum that smells.", "w": "Eccrine glands release watery sweat, and sebaceous glands make sebum."},
-      {"t": "Odor comes from dead skin cells in the stratum corneum.", "w": "Bacterial metabolism of apocrine secretion causes most of the odor."}
+      {"t": "Bacteria break down apocrine sweat, which starts at puberty.", "c": true},
+      {"t": "Sweat smells strongly the moment the glands release it.", "w": "Apocrine secretion is initially fairly odorless."},
+      {"t": "Eccrine glands begin releasing oily, smelly sebum at puberty.", "w": "Eccrine glands release watery sweat, and sebaceous glands make sebum."},
+      {"t": "Dead skin cells in the stratum corneum start to smell.", "w": "Bacterial metabolism of apocrine secretion causes most of the odor."}
     ],
     "why": "Apocrine glands are concentrated in the axillae and groin, drain into follicles, and become more active around puberty. Their secretion starts out nearly odorless. Bacteria metabolize it, which produces the smell.",
     "trick": "Apocrine = Armpits, Adolescence, And bacteria.",
