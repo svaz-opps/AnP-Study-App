@@ -133,7 +133,7 @@
       {"t": "Radius", "w": "The radius forms by endochondral ossification."},
       {"t": "Ulna", "w": "The ulna forms by endochondral ossification."}
     ],
-    "why": "Intramembranous ossification builds bone inside sheets of fibrous membrane. It forms the flat skull bones (frontal, parietal, occipital, temporal) and the clavicles. Most other bones, like the femur, radius and ulna, form from cartilage (endochondral).",
+    "why": "Intramembranous ossification builds bone inside sheets of fibrous membrane. It forms the flat bones of the skull roof (frontal, parietal, and parts of the occipital and temporal bones) and most of the clavicles. Most other bones, like the femur, radius and ulna, form from cartilage (endochondral).",
     "trick": "INTRAmembranous = flat skull bones made 'in membranes'. ENDOCHONDRAL = 'inside cartilage' (chondro = cartilage).",
     "tip": "When three options share a feature (all limb bones) and one doesn't, the odd one out is often the answer."
   },
@@ -375,7 +375,7 @@
       {"t": "A light-skinned man", "w": "Men don't have the fast bone loss that follows menopause."},
       {"t": "A dark-skinned man", "w": "This client has neither the sex nor the ancestry risk factor."}
     ],
-    "why": "Women lose bone faster after menopause because estrogen falls. Light-skinned (white or Asian) ancestry means less peak bone mass to begin with. Together they give the lowest bone mass at 65.",
+    "why": "Women lose bone faster after menopause because estrogen falls. White or Asian ancestry tends to mean less peak bone mass to begin with. Together they give the lowest bone mass at 65.",
     "trick": "Osteoporosis risk: Female + Fair skin + Frail frame.",
     "tip": "Stack the risk factors. The client with the most risk factors is the answer."
   },

@@ -111,3 +111,31 @@
   botulism, Guillain-Barré, autonomic dysreflexia, sudden hearing loss, diabetic foot, choking, neck injury,
   heart-failure fluid overload.
 - All suites pass (smoke at 4 sizes rendering all 575, hot restore, autosave, lifeline).
+
+## 2026-11-23 — R17 priority to 10%, R18 accuracy review
+- R17: +14 "see first" questions (`game/content/questions/x-r17-priority.json`), new scenarios only: cardiac
+  tamponade, water intoxication (hypotonic), opioid respiratory depression, airway burn, fat embolism,
+  rhabdomyolysis, status epilepticus, septic shock with rising lactate, malignant hyperthermia, upper GI bleed,
+  anaphylaxis, severe anemia, metastatic cord compression, epidural hematoma. Priority = 60 / 589 (10.2%).
+- R18: read every question in full (all 589: stems, all options incl. the instructor's distractors, wrong-option
+  reasons, explanations, tricks, tips), the 26 study-guide tips the game shows, and the game's own teaching text
+  (type tips, nurse lines, onboarding, badges). Automated checks too: duplicate options, answer-length cues.
+  No answer key was wrong. 15 text fixes:
+  - P2-01: a hypothermic client who has stopped shivering is now 31 °C, not 35 °C (shivering usually stops
+    below ~32 °C); explanation updated.
+  - P2-19: an epidural bleed is between the skull and the dura mater (was "the meninges").
+  - N7-10: occipital/temporal bones are only partly intramembranous (explanation said fully).
+  - N7-28: "light-skinned (white or Asian)" reworded to "White or Asian ancestry".
+  - T2-08: stem said "a nurse explains" but asked about "the student".
+  - G-F070 tip: skeleton functions now include fat storage (matched other questions).
+  - Tricks with wrong or nonsense word origins fixed: C-ch1-life (metabolism), C-ch1-regions (epigastric = over,
+    not above, the stomach), C-ch1-organization (anatomy), C-ch5-stratified (keratin), G-F082 (sarcomere),
+    G-F017, C-ch3-osmosis (water follows solute, not just salt), T2-31 (rods).
+  - The study-guide tip in ch9-head about "muscles marked (*)" refers to the printed outline, so the game no longer
+    shows it (filtered in build.py). The guide's own text was not edited.
+  - Noted, not changed: 15 questions (mostly from the earlier bank) have a correct option noticeably longer than
+    the distractors, a test-taking cue; the content is accurate.
+- Assumption: the instructor's guide is the authority for course facts (e.g., "a muscle cramp is most likely due to
+  lack of ATP", "loss of synovial joint function begins in the third decade"); questions follow it even where
+  textbooks phrase things with more nuance.
+- All suites pass.
