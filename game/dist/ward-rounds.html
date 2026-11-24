@@ -1924,6 +1924,9 @@ input[type="date"], input[type="text"] {
 [data-screen="missed"] .card:nth-child(n+9), [data-screen="stats"] .card:nth-child(n+9), [data-screen="cards"] .card:nth-child(n+9) { animation-delay: .4s; }
 [data-motion="soft"] [data-screen="missed"] .card, [data-motion="soft"] [data-screen="stats"] .card, [data-motion="soft"] [data-screen="cards"] .card { animation-name: fade-in; }
 [data-calm="1"] [data-screen="missed"] .card, [data-calm="1"] [data-screen="stats"] .card, [data-calm="1"] [data-screen="cards"] .card { animation: none; }
+
+/* dedication at the bottom of Settings */
+.dedication { margin-top: -4px; font-size: var(--fs-sm); font-style: italic; color: var(--text-dim); }
 </style>
 <div id="app" aria-live="polite">
   <div class="boot">
@@ -2686,6 +2689,7 @@ const AVATAR = {
   scrubs: [
     { n: 'Ceil blue', c: '#7fa9d9' }, { n: 'Navy', c: '#2f4d80' }, { n: 'Teal', c: '#22a093' }, { n: 'Wine', c: '#8e2f4f' },
     { n: 'Charcoal', c: '#33373f' }, { n: 'Lilac', c: '#a68bd6' }, { n: 'Rose', c: '#e7889f' }, { n: 'Hunter', c: '#2f6b4f' },
+    { n: 'Pink', c: '#f08cba' },
   ],
   pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages', 'Ducks'],
   shoes: [
@@ -6182,6 +6186,7 @@ Screens.settings = {
           <button class="btn danger" data-action="reset">Reset progress</button></div></div>
         ${saveHelp}
         <p class="faint center">Ward Rounds · BIOL 2401 study guide edition · ${Content.all().length} patients</p>
+        <p class="dedication center">Made with love for My Tuna 💗</p>
       </div>`;
   },
   mount(el) {

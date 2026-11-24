@@ -11,6 +11,7 @@ const AVATAR = {
   scrubs: [
     { n: 'Ceil blue', c: '#7fa9d9' }, { n: 'Navy', c: '#2f4d80' }, { n: 'Teal', c: '#22a093' }, { n: 'Wine', c: '#8e2f4f' },
     { n: 'Charcoal', c: '#33373f' }, { n: 'Lilac', c: '#a68bd6' }, { n: 'Rose', c: '#e7889f' }, { n: 'Hunter', c: '#2f6b4f' },
+    { n: 'Pink', c: '#f08cba' },
   ],
   pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages', 'Ducks'],
   shoes: [

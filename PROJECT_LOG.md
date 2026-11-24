@@ -502,3 +502,11 @@ After animation work runs out: ideas to make the game more engaging; after that,
   button on screen, and it is still on screen at the bottom of the explanation. All 8 tests pass.
 - ROADMAP: R28, R29 marked done, R30 ("Next patient" always on screen) added. Leveling `main` and `beta` to this
   branch at the user's request (both fast-forward; neither had commits the branch lacks).
+
+## 2026-11-24 — Pink scrubs + dedication
+- New scrub color "Pink" (#f08cba), a brighter bubblegum pink than the existing "Rose". Added at the end of the
+  list (index 8) so saved avatars keep their colors. Free from the start (no unlock), shown in the Locker room
+  (not in the onboarding picker, which shows only the first six).
+- Settings: a small italic line under the version text, "Made with love for My Tuna 💗" (the user picked this
+  wording from three drafts). Style: `.dedication` in css/40-screens.css.
+- Rebuilt dist; all 8 tests pass.

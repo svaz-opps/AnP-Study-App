@@ -332,6 +332,7 @@ Screens.settings = {
           <button class="btn danger" data-action="reset">Reset progress</button></div></div>
         ${saveHelp}
         <p class="faint center">Ward Rounds · BIOL 2401 study guide edition · ${Content.all().length} patients</p>
+        <p class="dedication center">Made with love for My Tuna 💗</p>
       </div>`;
   },
   mount(el) {

@@ -395,3 +395,6 @@ input[type="date"], input[type="text"] {
 [data-screen="missed"] .card:nth-child(n+9), [data-screen="stats"] .card:nth-child(n+9), [data-screen="cards"] .card:nth-child(n+9) { animation-delay: .4s; }
 [data-motion="soft"] [data-screen="missed"] .card, [data-motion="soft"] [data-screen="stats"] .card, [data-motion="soft"] [data-screen="cards"] .card { animation-name: fade-in; }
 [data-calm="1"] [data-screen="missed"] .card, [data-calm="1"] [data-screen="stats"] .card, [data-calm="1"] [data-screen="cards"] .card { animation: none; }
+
+/* dedication at the bottom of Settings */
+.dedication { margin-top: -4px; font-size: var(--fs-sm); font-style: italic; color: var(--text-dim); }
