@@ -320,8 +320,9 @@ svg { display: block; }
   border-radius: 14px; background: color-mix(in srgb, var(--code) 18%, var(--surface)); border: 2px solid var(--code);
   color: #ffd9dd; font-weight: 800; z-index: 2;
 }
+/* the light pulses with opacity only: animating box-shadow would repaint it every frame */
 .alarm .light { width: 14px; height: 14px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); animation: blink 1.4s ease-in-out infinite; }
-@keyframes blink { 50% { opacity: .35; box-shadow: none; } }
+@keyframes blink { 50% { opacity: .35; } }
 .elevator {
   display: flex; align-items: center; gap: var(--s3); padding: 8px 14px 8px 8px; min-height: var(--tap);
   border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 2;
@@ -545,11 +546,12 @@ details.more[open] summary::before { transform: rotate(90deg); }
 
 /* ---------- code blue ---------- */
 .mode-codeblue { background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 71, 87, .18)); }
-.mode-codeblue::before { content: ""; position: fixed; inset: 0; pointer-events: none; box-shadow: inset 0 0 80px rgba(255, 71, 87, .45); animation: alarm-pulse 1s ease-in-out infinite; z-index: 1; }
+.mode-codeblue::before { content: ""; position: fixed; inset: 0; pointer-events: none; will-change: opacity; box-shadow: inset 0 0 80px rgba(255, 71, 87, .45); animation: alarm-pulse 1s ease-in-out infinite; z-index: 1; }
 @keyframes alarm-pulse { 50% { opacity: .25; } }
 .timer { display: flex; align-items: center; gap: var(--s3); }
+.timer > svg { width: 26px; height: 26px; flex: none; color: #ffd0d5; } /* without a size it filled the whole pane */
 .timer .bar { flex: 1; height: 14px; }
-.timer .bar > i { background: var(--code); transition: width .25s linear; }
+.timer .bar > i { background: var(--code); transition: none; will-change: transform; } /* moved every frame by 50-chart.js */
 .timer b { font-family: var(--font-mono); font-size: var(--fs-xl); color: #ffd0d5; min-width: 3.2ch; text-align: right; }
 .timer-delta { position: absolute; right: 0; top: -6px; font-weight: 800; font-family: var(--font-display); animation: float-up 1s ease-out forwards; }
 
@@ -566,7 +568,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
 .hp { display: flex; flex-direction: column; gap: 4px; }
 .hp .bar { height: 16px; background: #2a1420; border: 1px solid #5a2a3c; }
-.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); }
+.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s ease; }
 .hp-row { display: flex; justify-content: space-between; font-weight: 800; font-size: var(--fs-sm); }
 .phase-banner { position: absolute; left: 0; right: 0; top: 40%; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-2xl); color: #ffd36b; text-shadow: 0 3px 0 #7a2b00; animation: banner 1.8s ease both; pointer-events: none; }
 @keyframes banner { 0% { opacity: 0; transform: scale(.6); } 15% { opacity: 1; transform: scale(1.08); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); } }
@@ -1040,23 +1042,53 @@ function todayStr(d = new Date()) {
   const p = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
+const yesterdayStr = () => todayStr(new Date(Date.now() - 86400000));
 function dayNum(s = todayStr()) {
   const [y, m, d] = s.split('-').map(Number);
   return Math.round(Date.UTC(y, m - 1, d) / 86400000);
 }
 
-function debounce(fn, ms) {
+// Run fn when the browser has nothing else to do (so it never lands mid-animation).
+// Safari has no requestIdleCallback; there it simply runs on the next turn.
+function whenIdle(fn, timeout = 2000) {
+  if (window.requestIdleCallback) requestIdleCallback(() => fn(), { timeout });
+  else setTimeout(fn, 0);
+}
+
+// Wait until calls stop for `ms`, then run once. opts.idle: run in idle time.
+// flush() runs right now (used when the page is being hidden or closed).
+function debounce(fn, ms, opts = {}) {
   let t;
-  const d = (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+  const d = (...a) => {
+    clearTimeout(t);
+    t = setTimeout(() => (opts.idle ? whenIdle(() => fn(...a)) : fn(...a)), ms);
+  };
   d.flush = (...a) => { clearTimeout(t); fn(...a); };
   return d;
 }
 
+// Restart a CSS animation class without the old `void el.offsetWidth` trick, which
+// forces the browser to lay out the whole page in the middle of a tap. The class comes
+// off now and goes back on two frames later, once the browser has seen it removed.
+function replayClass(el, cls) {
+  if (!el) return;
+  el.classList.remove(cls);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add(cls)));
+}
+
+// Run fn right after the browser paints the next frame. Splitting a big update this way lets
+// the first part show a frame sooner instead of everything waiting for one long frame.
+function afterNextPaint(fn) {
+  requestAnimationFrame(() => setTimeout(fn, 0));
+}
+
+// asked every animation frame, so the media query is created once
+const reducedMotionQuery = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
 const reducedMotion = () => {
   const s = window.WR && WR.state && WR.state.settings.motion;
   if (s === 'reduced') return true;
   if (s === 'full') return false;
-  return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return !!(reducedMotionQuery && reducedMotionQuery.matches);
 };
 
 // ---------- icons (inline SVG, stroke-based) ----------
@@ -1099,6 +1131,248 @@ function icon(name, cls = '') {
   return `<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name] || ''}</svg>`;
 }
 
+/* ---- 01-config.js ---- */
+// ---------- game settings: the numbers you might want to tune ----------
+// Every rule, reward, threshold and timing the game uses lives here, so changing one
+// is a one-line edit. After editing, rebuild: python3 game/build.py --strict
+// Text the player reads (badge descriptions, tutorial, tips) is built from these values,
+// so it stays correct when a number changes.
+//
+// Not here on purpose:
+//   - colours, spacing and fonts: src/css/00-tokens.css
+//   - room names and blurbs: content/units.json
+//   - questions: content/questions/*.json
+//   - avatar options, patient names, nurse lines, jokes: the files that draw or say them
+
+const CONFIG = {
+  // ----- play modes -----
+  // lives: hearts per round (0 = none) · n: patients per round (Infinity = until time / HP runs out)
+  // feedback: show the explanation after each answer · lifelines: Ask a colleague + Coffee break
+  modes: {
+    shift: { lives: 3, n: 10, feedback: true, lifelines: true },
+    review: { lives: 0, n: 10, feedback: true, lifelines: false },
+    codeblue: { lives: 0, n: Infinity, feedback: false, lifelines: false, time: 60 },
+    boss: { lives: 3, n: Infinity, feedback: true, lifelines: true, hp: 1500 },
+    exam: { lives: 0, n: 50, feedback: false, lifelines: false },
+    daily: { lives: 0, n: 5, feedback: true, lifelines: false },
+  },
+
+  lifelines: {
+    colleague: 1,            // "Ask a colleague" uses per round
+    coffee: 1,               // "Coffee break" uses per round (+1 life each)
+    bonusCoffeeEvery: 10,    // an extra coffee break for every N right in a row
+  },
+
+  // a wrong answer costs a life only if it is less than this fraction right (select-all / ordering)
+  lifeLostBelow: 0.5,
+
+  // ----- points, streaks, XP -----
+  scoring: {
+    basePoints: { mcq: 100, sata: 150, priority: 150, teaching: 150, order: 150, math: 200 },
+    // streak multiplier: the first row whose `streak` you have reached applies
+    streakMultipliers: [
+      { streak: 10, mult: 3 },
+      { streak: 6, mult: 2 },
+      { streak: 3, mult: 1.5 },
+    ],
+    pointsPerXP: 10,         // XP earned = points / this
+  },
+
+  // extra XP when a round ends
+  bonusXP: {
+    shift: 20,
+    perfectShift: 50,        // every patient right on a full shift
+    daily: 30,               // first finish of the day's challenge
+    codeBluePerRight: 2,
+    bossWin: 150,
+    exam: 40,
+  },
+
+  // rank names and the total XP each one starts at
+  ranks: [
+    { n: 'Orientee', xp: 0 },
+    { n: 'Graduate Nurse', xp: 400 },
+    { n: 'Staff Nurse', xp: 1500 },
+    { n: 'Charge Nurse', xp: 4000 },
+    { n: 'Nurse Educator', xp: 7500 },
+    { n: 'Nurse Manager', xp: 12000 },
+    { n: 'Chief Nurse', xp: 18000 },
+  ],
+
+  // ----- mastery: stars, discharge, the Operating Room -----
+  mastery: {
+    solidDays: 2,            // right on this many different days = mastered (and a missed patient is discharged)
+    // a room's stars, by the share of its questions:
+    oneStar: 0.6,            // answered right at least once
+    twoStars: 0.8,           // answered right at least once
+    threeStars: 0.9,         // mastered
+  },
+
+  boss: {
+    unlockRooms: 4,          // the OR opens after a star in this many rooms...
+    unlockShifts: 12,        // ...or after this many finished shifts, whichever comes first
+    damagePerRight: 100,     // × the streak multiplier
+    healPerWrong: 80,
+    // it gets harder (phase 2, then 3) when its HP falls to these fractions of the maximum
+    phaseAt: [2 / 3, 1 / 3],
+  },
+
+  codeBlue: {
+    secondsPerRight: 3,
+    secondsPerWrong: 5,
+    nextAfterRightMs: 420,   // pause before the next patient
+    nextAfterWrongMs: 900,
+    skipRecent: 10,          // don't repeat any of the last N questions you saw anywhere
+  },
+
+  exam: {
+    perRoom: 2,              // every room gets at least this many questions; the rest are weighted toward weak spots
+    newQuestionBoost: 1.3,   // extra weight for the new ATI-style questions
+    passFraction: 0.8,       // "Exam Ready" badge score...
+    passMinQuestions: 40,    // ...on at least this many answered questions
+    closeFraction: 0.65,     // report says "Close!" from here up to the pass mark
+    nextMs: 280,             // pause before the next question (no feedback in exam mode)
+  },
+
+  daily: {
+    fromMissed: 2,           // questions picked from your missed list; the rest come from the whole bank
+  },
+
+  // ----- random shift events -----
+  // chance: share of shifts that get one. Each type lists its point multiplier (bonus), whether a
+  // wrong answer is free (safe), and where in the shift it goes.
+  events: {
+    chance: 0.25,
+    rapid: { name: 'Rapid Response', bonus: 2, safe: true, questions: 2, startFrom: 3, startSpread: 5 },
+    visitor: { name: 'Visitor', bonus: 1, safe: true, xp: 15, at: 5 },
+    outage: { name: 'Power outage', bonus: 1.5, safe: false, questions: 3, startFrom: 2, startSpread: 5 },
+  },
+
+  // ----- which patient comes next (spaced review) -----
+  // A question's chance of being picked is proportional to its weight.
+  picking: {
+    unseen: 3,
+    unseenNew: 3.6,          // unseen new ATI-style question
+    missed: 4.5,             // missed, last seen on an earlier day (due for review)
+    missedToday: 1.4,        // missed earlier today (let it rest a little)
+    learning: 1.8,           // right before but not yet mastered, not right today
+    learningRightToday: 0.6,
+    mastered: 0.35,
+    recentFactor: 0.12,      // × weight for questions among your last `history.recentQuestions`
+    weakRoomBias: 1.2,       // up to (1 + this) × weight for rooms you have answered least
+    reviewOtherDay: 3,       // Missed Patients re-rounds: prefer misses from earlier days
+    reviewToday: 1,
+    rapidDueAfterDays: 3,    // Rapid Response treats an unmastered question as fading after this many days
+  },
+
+  // ----- daily study target (the "today" chip) -----
+  dailyTarget: {
+    noExamDate: 20,          // with no exam date set
+    min: 10,                 // otherwise: what's left ÷ days to the exam, kept within min..max
+    max: 150,
+    choices: [20, 40, 60],   // fixed targets offered in Settings
+  },
+
+  // ----- how much history the save keeps -----
+  history: {
+    recentQuestions: 40,
+    activeDays: 90,
+    exams: 20,
+  },
+
+  // ----- badge thresholds -----
+  // The badge ids (streak10, cards25...) are keys in saved progress, so they never change,
+  // even if the number here does. Descriptions are written from these values.
+  badges: {
+    shift3: 3,               // shifts finished
+    shiftPerfectMin: 10,     // patients in a shift for "Perfect Shift"
+    streak10: 10, streak25: 25,
+    codeblue12: 12,          // right answers in one Code Blue round
+    sata: 10, priority: 10, teaching: 10, math: 5, order: 5,   // right answers of each type
+    discharge25: 25,
+    daystreak3: 3, daystreak7: 7,
+    daily3: 3, daily7: 7,    // daily challenges on back-to-back days
+    cards10: 10, cards25: 25, cards50: 50,
+    nightHour: 22,           // "Night Shift": studying at or after this hour (24 h clock)
+  },
+
+  // ----- silly patient reactions (22-whimsy.js) -----
+  whimsy: {
+    legendaryStreak: 15,     // streak for the top tier of reactions
+    codeBlueMaxTier: 1,      // keep Code Blue quick
+    mildMaxTier: { good: 2, chaos: 1 },
+    soundDelayMs: 260,       // after the right/wrong chime
+  },
+
+  // ----- the nurse's chatter -----
+  talk: {
+    streakShoutouts: [3, 6, 10, 15, 20, 25],
+    chatterChance: 0.25,     // chance of a new line on each new patient
+    trickChance: 0.4,        // chance a right answer repeats the memory trick
+  },
+
+  // ----- end-of-round parade -----
+  // level by share right: below `conga` = 1 (polite waves), below `hats` = 2 (conga line),
+  // below 100% = 3 (hats in the air), 100% on at least `fullMinPatients` = 4 (full parade)
+  parade: { conga: 0.5, hats: 0.8, fullMinPatients: 5, maxPatients: 12 },
+
+  // ----- heart monitor (bedside ECG) -----
+  // stress is 0..1; it sets the heart rate and colour
+  monitor: {
+    bpmCalm: 62, bpmMax: 154,
+    amberAt: 0.45, redAt: 0.72,
+    sweepSeconds: 3.2,       // time for the trace to cross the screen
+    maxPixelRatio: 2,        // canvas resolution cap (sharper costs more to draw)
+    stress: {
+      shift: 0.12, perLifeLost: 0.2,
+      codeBlueStart: 0.5, codeBlueRise: 0.45,   // climbs as the clock runs down
+      boss: 0.32, bossPerPhase: 0.14, bossPerLifeLost: 0.1,
+      exam: 0.3,
+      perWrongInARow: 0.12, wrongCap: 0.3,
+      perRightInARow: 0.02, rightCap: 0.1,
+    },
+  },
+
+  // ----- screen layout -----
+  layout: {
+    wideMinWidth: 1000,      // px; wide screens in landscape put the bedside beside the chart
+    regularMinWidth: 700,
+    twoColumnMaxChars: 34,   // wide screens show 4 short options in a 2 × 2 grid
+  },
+
+  profile: { nameMaxLength: 18 },
+
+  // ----- timings (ms) -----
+  // Some must match a CSS animation; the CSS file and rule are named.
+  timing: {
+    screenLeaveMs: 220,      // 10-base.css .screen.leaving (.2s)
+    toastMs: 2600,
+    rankToastMs: 3200,
+    badgeToastDelayMs: 600,
+    badgeToastGapMs: 1400,
+    floatTextMs: 1300,       // 40-screens.css .float-text (1.2s)
+    flashMs: 500,
+    eventBannerMs: 2000,
+    phaseBannerMs: 1900,     // 30-chart.css .phase-banner
+    bossPhaseLineMs: 900,
+    bossHurtMs: 700,
+    timerDeltaMs: 1000,      // 30-chart.css .timer-delta (1s)
+    cardSoundMs: 500,
+    walkPxPerSecond: 700,    // the nurse's walk to a room
+    walkMinSeconds: 0.35,
+    walkMaxSeconds: 1.1,
+    doorOpenMs: 360,
+    confettiSeconds: 3.2,
+    saveLocalMs: 1000,       // write progress to this browser this long after the last change (always on leaving the page)
+    saveCloudMs: 2500,       // and to the Claude account (claude.ai only)
+    cloudLoadTimeoutMs: 10000,
+  },
+};
+
+// shorthands used across the code
+const MODES = CONFIG.modes;
+const RANKS = CONFIG.ranks;
+
 /* ---- 05-content.js ---- */
 // ---------- content: sections + question bank ----------
 const Content = {
@@ -1136,13 +1410,15 @@ const Content = {
   isQuick(q) { return q.type === 'mcq' || q.type === 'priority' || q.type === 'teaching' || q.type === 'math'; },
 };
 
+// question types: the label on the chart and the ATI tip shown when a question has none of its own
+// (points per type are in CONFIG.scoring.basePoints)
 const TYPE_INFO = {
-  mcq: { label: 'Single answer', base: 100, tip: 'Read the last line of the question first, so you know exactly what it is asking. Then predict the answer before you look at the options.' },
-  sata: { label: 'Select all that apply', base: 150, tip: 'Treat every option as its own true-or-false question. There can be 2 correct answers or all of them.' },
-  priority: { label: 'Who do you see first?', base: 150, tip: 'Airway, breathing, circulation first. Acute before chronic, unstable before stable, physical needs before teaching.' },
-  teaching: { label: 'Needs more teaching', base: 150, tip: '"Needs further teaching" means you are hunting for the WRONG statement. Three options are correct facts.' },
-  order: { label: 'Put in order', base: 150, tip: 'Find the obvious first and last steps, then fill in the middle.' },
-  math: { label: 'Med math', base: 200, tip: 'Desired over Have, times Quantity. Then check that your answer makes sense.' },
+  mcq: { label: 'Single answer', tip: 'Read the last line of the question first, so you know exactly what it is asking. Then predict the answer before you look at the options.' },
+  sata: { label: 'Select all that apply', tip: 'Treat every option as its own true-or-false question. There can be 2 correct answers or all of them.' },
+  priority: { label: 'Who do you see first?', tip: 'Airway, breathing, circulation first. Acute before chronic, unstable before stable, physical needs before teaching.' },
+  teaching: { label: 'Needs more teaching', tip: '"Needs further teaching" means you are hunting for the WRONG statement. Three options are correct facts.' },
+  order: { label: 'Put in order', tip: 'Find the obvious first and last steps, then fill in the middle.' },
+  math: { label: 'Med math', tip: 'Desired over Have, times Quantity. Then check that your answer makes sense.' },
 };
 
 /* ---- 10-store.js ---- */
@@ -1210,10 +1486,10 @@ const Store = {
 
   onChange(fn) { this.listeners.push(fn); },
 
+  // opts.now: write straight away (end of a round, restore, reset) instead of after a short wait
   save(opts = {}) {
     this.state.updatedAt = Date.now();
-    this._local();
-    if (opts.now) this._cloud.flush(); else this._cloud();
+    if (opts.now) { this._local.flush(); this._cloud.flush(); } else { this._local(); this._cloud(); }
   },
 
   // autosave the round in progress (or clear it once the round is over / left)
@@ -1227,11 +1503,14 @@ const Store = {
     this.save();
   },
 
+  // Writing the whole save is the slowest thing a tap can trigger, so it waits until taps stop
+  // and the browser is idle (never in the middle of an animation). Leaving or hiding the page
+  // always writes straight away (90-boot.js), so nothing is lost.
   _local: debounce(function () {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(Store.state)); } catch (e) { /* storage blocked: cloud save still runs */ }
-  }, 250),
+  }, CONFIG.timing.saveLocalMs, { idle: true }),
 
-  _cloud: debounce(function () { Store._cloudWrite(); }, 2500),
+  _cloud: debounce(function () { Store._cloudWrite(); }, CONFIG.timing.saveCloudMs, { idle: true }),
 
   async _cloudWrite() {
     const c = this.cloud;
@@ -1261,7 +1540,7 @@ const Store = {
       const uid = await user.id();
       if (!uid) return;
       const ref = db.doc('data/users/' + uid + '/save');
-      const snap = await Promise.race([ref.get(), sleep(10000).then(() => null)]);
+      const snap = await Promise.race([ref.get(), sleep(CONFIG.timing.cloudLoadTimeoutMs).then(() => null)]);
       this.cloud.ref = ref;
       this.cloud.status = 'cloud';
       if (snap && snap.exists) {
@@ -1270,7 +1549,7 @@ const Store = {
           this.state = mergeDefaults(defaultState(), JSON.parse(JSON.stringify(remote)));
           WR.state = this.state;
           this.cloud.lastWritten = remote.updatedAt;
-          this._local();
+          this._local.flush();
           this.listeners.forEach((fn) => fn('remote'));
           return;
         }
@@ -1755,7 +2034,7 @@ function starRow(n, of = 3) {
 /* ---- 22-whimsy.js ---- */
 // ---------- whimsy: silly patient reactions ----------
 // A right answer streak makes the patient sillier (tiers 1-4, the same steps as the score
-// multiplier, plus 15+). A run of misses makes the bedside more chaotic (levels 1-3).
+// multiplier, plus CONFIG.whimsy.legendaryStreak). A run of misses makes the bedside more chaotic (levels 1-3).
 // Everything plays inside the patient card only, lasts under 1.5 s, and never delays the
 // explanation. Moves live in 35-whimsy.css; this file picks a reaction and stages it.
 
@@ -1825,9 +2104,9 @@ const Whimsy = {
 
   setting() { return (WR.state.settings && WR.state.settings.whimsy) || 'full'; },
 
-  // streak tier: 0 below 3, then the score multiplier's steps (×1.5, ×2, ×3), then 15+
+  // streak tier: 0 with no multiplier, then one tier per multiplier step, then the legendary streak
   tier(streak) {
-    if (streak >= 15) return 4;
+    if (streak >= CONFIG.whimsy.legendaryStreak) return 4;
     const m = Engine.multiplier(streak);
     return m >= 3 ? 3 : m >= 2 ? 2 : m > 1 ? 1 : 0;
   },
@@ -1841,7 +2120,8 @@ const Whimsy = {
     if (res.correct) { kind = 'good'; level = this.tier(run.streak); }
     else if (res.frac > 0) return null; // partly right: stay calm, read the why
     else { kind = 'chaos'; level = this.chaos(run.wrongRun); }
-    const cap = run.mode === 'codeblue' ? 1 : mode === 'mild' ? (kind === 'good' ? 2 : 1) : 4;
+    const W = CONFIG.whimsy;
+    const cap = run.mode === 'codeblue' ? W.codeBlueMaxTier : mode === 'mild' ? W.mildMaxTier[kind] : 4;
     level = Math.min(level, cap);
     if (!level) return null;
     let pool = WHIMSY.filter((w) => w.kind === kind && w.tier === level);
@@ -1877,8 +2157,8 @@ const Whimsy = {
     if (w.kind === 'good' && w.tier >= 2) bed.classList.add('wh-hi'); // room-theme gags join in
     const card = bed.closest('.patient-card');
     if (w.banner && card) { const b = document.createElement('div'); b.className = 'wh-banner'; b.textContent = w.banner; b.setAttribute('aria-hidden', 'true'); card.appendChild(b); }
-    if (w.sneeze && !still) { const mon = document.getElementById('monitor'); if (mon) { mon.classList.remove('wh-sneeze'); void mon.offsetWidth; mon.classList.add('wh-sneeze'); } }
-    if (w.sound) Sound.play(w.sound, 260); // after the right/wrong chime
+    if (w.sneeze && !still) replayClass(document.getElementById('monitor'), 'wh-sneeze');
+    if (w.sound) Sound.play(w.sound, CONFIG.whimsy.soundDelayMs); // after the right/wrong chime
     this.timer = setTimeout(() => this.clear(bed), w.ms);
     return w;
   },
@@ -1915,42 +2195,89 @@ function pqrst(t) {
 
 class ECG {
   constructor(canvas, hrEl, monitorEl) {
-    this.c = canvas; this.hrEl = hrEl; this.mon = monitorEl;
+    this.c = canvas;
     this.ctx = canvas.getContext('2d');
     this.stress = 0.15; this.shown = 0.15;
     this.phase = 0; this.x = 0; this.ys = []; this.beep = false;
-    this.lastBpm = 0;
-    this.resize();
+    this.w = 0; this.h = 0;
+    this.rebind(hrEl, monitorEl);
+    // A ResizeObserver reports the canvas size after the browser's own layout, so measuring
+    // it never forces an extra layout. Older browsers fall back to measuring directly.
+    if (window.ResizeObserver) {
+      this.ro = new ResizeObserver((entries) => {
+        const r = entries[0].contentRect;
+        this.resize(r.width, r.height);
+      });
+      this.ro.observe(canvas);
+    } else {
+      this.resize();
+    }
     this.off = Loop.add((dt) => this.tick(dt));
   }
-  resize() {
-    const r = this.c.getBoundingClientRect();
-    const dpr = Math.min(3, window.devicePixelRatio || 1);
-    this.w = Math.max(40, Math.round(r.width)); this.h = Math.max(30, Math.round(r.height));
-    this.c.width = this.w * dpr; this.c.height = this.h * dpr;
-    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    this.ys = new Array(this.w).fill(this.h * 0.62);
-    this.x = 0;
+
+  // point the readout at a new screen's HR number and monitor frame (the canvas moves with
+  // the round from patient to patient, so the trace keeps running instead of restarting)
+  rebind(hrEl, monitorEl) {
+    this.hrEl = hrEl; this.mon = monitorEl;
+    this.lastBpm = 0;
   }
-  bpm() { return Math.round(62 + 92 * this.shown); }
-  color() { return this.shown > 0.72 ? '#ff4757' : this.shown > 0.45 ? '#f6bd52' : '#52f0a4'; }
+
+  resize(cssW, cssH) {
+    if (cssW == null) { const r = this.c.getBoundingClientRect(); cssW = r.width; cssH = r.height; }
+    const w = Math.max(40, Math.round(cssW)), h = Math.max(30, Math.round(cssH));
+    if (w === this.w && h === this.h) return;
+    const dpr = Math.min(CONFIG.monitor.maxPixelRatio, window.devicePixelRatio || 1);
+    this.w = w; this.h = h;
+    this.c.width = w * dpr; this.c.height = h * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.ys = new Array(w).fill(h * ECG.BASELINE);
+    this.x = 0;
+    this.drewStill = false;
+    this.grid = this.makeGrid(w, h, dpr);
+  }
+
+  // the faint graph-paper grid, drawn once per size instead of every frame
+  makeGrid(w, h, dpr) {
+    const g = document.createElement('canvas');
+    g.width = w * dpr; g.height = h * dpr;
+    const ctx = g.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.strokeStyle = 'rgba(82,240,164,.08)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let gx = 0; gx < w; gx += ECG.GRID) { ctx.moveTo(gx + 0.5, 0); ctx.lineTo(gx + 0.5, h); }
+    for (let gy = 0; gy < h; gy += ECG.GRID) { ctx.moveTo(0, gy + 0.5); ctx.lineTo(w, gy + 0.5); }
+    ctx.stroke();
+    return g;
+  }
+
+  bpm() { const M = CONFIG.monitor; return Math.round(M.bpmCalm + (M.bpmMax - M.bpmCalm) * this.shown); }
+  color() {
+    const M = CONFIG.monitor;
+    return this.shown > M.redAt ? '#ff4757' : this.shown > M.amberAt ? '#f6bd52' : '#52f0a4';
+  }
+
   tick(dt) {
+    const M = CONFIG.monitor;
     if (!this.c.isConnected) { this.destroy(); return; }
+    if (!this.w || App.modalOpen()) return; // not sized yet, or paused under a dialog
     this.shown += (this.stress - this.shown) * Math.min(1, dt * 1.5);
     const bpm = this.bpm();
     if (bpm !== this.lastBpm) {
       this.lastBpm = bpm;
       if (this.hrEl) this.hrEl.textContent = bpm;
-      if (this.mon) { this.mon.classList.toggle('amber', this.shown > 0.45 && this.shown <= 0.72); this.mon.classList.toggle('red', this.shown > 0.72); }
+      if (this.mon) {
+        this.mon.classList.toggle('amber', this.shown > M.amberAt && this.shown <= M.redAt);
+        this.mon.classList.toggle('red', this.shown > M.redAt);
+      }
     }
-    const still = reducedMotion();
-    const speed = this.w / 3.2; // one sweep every ~3 s
-    const adv = still ? 0 : speed * dt;
-    const base = this.h * 0.62, amp = this.h * 0.5;
-    let n = Math.max(1, Math.round(adv));
-    if (still && !this.drewStill) { this.drawStill(); this.drewStill = true; return; }
-    if (still) return;
+    if (reducedMotion()) {
+      if (!this.drewStill) { this.drawStill(); this.drewStill = true; }
+      return;
+    }
     this.drewStill = false;
+    const base = this.h * ECG.BASELINE, amp = this.h * ECG.AMPLITUDE;
+    const adv = (this.w / M.sweepSeconds) * dt; // pixels to advance this frame
+    const n = Math.max(1, Math.round(adv));
     for (let i = 0; i < n; i++) {
       const prev = this.phase;
       this.phase = (this.phase + (bpm / 60) * (dt / n)) % 1;
@@ -1960,35 +2287,48 @@ class ECG {
     }
     this.draw();
   }
+
   drawStill() {
-    const base = this.h * 0.62, amp = this.h * 0.5;
-    for (let x = 0; x < this.w; x++) this.ys[x] = base - amp * pqrst(((x / this.w) * 3.2 * (this.bpm() / 60)) % 1);
+    const M = CONFIG.monitor;
+    const base = this.h * ECG.BASELINE, amp = this.h * ECG.AMPLITUDE, beats = M.sweepSeconds * (this.bpm() / 60);
+    for (let x = 0; x < this.w; x++) this.ys[x] = base - amp * pqrst(((x / this.w) * beats) % 1);
     this.x = this.w - 1;
     this.draw(true);
   }
+
   draw(noGap) {
     const { ctx, w, h } = this;
     ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(82,240,164,.08)'; ctx.lineWidth = 1;
-    for (let gx = 0; gx < w; gx += 16) { ctx.beginPath(); ctx.moveTo(gx + 0.5, 0); ctx.lineTo(gx + 0.5, h); ctx.stroke(); }
-    for (let gy = 0; gy < h; gy += 16) { ctx.beginPath(); ctx.moveTo(0, gy + 0.5); ctx.lineTo(w, gy + 0.5); ctx.stroke(); }
-    const col = this.color();
-    ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
-    ctx.shadowColor = col; ctx.shadowBlur = 6;
-    const gap = noGap ? 0 : 14;
-    ctx.beginPath();
+    ctx.drawImage(this.grid, 0, 0, w, h);
+    // the trace, with a gap just ahead of the pen like a real sweep monitor
+    const gap = noGap ? 0 : ECG.GAP;
+    const path = new Path2D();
     let pen = false;
     for (let x = 0; x < w; x++) {
       const d = (x - this.x + w) % w;
       if (d > 0 && d <= gap) { pen = false; continue; }
-      if (!pen) { ctx.moveTo(x, this.ys[x]); pen = true; } else ctx.lineTo(x, this.ys[x]);
+      if (!pen) { path.moveTo(x, this.ys[x]); pen = true; } else path.lineTo(x, this.ys[x]);
     }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    // glow: two wide faint strokes under the line (canvas shadowBlur looks the same but is slow on iPad)
+    const col = this.color();
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = col;
+    ctx.globalAlpha = 0.12; ctx.lineWidth = 10; ctx.stroke(path);
+    ctx.globalAlpha = 0.28; ctx.lineWidth = 5; ctx.stroke(path);
+    ctx.globalAlpha = 1; ctx.lineWidth = 2.2; ctx.stroke(path);
     if (!noGap) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(this.x, this.ys[this.x], 2.6, 0, Math.PI * 2); ctx.fill(); }
   }
-  destroy() { if (this.off) this.off(); this.off = null; }
+
+  destroy() {
+    if (this.off) this.off();
+    this.off = null;
+    if (this.ro) { this.ro.disconnect(); this.ro = null; }
+  }
 }
+// drawing geometry (fractions of the canvas height, pixels for the grid and the gap)
+ECG.BASELINE = 0.62;
+ECG.AMPLITUDE = 0.5;
+ECG.GRID = 16;
+ECG.GAP = 14;
 
 // ---------- floating text, shake, confetti ----------
 const FX = {
@@ -2004,13 +2344,13 @@ const FX = {
     el.style.left = r.left + r.width / 2 + 'px';
     el.style.top = r.top + r.height / 3 + 'px';
     layer.appendChild(el);
-    setTimeout(() => el.remove(), 1300);
+    setTimeout(() => el.remove(), CONFIG.timing.floatTextMs);
   },
 
   shake(el) {
     if (!el || reducedMotion()) return;
-    el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
-    setTimeout(() => el.classList.remove('shake'), 600);
+    replayClass(el, 'shake');
+    setTimeout(() => el.classList.remove('shake'), 650);
   },
 
   flash(kind) {
@@ -2019,7 +2359,7 @@ const FX = {
     const el = document.createElement('div');
     el.className = 'screen-flash ' + kind;
     layer.appendChild(el);
-    setTimeout(() => el.remove(), 500);
+    setTimeout(() => el.remove(), CONFIG.timing.flashMs);
   },
 
   confetti(amount = 140) {
@@ -2042,15 +2382,18 @@ const FX = {
     let life = 0;
     const off = Loop.add((dt) => {
       life += dt;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       for (const p of ps) {
         p.vy += 1400 * dt; p.vx *= 0.99; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.col;
+        // move + rotate in one call (cheaper than save/translate/rotate/restore per piece)
+        const cos = Math.cos(p.rot) * dpr, sin = Math.sin(p.rot) * dpr;
+        ctx.setTransform(cos, sin, -sin, cos, p.x * dpr, p.y * dpr);
+        ctx.fillStyle = p.col;
         if (p.shape === 'c') { ctx.beginPath(); ctx.arc(0, 0, p.r * 0.6, 0, Math.PI * 2); ctx.fill(); }
         else ctx.fillRect(-p.r, -p.r / 2.5, p.r * 2, p.r / 1.25);
-        ctx.restore();
       }
-      if (life > 3.2) { off(); c.remove(); }
+      if (life > CONFIG.timing.confettiSeconds) { off(); c.remove(); }
     });
   },
 
@@ -2074,53 +2417,52 @@ const FX = {
 
 /* ---- 30-engine.js ---- */
 // ---------- ranks, mastery, review scheduling, scoring, badges ----------
-const RANKS = [
-  { n: 'Orientee', xp: 0 },
-  { n: 'Graduate Nurse', xp: 400 },
-  { n: 'Staff Nurse', xp: 1500 },
-  { n: 'Charge Nurse', xp: 4000 },
-  { n: 'Nurse Educator', xp: 7500 },
-  { n: 'Nurse Manager', xp: 12000 },
-  { n: 'Chief Nurse', xp: 18000 },
-];
+// Every threshold used here is in 01-config.js.
 
+// Badges. `id` is the key in saved progress, so it never changes (even when the number in
+// it no longer matches the threshold). Descriptions are built from CONFIG.badges.
+const BADGE_AT = CONFIG.badges;
 const BADGES = [
   { id: 'first_shift', n: 'First Shift', d: 'Finish your first shift.', ico: 'clipboard' },
-  { id: 'shift3', n: 'Regular', d: 'Finish 3 shifts.', ico: 'calendar' },
-  { id: 'shift_perfect', n: 'Perfect Shift', d: 'Finish a 10-patient shift with no misses.', ico: 'sparkle' },
-  { id: 'streak10', n: 'On Fire', d: 'Get 10 right in a row.', ico: 'flame' },
-  { id: 'streak25', n: 'Unstoppable', d: 'Get 25 right in a row.', ico: 'flame' },
+  { id: 'shift3', n: 'Regular', d: `Finish ${BADGE_AT.shift3} shifts.`, ico: 'calendar' },
+  { id: 'shift_perfect', n: 'Perfect Shift', d: `Finish a ${BADGE_AT.shiftPerfectMin}-patient shift with no misses.`, ico: 'sparkle' },
+  { id: 'streak10', n: 'On Fire', d: `Get ${BADGE_AT.streak10} right in a row.`, ico: 'flame' },
+  { id: 'streak25', n: 'Unstoppable', d: `Get ${BADGE_AT.streak25} right in a row.`, ico: 'flame' },
   { id: 'comeback', n: 'Comeback Kid', d: 'Finish a shift on your last life.', ico: 'heart' },
   { id: 'codeblue', n: 'Code Blue Survivor', d: 'Finish a Code Blue round.', ico: 'alarm' },
-  { id: 'codeblue12', n: 'Rapid Response', d: 'Get 12 right in one Code Blue round.', ico: 'alarm' },
+  { id: 'codeblue12', n: 'Rapid Response', d: `Get ${BADGE_AT.codeblue12} right in one Code Blue round.`, ico: 'alarm' },
   { id: 'boss', n: 'Superbug Slayer', d: 'Defeat the Superbug.', ico: 'bug' },
   { id: 'boss_clean', n: 'No Help Needed', d: 'Defeat the Superbug without lifelines.', ico: 'trophy' },
-  { id: 'sata', n: 'SATA Specialist', d: 'Get 10 select-all questions fully right.', ico: 'check' },
-  { id: 'priority', n: 'Priority Pro', d: 'Get 10 "see first" questions right.', ico: 'target' },
-  { id: 'teaching', n: 'Teaching Star', d: 'Get 10 "needs teaching" questions right.', ico: 'book' },
-  { id: 'math', n: 'Math Whiz', d: 'Get 5 med-math questions right.', ico: 'pill' },
-  { id: 'order', n: 'Step by Step', d: 'Get 5 ordering questions fully right.', ico: 'clipboard' },
-  { id: 'discharge25', n: 'Discharge Planner', d: 'Discharge 25 missed patients.', ico: 'bed' },
-  { id: 'daystreak3', n: 'Three-Day Streak', d: 'Study 3 days in a row.', ico: 'calendar' },
-  { id: 'daystreak7', n: 'Week Warrior', d: 'Study 7 days in a row.', ico: 'calendar' },
+  { id: 'sata', n: 'SATA Specialist', d: `Get ${BADGE_AT.sata} select-all questions fully right.`, ico: 'check' },
+  { id: 'priority', n: 'Priority Pro', d: `Get ${BADGE_AT.priority} "see first" questions right.`, ico: 'target' },
+  { id: 'teaching', n: 'Teaching Star', d: `Get ${BADGE_AT.teaching} "needs teaching" questions right.`, ico: 'book' },
+  { id: 'math', n: 'Math Whiz', d: `Get ${BADGE_AT.math} med-math questions right.`, ico: 'pill' },
+  { id: 'order', n: 'Step by Step', d: `Get ${BADGE_AT.order} ordering questions fully right.`, ico: 'clipboard' },
+  { id: 'discharge25', n: 'Discharge Planner', d: `Discharge ${BADGE_AT.discharge25} missed patients.`, ico: 'bed' },
+  { id: 'daystreak3', n: 'Three-Day Streak', d: `Study ${BADGE_AT.daystreak3} days in a row.`, ico: 'calendar' },
+  { id: 'daystreak7', n: 'Week Warrior', d: `Study ${BADGE_AT.daystreak7} days in a row.`, ico: 'calendar' },
   { id: 'allrooms1', n: 'Floor Coverage', d: 'Earn a star in every room.', ico: 'star' },
   { id: 'allrooms3', n: 'Unit Expert', d: 'Earn 3 stars in every room.', ico: 'star' },
   { id: 'exam', n: 'Mock Exam', d: 'Finish an exam simulation.', ico: 'clipboard' },
-  { id: 'exam80', n: 'Exam Ready', d: 'Score 80% or more on an exam simulation.', ico: 'trophy' },
-  { id: 'night', n: 'Night Shift', d: 'Study after 10 PM.', ico: 'sparkle' },
+  { id: 'exam80', n: 'Exam Ready', d: `Score ${Math.round(CONFIG.exam.passFraction * 100)}% or more on an exam simulation.`, ico: 'trophy' },
+  { id: 'night', n: 'Night Shift', d: `Study after ${BADGE_AT.nightHour > 12 ? BADGE_AT.nightHour - 12 + ' PM' : BADGE_AT.nightHour + ' AM'}.`, ico: 'sparkle' },
   { id: 'chief', n: 'Chief Nurse', d: 'Reach the top rank.', ico: 'trophy' },
   { id: 'daily1', n: 'Daily Dose', d: 'Finish a daily challenge.', ico: 'calendar' },
-  { id: 'daily3', n: 'Habit Forming', d: 'Finish the daily challenge 3 days in a row.', ico: 'calendar' },
-  { id: 'daily7', n: 'Daily Devotion', d: 'Finish the daily challenge 7 days in a row.', ico: 'trophy' },
-  { id: 'cards10', n: 'Fan Mail', d: 'Collect 10 thank-you cards.', ico: 'card' },
-  { id: 'cards25', n: 'Beloved', d: 'Collect 25 thank-you cards.', ico: 'card' },
-  { id: 'cards50', n: 'Patient Favorite', d: 'Collect 50 thank-you cards.', ico: 'card' },
-  { id: 'rapid', n: 'Cross-Trained', d: 'Get both Rapid Response questions right in one shift.', ico: 'alarm' },
+  { id: 'daily3', n: 'Habit Forming', d: `Finish the daily challenge ${BADGE_AT.daily3} days in a row.`, ico: 'calendar' },
+  { id: 'daily7', n: 'Daily Devotion', d: `Finish the daily challenge ${BADGE_AT.daily7} days in a row.`, ico: 'trophy' },
+  { id: 'cards10', n: 'Fan Mail', d: `Collect ${BADGE_AT.cards10} thank-you cards.`, ico: 'card' },
+  { id: 'cards25', n: 'Beloved', d: `Collect ${BADGE_AT.cards25} thank-you cards.`, ico: 'card' },
+  { id: 'cards50', n: 'Patient Favorite', d: `Collect ${BADGE_AT.cards50} thank-you cards.`, ico: 'card' },
+  { id: 'rapid', n: 'Cross-Trained', d: 'Get every Rapid Response question right in one shift.', ico: 'alarm' },
 ];
 
 const Engine = {
   // ----- ranks + xp
-  rankIndex(xp = WR.state.xp) { let i = 0; RANKS.forEach((r, k) => { if (xp >= r.xp) i = k; }); return i; },
+  rankIndex(xp = WR.state.xp) {
+    let i = 0;
+    RANKS.forEach((r, k) => { if (xp >= r.xp) i = k; });
+    return i;
+  },
   rank(xp) { return RANKS[this.rankIndex(xp)]; },
   rankProgress(xp = WR.state.xp) {
     const i = this.rankIndex(xp), cur = RANKS[i], nxt = RANKS[i + 1];
@@ -2135,14 +2477,16 @@ const Engine = {
   },
 
   // ----- per-question review records
+  // r = { s: times seen, r: times right, w: times wrong, ok: right-day streak,
+  //       od: last day answered right, ld: last day seen, miss: in Missed Patients }
   rec(qid) { return WR.state.items[qid]; },
+  isSolid(r) { return !!r && r.ok >= CONFIG.mastery.solidDays; },
   touchDay() {
     const d = WR.state.days, t = todayStr();
     if (d.today !== t) {
-      const yesterday = todayStr(new Date(Date.now() - 86400000));
-      d.streak = d.last === yesterday ? d.streak + 1 : 1;
+      d.streak = d.last === yesterdayStr() ? d.streak + 1 : 1;
       d.last = t; d.today = t; d.answered = 0;
-      d.active = (d.active || []).concat(t).slice(-90);
+      d.active = (d.active || []).concat(t).slice(-CONFIG.history.activeDays);
     }
   },
   record(q, res) {
@@ -2155,7 +2499,7 @@ const Engine = {
     if (res.correct) {
       r.r++;
       if (r.od !== t) { r.ok++; r.od = t; }
-      if (r.miss && r.ok >= 2) { r.miss = false; s.discharged++; discharged = true; }
+      if (r.miss && this.isSolid(r)) { r.miss = false; s.discharged++; discharged = true; }
     } else {
       r.w++; r.ok = 0; r.miss = true;
     }
@@ -2164,7 +2508,7 @@ const Engine = {
     const os = s.originStats[q.origin] || (s.originStats[q.origin] = { n: 0, r: 0 });
     os.n++; if (res.correct) os.r++;
     s.days.answered++;
-    s.recent = [q.id].concat(s.recent.filter((x) => x !== q.id)).slice(0, 40);
+    s.recent = [q.id].concat(s.recent.filter((x) => x !== q.id)).slice(0, CONFIG.history.recentQuestions);
     return { first, discharged };
   },
 
@@ -2177,60 +2521,78 @@ const Engine = {
       if (!r) continue;
       if (r.s) seen++;
       if (r.r) ever++;
-      if (r.ok >= 2) solid++;
+      if (this.isSolid(r)) solid++;
       if (r.miss) missed++;
     }
     const total = qs.length || 1;
-    const stars = solid / total >= 0.9 ? 3 : ever / total >= 0.8 ? 2 : ever / total >= 0.6 ? 1 : 0;
+    const M = CONFIG.mastery;
+    const stars = solid / total >= M.threeStars ? 3 : ever / total >= M.twoStars ? 2 : ever / total >= M.oneStar ? 1 : 0;
     return { total: qs.length, ever, solid, missed, seen, stars, everFrac: ever / total, solidFrac: solid / total };
   },
   missed(uid) {
     return Content.all().filter((q) => (!uid || q.unit === uid) && WR.state.items[q.id] && WR.state.items[q.id].miss);
   },
-  // The OR opens after a star in 4 rooms, or after 12 finished shifts, whichever comes first.
-  BOSS_ROOMS: 4,
-  BOSS_SHIFTS: 12,
   shiftsDone() { return Object.values(WR.state.units).reduce((a, u) => a + (u.shifts || 0), 0); },
   bossUnlocked() {
     const rooms = Content.units.filter((u) => this.mastery(u.id).stars >= 1).length;
-    return rooms >= this.BOSS_ROOMS || this.shiftsDone() >= this.BOSS_SHIFTS;
+    return rooms >= CONFIG.boss.unlockRooms || this.shiftsDone() >= CONFIG.boss.unlockShifts;
   },
 
   // ----- picking patients
+  // A question's chance of being picked is proportional to its weight (CONFIG.picking).
+  // opts.weakBias favours rooms you have answered least; opts.everFrac(uid) supplies each
+  // room's "answered right once" share (pass a memo when weighing many questions at once).
   weight(q, opts = {}) {
+    const P = CONFIG.picking;
     const r = WR.state.items[q.id], t = todayStr();
     let w;
-    if (!r || !r.s) w = q.origin === 'new' ? 3.6 : 3;
-    else if (r.miss) w = r.ld === t ? 1.4 : 4.5;
-    else if (r.ok < 2) w = r.od === t ? 0.6 : 1.8;
-    else w = 0.35;
-    if (WR.state.recent.indexOf(q.id) !== -1) w *= 0.12;
-    if (opts.weakBias) w *= 1 + 1.2 * (1 - this.mastery(q.unit).everFrac);
+    if (!r || !r.s) w = q.origin === 'new' ? P.unseenNew : P.unseen;
+    else if (r.miss) w = r.ld === t ? P.missedToday : P.missed;
+    else if (!this.isSolid(r)) w = r.od === t ? P.learningRightToday : P.learning;
+    else w = P.mastered;
+    if (WR.state.recent.indexOf(q.id) !== -1) w *= P.recentFactor;
+    if (opts.weakBias) {
+      const everFrac = opts.everFrac ? opts.everFrac(q.unit) : this.mastery(q.unit).everFrac;
+      w *= 1 + P.weakRoomBias * (1 - everFrac);
+    }
     return w;
   },
-  pickShift(uid, n = 10) {
+  // each room's mastery, worked out once per pick instead of once per question
+  everFracMemo() {
+    const memo = {};
+    return (uid) => (uid in memo ? memo[uid] : (memo[uid] = this.mastery(uid).everFrac));
+  },
+  pickShift(uid, n = MODES.shift.n) {
     return weightedSample(Content.byUnit[uid] || [], (q) => this.weight(q), n).map((q) => q.id);
   },
-  pickReview(uid, n = 10) {
+  pickReview(uid, n = MODES.review.n) {
+    const P = CONFIG.picking;
     const pool = this.missed(uid);
-    return weightedSample(pool, (q) => (WR.state.items[q.id].ld === todayStr() ? 1 : 3), n).map((q) => q.id);
+    const w = (q) => (WR.state.items[q.id].ld === todayStr() ? P.reviewToday : P.reviewOtherDay);
+    return weightedSample(pool, w, n).map((q) => q.id);
   },
   pickOne(filter, exclude = [], weakBias = true) {
     const pool = Content.all().filter((q) => filter(q) && exclude.indexOf(q.id) === -1);
-    const got = weightedSample(pool.length ? pool : Content.all().filter(filter), (q) => this.weight(q, { weakBias }), 1);
+    const everFrac = this.everFracMemo();
+    const from = pool.length ? pool : Content.all().filter(filter);
+    const got = weightedSample(from, (q) => this.weight(q, { weakBias, everFrac }), 1);
     return got.length ? got[0].id : null;
   },
   // Rapid Response: questions from OTHER rooms, so the shift suddenly demands recall of
   // older material (interleaving + spaced retrieval). Best first: items that are due or
   // fading, then rooms already played but not seen today, then easier items anywhere else.
   // Never two from the same room.
-  rapidPicks(unit, n = 2, exclude = []) {
-    const s = WR.state, today = dayNum(todayStr());
+  rapidPicks(unit, n = CONFIG.events.rapid.questions, exclude = []) {
+    const s = WR.state, t = todayStr(), today = dayNum(t);
     const others = Content.all().filter((q) => q.unit !== unit && exclude.indexOf(q.id) === -1);
     const age = (r) => (r && r.ld ? today - dayNum(r.ld) : 0);
     const played = (u) => (s.units[u] && s.units[u].shifts) || (Content.byUnit[u] || []).some((q) => s.items[q.id] && s.items[q.id].s);
-    const due = others.filter((q) => { const r = s.items[q.id]; return r && r.s && (r.miss ? age(r) >= 1 : r.ok < 2 && age(r) >= 3); });
-    const stale = others.filter((q) => { const r = s.items[q.id]; return played(q.unit) && (!r || r.ld !== todayStr()); });
+    const due = others.filter((q) => {
+      const r = s.items[q.id];
+      if (!r || !r.s) return false;
+      return r.miss ? age(r) >= 1 : !this.isSolid(r) && age(r) >= CONFIG.picking.rapidDueAfterDays;
+    });
+    const stale = others.filter((q) => { const r = s.items[q.id]; return played(q.unit) && (!r || r.ld !== t); });
     const easy = others.filter((q) => (q.diff || 1) <= 1);
     const out = [], used = new Set();
     for (const tier of [due, stale, easy, others]) {
@@ -2242,24 +2604,29 @@ const Engine = {
     }
     return out;
   },
-  // today's daily challenge: 2 weak or missed items + 3 from the whole bank, fixed for the day
+  // today's daily challenge: a few weak or missed items + the rest from the whole bank, fixed for the day
   pickDaily() {
     const d = WR.state.daily, t = todayStr();
     if (d.date === t && d.qids && d.qids.length && d.qids.every((id) => Content.byId[id])) return d.qids.slice();
     const r = rng('daily:' + t);
     const byId = (a, b) => (a.id < b.id ? -1 : 1);
     const weak = Engine.missed().sort(byId);
-    const out = shuffle(weak, r).slice(0, 2).map((q) => q.id);
+    const out = shuffle(weak, r).slice(0, CONFIG.daily.fromMissed).map((q) => q.id);
     const rest = Content.all().filter((q) => out.indexOf(q.id) === -1).sort(byId);
-    out.push(...shuffle(rest, r).slice(0, 5 - out.length).map((q) => q.id));
+    out.push(...shuffle(rest, r).slice(0, MODES.daily.n - out.length).map((q) => q.id));
     d.date = t; d.qids = out.slice();
     return out;
   },
-  pickExam(n = 50) {
+  pickExam(n = MODES.exam.n) {
+    const E = CONFIG.exam;
     const out = [];
-    for (const u of Content.units) out.push(...weightedSample(Content.byUnit[u.id], (q) => this.weight(q), 2).map((q) => q.id));
+    for (const u of Content.units) {
+      out.push(...weightedSample(Content.byUnit[u.id], (q) => this.weight(q), E.perRoom).map((q) => q.id));
+    }
     const rest = Content.all().filter((q) => out.indexOf(q.id) === -1);
-    out.push(...weightedSample(rest, (q) => this.weight(q, { weakBias: true }) * (q.origin === 'new' ? 1.3 : 1), n - out.length).map((q) => q.id));
+    const everFrac = this.everFracMemo();
+    const w = (q) => this.weight(q, { weakBias: true, everFrac }) * (q.origin === 'new' ? E.newQuestionBoost : 1);
+    out.push(...weightedSample(rest, w, n - out.length).map((q) => q.id));
     return shuffle(out);
   },
 
@@ -2280,9 +2647,12 @@ const Engine = {
     const ok = ans != null && q.opts[ans] && !!q.opts[ans].c;
     return { correct: ok, frac: ok ? 1 : 0 };
   },
-  multiplier(streak) { return streak >= 10 ? 3 : streak >= 6 ? 2 : streak >= 3 ? 1.5 : 1; },
+  multiplier(streak) {
+    const step = CONFIG.scoring.streakMultipliers.find((m) => streak >= m.streak);
+    return step ? step.mult : 1;
+  },
   points(q, frac, streak, bonus = 1) {
-    const base = TYPE_INFO[q.type].base;
+    const base = CONFIG.scoring.basePoints[q.type];
     const mult = frac === 1 ? this.multiplier(streak) : 1;
     return { base, mult, bonus, pts: Math.round(base * frac * mult * bonus) };
   },
@@ -2294,12 +2664,13 @@ const Engine = {
     return dayNum(d) - dayNum(todayStr());
   },
   dailyTarget() {
+    const D = CONFIG.dailyTarget;
     if (WR.state.settings.dailyGoal) return WR.state.settings.dailyGoal;
     const left = this.daysToExam();
-    if (left == null || left <= 0) return 20;
-    const solid = Object.values(WR.state.items).filter((r) => r.ok >= 2).length;
+    if (left == null || left <= 0) return D.noExamDate;
+    const solid = Object.values(WR.state.items).filter((r) => this.isSolid(r)).length;
     const todo = Content.all().length - solid;
-    return clamp(Math.ceil(todo / left), 10, 150);
+    return clamp(Math.ceil(todo / left), D.min, D.max);
   },
 
   // ----- badges
@@ -2311,25 +2682,21 @@ const Engine = {
   checkBadges(ctx = {}) {
     const s = WR.state, got = [];
     const give = (id, cond) => { if (cond && this.award(id)) got.push(id); };
-    const shifts = Object.values(s.units).reduce((a, u) => a + (u.shifts || 0), 0);
+    const shifts = this.shiftsDone();
     give('first_shift', shifts >= 1);
-    give('shift3', shifts >= 3);
-    give('streak10', s.bestStreak >= 10);
-    give('streak25', s.bestStreak >= 25);
-    const ts = (t) => (s.typeStats[t] ? s.typeStats[t].r : 0);
-    give('sata', ts('sata') >= 10);
-    give('priority', ts('priority') >= 10);
-    give('teaching', ts('teaching') >= 10);
-    give('math', ts('math') >= 5);
-    give('order', ts('order') >= 5);
-    give('discharge25', s.discharged >= 25);
+    give('shift3', shifts >= BADGE_AT.shift3);
+    give('streak10', s.bestStreak >= BADGE_AT.streak10);
+    give('streak25', s.bestStreak >= BADGE_AT.streak25);
+    const rightOfType = (t) => (s.typeStats[t] ? s.typeStats[t].r : 0);
+    for (const t of ['sata', 'priority', 'teaching', 'math', 'order']) give(t, rightOfType(t) >= BADGE_AT[t]);
+    give('discharge25', s.discharged >= BADGE_AT.discharge25);
     const nCards = Object.keys(s.cards || {}).length;
-    give('cards10', nCards >= 10);
-    give('cards25', nCards >= 25);
-    give('cards50', nCards >= 50);
-    give('daystreak3', s.days.streak >= 3);
-    give('daystreak7', s.days.streak >= 7);
-    give('night', new Date().getHours() >= 22);
+    give('cards10', nCards >= BADGE_AT.cards10);
+    give('cards25', nCards >= BADGE_AT.cards25);
+    give('cards50', nCards >= BADGE_AT.cards50);
+    give('daystreak3', s.days.streak >= BADGE_AT.daystreak3);
+    give('daystreak7', s.days.streak >= BADGE_AT.daystreak7);
+    give('night', new Date().getHours() >= BADGE_AT.nightHour);
     give('chief', this.rankIndex() >= RANKS.length - 1);
     if (ctx.endOfRun) {
       const ms = Content.units.map((u) => this.mastery(u.id).stars);
@@ -2343,25 +2710,13 @@ const Engine = {
 
 /* ---- 35-run.js ---- */
 // ---------- a play session: shift, review, code blue, boss, exam ----------
-const MODES = {
-  shift: { lives: 3, n: 10, feedback: true, lifelines: true },
-  review: { lives: 0, n: 10, feedback: true, lifelines: false },
-  codeblue: { lives: 0, n: Infinity, feedback: false, lifelines: false, time: 60 },
-  boss: { lives: 3, n: Infinity, feedback: true, lifelines: true, hp: 1500 },
-  exam: { lives: 0, n: 50, feedback: false, lifelines: false },
-  daily: { lives: 0, n: 5, feedback: true, lifelines: false },
-};
-
-// Random shift events (1 shift in 4). Each touches only the questions listed in event.qids.
-//  rapid:   2 questions from OTHER rooms dropped into the shift; ×2 points, no life lost
+// Modes (CONFIG.modes) and random shift events (CONFIG.events) are set in 01-config.js.
+// Each event touches only the questions listed in event.qids:
+//  rapid:   questions from OTHER rooms dropped into the shift; extra points, no life lost
 //  visitor: a family member's extra quick question; bonus XP, no life lost
-//  outage:  3 questions by flashlight (the bedside goes dark, the chart stays readable); ×1.5 points
-const EVENTS = {
-  rapid: { name: 'Rapid Response', bonus: 2, safe: true },
-  visitor: { name: 'Visitor', bonus: 1, safe: true, xp: 15 },
-  outage: { name: 'Power outage', bonus: 1.5, safe: false },
-};
-const EVENT_CHANCE = 0.25;
+//  outage:  a few questions by flashlight (the bedside goes dark, the chart stays readable); extra points
+const EVENT_TYPES = ['rapid', 'visitor', 'outage'];
+const EVENTS = CONFIG.events;
 
 class Run {
   constructor(mode, opts = {}) {
@@ -2379,7 +2734,8 @@ class Run {
     this.wrongRun = 0;
     this.best = 0;
     this.results = [];
-    this.lifelines = m.lifelines ? { colleague: 1, coffee: 1 } : { colleague: 0, coffee: 0 };
+    const L = CONFIG.lifelines;
+    this.lifelines = m.lifelines ? { colleague: L.colleague, coffee: L.coffee } : { colleague: 0, coffee: 0 };
     this.usedLifeline = false;
     this.timeLeft = m.time || 0;
     this.hp = m.hp || 0;
@@ -2400,24 +2756,25 @@ class Run {
     if (force === 'none') return;
     const r = rng(this.seed + ':event');
     const roll = r();
-    const type = force || (roll < EVENT_CHANCE ? ['rapid', 'visitor', 'outage'][Math.floor(r() * 3)] : null);
-    if (!type || !EVENTS[type]) return;
+    const type = force || (roll < EVENTS.chance ? EVENT_TYPES[Math.floor(r() * EVENT_TYPES.length)] : null);
+    if (!type || EVENT_TYPES.indexOf(type) === -1) return;
+    const ev = EVENTS[type];
     const q = this.queue;
     let at, qids;
     if (type === 'rapid') {
-      at = Math.min(q.length, 3 + Math.floor(r() * 5));
-      qids = Engine.rapidPicks(this.unit, 2, q);
-      if (qids.length < 2) return;
+      at = Math.min(q.length, ev.startFrom + Math.floor(r() * ev.startSpread));
+      qids = Engine.rapidPicks(this.unit, ev.questions, q);
+      if (qids.length < ev.questions) return;
       q.splice(at, 0, ...qids);
     } else if (type === 'visitor') {
-      at = Math.min(q.length, 5);
+      at = Math.min(q.length, ev.at);
       const id = Engine.pickOne((x) => x.unit === this.unit && Content.isQuick(x), q) || Engine.pickOne((x) => Content.isQuick(x), q);
       if (!id || q.indexOf(id) !== -1) return;
       qids = [id];
       q.splice(at, 0, id);
     } else {
-      at = Math.min(Math.max(0, q.length - 3), 2 + Math.floor(r() * 5));
-      qids = q.slice(at, at + 3);
+      at = Math.min(Math.max(0, q.length - ev.questions), ev.startFrom + Math.floor(r() * ev.startSpread));
+      qids = q.slice(at, at + ev.questions);
     }
     this.event = { type, at, qids, results: [] };
   }
@@ -2436,7 +2793,8 @@ class Run {
     this.idx++;
     let qid;
     if (this.mode === 'codeblue') {
-      qid = Engine.pickOne((q) => Content.isQuick(q), this.results.map((r) => r.qid).concat(WR.state.recent.slice(0, 10)));
+      const seen = this.results.map((r) => r.qid).concat(WR.state.recent.slice(0, CONFIG.codeBlue.skipRecent));
+      qid = Engine.pickOne((q) => Content.isQuick(q), seen);
     } else if (this.mode === 'boss') {
       const hard = this.phase >= 1;
       qid = Engine.pickOne((q) => (hard ? q.diff >= 2 || q.type !== 'mcq' : true), this.results.map((r) => r.qid));
@@ -2502,24 +2860,22 @@ class Run {
       ev.results.push({ qid: q.id, correct: res.correct });
       if (ev.type === 'rapid') { const ra = WR.state.rapid; ra.n++; if (res.correct) ra.r++; }
     }
-    const lostLife = !res.correct && res.frac < 0.5 && !(evInfo && evInfo.safe);
+    const lostLife = !res.correct && res.frac < CONFIG.lifeLostBelow && !(evInfo && evInfo.safe);
     c.evSafe = !res.correct && !!(evInfo && evInfo.safe);
     c.lostLife = false;
     if (this.maxLives && lostLife) { this.lives--; c.lostLife = true; }
-    if (this.mode === 'codeblue') this.timeLeft = Math.max(0, this.timeLeft + (res.correct ? 3 : -5));
-    if (this.mode === 'boss') {
-      if (res.correct) { c.dmg = Math.round(100 * Engine.multiplier(this.streak)); this.hp = Math.max(0, this.hp - c.dmg); }
-      else { c.heal = 80; this.hp = Math.min(this.maxHp, this.hp + 80); }
-      const newPhase = this.hp <= this.maxHp / 3 ? 2 : this.hp <= (this.maxHp * 2) / 3 ? 1 : 0;
-      c.phaseUp = newPhase > this.phase;
-      this.phase = Math.max(this.phase, newPhase);
+    if (this.mode === 'codeblue') {
+      const CB = CONFIG.codeBlue;
+      this.timeLeft = Math.max(0, this.timeLeft + (res.correct ? CB.secondsPerRight : -CB.secondsPerWrong));
     }
-    if (this.streak > 0 && this.streak % 10 === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
+    if (this.mode === 'boss') this.hitBoss(c, res);
+    const every = CONFIG.lifelines.bonusCoffeeEvery;
+    if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
-    const xp = pts.pts / 10 + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
+    const xp = pts.pts / CONFIG.scoring.pointsPerXP + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
     const up = Engine.addXP(xp);
     if (up != null) this.rankUp = up;
     const badges = Engine.checkBadges();
@@ -2528,6 +2884,21 @@ class Run {
     Store.save();
     if (this.mode === 'boss' && this.hp <= 0) { this.won = true; }
     return res;
+  }
+
+  // a right answer damages the Superbug, a wrong one heals it; it changes phase as its HP falls
+  hitBoss(c, res) {
+    const BOSS = CONFIG.boss;
+    if (res.correct) {
+      c.dmg = Math.round(BOSS.damagePerRight * Engine.multiplier(this.streak));
+      this.hp = Math.max(0, this.hp - c.dmg);
+    } else {
+      c.heal = BOSS.healPerWrong;
+      this.hp = Math.min(this.maxHp, this.hp + BOSS.healPerWrong);
+    }
+    const newPhase = BOSS.phaseAt.filter((f) => this.hp <= this.maxHp * f).length;
+    c.phaseUp = newPhase > this.phase;
+    this.phase = Math.max(this.phase, newPhase);
   }
 
   isEnd() {
@@ -2578,13 +2949,15 @@ class Run {
     return true;
   }
 
+  // 0..1: drives the heart monitor's rate and colour (CONFIG.monitor.stress)
   stress() {
+    const S = CONFIG.monitor.stress, lost = this.maxLives - this.lives;
     let s;
-    if (this.mode === 'codeblue') s = 0.5 + 0.45 * (1 - this.timeLeft / 60);
-    else if (this.mode === 'boss') s = 0.32 + this.phase * 0.14 + (this.maxLives - this.lives) * 0.1;
-    else if (this.mode === 'exam') s = 0.3;
-    else s = 0.12 + (this.maxLives ? (this.maxLives - this.lives) * 0.2 : 0);
-    s += Math.min(0.3, this.wrongRun * 0.12) - Math.min(0.1, this.streak * 0.02);
+    if (this.mode === 'codeblue') s = S.codeBlueStart + S.codeBlueRise * (1 - this.timeLeft / this.cfg.time);
+    else if (this.mode === 'boss') s = S.boss + this.phase * S.bossPerPhase + lost * S.bossPerLifeLost;
+    else if (this.mode === 'exam') s = S.exam;
+    else s = S.shift + (this.maxLives ? lost * S.perLifeLost : 0);
+    s += Math.min(S.wrongCap, this.wrongRun * S.perWrongInARow) - Math.min(S.rightCap, this.streak * S.perRightInARow);
     return clamp(s, 0.05, 1);
   }
 
@@ -2594,49 +2967,60 @@ class Run {
     const s = WR.state;
     const right = this.results.filter((r) => r.correct).length;
     const extra = [];
+    const XP = CONFIG.bonusXP;
     let bonus = 0;
     if (this.mode === 'shift') {
       const u = s.units[this.unit] || (s.units[this.unit] = { shifts: 0, perfect: 0, best: 0 });
       u.shifts++;
       u.best = Math.max(u.best, this.score);
-      bonus += 20;
-      if (this.results.length >= this.queue.length && right === this.results.length && this.results.length >= 10) { u.perfect++; extra.push('shift_perfect'); bonus += 50; }
-      if (this.lives === 1 && this.results.length >= this.queue.length) extra.push('comeback');
+      bonus += XP.shift;
+      const full = this.results.length >= this.queue.length;
+      if (full && right === this.results.length && this.results.length >= CONFIG.badges.shiftPerfectMin) {
+        u.perfect++; extra.push('shift_perfect'); bonus += XP.perfectShift;
+      }
+      if (this.lives === 1 && full) extra.push('comeback');
       const ev = this.event;
-      if (ev && ev.type === 'rapid' && ev.results.length === 2 && ev.results.every((x) => x.correct)) extra.push('rapid');
+      if (ev && ev.type === 'rapid' && ev.results.length === ev.qids.length && ev.results.every((x) => x.correct)) extra.push('rapid');
     }
     if (this.mode === 'daily') {
       const d = s.daily, t = todayStr();
       this.dailyFirst = d.last !== t && this.results.length >= this.queue.length;
       if (this.dailyFirst) {
-        const yesterday = todayStr(new Date(Date.now() - 86400000));
-        d.streak = d.last === yesterday ? d.streak + 1 : 1;
+        d.streak = d.last === yesterdayStr() ? d.streak + 1 : 1;
         d.last = t;
         d.best = Math.max(d.best, right);
-        bonus += 30;
+        bonus += XP.daily;
         extra.push('daily1');
-        if (d.streak >= 3) extra.push('daily3');
-        if (d.streak >= 7) extra.push('daily7');
+        if (d.streak >= CONFIG.badges.daily3) extra.push('daily3');
+        if (d.streak >= CONFIG.badges.daily7) extra.push('daily7');
       }
     }
     if (this.mode === 'codeblue') {
       extra.push('codeblue');
-      if (right >= 12) extra.push('codeblue12');
+      if (right >= CONFIG.badges.codeblue12) extra.push('codeblue12');
       s.codeBlueBest = Math.max(s.codeBlueBest, this.score);
-      bonus += right * 2;
+      bonus += right * XP.codeBluePerRight;
     }
     if (this.mode === 'boss') {
       s.boss.best = Math.max(s.boss.best, this.score);
-      if (this.won) { s.boss.wins++; extra.push('boss'); bonus += 150; if (!this.usedLifeline) { extra.push('boss_clean'); s.boss.noLifelineWin = true; } }
+      if (this.won) {
+        s.boss.wins++; extra.push('boss'); bonus += XP.bossWin;
+        if (!this.usedLifeline) { extra.push('boss_clean'); s.boss.noLifelineWin = true; }
+      }
     }
     if (this.mode === 'exam') {
       const pct = this.results.length ? right / this.results.length : 0;
       const byUnit = {};
-      this.results.forEach((r) => { const u = Content.byId[r.qid].unit; byUnit[u] = byUnit[u] || [0, 0]; byUnit[u][1]++; if (r.correct) byUnit[u][0]++; });
-      s.exams = s.exams.concat({ date: todayStr(), n: this.results.length, right, byUnit }).slice(-20);
+      this.results.forEach((r) => {
+        const u = Content.byId[r.qid].unit;
+        byUnit[u] = byUnit[u] || [0, 0];
+        byUnit[u][1]++;
+        if (r.correct) byUnit[u][0]++;
+      });
+      s.exams = s.exams.concat({ date: todayStr(), n: this.results.length, right, byUnit }).slice(-CONFIG.history.exams);
       extra.push('exam');
-      if (pct >= 0.8 && this.results.length >= 40) extra.push('exam80');
-      bonus += 40;
+      if (pct >= CONFIG.exam.passFraction && this.results.length >= CONFIG.exam.passMinQuestions) extra.push('exam80');
+      bonus += XP.exam;
     }
     const up = Engine.addXP(bonus);
     if (up != null) this.rankUp = up;
@@ -2678,36 +3062,37 @@ const Talk = {
   line(kind, ctx = {}) {
     const n = this.name();
     const hour = new Date().getHours();
+    const days = CONFIG.mastery.solidDays, shift = MODES.shift;
     const P = {
       floor: [
         `Ready for rounds, ${n}? Tap a room to start a shift.`,
-        'Missed patients come back until you get them right on 2 different days.',
+        `Missed patients come back until you get them right on ${days} different days.`,
         'Rooms 107 to 109 have the most instructor focus points.',
         hour < 12 ? `Good morning, ${n}! Coffee first, then rounds.` : hour >= 21 ? `Night shift, ${n}? Short shifts beat cramming.` : `Afternoon rounds, ${n}. Let's go!`,
         'Every answer has a "why". Reading it is where the learning happens.',
       ],
-      start: ['10 patients, 3 lives. You got this.', 'Read the last line of each question first.', 'New shift! Slow is smooth, smooth is fast.'],
+      start: [`${shift.n} patients, ${shift.lives} lives. You got this.`, 'Read the last line of each question first.', 'New shift! Slow is smooth, smooth is fast.'],
       right: ['Nice catch!', "That's right!", 'Textbook!', 'Exactly.', 'Nailed it.', 'Your patient thanks you.'],
       streak: [`${ctx.streak} in a row! You're on fire.`, `Streak ×${Engine.multiplier(ctx.streak || 0)}! Keep it going.`, `${ctx.streak} straight. Charge nurse is watching!`],
       wrong: ['Shake it off. Read the why.', "Close one. Now you'll remember it.", "That's how we learn. It's in Missed Patients now.", 'Breathe. Next patient.'],
       part: ['Partly there! Check which ones you missed.', 'Almost. SATA is all or nothing for the streak.'],
       low: ['Last life! Slow down and read every option.', 'One life left. Use a lifeline if you need it.'],
       back: ['Back on track!', "There it is. That's my nurse."],
-      codeblue: ['Code Blue! Quick and calm.', 'Trust your first instinct.', 'Every right answer buys 3 seconds!'],
+      codeblue: ['Code Blue! Quick and calm.', 'Trust your first instinct.', `Every right answer buys ${CONFIG.codeBlue.secondsPerRight} seconds!`],
       boss: ['The Superbug hates good nursing!', 'Hit it with what you know!', 'Wrong answers heal it. Focus!'],
       bossPhase: ["It's mutating! Questions just got harder.", 'It changed color. Stay sharp!'],
       exam: ['Exam mode: no hints until the end.', 'Pace yourself. One question at a time.'],
-      review: ['Re-rounding on missed patients. Second chances!', 'Two right days and they are discharged.'],
-      rapid: [`Rapid Response, Room ${ctx.room}! Different floor, same brain. Double points!`, `Overhead page: Rapid Response to Room ${ctx.room}. Switch gears!`],
+      review: ['Re-rounding on missed patients. Second chances!', `${days} right days and they are discharged.`],
+      rapid: [`Rapid Response, Room ${ctx.room}! Different floor, same brain. ×${EVENTS.rapid.bonus} points!`, `Overhead page: Rapid Response to Room ${ctx.room}. Switch gears!`],
       visitor: ['A family member has a quick question for you!', 'Visitor at the bedside! Answer them and earn bonus XP.'],
-      outage: ['Power outage! Backup lights only. 1.5× points while it lasts.', 'The lights went out! Charts still readable. 1.5× points.'],
-      daily: ["Today's daily challenge: 5 patients. Make them count!", 'Daily challenge! Same 5 patients all day.'],
+      outage: [`Power outage! Backup lights only. ×${EVENTS.outage.bonus} points while it lasts.`, `The lights went out! Charts still readable. ×${EVENTS.outage.bonus} points.`],
+      daily: [`Today's daily challenge: ${MODES.daily.n} patients. Make them count!`, `Daily challenge! Same ${MODES.daily.n} patients all day.`],
       win: ['What a shift!', 'You crushed it!', 'Chief Nurse material.'],
       lose: ['Rough shift. The misses are saved for review.', 'Every nurse has hard shifts. Review and come back.'],
     };
     const pool = P[kind] || P.floor;
     let s = pick(pool);
-    if (kind === 'right' && ctx.trick && Math.random() < 0.4) s = 'Remember: ' + ctx.trick;
+    if (kind === 'right' && ctx.trick && Math.random() < CONFIG.talk.trickChance) s = 'Remember: ' + ctx.trick;
     return s;
   },
   mood(kind) {
@@ -2729,7 +3114,8 @@ const App = {
 
   measure() {
     const w = window.innerWidth, h = window.innerHeight;
-    const size = w >= 1000 ? 'wide' : w >= 700 ? 'regular' : 'compact';
+    const L = CONFIG.layout;
+    const size = w >= L.wideMinWidth ? 'wide' : w >= L.regularMinWidth ? 'regular' : 'compact';
     const layout = size === 'wide' && w > h ? 'h' : 'v';
     const changed = size !== this.size || layout !== this.layout;
     this.size = size; this.layout = layout;
@@ -2750,7 +3136,7 @@ const App = {
     sec.innerHTML = scr.render(params);
     if (old) {
       old.classList.add('leaving');
-      setTimeout(() => old.remove(), 220);
+      setTimeout(() => old.remove(), CONFIG.timing.screenLeaveMs);
       root.appendChild(sec);
     } else {
       root.innerHTML = '';
@@ -2763,16 +3149,19 @@ const App = {
     Store.saveRun();
   },
 
-  rerender() {
+  // redraw the current screen in place. opts.scrollTop: where to scroll to (default: stay put)
+  rerender(opts = {}) {
     if (!this.name) return;
     const scr = Screens[this.name];
-    if (scr.leave) scr.leave();
     const sec = this.el;
-    const y = sec.scrollTop;
+    const y = sec.scrollTop; // read before anything changes, so it costs no extra layout
+    if (scr.leave) scr.leave();
+    const want = opts.scrollTop != null ? opts.scrollTop : y;
     sec.className = 'screen ' + (scr.cls || this.name);
     sec.innerHTML = scr.render(this.params);
     if (scr.mount) scr.mount(sec, this.params);
-    sec.scrollTop = y;
+    // writing scrollTop forces a layout on the spot, so only do it when it has to move
+    if (want !== 0 || y !== 0) sec.scrollTop = want;
   },
 
   act(action, data, el, ev) {
@@ -2785,7 +3174,13 @@ const App = {
     return out;
   },
 
-  toast(text, ms = 2600) {
+  modalRoot: null,
+  modalOpen() {
+    const root = this.modalRoot || (this.modalRoot = document.getElementById('modal-root'));
+    return !!(root && root.firstChild);
+  },
+
+  toast(text, ms = CONFIG.timing.toastMs) {
     const t = document.createElement('div');
     t.className = 'toast';
     t.setAttribute('role', 'status');
@@ -2835,16 +3230,17 @@ function celebrate(run) {
   if (run.rankUp != null) {
     Sound.play('rank');
     FX.confetti(180);
-    App.toast(`Promoted to ${RANKS[run.rankUp].n}!`, 3200);
+    App.toast(`Promoted to ${RANKS[run.rankUp].n}!`, CONFIG.timing.rankToastMs);
     run.rankUp = null;
   }
 }
 
 function badgeToast(ids) {
+  const T = CONFIG.timing;
   ids.forEach((id, k) => {
     const b = BADGES.find((x) => x.id === id);
     if (!b) return;
-    setTimeout(() => { Sound.play('badge'); App.toast(`Badge earned: ${b.n}`); }, 600 + k * 1400);
+    setTimeout(() => { Sound.play('badge'); App.toast(`Badge earned: ${b.n}`); }, T.badgeToastDelayMs + k * T.badgeToastGapMs);
   });
 }
 
@@ -2880,8 +3276,7 @@ function hudHTML() {
 
 function dailyChip() {
   const d = WR.state.daily, done = d.last === todayStr();
-  const yesterday = todayStr(new Date(Date.now() - 86400000));
-  const streak = d.last === todayStr() || d.last === yesterday ? d.streak : 0;
+  const streak = d.last === todayStr() || d.last === yesterdayStr() ? d.streak : 0;
   return `<button class="chip daily ${done ? 'done' : 'todo'}" data-action="daily" aria-label="${done ? 'Daily challenge done today' : "Start today's daily challenge"}${streak ? `, ${streak}-day daily streak` : ''}">${icon(done ? 'check' : 'sparkle')}<span>${done ? 'Daily done' : 'Daily challenge'}${streak ? ` · <span class="num">${streak}</span>d` : ''}</span></button>`;
 }
 
@@ -2921,7 +3316,7 @@ Screens.floor = {
     const units = Content.units;
     const bossOpen = Engine.bossUnlocked();
     const alarm = `<button class="alarm" data-action="codeblue" aria-label="Start a Code Blue timed round"><span class="light"></span>Code Blue</button>`;
-    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `★ in ${Engine.BOSS_ROOMS} rooms or ${Engine.BOSS_SHIFTS} shifts (${Engine.shiftsDone()}/${Engine.BOSS_SHIFTS})`}</small></span></button>`;
+    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `★ in ${CONFIG.boss.unlockRooms} rooms or ${CONFIG.boss.unlockShifts} shifts (${Engine.shiftsDone()}/${CONFIG.boss.unlockShifts})`}</small></span></button>`;
     const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
@@ -2983,7 +3378,8 @@ Screens.floor = {
       }
       const m = /translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(walker.style.transform) || [0, 0, 0];
       const dist = Math.hypot(x - m[1], y - m[2]);
-      const dur = clamp(dist / 700, 0.35, 1.1);
+      const T = CONFIG.timing;
+      const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
       walker.style.transitionDuration = dur + 's';
       walker.classList.add('walking');
       walker.style.transform = `translate(${x}px, ${y}px)`;
@@ -2998,26 +3394,38 @@ Screens.floor = {
       await Screens.floor.walkTo(el);
       el.classList.add('open');
       Sound.play('door');
-      await sleep(reducedMotion() ? 0 : 360);
+      await sleep(reducedMotion() ? 0 : CONFIG.timing.doorOpenMs);
       Screens.floor.busy = false;
       startShift(d.unit);
     },
     codeblue() { startMode('codeblue'); },
     daily() {
       const done = WR.state.daily.last === todayStr();
-      App.modal(`<h2>Daily challenge</h2><p class="dim">5 patients, the same set all day: 2 from your missed or weak list and 3 from anywhere in the bank. Finish it on back-to-back days to build a daily streak and unlock a party hat (3 days) and rubber-duck scrubs (7 days).</p>${done ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>' : ''}
+      const n = MODES.daily.n, fromMissed = CONFIG.daily.fromMissed, B = CONFIG.badges;
+      const about = `${n} patients, the same set all day: ${fromMissed} from your missed or weak list `
+        + `and ${n - fromMissed} from anywhere in the bank. Finish it on back-to-back days to build a daily streak `
+        + `and unlock a party hat (${B.daily3} days) and rubber-duck scrubs (${B.daily7} days).`;
+      const replayNote = done
+        ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>'
+        : '';
+      App.modal(`<h2>Daily challenge</h2><p class="dim">${about}</p>${replayNote}
         <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">${done ? 'Replay' : 'Start'}</button></div>`,
       (m) => { if (m === 'go') startDaily(); return false; });
     },
     boss() {
       if (!Engine.bossUnlocked() && !WR.debug) {
-        App.modal(`<h2>The OR is locked</h2><p class="dim">The Superbug only fights experienced nurses. Earn a star in ${Engine.BOSS_ROOMS} rooms, or finish ${Engine.BOSS_SHIFTS} shifts (you've finished ${Engine.shiftsDone()}). A star means you've answered 60% of a room's patients right at least once.</p><div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>`);
+        const BOSS = CONFIG.boss;
+        const why = `The Superbug only fights experienced nurses. Earn a star in ${BOSS.unlockRooms} rooms, `
+          + `or finish ${BOSS.unlockShifts} shifts (you've finished ${Engine.shiftsDone()}). `
+          + `A star means you've answered ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients right at least once.`;
+        App.modal(`<h2>The OR is locked</h2><p class="dim">${why}</p>`
+          + '<div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>');
         return;
       }
       startMode('boss');
     },
     exam() {
-      App.modal(`<h2>Exam simulation</h2><p class="dim">50 mixed questions from every room, like the real final. No lifelines and no explanations until the end, then a full score report by unit.</p>
+      App.modal(`<h2>Exam simulation</h2><p class="dim">${MODES.exam.n} mixed questions from every room, like the real final. No lifelines and no explanations until the end, then a full score report by unit.</p>
         <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">Start exam</button></div>`,
       (m) => { if (m === 'go') startMode('exam'); return false; });
     },
@@ -3025,7 +3433,7 @@ Screens.floor = {
 };
 
 function startShift(unit) {
-  App.run = new Run('shift', { unit, queue: Engine.pickShift(unit, 10) });
+  App.run = new Run('shift', { unit, queue: Engine.pickShift(unit) });
   App.run.next();
   App.show('chart', {}, 'zoom-in');
 }
@@ -3043,7 +3451,7 @@ function startDaily() {
   App.show('chart', {}, 'zoom-in');
 }
 function startMode(mode) {
-  const queue = mode === 'exam' ? Engine.pickExam(50) : [];
+  const queue = mode === 'exam' ? Engine.pickExam() : [];
   App.run = new Run(mode, { queue });
   App.run.next();
   if (mode === 'codeblue') Sound.play('alarm');
@@ -3052,6 +3460,9 @@ function startMode(mode) {
 
 /* ---- 50-chart.js ---- */
 // ---------- patient chart (the question screen) ----------
+// a progress bar's fill, slid left so `frac` of it shows (transform, so moving it needs no layout)
+const barShift = (frac) => `translateX(${(clamp(frac, 0, 1) - 1) * 100}%)`;
+
 const MODE_TITLE = { codeblue: 'Code Blue', boss: 'Operating Room', exam: 'Exam simulation', daily: 'Daily challenge' };
 
 Screens.chart = {
@@ -3118,13 +3529,13 @@ Screens.chart = {
   },
   hpHTML(run) {
     return `<div class="hp"><div class="hp-row"><span>The Superbug</span><span class="num" id="hp-num">${run.hp} / ${run.maxHp}</span></div>
-      <div class="bar" role="progressbar" aria-label="Boss health" aria-valuenow="${run.hp}" aria-valuemin="0" aria-valuemax="${run.maxHp}"><i id="hp-bar" style="width:${(run.hp / run.maxHp) * 100}%"></i></div></div>`;
+      <div class="bar" role="progressbar" aria-label="Boss health" aria-valuenow="${run.hp}" aria-valuemin="0" aria-valuemax="${run.maxHp}"><i id="hp-bar" style="transform:${barShift(run.hp / run.maxHp)}"></i></div></div>`;
   },
 
   // ----- right pane
   progHTML(run) {
     if (run.mode === 'codeblue') {
-      return `<div class="timer" id="timer" role="timer" aria-label="Time left">${icon('alarm')}<div class="bar"><i id="timer-bar" style="width:${(run.timeLeft / 60) * 100}%"></i></div><b class="num" id="timer-num">${Math.ceil(run.timeLeft)}</b></div>`;
+      return `<div class="timer" id="timer" role="timer" aria-label="Time left">${icon('alarm')}<div class="bar"><i id="timer-bar" style="transform:${barShift(run.timeLeft / run.cfg.time)}"></i></div><b class="num" id="timer-num">${Math.ceil(run.timeLeft)}</b></div>`;
     }
     if (!run.total) return '';
     let pips = '';
@@ -3141,7 +3552,8 @@ Screens.chart = {
     const showTruth = c.revealed && run.mode !== 'exam';
     const isOrder = q.type === 'order', isMulti = q.type === 'sata';
     const texts = c.order.map((i) => (isOrder ? q.steps[i] : q.opts[i].t));
-    const grid = App.size === 'wide' && !isOrder && texts.length === 4 && texts.every((t) => t.length <= 34) && q.type !== 'priority';
+    const short = texts.every((t) => t.length <= CONFIG.layout.twoColumnMaxChars);
+    const grid = App.size === 'wide' && !isOrder && texts.length === 4 && short && q.type !== 'priority';
     let s = `<ol class="opts ${grid ? 'grid2' : ''}" id="opts">`;
     c.order.forEach((i, k) => {
       const o = isOrder ? { t: q.steps[i] } : q.opts[i];
@@ -3209,15 +3621,18 @@ Screens.chart = {
     else answer = `<ul>${q.opts.filter((o) => o.c).map((o) => `<li>${esc(o.t)}</li>`).join('')}</ul>`;
     const ansLabel = q.type === 'order' ? 'Correct order' : q.type === 'sata' ? 'Correct answers' : q.type === 'teaching' ? 'Statement that needs more teaching' : 'Correct answer';
     const notes = [];
-    if (c.ev === 'rapid') { const u = Content.unitById[q.unit]; notes.push(`${icon('alarm')} Rapid Response from Room ${u.room} · ${esc(u.ward)}: ×2 points${c.evSafe ? ', and no life lost' : ''}.`); }
-    if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? ': +15 bonus XP' : ''}${c.evSafe ? '. No life lost' : ''}.`);
-    if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×1.5 points.`);
+    if (c.ev === 'rapid') {
+      const u = Content.unitById[q.unit];
+      notes.push(`${icon('alarm')} Rapid Response from Room ${u.room} · ${esc(u.ward)}: ×${EVENTS.rapid.bonus} points${c.evSafe ? ', and no life lost' : ''}.`);
+    }
+    if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? `: +${EVENTS.visitor.xp} bonus XP` : ''}${c.evSafe ? '. No life lost' : ''}.`);
+    if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×${EVENTS.outage.bonus} points.`);
     if (c.lostLife) notes.push(`${icon('heart')} You lost a life.`);
     if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
-    if (c.bonusCoffee) notes.push(`${icon('coffee')} 10 in a row earned you an extra coffee break.`);
+    if (c.bonusCoffee) notes.push(`${icon('coffee')} ${CONFIG.lifelines.bonusCoffeeEvery} in a row earned you an extra coffee break.`);
     if (c.dmg) notes.push(`${icon('sparkle')} ${c.dmg} damage to the Superbug.`);
-    if (c.heal) notes.push(`${icon('bug')} The Superbug healed 80 HP.`);
+    if (c.heal) notes.push(`${icon('bug')} The Superbug healed ${c.heal} HP.`);
     let tips = '';
     if (q.trick) tips += `<div class="tip trick">${icon('bulb')}<div><span class="label">Memory trick</span>${esc(q.trick)}</div></div>`;
     const guideTips = (sec.tips || []).filter((t) => t.kind !== 'note' || !q.trick).slice(0, q.trick ? 1 : 2);
@@ -3229,7 +3644,7 @@ Screens.chart = {
     }
     const hit = new Set((q.focus || []).filter((f) => f[0] === q.sec).map((f) => f[1]));
     const focus = sec.focus.length ? `<ul class="focus-list">${sec.focus.map((f, i) => `<li class="${hit.has(i) ? 'hit' : ''}">${esc(f)}</li>`).join('')}</ul>` : '<p class="dim">This section has no instructor focus points.</p>';
-    const guide = `<details class="more" ${App.size === 'wide' ? '' : ''}><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary><p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
+    const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary><p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
     const endLabel = run.isEnd() ? (run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report') : 'Next patient';
     return `<div class="fb-head ${st}"><span class="ico">${icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x')}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
       ${notes.length ? `<div class="fb-notes">${notes.map((n) => `<p>${n}</p>`).join('')}</div>` : ''}
@@ -3247,30 +3662,39 @@ Screens.chart = {
     if (!run) return;
     el.classList.add('mode-' + run.mode);
     const cv = $('#ecg', el);
-    if (cv) {
+    if (cv && this.ecg && this.keepMonitor) {
+      // next patient in the same round: move the running monitor into the new screen
+      cv.replaceWith(this.ecg.c);
+      this.ecg.rebind($('#hr', el), $('#monitor', el));
+    } else if (cv) {
+      if (this.ecg) this.ecg.destroy();
       this.ecg = new ECG(cv, $('#hr', el), $('#monitor', el));
-      this.ecg.stress = this.ecg.shown = run.stress();
+      this.ecg.shown = run.stress();
+    }
+    if (this.ecg) {
+      this.ecg.stress = run.stress();
       this.ecg.beep = run.mode === 'codeblue';
     }
     if (run.mode === 'codeblue' && !this.timerOff) {
       this.timerOff = Loop.add((dt) => this.tickTimer(dt));
     }
-    if (run.cur.revealed && run.cfg.feedback) { const f = $('#feedback', el); if (f) f.scrollTop = 0; }
   },
   leave() {
     Whimsy.clear();
-    if (this.ecg) { this.ecg.destroy(); this.ecg = null; }
+    if (this.ecg && !this.keepMonitor) { this.ecg.destroy(); this.ecg = null; }
     if (this.timerOff && App.name !== 'chart') { this.timerOff(); this.timerOff = null; }
     clearTimeout(this.autoT);
   },
   tickTimer(dt) {
     const run = App.run;
     if (!run || run.mode !== 'codeblue' || run.over) { if (this.timerOff) { this.timerOff(); this.timerOff = null; } return; }
-    if (document.getElementById('modal-root').firstChild) return; // paused while a dialog is open
+    if (App.modalOpen()) return; // paused while a dialog is open
     run.timeLeft = Math.max(0, run.timeLeft - dt);
-    const bar = $('#timer-bar'), num = $('#timer-num');
-    if (bar) bar.style.width = (run.timeLeft / 60) * 100 + '%';
-    if (num) num.textContent = Math.ceil(run.timeLeft);
+    // runs every frame: slide the bar (no layout) and touch the number only when it changes
+    const bar = document.getElementById('timer-bar'), num = document.getElementById('timer-num');
+    if (bar) bar.style.transform = barShift(run.timeLeft / run.cfg.time);
+    const secs = String(Math.ceil(run.timeLeft));
+    if (num && num.textContent !== secs) num.textContent = secs;
     if (this.ecg) this.ecg.stress = run.stress();
     if (run.timeLeft <= 0) {
       this.timerOff(); this.timerOff = null;
@@ -3285,13 +3709,17 @@ Screens.chart = {
     const run = App.run, el = App.el;
     const set = (id, html) => { const n = $('#' + id, el); if (n) n.innerHTML = html; };
     if (parts.includes('paper')) set('paper', this.paperHTML(run));
+    else if (parts.includes('opts')) { const o = $('#opts', el); if (o) o.outerHTML = this.optsHTML(run); }
     if (parts.includes('tray')) set('tray', this.trayHTML(run));
     if (parts.includes('prog')) set('prog', this.progHTML(run));
     if (parts.includes('score')) set('scorebar', this.scoreHTML(run));
     if (parts.includes('bed')) set('bed', patientInBed(run.cur.patient, this.ptMood(run)));
     if (parts.includes('talk')) {
-      const t = $('#talk', el); if (t) { t.textContent = run.talk.text; t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop'); }
-      const n = $('#nurse-row .nurse', el) || $('#arena-nurse', el); if (n) n.innerHTML = nurseSVG(WR.state.profile.avatar, run.talk.mood);
+      // a fresh bubble element replays its pop-in animation without forcing a layout
+      const t = $('#talk', el);
+      if (t) { const nt = t.cloneNode(false); nt.textContent = run.talk.text; nt.classList.add('pop'); t.replaceWith(nt); }
+      const n = $('#nurse-row .nurse', el) || $('#arena-nurse', el);
+      if (n) n.innerHTML = nurseSVG(WR.state.profile.avatar, run.talk.mood);
     }
     if (parts.includes('feedback')) {
       const f = $('#feedback', el);
@@ -3299,7 +3727,12 @@ Screens.chart = {
         const show = run.cur.revealed && run.cfg.feedback;
         f.hidden = !show;
         f.innerHTML = show ? this.feedbackHTML(run) : '';
-        if (show) { f.scrollTop = 0; const b = $('[data-action="next"]', f); if (b && !('ontouchstart' in window)) b.focus({ preventScroll: true }); if (App.size === 'wide') f.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' }); }
+        if (show) {
+          // (the panel is new for every patient, so it is already scrolled to the top)
+          const b = $('[data-action="next"]', f);
+          if (b && !('ontouchstart' in window)) b.focus({ preventScroll: true });
+          if (App.size === 'wide') f.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
+        }
       }
     }
   },
@@ -3310,16 +3743,15 @@ Screens.chart = {
     if (this.ecg) this.ecg.stress = run.stress();
     if (run.mode === 'exam') {
       this.refresh(['paper', 'tray', 'prog']);
-      this.autoT = setTimeout(() => this.advance(), 280);
+      this.autoT = setTimeout(() => this.advance(), CONFIG.exam.nextMs);
       return;
     }
     const stem = $('#stem', el);
     const ptsTxt = c.pts.pts ? `+${c.pts.pts}${c.pts.mult > 1 ? ' ×' + c.pts.mult : ''}` : '';
-    const prevLives = run.lives + (c.lostLife ? 1 : 0);
     if (res.correct) {
       Sound.play('right');
       FX.float(ptsTxt, stem, 'good');
-      if ([3, 6, 10, 15, 20, 25].includes(run.streak)) this.say('streak', { streak: run.streak });
+      if (CONFIG.talk.streakShoutouts.includes(run.streak)) this.say('streak', { streak: run.streak });
       else if (run.results.length > 1 && !run.results[run.results.length - 2].correct) this.say('back');
       else this.say('right', { trick: q.trick });
     } else if (res.frac > 0) {
@@ -3333,20 +3765,34 @@ Screens.chart = {
       this.say(run.maxLives && run.lives === 1 ? 'low' : 'wrong');
     }
     if (run.mode === 'boss') this.bossFx(c);
-    this.refresh(['paper', 'tray', 'prog', 'score', 'bed', 'talk']);
-    Whimsy.react(run, res);
+    this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
+    // a silly reaction redraws the patient itself; otherwise just update their face
+    if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
     if (run.mode === 'codeblue') {
+      const CB = CONFIG.codeBlue;
       const tm = $('#timer', el);
-      if (tm) { const d = document.createElement('span'); d.className = 'timer-delta'; d.style.color = res.correct ? 'var(--good)' : 'var(--bad)'; d.textContent = res.correct ? '+3s' : '−5s'; tm.style.position = 'relative'; tm.appendChild(d); setTimeout(() => d.remove(), 1000); }
-      this.autoT = setTimeout(() => this.advance(), res.correct ? 420 : 900);
+      if (tm) {
+        const d = document.createElement('span');
+        d.className = 'timer-delta';
+        d.style.color = res.correct ? 'var(--good)' : 'var(--bad)';
+        d.textContent = res.correct ? `+${CB.secondsPerRight}s` : `−${CB.secondsPerWrong}s`;
+        tm.style.position = 'relative';
+        tm.appendChild(d);
+        setTimeout(() => d.remove(), CONFIG.timing.timerDeltaMs);
+      }
+      this.autoT = setTimeout(() => this.advance(), res.correct ? CB.nextAfterRightMs : CB.nextAfterWrongMs);
       return;
     }
-    this.refresh(['feedback']);
-    if (c.card) Sound.play('tada', 500);
-    celebrate(run);
-    if (c.badges && c.badges.length) badgeToast(c.badges);
-    void prevLives;
+    // The explanation comes one frame later: the answer marks, sound and patient reaction
+    // paint first instead of waiting on the panel's layout (it slides in, so the frame is invisible).
+    afterNextPaint(() => {
+      if (App.run !== run || run.cur !== c || App.name !== 'chart') return; // moved on already
+      this.refresh(['feedback']);
+      if (c.card) Sound.play('tada', CONFIG.timing.cardSoundMs);
+      celebrate(run);
+      if (c.badges && c.badges.length) badgeToast(c.badges);
+    });
   },
 
   bossFx(c) {
@@ -3355,23 +3801,29 @@ Screens.chart = {
     if (c.dmg) {
       FX.projectile(nurse, boss).then(() => {
         Sound.play('hit');
-        if (boss) { boss.innerHTML = bossSVG(run.phase, 'hurt'); boss.classList.remove('hit'); void boss.offsetWidth; boss.classList.add('hit'); }
+        if (boss) { boss.innerHTML = bossSVG(run.phase, 'hurt'); replayClass(boss, 'hit'); }
         FX.float('−' + c.dmg, boss, 'bad');
-        setTimeout(() => { if (boss && boss.isConnected) boss.innerHTML = bossSVG(run.phase); }, 700);
+        setTimeout(() => { if (boss && boss.isConnected) boss.innerHTML = bossSVG(run.phase); }, CONFIG.timing.bossHurtMs);
       });
     } else if (c.heal) {
       Sound.play('heal');
-      if (boss) { boss.classList.remove('heal'); void boss.offsetWidth; boss.classList.add('heal'); }
+      replayClass(boss, 'heal');
       FX.float('+' + c.heal + ' HP', boss, 'good');
     }
     const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
     if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
-    if (hpB) hpB.style.width = (run.hp / run.maxHp) * 100 + '%';
+    if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
     if (c.phaseUp && run.hp > 0) {
       const ar = $('#arena', el);
-      if (ar) { const b = document.createElement('div'); b.className = 'phase-banner'; b.textContent = run.phase === 1 ? 'It mutated!' : 'Final form!'; ar.appendChild(b); setTimeout(() => b.remove(), 1900); }
+      if (ar) {
+        const b = document.createElement('div');
+        b.className = 'phase-banner';
+        b.textContent = run.phase === 1 ? 'It mutated!' : 'Final form!';
+        ar.appendChild(b);
+        setTimeout(() => b.remove(), CONFIG.timing.phaseBannerMs);
+      }
       Sound.play('alarm');
-      setTimeout(() => { this.say('bossPhase'); this.refresh(['talk']); }, 900);
+      setTimeout(() => { this.say('bossPhase'); this.refresh(['talk']); }, CONFIG.timing.bossPhaseLineMs);
     }
   },
 
@@ -3383,7 +3835,7 @@ Screens.chart = {
     b.setAttribute('role', 'status');
     b.textContent = { rapid: 'Rapid Response!', visitor: 'Visitor!', outage: 'Power outage!' }[type];
     bs.appendChild(b);
-    setTimeout(() => b.remove(), 2000);
+    setTimeout(() => b.remove(), CONFIG.timing.eventBannerMs);
     Sound.play(type === 'rapid' ? 'alarm' : type === 'visitor' ? 'door' : 'slidedown');
   },
 
@@ -3399,13 +3851,16 @@ Screens.chart = {
     if (!run.next()) { App.show('report'); return; }
     const evStart = run.evFirst();
     if (evStart) this.say(run.event.type, { room: Content.unitById[run.q.unit].room });
-    else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < 0.25) this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
-    App.rerender();
+    else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < CONFIG.talk.chatterChance) {
+      this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
+    }
+    // redraw for the new patient, keeping the heart monitor running, and scroll back to the top
+    this.keepMonitor = true;
+    try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
     if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
-    const sec = App.el;
-    if (sec && !reducedMotion()) { const cb = $('#clipboard', sec); if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' }); }
-    App.el.scrollTop = 0;
+    const cb = !reducedMotion() && $('#clipboard', App.el);
+    if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
   },
 
   act: {
@@ -3415,7 +3870,7 @@ Screens.chart = {
       // every question type waits for Submit; tapping an option only selects it
       run.toggle(+d.i);
       Sound.play('tap');
-      Screens.chart.refresh(['paper', 'tray']);
+      Screens.chart.refresh(['opts', 'tray']);
     },
     submit() {
       const run = App.run;
@@ -3426,7 +3881,7 @@ Screens.chart = {
     undo() {
       const run = App.run;
       run.cur.sel.pop();
-      Screens.chart.refresh(['paper', 'tray']);
+      Screens.chart.refresh(['opts', 'tray']);
     },
     colleague() {
       const run = App.run;
@@ -3456,7 +3911,7 @@ Screens.chart = {
 
   key(e) {
     const run = App.run;
-    if (!run || !run.cur || document.getElementById('modal-root').firstChild) return;
+    if (!run || !run.cur || App.modalOpen()) return;
     const k = e.key.toUpperCase();
     if (k === 'ENTER') {
       if (run.cur.revealed && run.cfg.feedback) { e.preventDefault(); this.advance(); }
@@ -3511,13 +3966,14 @@ function paradeLevel(run) {
   if (!n || run.mode === 'exam') return 0;
   if (run.mode === 'boss') return run.won ? 4 : 1;
   const pct = run.results.filter((r) => r.correct).length / n;
-  return pct === 1 && n >= 5 ? 4 : pct >= 0.8 ? 3 : pct >= 0.5 ? 2 : 1;
+  const P = CONFIG.parade;
+  return pct === 1 && n >= P.fullMinPatients ? 4 : pct >= P.hats ? 3 : pct >= P.conga ? 2 : 1;
 }
 function paradeHTML(run) {
   const lv = paradeLevel(run);
   if (!lv || (WR.state.settings.whimsy || 'full') === 'off') return '';
   const seen = new Set();
-  const rows = run.results.filter((r) => !seen.has(r.qid) && seen.add(r.qid)).slice(-12);
+  const rows = run.results.filter((r) => !seen.has(r.qid) && seen.add(r.qid)).slice(-CONFIG.parade.maxPatients);
   const happy = lv >= 3 ? 'starry' : lv === 2 ? 'cheer' : 'happy';
   const hat = '<svg class="pp-hat" viewBox="0 0 20 24" aria-hidden="true"><path d="M2 22 L10 2 L18 22z" fill="#f6bd52" stroke="#c98a1a"/><path d="M5 15 l10 -2 M7 9 l6 -1" stroke="#ff6b8a" stroke-width="2"/><circle cx="10" cy="2.5" r="2.5" fill="#ff6b8a"/></svg>';
   const people = rows.map((r, k) => {
@@ -3549,12 +4005,12 @@ Screens.report = {
       extra = `<div class="card unit-card"><div><span class="label">Room ${Content.unitById[run.unit].room} mastery</span>
         <div class="room-stars big">${starRow(m.stars)}</div></div>
         <div class="mini-bars"><div><span>Answered right at least once</span><b class="num">${m.ever}/${m.total}</b></div><div class="bar"><i style="width:${m.everFrac * 100}%"></i></div>
-        <div><span>Mastered (right on 2 different days)</span><b class="num">${m.solid}/${m.total}</b></div><div class="bar"><i style="width:${m.solidFrac * 100}%;background:var(--good)"></i></div></div></div>`;
+        <div><span>Mastered (right on ${CONFIG.mastery.solidDays} different days)</span><b class="num">${m.solid}/${m.total}</b></div><div class="bar"><i style="width:${m.solidFrac * 100}%;background:var(--good)"></i></div></div></div>`;
       const ev = run.event;
       if (ev && ev.results.length) {
         const er = ev.results.filter((x) => x.correct).length;
         const line = ev.type === 'rapid' ? `<b>Rapid Response:</b> ${er}/${ev.results.length} right. That's recall from other rooms, the kind the final exam asks for.`
-          : ev.type === 'visitor' ? `<b>Visitor question:</b> ${er ? 'answered right, +15 bonus XP.' : 'missed; it is saved for review.'}`
+          : ev.type === 'visitor' ? `<b>Visitor question:</b> ${er ? `answered right, +${EVENTS.visitor.xp} bonus XP.` : 'missed; it is saved for review.'}`
             : `<b>Power outage:</b> ${er}/${ev.results.length} right by flashlight.`;
         extra += `<div class="card ev-sum ev-${ev.type}">${icon(ev.type === 'rapid' ? 'alarm' : ev.type === 'visitor' ? 'users' : 'sparkle')}<p>${line}</p></div>`;
       }
@@ -3564,16 +4020,17 @@ Screens.report = {
       mood = right >= 4 ? 'cheer' : 'happy';
       sub = run.dailyFirst ? `${right} of ${n} right · ${d.streak}-day daily streak${d.streak > 1 ? '!' : ''}` : `${right} of ${n} right · replay (today's streak was already counted)`;
     } else if (run.mode === 'review') {
-      title = 'Re-rounds done'; sub = `${right} of ${n} right. Patients right on 2 different days get discharged.`; mood = 'happy';
+      title = 'Re-rounds done'; sub = `${right} of ${n} right. Patients right on ${CONFIG.mastery.solidDays} different days get discharged.`; mood = 'happy';
     } else if (run.mode === 'codeblue') {
-      title = right >= 12 ? 'Patient saved!' : 'Code called'; sub = `You answered ${right} right before time ran out.`; mood = right >= 8 ? 'cheer' : 'focus';
+      title = right >= CONFIG.badges.codeblue12 ? 'Patient saved!' : 'Code called'; sub = `You answered ${right} right before time ran out.`; mood = right >= 8 ? 'cheer' : 'focus';
       extra = `<p class="dim center">Best Code Blue score: <b class="num">${fmt(WR.state.codeBlueBest)}</b></p>`;
     } else if (run.mode === 'boss') {
       title = run.won ? 'Superbug defeated!' : 'The Superbug got away'; mood = run.won ? 'cheer' : 'sad';
       sub = run.won ? 'Infection cleared. The whole hospital is cheering.' : `It had ${run.hp} HP left. Review your misses and try again.`;
     } else {
-      title = 'Exam results'; mood = pct >= 80 ? 'cheer' : pct >= 65 ? 'happy' : 'focus';
-      sub = pct >= 80 ? 'Exam ready. Keep it warm with short daily shifts.' : pct >= 65 ? 'Close! Focus on your weakest rooms below.' : 'Good baseline. Your weakest rooms are listed below.';
+      const pass = pct >= CONFIG.exam.passFraction * 100, close = pct >= CONFIG.exam.closeFraction * 100;
+      title = 'Exam results'; mood = pass ? 'cheer' : close ? 'happy' : 'focus';
+      sub = pass ? 'Exam ready. Keep it warm with short daily shifts.' : close ? 'Close! Focus on your weakest rooms below.' : 'Good baseline. Your weakest rooms are listed below.';
       const by = {};
       run.results.forEach((r) => { const u = Content.byId[r.qid].unit; by[u] = by[u] || [0, 0]; by[u][1]++; if (r.correct) by[u][0]++; });
       extra = `<div class="card"><span class="label">Score by room</span><div class="unit-bars">${Content.units.filter((u) => by[u.id]).sort((a, b) => by[a.id][0] / by[a.id][1] - by[b.id][0] / by[b.id][1]).map((u) => {
@@ -3643,9 +4100,9 @@ Screens.missed = {
     const s = WR.state;
     let body;
     if (!all.length) {
-      body = `<div class="card empty">${patientHead(patientFor({ id: 'empty-missed', stem: '' }), 'cheer')}<h2>No missed patients</h2><p class="dim">When you miss a question, the patient comes here. Get it right on 2 different days and they're discharged.</p></div>`;
+      body = `<div class="card empty">${patientHead(patientFor({ id: 'empty-missed', stem: '' }), 'cheer')}<h2>No missed patients</h2><p class="dim">When you miss a question, the patient comes here. Get it right on ${CONFIG.mastery.solidDays} different days and they're discharged.</p></div>`;
     } else {
-      body = `<button class="btn primary big block" data-action="reviewAll">${icon('play')}Start re-rounds (${Math.min(10, all.length)} patients)</button>
+      body = `<button class="btn primary big block" data-action="reviewAll">${icon('play')}Start re-rounds (${Math.min(MODES.review.n, all.length)} patients)</button>
       <div class="missed-rooms">${Content.units.map((u) => {
         const list = all.filter((q) => q.unit === u.id);
         if (!list.length) return '';
@@ -3657,8 +4114,8 @@ Screens.missed = {
     return `${topbar('Missed patients', `${all.length} waiting · ${s.discharged} discharged so far`)}<div class="narrow stack">${body}</div>`;
   },
   act: {
-    reviewAll() { startReview(Engine.pickReview(null, 10), 'Missed patients'); },
-    reviewUnit(d) { startReview(Engine.pickReview(d.unit, 10), 'Missed: ' + Content.unitById[d.unit].topic); },
+    reviewAll() { startReview(Engine.pickReview(null), 'Missed patients'); },
+    reviewUnit(d) { startReview(Engine.pickReview(d.unit), 'Missed: ' + Content.unitById[d.unit].topic); },
   },
 };
 
@@ -3790,7 +4247,7 @@ Screens.stats = {
   act: {
     practiceWeak() {
       const ids = [...new Set(weakFocus().flatMap((a) => a.qids))];
-      startReview(shuffle(ids).slice(0, 10), 'Weak focus points');
+      startReview(shuffle(ids).slice(0, MODES.review.n), 'Weak focus points');
     },
   },
 };
@@ -3860,7 +4317,7 @@ Screens.settings = {
         <div class="card set-row"><div><b>Text size</b></div>${seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']])}</div>
         <div class="card set-row"><div><b>Exam date</b><p class="dim">Powers the countdown and your daily target.</p></div>
           <input type="date" id="exam-date" value="${esc(st.examDate)}" aria-label="Exam date"></div>
-        <div class="card set-row"><div><b>Daily target</b><p class="dim">Auto spreads what's left over the days before your exam.</p></div>${seg('dailyGoal', [[0, 'Auto'], [20, '20'], [40, '40'], [60, '60']])}</div>
+        <div class="card set-row"><div><b>Daily target</b><p class="dim">Auto spreads what's left over the days before your exam.</p></div>${seg('dailyGoal', [[0, 'Auto']].concat(CONFIG.dailyTarget.choices.map((n) => [n, String(n)])))}</div>
         <div class="card"><b>Your progress</b><p class="dim">${cloud}</p>
           <div class="btn-row"><button class="btn" data-action="backup">${icon('download')}Download backup</button>
           <label class="btn file-btn">${icon('upload')}Restore from backup<input type="file" id="restore" accept=".json,application/json"></label>
@@ -3938,10 +4395,24 @@ function applySettings() {
 }
 
 // ----- onboarding
+const topMultiplier = Math.max(...CONFIG.scoring.streakMultipliers.map((m) => m.mult));
 const TUTORIAL = [
-  { ico: 'bed', t: 'Each room is a ward', d: 'Rooms 101 to 112 match your 12 chapters. Tap a room and your nurse walks in. A shift is 10 patients, and every patient is one question on a chart.' },
-  { ico: 'heart', t: 'Lives, streaks, lifelines', d: 'You get 3 lives per shift. Right answers in a row raise your score multiplier up to ×3. Stuck? Ask a colleague to cross out wrong options, or take a coffee break for +1 life.' },
-  { ico: 'star', t: 'Learn from every miss', d: 'Every answer explains WHY, with memory tricks and ATI test tips. Missed patients come back until you get them right on 2 different days. That is how stars and real mastery are earned.' },
+  {
+    ico: 'bed', t: 'Each room is a ward',
+    d: `Rooms 101 to 112 match your 12 chapters. Tap a room and your nurse walks in. A shift is ${MODES.shift.n} patients, `
+      + 'and every patient is one question on a chart.',
+  },
+  {
+    ico: 'heart', t: 'Lives, streaks, lifelines',
+    d: `You get ${MODES.shift.lives} lives per shift. Right answers in a row raise your score multiplier up to ×${topMultiplier}. `
+      + 'Stuck? Ask a colleague to cross out wrong options, or take a coffee break for +1 life.',
+  },
+  {
+    ico: 'star', t: 'Learn from every miss',
+    d: 'Every answer explains WHY, with memory tricks and ATI test tips. '
+      + `Missed patients come back until you get them right on ${CONFIG.mastery.solidDays} different days. `
+      + 'That is how stars and real mastery are earned.',
+  },
 ];
 
 Screens.onboard = {
@@ -3956,7 +4427,7 @@ Screens.onboard = {
         <h1 tabindex="-1">Welcome to Ward Rounds</h1>
         <p class="dim">A hospital study game built from your final exam study guide: ${Content.all().length} patients across 12 rooms.</p>
         <label class="ob-name"><span class="label">What should your patients call you? (optional)</span>
-          <input id="nurse-name" type="text" maxlength="18" autocomplete="nickname" value="${esc(s.profile.name)}" placeholder="Nurse name"></label>
+          <input id="nurse-name" type="text" maxlength="${CONFIG.profile.nameMaxLength}" autocomplete="nickname" value="${esc(s.profile.name)}" placeholder="Nurse name"></label>
         <button class="btn primary big block" data-action="ob" data-to="1">Next: make your nurse</button>`;
     } else if (step === 1) {
       const row = (key, list, isColor) => `<div class="ob-row">${list.map((x, i) => `<button class="swatch small ${av[key] === i ? 'on' : ''}" data-action="obset" data-key="${key}" data-val="${i}" aria-label="${esc(isColor ? (x.n || 'Tone ' + (i + 1)) : x)}">${isColor ? `<span class="dot" style="background:${x.c || x}"></span>` : `<span class="sw-ava">${nurseSVG(Object.assign({}, av, { [key]: i }), 'happy', { headOnly: true })}</span>`}</button>`).join('')}</div>`;
@@ -3976,7 +4447,7 @@ Screens.onboard = {
   },
   mount(el) {
     const n = $('#nurse-name', el);
-    if (n) n.addEventListener('input', () => { WR.state.profile.name = n.value.trim().slice(0, 18); });
+    if (n) n.addEventListener('input', () => { WR.state.profile.name = n.value.trim().slice(0, CONFIG.profile.nameMaxLength); });
   },
   act: {
     ob(d) {
@@ -3991,8 +4462,7 @@ Screens.onboard = {
       Store.save();
       // swap the step in place: a full App.show() cross-fades two screens, so both steps' text overlapped (and was slow in Safari)
       App.params = { step: to };
-      App.rerender();
-      App.el.scrollTop = 0;
+      App.rerender({ scrollTop: 0 });
       const ob = $('.onboard', App.el);
       if (ob) ob.classList.add('ob-step');
     },
@@ -4002,7 +4472,7 @@ Screens.onboard = {
 
 /* ---- 65-cards.js ---- */
 // ---------- thank-you cards ----------
-// A patient discharged from Missed Patients (right on 2 different days after a miss) leaves a
+// A patient discharged from Missed Patients (right on CONFIG.mastery.solidDays different days after a miss) leaves a
 // thank-you card: their face, a pun, the fact behind their question, and the room. Cards are
 // collected in an album, so the hardest-won facts become the ones you keep looking at.
 const CARD_JOKES = {
@@ -4078,7 +4548,7 @@ Screens.cards = {
         <div class="card-grid">${tiles}${ghosts}</div></div>`;
     }).join('');
     const empty = `<div class="card empty">${patientHead(patientFor({ id: 'card-empty', stem: '' }), 'cheer')}<h2>No cards yet</h2>
-      <p class="dim">Miss a question and the patient goes to Missed Patients. Get it right on 2 different days to discharge them, and they leave you a thank-you card with the fact you learned.</p></div>`;
+      <p class="dim">Miss a question and the patient goes to Missed Patients. Get it right on ${CONFIG.mastery.solidDays} different days to discharge them, and they leave you a thank-you card with the fact you learned.</p></div>`;
     return `${topbar('Get-well cards', `${n} collected · from patients you discharged`)}
       <div class="narrow stack">${rooms || empty}${rooms && missed.length ? `<button class="btn primary" data-action="missed">${icon('bed')}Re-round missed patients to earn more</button>` : ''}</div>`;
   },
@@ -4123,7 +4593,7 @@ function bindEvents() {
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG });
 
 async function start(hot) {
   App.measure();

@@ -188,11 +188,12 @@ details.more[open] summary::before { transform: rotate(90deg); }
 
 /* ---------- code blue ---------- */
 .mode-codeblue { background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 71, 87, .18)); }
-.mode-codeblue::before { content: ""; position: fixed; inset: 0; pointer-events: none; box-shadow: inset 0 0 80px rgba(255, 71, 87, .45); animation: alarm-pulse 1s ease-in-out infinite; z-index: 1; }
+.mode-codeblue::before { content: ""; position: fixed; inset: 0; pointer-events: none; will-change: opacity; box-shadow: inset 0 0 80px rgba(255, 71, 87, .45); animation: alarm-pulse 1s ease-in-out infinite; z-index: 1; }
 @keyframes alarm-pulse { 50% { opacity: .25; } }
 .timer { display: flex; align-items: center; gap: var(--s3); }
+.timer > svg { width: 26px; height: 26px; flex: none; color: #ffd0d5; } /* without a size it filled the whole pane */
 .timer .bar { flex: 1; height: 14px; }
-.timer .bar > i { background: var(--code); transition: width .25s linear; }
+.timer .bar > i { background: var(--code); transition: none; will-change: transform; } /* moved every frame by 50-chart.js */
 .timer b { font-family: var(--font-mono); font-size: var(--fs-xl); color: #ffd0d5; min-width: 3.2ch; text-align: right; }
 .timer-delta { position: absolute; right: 0; top: -6px; font-weight: 800; font-family: var(--font-display); animation: float-up 1s ease-out forwards; }
 
@@ -209,7 +210,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
 .hp { display: flex; flex-direction: column; gap: 4px; }
 .hp .bar { height: 16px; background: #2a1420; border: 1px solid #5a2a3c; }
-.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); }
+.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s ease; }
 .hp-row { display: flex; justify-content: space-between; font-weight: 800; font-size: var(--fs-sm); }
 .phase-banner { position: absolute; left: 0; right: 0; top: 40%; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-2xl); color: #ffd36b; text-shadow: 0 3px 0 #7a2b00; animation: banner 1.8s ease both; pointer-events: none; }
 @keyframes banner { 0% { opacity: 0; transform: scale(.6); } 15% { opacity: 1; transform: scale(1.08); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); } }

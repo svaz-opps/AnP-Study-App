@@ -27,7 +27,7 @@ function bindEvents() {
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG });
 
 async function start(hot) {
   App.measure();

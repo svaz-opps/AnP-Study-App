@@ -29,8 +29,7 @@ function hudHTML() {
 
 function dailyChip() {
   const d = WR.state.daily, done = d.last === todayStr();
-  const yesterday = todayStr(new Date(Date.now() - 86400000));
-  const streak = d.last === todayStr() || d.last === yesterday ? d.streak : 0;
+  const streak = d.last === todayStr() || d.last === yesterdayStr() ? d.streak : 0;
   return `<button class="chip daily ${done ? 'done' : 'todo'}" data-action="daily" aria-label="${done ? 'Daily challenge done today' : "Start today's daily challenge"}${streak ? `, ${streak}-day daily streak` : ''}">${icon(done ? 'check' : 'sparkle')}<span>${done ? 'Daily done' : 'Daily challenge'}${streak ? ` · <span class="num">${streak}</span>d` : ''}</span></button>`;
 }
 
@@ -70,7 +69,7 @@ Screens.floor = {
     const units = Content.units;
     const bossOpen = Engine.bossUnlocked();
     const alarm = `<button class="alarm" data-action="codeblue" aria-label="Start a Code Blue timed round"><span class="light"></span>Code Blue</button>`;
-    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `★ in ${Engine.BOSS_ROOMS} rooms or ${Engine.BOSS_SHIFTS} shifts (${Engine.shiftsDone()}/${Engine.BOSS_SHIFTS})`}</small></span></button>`;
+    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `★ in ${CONFIG.boss.unlockRooms} rooms or ${CONFIG.boss.unlockShifts} shifts (${Engine.shiftsDone()}/${CONFIG.boss.unlockShifts})`}</small></span></button>`;
     const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
@@ -132,7 +131,8 @@ Screens.floor = {
       }
       const m = /translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(walker.style.transform) || [0, 0, 0];
       const dist = Math.hypot(x - m[1], y - m[2]);
-      const dur = clamp(dist / 700, 0.35, 1.1);
+      const T = CONFIG.timing;
+      const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
       walker.style.transitionDuration = dur + 's';
       walker.classList.add('walking');
       walker.style.transform = `translate(${x}px, ${y}px)`;
@@ -147,26 +147,38 @@ Screens.floor = {
       await Screens.floor.walkTo(el);
       el.classList.add('open');
       Sound.play('door');
-      await sleep(reducedMotion() ? 0 : 360);
+      await sleep(reducedMotion() ? 0 : CONFIG.timing.doorOpenMs);
       Screens.floor.busy = false;
       startShift(d.unit);
     },
     codeblue() { startMode('codeblue'); },
     daily() {
       const done = WR.state.daily.last === todayStr();
-      App.modal(`<h2>Daily challenge</h2><p class="dim">5 patients, the same set all day: 2 from your missed or weak list and 3 from anywhere in the bank. Finish it on back-to-back days to build a daily streak and unlock a party hat (3 days) and rubber-duck scrubs (7 days).</p>${done ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>' : ''}
+      const n = MODES.daily.n, fromMissed = CONFIG.daily.fromMissed, B = CONFIG.badges;
+      const about = `${n} patients, the same set all day: ${fromMissed} from your missed or weak list `
+        + `and ${n - fromMissed} from anywhere in the bank. Finish it on back-to-back days to build a daily streak `
+        + `and unlock a party hat (${B.daily3} days) and rubber-duck scrubs (${B.daily7} days).`;
+      const replayNote = done
+        ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>'
+        : '';
+      App.modal(`<h2>Daily challenge</h2><p class="dim">${about}</p>${replayNote}
         <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">${done ? 'Replay' : 'Start'}</button></div>`,
       (m) => { if (m === 'go') startDaily(); return false; });
     },
     boss() {
       if (!Engine.bossUnlocked() && !WR.debug) {
-        App.modal(`<h2>The OR is locked</h2><p class="dim">The Superbug only fights experienced nurses. Earn a star in ${Engine.BOSS_ROOMS} rooms, or finish ${Engine.BOSS_SHIFTS} shifts (you've finished ${Engine.shiftsDone()}). A star means you've answered 60% of a room's patients right at least once.</p><div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>`);
+        const BOSS = CONFIG.boss;
+        const why = `The Superbug only fights experienced nurses. Earn a star in ${BOSS.unlockRooms} rooms, `
+          + `or finish ${BOSS.unlockShifts} shifts (you've finished ${Engine.shiftsDone()}). `
+          + `A star means you've answered ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients right at least once.`;
+        App.modal(`<h2>The OR is locked</h2><p class="dim">${why}</p>`
+          + '<div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>');
         return;
       }
       startMode('boss');
     },
     exam() {
-      App.modal(`<h2>Exam simulation</h2><p class="dim">50 mixed questions from every room, like the real final. No lifelines and no explanations until the end, then a full score report by unit.</p>
+      App.modal(`<h2>Exam simulation</h2><p class="dim">${MODES.exam.n} mixed questions from every room, like the real final. No lifelines and no explanations until the end, then a full score report by unit.</p>
         <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">Start exam</button></div>`,
       (m) => { if (m === 'go') startMode('exam'); return false; });
     },
@@ -174,7 +186,7 @@ Screens.floor = {
 };
 
 function startShift(unit) {
-  App.run = new Run('shift', { unit, queue: Engine.pickShift(unit, 10) });
+  App.run = new Run('shift', { unit, queue: Engine.pickShift(unit) });
   App.run.next();
   App.show('chart', {}, 'zoom-in');
 }
@@ -192,7 +204,7 @@ function startDaily() {
   App.show('chart', {}, 'zoom-in');
 }
 function startMode(mode) {
-  const queue = mode === 'exam' ? Engine.pickExam(50) : [];
+  const queue = mode === 'exam' ? Engine.pickExam() : [];
   App.run = new Run(mode, { queue });
   App.run.next();
   if (mode === 'codeblue') Sound.play('alarm');

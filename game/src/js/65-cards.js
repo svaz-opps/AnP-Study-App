@@ -1,5 +1,5 @@
 // ---------- thank-you cards ----------
-// A patient discharged from Missed Patients (right on 2 different days after a miss) leaves a
+// A patient discharged from Missed Patients (right on CONFIG.mastery.solidDays different days after a miss) leaves a
 // thank-you card: their face, a pun, the fact behind their question, and the room. Cards are
 // collected in an album, so the hardest-won facts become the ones you keep looking at.
 const CARD_JOKES = {
@@ -75,7 +75,7 @@ Screens.cards = {
         <div class="card-grid">${tiles}${ghosts}</div></div>`;
     }).join('');
     const empty = `<div class="card empty">${patientHead(patientFor({ id: 'card-empty', stem: '' }), 'cheer')}<h2>No cards yet</h2>
-      <p class="dim">Miss a question and the patient goes to Missed Patients. Get it right on 2 different days to discharge them, and they leave you a thank-you card with the fact you learned.</p></div>`;
+      <p class="dim">Miss a question and the patient goes to Missed Patients. Get it right on ${CONFIG.mastery.solidDays} different days to discharge them, and they leave you a thank-you card with the fact you learned.</p></div>`;
     return `${topbar('Get-well cards', `${n} collected · from patients you discharged`)}
       <div class="narrow stack">${rooms || empty}${rooms && missed.length ? `<button class="btn primary" data-action="missed">${icon('bed')}Re-round missed patients to earn more</button>` : ''}</div>`;
   },

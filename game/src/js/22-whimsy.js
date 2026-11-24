@@ -1,6 +1,6 @@
 // ---------- whimsy: silly patient reactions ----------
 // A right answer streak makes the patient sillier (tiers 1-4, the same steps as the score
-// multiplier, plus 15+). A run of misses makes the bedside more chaotic (levels 1-3).
+// multiplier, plus CONFIG.whimsy.legendaryStreak). A run of misses makes the bedside more chaotic (levels 1-3).
 // Everything plays inside the patient card only, lasts under 1.5 s, and never delays the
 // explanation. Moves live in 35-whimsy.css; this file picks a reaction and stages it.
 
@@ -70,9 +70,9 @@ const Whimsy = {
 
   setting() { return (WR.state.settings && WR.state.settings.whimsy) || 'full'; },
 
-  // streak tier: 0 below 3, then the score multiplier's steps (×1.5, ×2, ×3), then 15+
+  // streak tier: 0 with no multiplier, then one tier per multiplier step, then the legendary streak
   tier(streak) {
-    if (streak >= 15) return 4;
+    if (streak >= CONFIG.whimsy.legendaryStreak) return 4;
     const m = Engine.multiplier(streak);
     return m >= 3 ? 3 : m >= 2 ? 2 : m > 1 ? 1 : 0;
   },
@@ -86,7 +86,8 @@ const Whimsy = {
     if (res.correct) { kind = 'good'; level = this.tier(run.streak); }
     else if (res.frac > 0) return null; // partly right: stay calm, read the why
     else { kind = 'chaos'; level = this.chaos(run.wrongRun); }
-    const cap = run.mode === 'codeblue' ? 1 : mode === 'mild' ? (kind === 'good' ? 2 : 1) : 4;
+    const W = CONFIG.whimsy;
+    const cap = run.mode === 'codeblue' ? W.codeBlueMaxTier : mode === 'mild' ? W.mildMaxTier[kind] : 4;
     level = Math.min(level, cap);
     if (!level) return null;
     let pool = WHIMSY.filter((w) => w.kind === kind && w.tier === level);
@@ -122,8 +123,8 @@ const Whimsy = {
     if (w.kind === 'good' && w.tier >= 2) bed.classList.add('wh-hi'); // room-theme gags join in
     const card = bed.closest('.patient-card');
     if (w.banner && card) { const b = document.createElement('div'); b.className = 'wh-banner'; b.textContent = w.banner; b.setAttribute('aria-hidden', 'true'); card.appendChild(b); }
-    if (w.sneeze && !still) { const mon = document.getElementById('monitor'); if (mon) { mon.classList.remove('wh-sneeze'); void mon.offsetWidth; mon.classList.add('wh-sneeze'); } }
-    if (w.sound) Sound.play(w.sound, 260); // after the right/wrong chime
+    if (w.sneeze && !still) replayClass(document.getElementById('monitor'), 'wh-sneeze');
+    if (w.sound) Sound.play(w.sound, CONFIG.whimsy.soundDelayMs); // after the right/wrong chime
     this.timer = setTimeout(() => this.clear(bed), w.ms);
     return w;
   },

@@ -62,10 +62,10 @@ const Store = {
 
   onChange(fn) { this.listeners.push(fn); },
 
+  // opts.now: write straight away (end of a round, restore, reset) instead of after a short wait
   save(opts = {}) {
     this.state.updatedAt = Date.now();
-    this._local();
-    if (opts.now) this._cloud.flush(); else this._cloud();
+    if (opts.now) { this._local.flush(); this._cloud.flush(); } else { this._local(); this._cloud(); }
   },
 
   // autosave the round in progress (or clear it once the round is over / left)
@@ -79,11 +79,14 @@ const Store = {
     this.save();
   },
 
+  // Writing the whole save is the slowest thing a tap can trigger, so it waits until taps stop
+  // and the browser is idle (never in the middle of an animation). Leaving or hiding the page
+  // always writes straight away (90-boot.js), so nothing is lost.
   _local: debounce(function () {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(Store.state)); } catch (e) { /* storage blocked: cloud save still runs */ }
-  }, 250),
+  }, CONFIG.timing.saveLocalMs, { idle: true }),
 
-  _cloud: debounce(function () { Store._cloudWrite(); }, 2500),
+  _cloud: debounce(function () { Store._cloudWrite(); }, CONFIG.timing.saveCloudMs, { idle: true }),
 
   async _cloudWrite() {
     const c = this.cloud;
@@ -113,7 +116,7 @@ const Store = {
       const uid = await user.id();
       if (!uid) return;
       const ref = db.doc('data/users/' + uid + '/save');
-      const snap = await Promise.race([ref.get(), sleep(10000).then(() => null)]);
+      const snap = await Promise.race([ref.get(), sleep(CONFIG.timing.cloudLoadTimeoutMs).then(() => null)]);
       this.cloud.ref = ref;
       this.cloud.status = 'cloud';
       if (snap && snap.exists) {
@@ -122,7 +125,7 @@ const Store = {
           this.state = mergeDefaults(defaultState(), JSON.parse(JSON.stringify(remote)));
           WR.state = this.state;
           this.cloud.lastWritten = remote.updatedAt;
-          this._local();
+          this._local.flush();
           this.listeners.forEach((fn) => fn('remote'));
           return;
         }

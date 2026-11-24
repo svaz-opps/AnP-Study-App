@@ -11,7 +11,8 @@ const App = {
 
   measure() {
     const w = window.innerWidth, h = window.innerHeight;
-    const size = w >= 1000 ? 'wide' : w >= 700 ? 'regular' : 'compact';
+    const L = CONFIG.layout;
+    const size = w >= L.wideMinWidth ? 'wide' : w >= L.regularMinWidth ? 'regular' : 'compact';
     const layout = size === 'wide' && w > h ? 'h' : 'v';
     const changed = size !== this.size || layout !== this.layout;
     this.size = size; this.layout = layout;
@@ -32,7 +33,7 @@ const App = {
     sec.innerHTML = scr.render(params);
     if (old) {
       old.classList.add('leaving');
-      setTimeout(() => old.remove(), 220);
+      setTimeout(() => old.remove(), CONFIG.timing.screenLeaveMs);
       root.appendChild(sec);
     } else {
       root.innerHTML = '';
@@ -45,16 +46,19 @@ const App = {
     Store.saveRun();
   },
 
-  rerender() {
+  // redraw the current screen in place. opts.scrollTop: where to scroll to (default: stay put)
+  rerender(opts = {}) {
     if (!this.name) return;
     const scr = Screens[this.name];
-    if (scr.leave) scr.leave();
     const sec = this.el;
-    const y = sec.scrollTop;
+    const y = sec.scrollTop; // read before anything changes, so it costs no extra layout
+    if (scr.leave) scr.leave();
+    const want = opts.scrollTop != null ? opts.scrollTop : y;
     sec.className = 'screen ' + (scr.cls || this.name);
     sec.innerHTML = scr.render(this.params);
     if (scr.mount) scr.mount(sec, this.params);
-    sec.scrollTop = y;
+    // writing scrollTop forces a layout on the spot, so only do it when it has to move
+    if (want !== 0 || y !== 0) sec.scrollTop = want;
   },
 
   act(action, data, el, ev) {
@@ -67,7 +71,13 @@ const App = {
     return out;
   },
 
-  toast(text, ms = 2600) {
+  modalRoot: null,
+  modalOpen() {
+    const root = this.modalRoot || (this.modalRoot = document.getElementById('modal-root'));
+    return !!(root && root.firstChild);
+  },
+
+  toast(text, ms = CONFIG.timing.toastMs) {
     const t = document.createElement('div');
     t.className = 'toast';
     t.setAttribute('role', 'status');
@@ -117,15 +127,16 @@ function celebrate(run) {
   if (run.rankUp != null) {
     Sound.play('rank');
     FX.confetti(180);
-    App.toast(`Promoted to ${RANKS[run.rankUp].n}!`, 3200);
+    App.toast(`Promoted to ${RANKS[run.rankUp].n}!`, CONFIG.timing.rankToastMs);
     run.rankUp = null;
   }
 }
 
 function badgeToast(ids) {
+  const T = CONFIG.timing;
   ids.forEach((id, k) => {
     const b = BADGES.find((x) => x.id === id);
     if (!b) return;
-    setTimeout(() => { Sound.play('badge'); App.toast(`Badge earned: ${b.n}`); }, 600 + k * 1400);
+    setTimeout(() => { Sound.play('badge'); App.toast(`Badge earned: ${b.n}`); }, T.badgeToastDelayMs + k * T.badgeToastGapMs);
   });
 }

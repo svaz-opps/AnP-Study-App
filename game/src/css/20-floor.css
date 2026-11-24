@@ -117,8 +117,9 @@
   border-radius: 14px; background: color-mix(in srgb, var(--code) 18%, var(--surface)); border: 2px solid var(--code);
   color: #ffd9dd; font-weight: 800; z-index: 2;
 }
+/* the light pulses with opacity only: animating box-shadow would repaint it every frame */
 .alarm .light { width: 14px; height: 14px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); animation: blink 1.4s ease-in-out infinite; }
-@keyframes blink { 50% { opacity: .35; box-shadow: none; } }
+@keyframes blink { 50% { opacity: .35; } }
 .elevator {
   display: flex; align-items: center; gap: var(--s3); padding: 8px 14px 8px 8px; min-height: var(--tap);
   border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 2;

@@ -46,23 +46,53 @@ function todayStr(d = new Date()) {
   const p = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
+const yesterdayStr = () => todayStr(new Date(Date.now() - 86400000));
 function dayNum(s = todayStr()) {
   const [y, m, d] = s.split('-').map(Number);
   return Math.round(Date.UTC(y, m - 1, d) / 86400000);
 }
 
-function debounce(fn, ms) {
+// Run fn when the browser has nothing else to do (so it never lands mid-animation).
+// Safari has no requestIdleCallback; there it simply runs on the next turn.
+function whenIdle(fn, timeout = 2000) {
+  if (window.requestIdleCallback) requestIdleCallback(() => fn(), { timeout });
+  else setTimeout(fn, 0);
+}
+
+// Wait until calls stop for `ms`, then run once. opts.idle: run in idle time.
+// flush() runs right now (used when the page is being hidden or closed).
+function debounce(fn, ms, opts = {}) {
   let t;
-  const d = (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+  const d = (...a) => {
+    clearTimeout(t);
+    t = setTimeout(() => (opts.idle ? whenIdle(() => fn(...a)) : fn(...a)), ms);
+  };
   d.flush = (...a) => { clearTimeout(t); fn(...a); };
   return d;
 }
 
+// Restart a CSS animation class without the old `void el.offsetWidth` trick, which
+// forces the browser to lay out the whole page in the middle of a tap. The class comes
+// off now and goes back on two frames later, once the browser has seen it removed.
+function replayClass(el, cls) {
+  if (!el) return;
+  el.classList.remove(cls);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add(cls)));
+}
+
+// Run fn right after the browser paints the next frame. Splitting a big update this way lets
+// the first part show a frame sooner instead of everything waiting for one long frame.
+function afterNextPaint(fn) {
+  requestAnimationFrame(() => setTimeout(fn, 0));
+}
+
+// asked every animation frame, so the media query is created once
+const reducedMotionQuery = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
 const reducedMotion = () => {
   const s = window.WR && WR.state && WR.state.settings.motion;
   if (s === 'reduced') return true;
   if (s === 'full') return false;
-  return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return !!(reducedMotionQuery && reducedMotionQuery.matches);
 };
 
 // ---------- icons (inline SVG, stroke-based) ----------

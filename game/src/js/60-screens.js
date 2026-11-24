@@ -11,9 +11,9 @@ Screens.missed = {
     const s = WR.state;
     let body;
     if (!all.length) {
-      body = `<div class="card empty">${patientHead(patientFor({ id: 'empty-missed', stem: '' }), 'cheer')}<h2>No missed patients</h2><p class="dim">When you miss a question, the patient comes here. Get it right on 2 different days and they're discharged.</p></div>`;
+      body = `<div class="card empty">${patientHead(patientFor({ id: 'empty-missed', stem: '' }), 'cheer')}<h2>No missed patients</h2><p class="dim">When you miss a question, the patient comes here. Get it right on ${CONFIG.mastery.solidDays} different days and they're discharged.</p></div>`;
     } else {
-      body = `<button class="btn primary big block" data-action="reviewAll">${icon('play')}Start re-rounds (${Math.min(10, all.length)} patients)</button>
+      body = `<button class="btn primary big block" data-action="reviewAll">${icon('play')}Start re-rounds (${Math.min(MODES.review.n, all.length)} patients)</button>
       <div class="missed-rooms">${Content.units.map((u) => {
         const list = all.filter((q) => q.unit === u.id);
         if (!list.length) return '';
@@ -25,8 +25,8 @@ Screens.missed = {
     return `${topbar('Missed patients', `${all.length} waiting · ${s.discharged} discharged so far`)}<div class="narrow stack">${body}</div>`;
   },
   act: {
-    reviewAll() { startReview(Engine.pickReview(null, 10), 'Missed patients'); },
-    reviewUnit(d) { startReview(Engine.pickReview(d.unit, 10), 'Missed: ' + Content.unitById[d.unit].topic); },
+    reviewAll() { startReview(Engine.pickReview(null), 'Missed patients'); },
+    reviewUnit(d) { startReview(Engine.pickReview(d.unit), 'Missed: ' + Content.unitById[d.unit].topic); },
   },
 };
 
@@ -158,7 +158,7 @@ Screens.stats = {
   act: {
     practiceWeak() {
       const ids = [...new Set(weakFocus().flatMap((a) => a.qids))];
-      startReview(shuffle(ids).slice(0, 10), 'Weak focus points');
+      startReview(shuffle(ids).slice(0, MODES.review.n), 'Weak focus points');
     },
   },
 };
@@ -228,7 +228,7 @@ Screens.settings = {
         <div class="card set-row"><div><b>Text size</b></div>${seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']])}</div>
         <div class="card set-row"><div><b>Exam date</b><p class="dim">Powers the countdown and your daily target.</p></div>
           <input type="date" id="exam-date" value="${esc(st.examDate)}" aria-label="Exam date"></div>
-        <div class="card set-row"><div><b>Daily target</b><p class="dim">Auto spreads what's left over the days before your exam.</p></div>${seg('dailyGoal', [[0, 'Auto'], [20, '20'], [40, '40'], [60, '60']])}</div>
+        <div class="card set-row"><div><b>Daily target</b><p class="dim">Auto spreads what's left over the days before your exam.</p></div>${seg('dailyGoal', [[0, 'Auto']].concat(CONFIG.dailyTarget.choices.map((n) => [n, String(n)])))}</div>
         <div class="card"><b>Your progress</b><p class="dim">${cloud}</p>
           <div class="btn-row"><button class="btn" data-action="backup">${icon('download')}Download backup</button>
           <label class="btn file-btn">${icon('upload')}Restore from backup<input type="file" id="restore" accept=".json,application/json"></label>
@@ -306,10 +306,24 @@ function applySettings() {
 }
 
 // ----- onboarding
+const topMultiplier = Math.max(...CONFIG.scoring.streakMultipliers.map((m) => m.mult));
 const TUTORIAL = [
-  { ico: 'bed', t: 'Each room is a ward', d: 'Rooms 101 to 112 match your 12 chapters. Tap a room and your nurse walks in. A shift is 10 patients, and every patient is one question on a chart.' },
-  { ico: 'heart', t: 'Lives, streaks, lifelines', d: 'You get 3 lives per shift. Right answers in a row raise your score multiplier up to ×3. Stuck? Ask a colleague to cross out wrong options, or take a coffee break for +1 life.' },
-  { ico: 'star', t: 'Learn from every miss', d: 'Every answer explains WHY, with memory tricks and ATI test tips. Missed patients come back until you get them right on 2 different days. That is how stars and real mastery are earned.' },
+  {
+    ico: 'bed', t: 'Each room is a ward',
+    d: `Rooms 101 to 112 match your 12 chapters. Tap a room and your nurse walks in. A shift is ${MODES.shift.n} patients, `
+      + 'and every patient is one question on a chart.',
+  },
+  {
+    ico: 'heart', t: 'Lives, streaks, lifelines',
+    d: `You get ${MODES.shift.lives} lives per shift. Right answers in a row raise your score multiplier up to ×${topMultiplier}. `
+      + 'Stuck? Ask a colleague to cross out wrong options, or take a coffee break for +1 life.',
+  },
+  {
+    ico: 'star', t: 'Learn from every miss',
+    d: 'Every answer explains WHY, with memory tricks and ATI test tips. '
+      + `Missed patients come back until you get them right on ${CONFIG.mastery.solidDays} different days. `
+      + 'That is how stars and real mastery are earned.',
+  },
 ];
 
 Screens.onboard = {
@@ -324,7 +338,7 @@ Screens.onboard = {
         <h1 tabindex="-1">Welcome to Ward Rounds</h1>
         <p class="dim">A hospital study game built from your final exam study guide: ${Content.all().length} patients across 12 rooms.</p>
         <label class="ob-name"><span class="label">What should your patients call you? (optional)</span>
-          <input id="nurse-name" type="text" maxlength="18" autocomplete="nickname" value="${esc(s.profile.name)}" placeholder="Nurse name"></label>
+          <input id="nurse-name" type="text" maxlength="${CONFIG.profile.nameMaxLength}" autocomplete="nickname" value="${esc(s.profile.name)}" placeholder="Nurse name"></label>
         <button class="btn primary big block" data-action="ob" data-to="1">Next: make your nurse</button>`;
     } else if (step === 1) {
       const row = (key, list, isColor) => `<div class="ob-row">${list.map((x, i) => `<button class="swatch small ${av[key] === i ? 'on' : ''}" data-action="obset" data-key="${key}" data-val="${i}" aria-label="${esc(isColor ? (x.n || 'Tone ' + (i + 1)) : x)}">${isColor ? `<span class="dot" style="background:${x.c || x}"></span>` : `<span class="sw-ava">${nurseSVG(Object.assign({}, av, { [key]: i }), 'happy', { headOnly: true })}</span>`}</button>`).join('')}</div>`;
@@ -344,7 +358,7 @@ Screens.onboard = {
   },
   mount(el) {
     const n = $('#nurse-name', el);
-    if (n) n.addEventListener('input', () => { WR.state.profile.name = n.value.trim().slice(0, 18); });
+    if (n) n.addEventListener('input', () => { WR.state.profile.name = n.value.trim().slice(0, CONFIG.profile.nameMaxLength); });
   },
   act: {
     ob(d) {
@@ -359,8 +373,7 @@ Screens.onboard = {
       Store.save();
       // swap the step in place: a full App.show() cross-fades two screens, so both steps' text overlapped (and was slow in Safari)
       App.params = { step: to };
-      App.rerender();
-      App.el.scrollTop = 0;
+      App.rerender({ scrollTop: 0 });
       const ob = $('.onboard', App.el);
       if (ob) ob.classList.add('ob-step');
     },

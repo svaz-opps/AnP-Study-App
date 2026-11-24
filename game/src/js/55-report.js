@@ -35,13 +35,14 @@ function paradeLevel(run) {
   if (!n || run.mode === 'exam') return 0;
   if (run.mode === 'boss') return run.won ? 4 : 1;
   const pct = run.results.filter((r) => r.correct).length / n;
-  return pct === 1 && n >= 5 ? 4 : pct >= 0.8 ? 3 : pct >= 0.5 ? 2 : 1;
+  const P = CONFIG.parade;
+  return pct === 1 && n >= P.fullMinPatients ? 4 : pct >= P.hats ? 3 : pct >= P.conga ? 2 : 1;
 }
 function paradeHTML(run) {
   const lv = paradeLevel(run);
   if (!lv || (WR.state.settings.whimsy || 'full') === 'off') return '';
   const seen = new Set();
-  const rows = run.results.filter((r) => !seen.has(r.qid) && seen.add(r.qid)).slice(-12);
+  const rows = run.results.filter((r) => !seen.has(r.qid) && seen.add(r.qid)).slice(-CONFIG.parade.maxPatients);
   const happy = lv >= 3 ? 'starry' : lv === 2 ? 'cheer' : 'happy';
   const hat = '<svg class="pp-hat" viewBox="0 0 20 24" aria-hidden="true"><path d="M2 22 L10 2 L18 22z" fill="#f6bd52" stroke="#c98a1a"/><path d="M5 15 l10 -2 M7 9 l6 -1" stroke="#ff6b8a" stroke-width="2"/><circle cx="10" cy="2.5" r="2.5" fill="#ff6b8a"/></svg>';
   const people = rows.map((r, k) => {
@@ -73,12 +74,12 @@ Screens.report = {
       extra = `<div class="card unit-card"><div><span class="label">Room ${Content.unitById[run.unit].room} mastery</span>
         <div class="room-stars big">${starRow(m.stars)}</div></div>
         <div class="mini-bars"><div><span>Answered right at least once</span><b class="num">${m.ever}/${m.total}</b></div><div class="bar"><i style="width:${m.everFrac * 100}%"></i></div>
-        <div><span>Mastered (right on 2 different days)</span><b class="num">${m.solid}/${m.total}</b></div><div class="bar"><i style="width:${m.solidFrac * 100}%;background:var(--good)"></i></div></div></div>`;
+        <div><span>Mastered (right on ${CONFIG.mastery.solidDays} different days)</span><b class="num">${m.solid}/${m.total}</b></div><div class="bar"><i style="width:${m.solidFrac * 100}%;background:var(--good)"></i></div></div></div>`;
       const ev = run.event;
       if (ev && ev.results.length) {
         const er = ev.results.filter((x) => x.correct).length;
         const line = ev.type === 'rapid' ? `<b>Rapid Response:</b> ${er}/${ev.results.length} right. That's recall from other rooms, the kind the final exam asks for.`
-          : ev.type === 'visitor' ? `<b>Visitor question:</b> ${er ? 'answered right, +15 bonus XP.' : 'missed; it is saved for review.'}`
+          : ev.type === 'visitor' ? `<b>Visitor question:</b> ${er ? `answered right, +${EVENTS.visitor.xp} bonus XP.` : 'missed; it is saved for review.'}`
             : `<b>Power outage:</b> ${er}/${ev.results.length} right by flashlight.`;
         extra += `<div class="card ev-sum ev-${ev.type}">${icon(ev.type === 'rapid' ? 'alarm' : ev.type === 'visitor' ? 'users' : 'sparkle')}<p>${line}</p></div>`;
       }
@@ -88,16 +89,17 @@ Screens.report = {
       mood = right >= 4 ? 'cheer' : 'happy';
       sub = run.dailyFirst ? `${right} of ${n} right · ${d.streak}-day daily streak${d.streak > 1 ? '!' : ''}` : `${right} of ${n} right · replay (today's streak was already counted)`;
     } else if (run.mode === 'review') {
-      title = 'Re-rounds done'; sub = `${right} of ${n} right. Patients right on 2 different days get discharged.`; mood = 'happy';
+      title = 'Re-rounds done'; sub = `${right} of ${n} right. Patients right on ${CONFIG.mastery.solidDays} different days get discharged.`; mood = 'happy';
     } else if (run.mode === 'codeblue') {
-      title = right >= 12 ? 'Patient saved!' : 'Code called'; sub = `You answered ${right} right before time ran out.`; mood = right >= 8 ? 'cheer' : 'focus';
+      title = right >= CONFIG.badges.codeblue12 ? 'Patient saved!' : 'Code called'; sub = `You answered ${right} right before time ran out.`; mood = right >= 8 ? 'cheer' : 'focus';
       extra = `<p class="dim center">Best Code Blue score: <b class="num">${fmt(WR.state.codeBlueBest)}</b></p>`;
     } else if (run.mode === 'boss') {
       title = run.won ? 'Superbug defeated!' : 'The Superbug got away'; mood = run.won ? 'cheer' : 'sad';
       sub = run.won ? 'Infection cleared. The whole hospital is cheering.' : `It had ${run.hp} HP left. Review your misses and try again.`;
     } else {
-      title = 'Exam results'; mood = pct >= 80 ? 'cheer' : pct >= 65 ? 'happy' : 'focus';
-      sub = pct >= 80 ? 'Exam ready. Keep it warm with short daily shifts.' : pct >= 65 ? 'Close! Focus on your weakest rooms below.' : 'Good baseline. Your weakest rooms are listed below.';
+      const pass = pct >= CONFIG.exam.passFraction * 100, close = pct >= CONFIG.exam.closeFraction * 100;
+      title = 'Exam results'; mood = pass ? 'cheer' : close ? 'happy' : 'focus';
+      sub = pass ? 'Exam ready. Keep it warm with short daily shifts.' : close ? 'Close! Focus on your weakest rooms below.' : 'Good baseline. Your weakest rooms are listed below.';
       const by = {};
       run.results.forEach((r) => { const u = Content.byId[r.qid].unit; by[u] = by[u] || [0, 0]; by[u][1]++; if (r.correct) by[u][0]++; });
       extra = `<div class="card"><span class="label">Score by room</span><div class="unit-bars">${Content.units.filter((u) => by[u.id]).sort((a, b) => by[a.id][0] / by[a.id][1] - by[b.id][0] / by[b.id][1]).map((u) => {
