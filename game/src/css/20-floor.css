@@ -199,11 +199,12 @@
   background: var(--paper); color: var(--ink); font-weight: 700; font-size: var(--fs-sm); line-height: 1.3;
   box-shadow: var(--shadow);
 }
+/* The tail is centred on the bubble's height, so it lines up with one-line and multi-line bubbles alike. */
 .bubble::before {
   content: "";
   position: absolute;
   left: -7px;
-  bottom: 16px;
+  top: calc(50% - 8px);
   border: 8px solid transparent;
   border-left: 0;
   border-right-color: var(--paper);

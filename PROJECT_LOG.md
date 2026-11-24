@@ -305,3 +305,9 @@
   the end of the boss fight), slide in/out from the right, and only fade under Calm motion or reduced motion.
   Trade-off: a toast can briefly cover a line of text above those buttons; it is gone after 2.6 s (3.2 s for rank-ups).
 - Committed screenshots in `game/dist/shots/` refreshed.
+- Speech-bubble tail: it was pinned 16 px from the bubble's bottom, which is only centred for one bubble height; on
+  the usual one-line bubble it sat near the top-left corner. Now centred on the bubble's height (`top: calc(50% - 8px)`),
+  and the nurse row centres the bubble on the nurse (`align-items: center`, was `flex-end`, which put the bubble at
+  the nurse's feet). In the boss arena the bubble sits under the nurse, so its tail now points up at the nurse instead
+  of out to the side. Checked close up at landscape, portrait and 375 px with one-line and three-line bubbles, on the
+  chart, the floor and the boss arena.

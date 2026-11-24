@@ -99,7 +99,7 @@
 .streak.hot svg { animation: flame .6s ease-in-out infinite alternate; }
 @keyframes flame { to { transform: scale(1.18) rotate(-6deg); } }
 
-.nurse-row { display: flex; align-items: flex-end; gap: var(--s3); }
+.nurse-row { display: flex; align-items: center; gap: var(--s3); }
 .nurse-row .nurse { width: 86px; height: 104px; flex: none; }
 .nurse-row .nurse svg { width: 100%; height: 100%; overflow: visible; }
 .nurse-row .bubble { flex: 1; max-width: none; }
@@ -409,6 +409,14 @@ details.more[open] summary::before { transform: rotate(90deg); }
 @keyframes boss-heal { 40% { transform: scale(1.12); filter: drop-shadow(0 0 18px #7dffb2); } }
 .arena .nurse { width: 96px; height: 116px; flex: none; }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
+/* In the arena the bubble sits under the nurse, so its tail points up at the nurse instead of out to the side. */
+.arena .bubble::before {
+  top: -7px;
+  left: 40px;
+  border: 8px solid transparent;
+  border-top: 0;
+  border-bottom-color: var(--paper);
+}
 .hp { display: flex; flex-direction: column; gap: 4px; }
 .hp .bar { height: 16px; background: #2a1420; border: 1px solid #5a2a3c; }
 .hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s ease; }
