@@ -471,7 +471,7 @@ svg { display: block; }
 .alarm {
   display: flex; align-items: center; gap: var(--s2); padding: 10px 16px; min-height: var(--tap);
   border-radius: 14px; background: color-mix(in srgb, var(--code) 18%, var(--surface)); border: 2px solid var(--code);
-  color: #ffd9dd; font-weight: 800; z-index: 2;
+  color: #ffd9dd; font-weight: 800; z-index: 4; /* above .walker (3): the nurse walks behind it */
 }
 /* the light pulses with opacity only: animating box-shadow would repaint it every frame */
 .alarm .light {
@@ -485,7 +485,7 @@ svg { display: block; }
 @keyframes blink { 50% { opacity: .35; } }
 .elevator {
   display: flex; align-items: center; gap: var(--s3); padding: 8px 14px 8px 8px; min-height: var(--tap);
-  border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 2;
+  border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 4; /* above .walker */
 }
 .elevator .doors {
   width: 44px;
@@ -496,7 +496,9 @@ svg { display: block; }
   flex: none;
 }
 .elevator small { display: block; font-weight: 700; color: var(--text-dim); font-size: var(--fs-xs); }
-.elevator.locked { opacity: .6; }
+/* Locked: dimmed, but the button stays opaque so the nurse doesn't show through it as she walks behind. */
+.elevator.locked { background: color-mix(in srgb, var(--surface-2) 60%, var(--floor)); border-color: color-mix(in srgb, var(--line) 60%, var(--floor)); }
+.elevator.locked > * { opacity: .6; }
 
 .floor-end { display: none; }
 .floorplan.v .floor-end {

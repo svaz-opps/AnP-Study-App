@@ -328,3 +328,7 @@
   and fade, origin at her head, `CONFIG.timing.bubbleTuckMs` = 260 ms), then she walks. With Reduce Motion/Calm the
   bubble just disappears (she doesn't walk then either). The new floor screen after a shift brings a fresh bubble.
   Checked frame by frame at 1180x820. Not changed: she still passes in front of the Code Blue and OR buttons on the way to far rooms.
+- Floor: the nurse now walks behind the Code Blue and OR buttons (z-index 4, above `.walker` at 3), at the user's
+  request. The locked OR button used `opacity: .6` on the whole button, so she'd have shown through it; now its
+  background and border are dimmed with opaque colours and only its contents are at .6. Checked frame by frame at
+  1180x820 walking to room 106 (she ends partly hidden behind the OR button just before the door opens).
