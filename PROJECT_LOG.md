@@ -444,3 +444,6 @@ After animation work runs out: ideas to make the game more engaging; after that,
   recording the answer (`c.starUp`); the chart plays the badge sound and toasts "Room 107 Ortho: ★ earned!". Back on
   the floor, stars earned since it was last shown stamp onto the room card (scale 2.6 → 1 with a twist, after the
   walk back starts). Checked by seeding a room one answer short of ★. All 8 tests pass.
+- Engagement 4 (R29): sound and urgency. The right-answer chime climbs a major scale with the streak (`Sound.right`,
+  8 steps, resets on a miss). Code Blue's last 5 seconds tick: the number turns red, jumps and beeps once a second
+  (`CONFIG.codeBlue.urgentSeconds`). All 8 tests pass.

@@ -981,6 +981,9 @@ details.more[open] summary::before { transform: rotate(90deg); }
   min-width: 3.2ch;
   text-align: right;
 }
+.timer b.tick { color: var(--code); animation: tick .35s var(--ease-spring); }
+@keyframes tick { 30% { transform: scale(1.35); } }
+[data-calm="1"] .timer b.tick { animation: none; }
 .timer-delta {
   position: absolute;
   right: 0;
@@ -2174,6 +2177,7 @@ const CONFIG = {
     nextAfterRightMs: 420,   // pause before the next patient
     nextAfterWrongMs: 900,
     skipRecent: 10,          // don't repeat any of the last N questions you saw anywhere
+    urgentSeconds: 5,        // the timer ticks (jumps + beeps) for the last seconds
   },
 
   exam: {
@@ -2604,6 +2608,14 @@ const Sound = {
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     src.connect(f); f.connect(g); g.connect(this.master);
     src.start(t0); src.stop(t0 + dur + 0.05);
+  },
+
+  // the right-answer chime climbs a major scale with the streak (resets on a miss), so a hot streak sounds hot
+  right(streak) {
+    if (!this.on()) return;
+    const steps = [0, 2, 4, 5, 7, 9, 11, 12];
+    const k = Math.pow(2, steps[Math.min(Math.max(streak - 1, 0), steps.length - 1)] / 12);
+    try { this.tone(784 * k, 0, 0.14, 'triangle', 0.8); this.tone(1175 * k, 0.09, 0.22, 'triangle', 0.7); } catch (e) { /* audio is optional */ }
   },
 
   play(name, delay = 0) {
@@ -5286,7 +5298,14 @@ Screens.chart = {
     const bar = document.getElementById('timer-bar'), num = document.getElementById('timer-num');
     if (bar) bar.style.transform = barShift(run.timeLeft / run.cfg.time);
     const secs = String(Math.ceil(run.timeLeft));
-    if (num && num.textContent !== secs) num.textContent = secs;
+    if (num && num.textContent !== secs) {
+      num.textContent = secs;
+      // the last seconds tick: the number jumps and beeps once a second
+      if (run.timeLeft > 0 && run.timeLeft <= CONFIG.codeBlue.urgentSeconds) {
+        replayClass(num, 'tick');
+        Sound.play('beep');
+      } else num.classList.remove('tick');
+    }
     if (this.ecg) this.ecg.stress = run.stress();
     if (run.timeLeft <= 0) {
       this.timerOff(); this.timerOff = null;
@@ -5341,7 +5360,7 @@ Screens.chart = {
     const stem = $('#stem', el);
     const ptsTxt = c.pts.pts ? `+${c.pts.pts}${c.pts.mult > 1 ? ' ×' + c.pts.mult : ''}` : '';
     if (res.correct) {
-      Sound.play('right');
+      Sound.right(run.streak);
       FX.float(ptsTxt, stem, 'good');
       if (CONFIG.talk.streakShoutouts.includes(run.streak)) this.say('streak', { streak: run.streak });
       else if (run.results.length > 1 && !run.results[run.results.length - 2].correct) this.say('back');

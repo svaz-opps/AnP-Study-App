@@ -89,6 +89,7 @@ const CONFIG = {
     nextAfterRightMs: 420,   // pause before the next patient
     nextAfterWrongMs: 900,
     skipRecent: 10,          // don't repeat any of the last N questions you saw anywhere
+    urgentSeconds: 5,        // the timer ticks (jumps + beeps) for the last seconds
   },
 
   exam: {

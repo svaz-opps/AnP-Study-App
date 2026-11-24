@@ -318,7 +318,14 @@ Screens.chart = {
     const bar = document.getElementById('timer-bar'), num = document.getElementById('timer-num');
     if (bar) bar.style.transform = barShift(run.timeLeft / run.cfg.time);
     const secs = String(Math.ceil(run.timeLeft));
-    if (num && num.textContent !== secs) num.textContent = secs;
+    if (num && num.textContent !== secs) {
+      num.textContent = secs;
+      // the last seconds tick: the number jumps and beeps once a second
+      if (run.timeLeft > 0 && run.timeLeft <= CONFIG.codeBlue.urgentSeconds) {
+        replayClass(num, 'tick');
+        Sound.play('beep');
+      } else num.classList.remove('tick');
+    }
     if (this.ecg) this.ecg.stress = run.stress();
     if (run.timeLeft <= 0) {
       this.timerOff(); this.timerOff = null;
@@ -373,7 +380,7 @@ Screens.chart = {
     const stem = $('#stem', el);
     const ptsTxt = c.pts.pts ? `+${c.pts.pts}${c.pts.mult > 1 ? ' ×' + c.pts.mult : ''}` : '';
     if (res.correct) {
-      Sound.play('right');
+      Sound.right(run.streak);
       FX.float(ptsTxt, stem, 'good');
       if (CONFIG.talk.streakShoutouts.includes(run.streak)) this.say('streak', { streak: run.streak });
       else if (run.results.length > 1 && !run.results[run.results.length - 2].correct) this.say('back');

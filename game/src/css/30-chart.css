@@ -393,6 +393,9 @@ details.more[open] summary::before { transform: rotate(90deg); }
   min-width: 3.2ch;
   text-align: right;
 }
+.timer b.tick { color: var(--code); animation: tick .35s var(--ease-spring); }
+@keyframes tick { 30% { transform: scale(1.35); } }
+[data-calm="1"] .timer b.tick { animation: none; }
 .timer-delta {
   position: absolute;
   right: 0;
