@@ -36,6 +36,16 @@
   --clip: #c4ced9;
   --shadow: 0 10px 30px rgba(0, 0, 0, .35);
 
+  /* motion (ANIMATION_NOTES.md): entrances decelerate, exits accelerate, moves ease both ways, small pops overshoot */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-in: cubic-bezier(.4, 0, .9, .4);
+  --ease-move: cubic-bezier(.45, .05, .35, 1);
+  --ease-spring: cubic-bezier(.2, .9, .3, 1.25);
+  --dur-tap: 110ms;
+  --dur-small: 200ms;
+  --dur-panel: 300ms;
+  --dur-exit: 160ms;
+
   --font-display: "Fredoka", "Nunito", system-ui, -apple-system, sans-serif;
   --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;

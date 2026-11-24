@@ -58,10 +58,10 @@ svg { display: block; }
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: var(--s3) var(--s5);
   display: flex; flex-direction: column; gap: var(--s4);
-  animation: screen-in .28s ease-out both;
+  animation: screen-in var(--dur-panel) var(--ease-out) both;
 }
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
-.screen.zoom-in { animation: zoom-in .38s cubic-bezier(.2, .8, .2, 1) both; }
+.screen.zoom-in { animation: zoom-in .38s var(--ease-out) both; }
 @keyframes zoom-in { from { opacity: 0; transform: scale(.92); } }
 
 .wrap { width: 100%; max-width: 1180px; margin-inline: auto; }
@@ -74,7 +74,7 @@ svg { display: block; }
   border-radius: 999px; font-weight: 800; letter-spacing: .01em;
   background: var(--surface-2); color: var(--text);
   border: 1px solid var(--line);
-  transition: transform .12s ease, background-color .15s ease, opacity .15s ease;
+  transition: transform var(--dur-tap) var(--ease-out), background-color .15s var(--ease-out), opacity .15s var(--ease-out);
 }
 .btn:active { transform: scale(.97); }
 .btn svg { width: 20px; height: 20px; flex: none; }
@@ -133,13 +133,13 @@ svg { display: block; }
   padding:
     max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
     max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  animation: fade-in .2s ease both;
+  animation: fade-in var(--dur-small) var(--ease-out) both;
 }
 .modal {
   width: min(520px, 100%); max-height: 100%; overflow-y: auto;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
   padding: var(--s5); display: flex; flex-direction: column; gap: var(--s4);
-  box-shadow: var(--shadow); animation: pop-in .25s cubic-bezier(.2, .9, .3, 1.2) both;
+  box-shadow: var(--shadow); animation: pop-in .26s var(--ease-spring) both;
 }
 .modal h2 { font-size: var(--fs-xl); }
 .modal .actions { display: flex; gap: var(--s3); justify-content: flex-end; flex-wrap: wrap; }
@@ -169,9 +169,9 @@ svg { display: block; }
   font-weight: 700;
   box-shadow: var(--shadow);
   text-align: center;
-  animation: toast-in .3s ease both;
+  animation: toast-in .26s var(--ease-out) both;
 }
-.toast.out { animation: toast-out .25s ease both; }
+.toast.out { animation: toast-out var(--dur-exit) var(--ease-in) both; }
 @keyframes toast-in { from { opacity: 0; transform: translateX(24px); } }
 @keyframes toast-out { to { opacity: 0; transform: translateX(24px); } }
 [data-calm="1"] .toast { animation-name: fade-in; }

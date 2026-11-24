@@ -59,7 +59,7 @@
     var(--floor-tile);
   border: 2px solid var(--line); border-radius: var(--r-md);
   text-align: left; overflow: hidden;
-  transition: border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+  transition: border-color var(--dur-small) var(--ease-out), transform var(--dur-tap) var(--ease-out), box-shadow var(--dur-small) var(--ease-out);
 }
 .room:active { transform: scale(.985); }
 @media (hover: hover) { .room:hover { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); } }
@@ -191,7 +191,7 @@
   height: 104px;
   z-index: 3;
   pointer-events: none;
-  transition: transform .75s cubic-bezier(.45, .05, .35, 1);
+  transition: transform .75s var(--ease-move);
   will-change: transform;
 }
 .walker svg { width: 100%; height: 100%; overflow: visible; }
@@ -224,7 +224,7 @@
   border-left: 0;
   border-right-color: var(--paper);
 }
-.bubble.pop { animation: pop-in .3s cubic-bezier(.2, .9, .3, 1.3) both; }
+.bubble.pop { animation: pop-in .3s var(--ease-spring) both; }
 .floor .station .bubble { margin-left: 92px; }
 .station-card { align-items: center; gap: var(--s3); }
 .station-card .station-desk { height: 64px; }

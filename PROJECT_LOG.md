@@ -371,3 +371,8 @@ After animation work runs out: ideas to make the game more engaging; after that,
   calm = the game's "Calm": still. Every `@media (prefers-reduced-motion)` rule in the CSS is gone, so "Full" is
   really full on a Reduce-Motion device. The level follows the device switch live. Settings text explains Auto vs
   Calm. New test `game/tests/motion.mjs` (4 cases) added to BRANCHING.md's list. All 8 test scripts pass.
+- B (done) Motion tokens in 00-tokens.css: `--ease-out` (entrances), `--ease-in` (exits), `--ease-move` (on-screen
+  travel), `--ease-spring` (small pops), `--dur-tap` 110 ms, `--dur-small` 200, `--dur-panel` 300, `--dur-exit` 160.
+  Core UI moved onto them: screens, buttons, room cards, options, modal + backdrop, toasts (exit now 160 ms ease-in,
+  faster than the 260 ms entrance), feedback panel/sheet, walker, bubble, HP bar, details arrow. Whimsy gags keep
+  their own hand-tuned curves.
