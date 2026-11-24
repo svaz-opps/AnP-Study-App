@@ -287,3 +287,15 @@
   identical before and after, byte for byte for the scripted split and with whitespace runs collapsed for the hand
   rewrite. CSS compared identical with whitespace removed. The snapshot caught one regression during the work
   (`map(roomHTML)` passing the index into a new parameter), fixed before commit.
+
+## 2026-11-24 — iPad screenshot check
+- Re-ran the smoke playthrough at iPad landscape (1180×820), iPad portrait (820×1180), iPad mini landscape
+  (1133×744) and Split View (375×760) and looked at every screenshot.
+- Fixed: in portrait (one-column layout) the chart grid stretched to the full screen height and handed the spare
+  space to the top row, leaving ~120 px of empty space between the nurse's speech bubble and the question card.
+  `.chart-grid` now has `align-content: start`. Landscape is unchanged (one row there).
+- Test fix, not a game bug: the shift-report and boss-report screenshots were taken mid-animation (screen
+  cross-fade, patients walking out), so they looked overlapped/clipped. `smoke.mjs` now waits 1.8 s before both.
+- Noted, not changed: the "Badge earned" toast sits top-centre and briefly covers part of the header (XP bar on the
+  floor, hearts in the OR). It disappears after a few seconds.
+- Committed screenshots in `game/dist/shots/` refreshed.

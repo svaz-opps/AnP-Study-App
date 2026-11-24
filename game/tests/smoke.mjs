@@ -83,7 +83,7 @@ for (const v of views) {
     i++;
   }
   await page.waitForSelector('.report-wrap');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1800); // let the screen change and the patients' walk-out finish
   await page.screenshot({ path: `${out}/${v.name}-05-report.png` });
   await overflow(page, v.name, 'report');
   const saved = await page.evaluate(() => ({ items: Object.keys(window.WR.state.items).length, xp: window.WR.state.xp, missed: window.WR.Engine.missed().length }));
@@ -132,6 +132,7 @@ for (const v of views) {
   const bossWon = await page.evaluate(() => window.WR.state.boss.wins);
   if (!bossWon) fail(v.name, 'boss not defeated after 40 right answers');
   await page.waitForSelector('.report-wrap');
+  await page.waitForTimeout(1800); // the screen change cross-fades; shoot once it has settled
   await page.screenshot({ path: `${out}/${v.name}-13-boss-report.png` });
   // rotation mid-question keeps state
   await page.click('.report-actions [data-action="home"]');
