@@ -41,6 +41,8 @@ async function answerCurrent(page, wantRight) {
     } else {
       const i = q.opts.findIndex((o) => (wantRight ? o.c : !o.c));
       click(i);
+      if (run.cur.revealed) throw new Error('single-answer question submitted on tap');
+      document.querySelector('[data-action="submit"]').click();
     }
     return { type: q.type, revealed: run.cur.revealed, lives: run.lives };
   }, wantRight);
@@ -81,7 +83,7 @@ for (const v of views) {
     i++;
   }
   await page.waitForSelector('.report-wrap');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1800); // let the screen change and the patients' walk-out finish
   await page.screenshot({ path: `${out}/${v.name}-05-report.png` });
   await overflow(page, v.name, 'report');
   const saved = await page.evaluate(() => ({ items: Object.keys(window.WR.state.items).length, xp: window.WR.state.xp, missed: window.WR.Engine.missed().length }));
@@ -96,7 +98,7 @@ for (const v of views) {
   await page.waitForSelector('.floorplan');
   const after = await page.evaluate(() => window.WR.state.xp);
   if (after !== saved.xp) fail(v.name, `xp not persisted: ${after} vs ${saved.xp}`);
-  for (const [act, sel, shot] of [['missed', '.missed-rooms, .empty', '07-missed'], ['locker', '.locker', '08-locker'], ['stats', '.unit-bars', '09-stats'], ['settings', '.set-row', '10-settings']]) {
+  for (const [act, sel, shot] of [['missed', '.missed-rooms, .empty', '07-missed'], ['locker', '.locker', '08-locker'], ['stats', '.unit-bars', '09-stats'], ['cards', '.album-room, .cards-screen .empty', '09b-cards'], ['settings', '.set-row', '10-settings']]) {
     await page.click(`.dock [data-action="${act}"]`);
     await page.waitForSelector(sel);
     await page.waitForTimeout(300);
@@ -130,6 +132,7 @@ for (const v of views) {
   const bossWon = await page.evaluate(() => window.WR.state.boss.wins);
   if (!bossWon) fail(v.name, 'boss not defeated after 40 right answers');
   await page.waitForSelector('.report-wrap');
+  await page.waitForTimeout(1800); // the screen change cross-fades; shoot once it has settled
   await page.screenshot({ path: `${out}/${v.name}-13-boss-report.png` });
   // rotation mid-question keeps state
   await page.click('.report-actions [data-action="home"]');

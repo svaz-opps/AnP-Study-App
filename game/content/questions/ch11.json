@@ -24,10 +24,10 @@
     "id": "N11-03", "sec": "ch11-protection", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "A client in labor receives an epidural. Where is an epidural injection meant to go?",
     "opts": [
-      {"t": "Into the space outside the spinal dura, which contains fat and blood vessels", "c": true},
-      {"t": "Into the CSF-filled subarachnoid space", "w": "That is where a lumbar puncture (spinal tap) samples CSF, not an epidural."},
-      {"t": "Into the ventricles of the brain", "w": "Ventricles are deep in the brain."},
-      {"t": "Under the pia mater", "w": "The pia clings to the neural tissue. Injections don't go there."}
+      {"t": "The epidural space, outside the dura", "c": true},
+      {"t": "The CSF-filled subarachnoid space", "w": "That is where a lumbar puncture (spinal tap) samples CSF, not an epidural."},
+      {"t": "The fluid-filled ventricles of the brain", "w": "Ventricles are deep in the brain."},
+      {"t": "The space under the pia mater", "w": "The pia clings to the neural tissue. Injections don't go there."}
     ],
     "why": "The spinal cord has a real epidural space outside the dura, containing fat and vessels. An epidural targets that space, not the CSF-filled subarachnoid space.",
     "trick": "EPI-dural = ON TOP of the dura (outside it).",
@@ -77,7 +77,7 @@
     "id": "N11-07", "sec": "ch11-cord", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "Which statement about the spinal cord's internal structure is accurate?",
     "opts": [
-      {"t": "Gray matter forms the horns; white matter forms columns of tracts, and ascending tracts carry sensory information to the brain.", "c": true},
+      {"t": "Gray matter forms the horns; white matter forms the columns.", "c": true},
       {"t": "White matter forms the horns; gray matter forms the columns.", "w": "Swapped: horns are gray, columns are white."},
       {"t": "Descending tracts carry sensory information up to the brain.", "w": "Descending tracts carry motor commands DOWN. Ascending tracts carry sensory information up."},
       {"t": "The gray matter is on the outside of the spinal cord.", "w": "In the cord, gray matter is central (H-shaped), surrounded by white matter."}
@@ -205,10 +205,10 @@
     "id": "N11-17", "sec": "ch11-autonomic", "focus": [0], "type": "mcq", "diff": 2,
     "stem": "How does a somatic motor pathway differ from a typical autonomic motor pathway?",
     "opts": [
-      {"t": "Somatic uses one neuron to skeletal muscle; autonomic uses a two-neuron chain with a ganglion.", "c": true},
-      {"t": "Somatic uses two neurons; autonomic uses one.", "w": "This is reversed."},
-      {"t": "Both use two neurons and a ganglion.", "w": "The somatic pathway goes straight from the CNS to skeletal muscle."},
-      {"t": "Autonomic pathways supply skeletal muscle.", "w": "Autonomic pathways supply smooth muscle, cardiac muscle, and glands."}
+      {"t": "Somatic uses one neuron; autonomic uses a chain of two.", "c": true},
+      {"t": "Somatic uses two neurons; autonomic uses only one.", "w": "This is reversed."},
+      {"t": "Both use a chain of two neurons and a ganglion.", "w": "The somatic pathway goes straight from the CNS to skeletal muscle."},
+      {"t": "Autonomic pathways mainly supply skeletal muscle.", "w": "Autonomic pathways supply smooth muscle, cardiac muscle, and glands."}
     ],
     "why": "A somatic motor neuron runs from the CNS directly to skeletal muscle (releasing ACh). Autonomic output uses a preganglionic neuron (cell body in the CNS) that synapses in a ganglion with a postganglionic neuron to smooth muscle, cardiac muscle, or glands.",
     "trick": "Somatic = Single neuron. Autonomic = A relay of two.",

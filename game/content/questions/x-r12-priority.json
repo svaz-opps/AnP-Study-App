@@ -1,0 +1,897 @@
+[
+ {
+  "id": "P2-01",
+  "sec": "ch1-homeostasis",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse at a winter shelter receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with a temperature of 31 °C (87.8 °F) who has stopped shivering and is confused",
+    "c": true
+   },
+   {
+    "t": "A client who is shivering after coming in from the cold, temperature 36.4 °C (97.5 °F)",
+    "w": "Shivering is the normal response that makes heat."
+   },
+   {
+    "t": "A client who is sweating after carrying boxes upstairs",
+    "w": "Sweating after activity is normal cooling."
+   },
+   {
+    "t": "A client asking for an extra blanket at bedtime",
+    "w": "A comfort request can wait."
+   }
+  ],
+  "why": "Shivering is an effector that makes heat. When a cold client STOPS shivering and becomes confused, temperature control is failing: shivering usually stops once core temperature falls below about 32 °C (90 °F), so this client is dangerously cold.",
+  "trick": "Cold + no shivering + confused = the thermostat has given up.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-02",
+  "sec": "ch1-systems",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a medical unit reviews intake and output. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who has made almost no urine in the last 12 hours",
+    "c": true
+   },
+   {
+    "t": "A client who urinated four times this morning after drinking a lot of water",
+    "w": "More fluid in means more urine out: expected."
+   },
+   {
+    "t": "A client whose first urine of the morning is dark yellow",
+    "w": "Morning urine is often concentrated: expected."
+   },
+   {
+    "t": "A client asking when the next meal tray arrives",
+    "w": "Can wait."
+   }
+  ],
+  "why": "The kidneys regulate blood composition and make urine. Almost no urine for hours can mean the kidneys are failing or the client is severely dehydrated. Wastes and potassium can build up quickly.",
+  "trick": "No urine = the body's filter has stopped.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-03",
+  "sec": "ch1-regions",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "Four clients call the clinic about abdominal pain. Which client should the nurse speak to first?",
+  "opts": [
+   {
+    "t": "A client whose pain started near the navel, moved to the right lower quadrant, and now has fever and vomiting",
+    "c": true
+   },
+   {
+    "t": "A client with mild epigastric burning after spicy food that eases with antacids",
+    "w": "Mild, relieved by antacids: less urgent."
+   },
+   {
+    "t": "A client with left lower quadrant cramping before a bowel movement that eases afterward",
+    "w": "Relieved by a bowel movement: less urgent."
+   },
+   {
+    "t": "A client with fullness in the hypogastric region who needs to urinate",
+    "w": "Bladder fullness is expected."
+   }
+  ],
+  "why": "Pain that moves from around the navel to the right lower quadrant, with fever and vomiting, is the classic pattern of appendicitis. An inflamed appendix can rupture, so this client needs care first.",
+  "trick": "Navel → RLQ + fever = think appendix.",
+  "tip": "Use the client's right and left. Pain that is spreading, with fever, beats pain that is mild and relieved."
+ },
+ {
+  "id": "P2-04",
+  "sec": "ch1-cavities",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The emergency nurse receives four clients after a car crash. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with sharp chest pain, rapid breathing, and no breath sounds on one side",
+    "c": true
+   },
+   {
+    "t": "A client with a bruise on the knee who can walk",
+    "w": "Stable injury."
+   },
+   {
+    "t": "A client with a mild headache who is alert and talking",
+    "w": "Stable for now; reassess."
+   },
+   {
+    "t": "A client with a small cut on the forearm that has stopped bleeding",
+    "w": "Bleeding is controlled."
+   }
+  ],
+  "why": "The pleural cavity is a thin space between two layers. If air enters it, the layers separate and the lung can collapse (pneumothorax). Missing breath sounds and fast breathing are a breathing emergency.",
+  "trick": "Breathing problems beat bruises.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-05",
+  "sec": "ch2-carbohydrates",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a medical unit receives four reports before lunch. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with diabetes who is sweaty, shaky, and suddenly confused",
+    "c": true
+   },
+   {
+    "t": "A client with diabetes whose fasting blood glucose is 110 mg/dL",
+    "w": "Close to normal."
+   },
+   {
+    "t": "A client asking which foods contain starch",
+    "w": "Teaching can wait."
+   },
+   {
+    "t": "A client whose glucose is 150 mg/dL an hour after breakfast",
+    "w": "A mild rise after a meal is expected."
+   }
+  ],
+  "why": "Glucose, a monosaccharide, is the brain's main fuel. Sweating, shaking and confusion suggest low blood sugar (hypoglycemia), which can quickly lead to seizures or loss of consciousness.",
+  "trick": "Sweaty, shaky, confused = feed the brain sugar now.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-06",
+  "sec": "ch2-water",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The home health nurse reviews four phone messages. Which client should the nurse call back first?",
+  "opts": [
+   {
+    "t": "An older adult with 2 days of vomiting and diarrhea who is dizzy when standing and making very little urine",
+    "c": true
+   },
+   {
+    "t": "A client who felt thirsty after gardening and is now drinking water",
+    "w": "Thirst that is being treated is expected."
+   },
+   {
+    "t": "A client with mildly dry lips",
+    "w": "Mild and stable."
+   },
+   {
+    "t": "A client asking how much water to drink each day",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Water carries nutrients, removes wastes and helps control temperature. Losing a lot of fluid causes low blood volume: dizziness on standing and little urine are signs of serious dehydration. Older adults get worse quickly.",
+  "trick": "Losing fluid both ends + dizzy + little urine = dangerously dry.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-07",
+  "sec": "ch3-diffusion",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a respiratory unit receives report. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with pneumonia whose oxygen saturation dropped from 95% to 86%",
+    "c": true
+   },
+   {
+    "t": "A client with pneumonia who has a productive cough and oxygen saturation of 95%",
+    "w": "Expected for pneumonia and stable."
+   },
+   {
+    "t": "A client with a mild sore throat",
+    "w": "Not urgent."
+   },
+   {
+    "t": "A client using an incentive spirometer as taught",
+    "w": "Doing what was taught."
+   }
+  ],
+  "why": "Oxygen crosses into the blood by diffusion through the thin alveolar wall. Fluid from pneumonia makes the barrier thicker, which slows diffusion. A falling oxygen level means gas exchange is getting worse.",
+  "trick": "Thicker barrier = slower diffusion = falling oxygen.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-08",
+  "sec": "ch4-aerobic",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The emergency nurse receives four new clients. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client found in a closed garage with a running car who has a headache and is confused",
+    "c": true
+   },
+   {
+    "t": "A client with a headache after skipping morning coffee",
+    "w": "Caffeine withdrawal is uncomfortable but not dangerous."
+   },
+   {
+    "t": "A client who feels tired after a double shift",
+    "w": "Expected fatigue."
+   },
+   {
+    "t": "A client with sore muscles 2 days after lifting weights",
+    "w": "Delayed soreness is expected."
+   }
+  ],
+  "why": "Carbon monoxide blocks oxygen delivery to tissues. Without oxygen as the final electron acceptor, cells can't make enough ATP, and the brain is affected first (headache, confusion).",
+  "trick": "Car + closed garage + confusion = carbon monoxide. Cells are starving for oxygen.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-09",
+  "sec": "ch4-fuels",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a medical unit receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with type 1 diabetes who has fruity-smelling breath, deep rapid breathing, and vomiting",
+    "c": true
+   },
+   {
+    "t": "A client fasting for a lab test who says they feel hungry",
+    "w": "Expected while fasting."
+   },
+   {
+    "t": "A client on a low-carbohydrate diet asking about healthy fats",
+    "w": "Teaching can wait."
+   },
+   {
+    "t": "A client with type 2 diabetes whose glucose is 140 mg/dL after dinner",
+    "w": "A mild rise after a meal."
+   }
+  ],
+  "why": "When cells can't use glucose, the body breaks down fat for fuel and makes ketone acids. Fruity breath, deep fast breathing and vomiting suggest the blood is becoming acidic (diabetic ketoacidosis), which is an emergency.",
+  "trick": "Fruity breath + deep breathing = burning fat, making acid.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-10",
+  "sec": "ch6-pigment",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a medical unit checks the skin of four clients. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client on bed rest with a deep purple area over the sacrum that does not blanch when pressed",
+    "c": true
+   },
+   {
+    "t": "A client with a red area on the elbow that blanches and fades within 20 minutes",
+    "w": "Blanching redness that fades is not yet tissue damage."
+   },
+   {
+    "t": "A client with dry, flaky skin on both shins",
+    "w": "Common and not urgent."
+   },
+   {
+    "t": "A client with an old, healed scar on the abdomen",
+    "w": "Healed tissue."
+   }
+  ],
+  "why": "Pressure over a bony area squeezes blood vessels and starves the tissue of oxygen (ischemia). A deep purple area that does not blanch suggests deep tissue injury, so the client needs pressure relief now.",
+  "trick": "Blanches = blood can still get in. Doesn't blanch = tissue is being damaged.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-11",
+  "sec": "ch6-pigment",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse in the newborn nursery assesses four infants and children. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A newborn, 18 hours old, with yellow skin spreading down to the legs",
+    "c": true
+   },
+   {
+    "t": "A newborn with bluish hands and feet but a pink body",
+    "w": "Acrocyanosis is common in newborns."
+   },
+   {
+    "t": "A toddler with orange-tinged palms who eats a lot of carrots",
+    "w": "Carotene coloring is harmless."
+   },
+   {
+    "t": "A school-age child with mild sunburn on the shoulders",
+    "w": "Mild and not urgent."
+   }
+  ],
+  "why": "Yellow skin comes from bilirubin. Jaundice in the first 24 hours of life is not the normal newborn pattern and can mean bilirubin is rising too fast, which can harm the brain.",
+  "trick": "Yellow = bilirubin. Orange palms = carrots (carotene). Blue hands only = normal newborn.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-12",
+  "sec": "ch7-marrow",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on an oncology unit receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client receiving chemotherapy with a platelet count of 15,000/mm³ and a nosebleed that won't stop",
+    "c": true
+   },
+   {
+    "t": "A client receiving chemotherapy who says they feel tired",
+    "w": "Expected side effect."
+   },
+   {
+    "t": "A client with mild nausea who is keeping fluids down",
+    "w": "Being managed."
+   },
+   {
+    "t": "A client asking whether their hair will grow back",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Red marrow makes platelets. Chemotherapy can suppress marrow, and a very low platelet count means blood can't clot well. Active bleeding that won't stop is an emergency.",
+  "trick": "Low platelets + bleeding that won't stop = circulation first.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-13",
+  "sec": "ch7-remodeling",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a surgical unit receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who had thyroid surgery and now has tingling around the mouth and muscle twitching",
+    "c": true
+   },
+   {
+    "t": "A client after thyroid surgery with a sore throat",
+    "w": "Expected after neck surgery and intubation."
+   },
+   {
+    "t": "A client taking calcium supplements who has mild constipation",
+    "w": "A common, minor side effect."
+   },
+   {
+    "t": "A client asking which foods have vitamin D",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "The parathyroid glands sit on the thyroid and can be injured during surgery. Without parathyroid hormone, blood calcium drops. Tingling and twitching are early signs of low calcium, which can progress to spasm of the airway.",
+  "trick": "Neck surgery + tingling lips = check calcium (parathyroids).",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-14",
+  "sec": "ch11-cord",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse in a spine clinic receives four calls. Which client should the nurse speak to first?",
+  "opts": [
+   {
+    "t": "A client with low back pain who now has numbness in the groin and new trouble controlling the bladder",
+    "c": true
+   },
+   {
+    "t": "A client with low back pain after lifting boxes who walks normally",
+    "w": "Uncomfortable but stable."
+   },
+   {
+    "t": "A client with back stiffness in the morning that improves with movement",
+    "w": "Chronic and stable."
+   },
+   {
+    "t": "A client asking about safe lifting posture",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Below the end of the spinal cord, the nerve roots of the cauda equina control the bladder, bowel and groin sensation. New numbness in the groin with bladder problems suggests these roots are being compressed, which needs urgent treatment.",
+  "trick": "Back pain + saddle numbness + bladder change = red flag for nerve root compression.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-15",
+  "sec": "ch11-disorders",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The pediatric clinic nurse has four infants and children waiting. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "An infant whose head has grown quickly, with a bulging fontanel and repeated vomiting",
+    "c": true
+   },
+   {
+    "t": "An infant with a soft, flat fontanel who is feeding well",
+    "w": "Normal findings."
+   },
+   {
+    "t": "A toddler with a runny nose and no fever",
+    "w": "Mild illness."
+   },
+   {
+    "t": "An infant with a mild diaper rash",
+    "w": "Minor."
+   }
+  ],
+  "why": "When CSF can't drain, it builds up in the ventricles (hydrocephalus) and pressure rises. In infants, the skull bones aren't fused, so the head grows and the fontanel bulges. Vomiting is a sign of high pressure in the skull.",
+  "trick": "Bulging fontanel + growing head + vomiting = pressure in the skull.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-16",
+  "sec": "ch12-somatic",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse at an urgent care clinic triages four clients. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A 58-year-old with chest pressure spreading to the left arm and jaw",
+    "c": true
+   },
+   {
+    "t": "A client with a paper cut on one finger that stings when washing hands",
+    "w": "Minor."
+   },
+   {
+    "t": "A client with a sore lower back after a weekend of gardening",
+    "w": "Stable muscle strain."
+   },
+   {
+    "t": "A client with a chronic arthritis knee ache that is worse in cold weather",
+    "w": "Chronic and stable."
+   }
+  ],
+  "why": "Pain from the heart can be felt in the left arm and jaw because heart and skin nerves share spinal pathways (referred pain). Chest pressure spreading this way, with sweating, may be a heart attack.",
+  "trick": "Referred pain: the heart \"calls\" from the arm and jaw.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-17",
+  "sec": "ch12-eye",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The occupational health nurse receives four calls. Which client should the nurse respond to first?",
+  "opts": [
+   {
+    "t": "A worker who splashed a cleaning chemical into one eye 2 minutes ago",
+    "c": true
+   },
+   {
+    "t": "A worker with mild itchy eyes from seasonal allergies",
+    "w": "Uncomfortable but not urgent."
+   },
+   {
+    "t": "A worker whose reading glasses feel weaker",
+    "w": "Not urgent."
+   },
+   {
+    "t": "A worker with a small stye on the eyelid",
+    "w": "Minor."
+   }
+  ],
+  "why": "Chemicals can burn the cornea, the clear front part of the eye's fibrous layer, within minutes. The eye needs flushing with water right away to limit damage.",
+  "trick": "Chemical in the eye = flush first, ask questions later.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-18",
+  "sec": "ch12-phototransduction",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse at an eye clinic reviews four phone messages. Which client should the nurse call back first?",
+  "opts": [
+   {
+    "t": "A client with sudden severe eye pain, blurred vision, halos around lights, and nausea",
+    "c": true
+   },
+   {
+    "t": "A 50-year-old who now needs reading glasses",
+    "w": "Presbyopia is a normal age change."
+   },
+   {
+    "t": "An older adult whose vision has slowly become cloudy over several years",
+    "w": "A slowly developing cataract is not an emergency."
+   },
+   {
+    "t": "An older adult who has trouble hearing high-pitched voices",
+    "w": "Age-related hearing loss is gradual."
+   }
+  ],
+  "why": "Sudden eye pain, halos and nausea suggest acute glaucoma, where fluid pressure in the eye rises quickly and can damage the optic nerve within hours. Presbyopia, cataract and age-related hearing loss develop slowly.",
+  "trick": "Sudden + painful = emergency. Slow + painless = schedule an appointment.",
+  "tip": "Compare the timeline. A sudden change outranks a slow one that has developed over years."
+ },
+ {
+  "id": "P2-19",
+  "sec": "ch11-protection",
+  "focus": [],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The emergency nurse receives four clients with head bumps. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who was briefly knocked out and is becoming more drowsy and harder to wake",
+    "c": true
+   },
+   {
+    "t": "A client with a bump on the forehead who is alert and talking",
+    "w": "Stable; keep monitoring."
+   },
+   {
+    "t": "A client with a mild headache after reading all day",
+    "w": "Not related to injury."
+   },
+   {
+    "t": "A client asking for an ice pack for a sore elbow",
+    "w": "Minor."
+   }
+  ],
+  "why": "Bleeding between the skull and the dura mater (the outer meningeal layer) can press on the brain. A client who was knocked out and then gets sleepier is showing a drop in level of consciousness, which is an emergency.",
+  "trick": "Getting sleepier after a head injury = pressure on the brain.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-20",
+  "sec": "ch10-resting",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a renal unit reviews lab results. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with kidney failure whose potassium level is 6.8 mEq/L and who has new muscle weakness",
+    "c": true
+   },
+   {
+    "t": "A client whose potassium level is 4.2 mEq/L",
+    "w": "Within the normal range (about 3.5 to 5.0)."
+   },
+   {
+    "t": "A client taking a prescribed potassium supplement who asks about bananas",
+    "w": "Teaching can wait."
+   },
+   {
+    "t": "A client with leg cramps after exercise who is drinking fluids",
+    "w": "Being managed."
+   }
+  ],
+  "why": "The resting membrane potential depends on the potassium gradient across cell membranes. A very high blood potassium changes that gradient, which disturbs nerve, muscle and heart signals and can cause dangerous heart rhythms.",
+  "trick": "High potassium = the electrical system of muscles and heart goes haywire.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-21",
+  "sec": "ch8-disorders",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on an orthopedic unit receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client 1 day after hip replacement whose operated leg is suddenly shorter and turned outward, with severe pain",
+    "c": true
+   },
+   {
+    "t": "A client 1 day after hip replacement with pain 3 out of 10 who is using a walker",
+    "w": "Expected and controlled."
+   },
+   {
+    "t": "A client after knee surgery who is doing leg exercises",
+    "w": "Following the plan."
+   },
+   {
+    "t": "A client asking when the dressing will be changed",
+    "w": "Can wait."
+   }
+  ],
+  "why": "A dislocation moves the bones out of their joint, so the limb looks deformed. A suddenly shorter, rotated leg with severe pain after hip surgery suggests the new hip has dislocated. It needs urgent care to protect nerves and blood vessels.",
+  "trick": "Shorter + turned + sudden pain = joint out of place.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-22",
+  "sec": "ch9-nmj",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The emergency nurse receives four clients after a family picnic. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who ate home-canned beans and now has droopy eyelids and trouble swallowing",
+    "c": true
+   },
+   {
+    "t": "A client with mild stomach upset after eating a lot at the picnic buffet",
+    "w": "Uncomfortable but stable."
+   },
+   {
+    "t": "A client with tired, dry eyes after spending hours looking at a phone",
+    "w": "Eye strain."
+   },
+   {
+    "t": "A client with a scratchy sore throat who is swallowing food and drinks normally",
+    "w": "Stable airway."
+   }
+  ],
+  "why": "Acetylcholine is stored in vesicles at the end of motor neurons. Botulinum toxin (from poorly canned food) stops its release, so muscles become weak. Trouble swallowing can progress to breathing failure.",
+  "trick": "Home-canned food + droopy eyes + trouble swallowing = botulism, protect the airway.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-23",
+  "sec": "ch10-glia",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a neuro unit receives report. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client whose leg weakness has climbed to the chest over 3 days, now breathing shallowly",
+    "c": true
+   },
+   {
+    "t": "A client with tingling in one hand that started after sleeping on that arm all night",
+    "w": "Temporary pressure on a nerve."
+   },
+   {
+    "t": "A client with long-term numbness in both feet that has not changed in a year",
+    "w": "Chronic and unchanged."
+   },
+   {
+    "t": "A client asking what time physical therapy will come to help with walking",
+    "w": "Can wait."
+   }
+  ],
+  "why": "Myelin lets signals jump quickly along nerves. When an autoimmune attack strips myelin from peripheral nerves (as in Guillain-Barré syndrome), weakness often climbs upward. Once it reaches the breathing muscles, it is an emergency.",
+  "trick": "Climbing weakness that reaches the chest = watch the breathing.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-24",
+  "sec": "ch11-autonomic",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a rehabilitation unit receives four calls. Which client needs the nurse first?",
+  "opts": [
+   {
+    "t": "A client with a spinal cord injury at T4 who has a pounding headache, a flushed face, and very high blood pressure",
+    "c": true
+   },
+   {
+    "t": "A client with a T4 injury doing arm exercises in the gym",
+    "w": "Following the plan."
+   },
+   {
+    "t": "A client with chronic low back pain",
+    "w": "Stable."
+   },
+   {
+    "t": "A client with a spinal cord injury asking about wheelchair cushions",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Sympathetic nerves leave the spinal cord at the thoracic and lumbar levels. With an injury at T6 or above, a trigger below the injury (like a full bladder) can set off an uncontrolled sympathetic response: dangerously high blood pressure (autonomic dysreflexia).",
+  "trick": "High cord injury + pounding headache + very high BP = find the trigger now (often the bladder).",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-25",
+  "sec": "ch12-hearing",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse at an ear, nose, and throat clinic reviews four messages. Which client should the nurse call first?",
+  "opts": [
+   {
+    "t": "A client who woke up with sudden hearing loss in one ear",
+    "c": true
+   },
+   {
+    "t": "An older adult with gradual trouble hearing high-pitched sounds",
+    "w": "Slow, age-related change."
+   },
+   {
+    "t": "A client who feels fullness from earwax",
+    "w": "Common and minor."
+   },
+   {
+    "t": "A client asking which earplugs block the most noise",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Hearing depends on cochlear hair cells sending signals along cranial nerve VIII. Sudden hearing loss in one ear can mean damage to that pathway and needs prompt treatment for the best chance of recovery.",
+  "trick": "Sudden + one-sided hearing loss = urgent.",
+  "tip": "Compare the timeline. A sudden change outranks a slow one that has developed over years."
+ },
+ {
+  "id": "P2-26",
+  "sec": "ch6-dermis",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse in a diabetes clinic sees four clients. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with diabetes who can't feel the monofilament test on one foot and has a new draining blister",
+    "c": true
+   },
+   {
+    "t": "A client with diabetes whose feet have normal sensation and no wounds",
+    "w": "Normal findings."
+   },
+   {
+    "t": "A client with diabetes asking about properly fitting shoes",
+    "w": "Teaching can wait."
+   },
+   {
+    "t": "A client with diabetes who has dry skin on the heels",
+    "w": "Common; teach moisturizing."
+   }
+  ],
+  "why": "Skin receptors warn us about injury. When diabetes damages the nerves, the client can't feel wounds, so they get worse unnoticed. A draining blister on a numb foot may be infected.",
+  "trick": "Can't feel it + open wound = infection risk the client won't notice.",
+  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+ },
+ {
+  "id": "P2-27",
+  "sec": "ch1-life",
+  "focus": [
+   1
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse is eating in the hospital cafeteria. Which person should the nurse help first?",
+  "opts": [
+   {
+    "t": "A person clutching the throat who can't speak or cough",
+    "c": true
+   },
+   {
+    "t": "A person coughing forcefully after a drink went down the wrong way",
+    "w": "A strong cough moves air: let them keep coughing."
+   },
+   {
+    "t": "A person with hiccups",
+    "w": "Harmless."
+   },
+   {
+    "t": "A person asking for a glass of water",
+    "w": "Can wait."
+   }
+  ],
+  "why": "Oxygen is a survival requirement. Someone who can't speak or cough has a blocked airway and no air is moving, so they need help right away.",
+  "trick": "Can't talk, can't cough = no air moving. Act now.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-28",
+  "sec": "ch7-axial",
+  "focus": [],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The emergency nurse receives four clients after falls. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client who fell from a ladder and has neck pain with tingling in both arms",
+    "c": true
+   },
+   {
+    "t": "A client with a sprained wrist who can move all fingers",
+    "w": "Stable injury."
+   },
+   {
+    "t": "A client with lower back soreness who walks normally",
+    "w": "Stable."
+   },
+   {
+    "t": "A client with a scraped knee",
+    "w": "Minor."
+   }
+  ],
+  "why": "The cervical vertebrae protect the spinal cord in the neck. Neck pain with tingling in both arms suggests the cord may be injured, so the neck must be kept still until imaging is done.",
+  "trick": "Neck pain + tingling in the arms = protect the spine.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ },
+ {
+  "id": "P2-29",
+  "sec": "ch3-diffusion",
+  "focus": [
+   0
+  ],
+  "type": "priority",
+  "diff": 2,
+  "stem": "The nurse on a cardiac unit receives four reports. Which client should the nurse see first?",
+  "opts": [
+   {
+    "t": "A client with heart failure who gained 2 kg (4.4 lb) overnight and is short of breath when lying flat",
+    "c": true
+   },
+   {
+    "t": "A client with heart failure whose weight is unchanged and who is walking the hall",
+    "w": "Stable."
+   },
+   {
+    "t": "A client with mild ankle swelling at the end of the day that goes down overnight",
+    "w": "Mild and stable."
+   },
+   {
+    "t": "A client asking about a low-salt diet",
+    "w": "Teaching can wait."
+   }
+  ],
+  "why": "Filtration moves fluid out of capillaries when pressure inside them is high. In heart failure, pressure backs up into the lung capillaries, and fluid leaks into the lungs. Sudden weight gain and breathlessness lying flat mean fluid is building up.",
+  "trick": "Fast weight gain = fluid. Short of breath lying flat = fluid in the lungs.",
+  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+ }
+]

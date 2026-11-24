@@ -56,10 +56,10 @@
     "id": "N12-05", "sec": "ch12-somatic", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "A client having a heart attack feels pain in the left arm and jaw. Which explanation is accurate?",
     "opts": [
-      {"t": "Referred pain: visceral and somatic signals converge on shared central circuits, so the brain maps the pain to the body surface.", "c": true},
-      {"t": "The heart itself is located in the arm.", "w": "The heart is in the mediastinum of the thorax."},
-      {"t": "Pain receptors in the arm are damaged.", "w": "The arm is fine. The brain misreads where the pain comes from."},
-      {"t": "Adaptation of cardiac nociceptors", "w": "Adaptation reduces responses. It doesn't move pain to another place."}
+      {"t": "Referred pain from shared nerve pathways", "c": true},
+      {"t": "The heart itself is located in the arm", "w": "The heart is in the mediastinum of the thorax."},
+      {"t": "Pain receptors in the arm are damaged", "w": "The arm is fine. The brain misreads where the pain comes from."},
+      {"t": "Cardiac pain receptors have adapted", "w": "Adaptation reduces responses. It doesn't move pain to another place."}
     ],
     "why": "Referred pain is felt away from its source, partly because visceral and somatic sensory signals converge on the same central circuits.",
     "trick": "Referred pain = a 'call forwarded' to the wrong address.",

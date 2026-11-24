@@ -28,42 +28,89 @@ function pqrst(t) {
 
 class ECG {
   constructor(canvas, hrEl, monitorEl) {
-    this.c = canvas; this.hrEl = hrEl; this.mon = monitorEl;
+    this.c = canvas;
     this.ctx = canvas.getContext('2d');
     this.stress = 0.15; this.shown = 0.15;
     this.phase = 0; this.x = 0; this.ys = []; this.beep = false;
-    this.lastBpm = 0;
-    this.resize();
+    this.w = 0; this.h = 0;
+    this.rebind(hrEl, monitorEl);
+    // A ResizeObserver reports the canvas size after the browser's own layout, so measuring
+    // it never forces an extra layout. Older browsers fall back to measuring directly.
+    if (window.ResizeObserver) {
+      this.ro = new ResizeObserver((entries) => {
+        const r = entries[0].contentRect;
+        this.resize(r.width, r.height);
+      });
+      this.ro.observe(canvas);
+    } else {
+      this.resize();
+    }
     this.off = Loop.add((dt) => this.tick(dt));
   }
-  resize() {
-    const r = this.c.getBoundingClientRect();
-    const dpr = Math.min(3, window.devicePixelRatio || 1);
-    this.w = Math.max(40, Math.round(r.width)); this.h = Math.max(30, Math.round(r.height));
-    this.c.width = this.w * dpr; this.c.height = this.h * dpr;
-    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    this.ys = new Array(this.w).fill(this.h * 0.62);
-    this.x = 0;
+
+  // point the readout at a new screen's HR number and monitor frame (the canvas moves with
+  // the round from patient to patient, so the trace keeps running instead of restarting)
+  rebind(hrEl, monitorEl) {
+    this.hrEl = hrEl; this.mon = monitorEl;
+    this.lastBpm = 0;
   }
-  bpm() { return Math.round(62 + 92 * this.shown); }
-  color() { return this.shown > 0.72 ? '#ff4757' : this.shown > 0.45 ? '#f6bd52' : '#52f0a4'; }
+
+  resize(cssW, cssH) {
+    if (cssW == null) { const r = this.c.getBoundingClientRect(); cssW = r.width; cssH = r.height; }
+    const w = Math.max(40, Math.round(cssW)), h = Math.max(30, Math.round(cssH));
+    if (w === this.w && h === this.h) return;
+    const dpr = Math.min(CONFIG.monitor.maxPixelRatio, window.devicePixelRatio || 1);
+    this.w = w; this.h = h;
+    this.c.width = w * dpr; this.c.height = h * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.ys = new Array(w).fill(h * ECG.BASELINE);
+    this.x = 0;
+    this.drewStill = false;
+    this.grid = this.makeGrid(w, h, dpr);
+  }
+
+  // the faint graph-paper grid, drawn once per size instead of every frame
+  makeGrid(w, h, dpr) {
+    const g = document.createElement('canvas');
+    g.width = w * dpr; g.height = h * dpr;
+    const ctx = g.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.strokeStyle = 'rgba(82,240,164,.08)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let gx = 0; gx < w; gx += ECG.GRID) { ctx.moveTo(gx + 0.5, 0); ctx.lineTo(gx + 0.5, h); }
+    for (let gy = 0; gy < h; gy += ECG.GRID) { ctx.moveTo(0, gy + 0.5); ctx.lineTo(w, gy + 0.5); }
+    ctx.stroke();
+    return g;
+  }
+
+  bpm() { const M = CONFIG.monitor; return Math.round(M.bpmCalm + (M.bpmMax - M.bpmCalm) * this.shown); }
+  color() {
+    const M = CONFIG.monitor;
+    return this.shown > M.redAt ? '#ff4757' : this.shown > M.amberAt ? '#f6bd52' : '#52f0a4';
+  }
+
   tick(dt) {
+    const M = CONFIG.monitor;
     if (!this.c.isConnected) { this.destroy(); return; }
+    if (!this.w || App.modalOpen()) return; // not sized yet, or paused under a dialog
     this.shown += (this.stress - this.shown) * Math.min(1, dt * 1.5);
     const bpm = this.bpm();
     if (bpm !== this.lastBpm) {
       this.lastBpm = bpm;
       if (this.hrEl) this.hrEl.textContent = bpm;
-      if (this.mon) { this.mon.classList.toggle('amber', this.shown > 0.45 && this.shown <= 0.72); this.mon.classList.toggle('red', this.shown > 0.72); }
+      if (this.mon) {
+        this.mon.classList.toggle('amber', this.shown > M.amberAt && this.shown <= M.redAt);
+        this.mon.classList.toggle('red', this.shown > M.redAt);
+      }
     }
-    const still = reducedMotion();
-    const speed = this.w / 3.2; // one sweep every ~3 s
-    const adv = still ? 0 : speed * dt;
-    const base = this.h * 0.62, amp = this.h * 0.5;
-    let n = Math.max(1, Math.round(adv));
-    if (still && !this.drewStill) { this.drawStill(); this.drewStill = true; return; }
-    if (still) return;
+    if (calmChosen()) {
+      if (!this.drewStill) { this.drawStill(); this.drewStill = true; }
+      return;
+    }
     this.drewStill = false;
+    const base = this.h * ECG.BASELINE, amp = this.h * ECG.AMPLITUDE;
+    const adv = (this.w / M.sweepSeconds) * dt; // pixels to advance this frame
+    const n = Math.max(1, Math.round(adv));
     for (let i = 0; i < n; i++) {
       const prev = this.phase;
       this.phase = (this.phase + (bpm / 60) * (dt / n)) % 1;
@@ -73,35 +120,48 @@ class ECG {
     }
     this.draw();
   }
+
   drawStill() {
-    const base = this.h * 0.62, amp = this.h * 0.5;
-    for (let x = 0; x < this.w; x++) this.ys[x] = base - amp * pqrst(((x / this.w) * 3.2 * (this.bpm() / 60)) % 1);
+    const M = CONFIG.monitor;
+    const base = this.h * ECG.BASELINE, amp = this.h * ECG.AMPLITUDE, beats = M.sweepSeconds * (this.bpm() / 60);
+    for (let x = 0; x < this.w; x++) this.ys[x] = base - amp * pqrst(((x / this.w) * beats) % 1);
     this.x = this.w - 1;
     this.draw(true);
   }
+
   draw(noGap) {
     const { ctx, w, h } = this;
     ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(82,240,164,.08)'; ctx.lineWidth = 1;
-    for (let gx = 0; gx < w; gx += 16) { ctx.beginPath(); ctx.moveTo(gx + 0.5, 0); ctx.lineTo(gx + 0.5, h); ctx.stroke(); }
-    for (let gy = 0; gy < h; gy += 16) { ctx.beginPath(); ctx.moveTo(0, gy + 0.5); ctx.lineTo(w, gy + 0.5); ctx.stroke(); }
-    const col = this.color();
-    ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
-    ctx.shadowColor = col; ctx.shadowBlur = 6;
-    const gap = noGap ? 0 : 14;
-    ctx.beginPath();
+    ctx.drawImage(this.grid, 0, 0, w, h);
+    // the trace, with a gap just ahead of the pen like a real sweep monitor
+    const gap = noGap ? 0 : ECG.GAP;
+    const path = new Path2D();
     let pen = false;
     for (let x = 0; x < w; x++) {
       const d = (x - this.x + w) % w;
       if (d > 0 && d <= gap) { pen = false; continue; }
-      if (!pen) { ctx.moveTo(x, this.ys[x]); pen = true; } else ctx.lineTo(x, this.ys[x]);
+      if (!pen) { path.moveTo(x, this.ys[x]); pen = true; } else path.lineTo(x, this.ys[x]);
     }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    // glow: two wide faint strokes under the line (canvas shadowBlur looks the same but is slow on iPad)
+    const col = this.color();
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = col;
+    ctx.globalAlpha = 0.12; ctx.lineWidth = 10; ctx.stroke(path);
+    ctx.globalAlpha = 0.28; ctx.lineWidth = 5; ctx.stroke(path);
+    ctx.globalAlpha = 1; ctx.lineWidth = 2.2; ctx.stroke(path);
     if (!noGap) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(this.x, this.ys[this.x], 2.6, 0, Math.PI * 2); ctx.fill(); }
   }
-  destroy() { if (this.off) this.off(); this.off = null; }
+
+  destroy() {
+    if (this.off) this.off();
+    this.off = null;
+    if (this.ro) { this.ro.disconnect(); this.ro = null; }
+  }
 }
+// drawing geometry (fractions of the canvas height, pixels for the grid and the gap)
+ECG.BASELINE = 0.62;
+ECG.AMPLITUDE = 0.5;
+ECG.GRID = 16;
+ECG.GAP = 14;
 
 // ---------- floating text, shake, confetti ----------
 const FX = {
@@ -117,13 +177,13 @@ const FX = {
     el.style.left = r.left + r.width / 2 + 'px';
     el.style.top = r.top + r.height / 3 + 'px';
     layer.appendChild(el);
-    setTimeout(() => el.remove(), 1300);
+    setTimeout(() => el.remove(), CONFIG.timing.floatTextMs);
   },
 
   shake(el) {
     if (!el || reducedMotion()) return;
-    el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
-    setTimeout(() => el.classList.remove('shake'), 600);
+    replayClass(el, 'shake');
+    setTimeout(() => el.classList.remove('shake'), 650);
   },
 
   flash(kind) {
@@ -132,7 +192,7 @@ const FX = {
     const el = document.createElement('div');
     el.className = 'screen-flash ' + kind;
     layer.appendChild(el);
-    setTimeout(() => el.remove(), 500);
+    setTimeout(() => el.remove(), CONFIG.timing.flashMs);
   },
 
   confetti(amount = 140) {
@@ -155,15 +215,18 @@ const FX = {
     let life = 0;
     const off = Loop.add((dt) => {
       life += dt;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       for (const p of ps) {
         p.vy += 1400 * dt; p.vx *= 0.99; p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.col;
+        // move + rotate in one call (cheaper than save/translate/rotate/restore per piece)
+        const cos = Math.cos(p.rot) * dpr, sin = Math.sin(p.rot) * dpr;
+        ctx.setTransform(cos, sin, -sin, cos, p.x * dpr, p.y * dpr);
+        ctx.fillStyle = p.col;
         if (p.shape === 'c') { ctx.beginPath(); ctx.arc(0, 0, p.r * 0.6, 0, Math.PI * 2); ctx.fill(); }
         else ctx.fillRect(-p.r, -p.r / 2.5, p.r * 2, p.r / 1.25);
-        ctx.restore();
       }
-      if (life > 3.2) { off(); c.remove(); }
+      if (life > CONFIG.timing.confettiSeconds) { off(); c.remove(); }
     });
   },
 

@@ -1,0 +1,19 @@
+{
+ "G-F041": {"trick": "Name a stratified tissue by its TOP layer, like naming a cake by its frosting.", "tip": "For stratified epithelium, only the apical (surface) cell shape counts toward the name."},
+ "G-F042": {"trick": "Mucus is the flypaper; cilia are the conveyor belt. No belt = sticky gunk stays put.", "tip": "Separate the jobs: goblet cells make mucus, cilia move it. Lose the cilia and clearance fails."},
+ "G-F043": {"trick": "Wet and rubbed (mouth, esophagus, vagina) = many layers, NO dead keratin cap.", "tip": "Keratinized = dry skin surface. Nonkeratinized = moist linings that still face friction."},
+ "G-F044": {"trick": "ENDOcrine = released INTO the blood, no duct. EXOcrine = EXITs through a duct.", "tip": "Hormones in the bloodstream = endocrine. Sweat, saliva and digestive enzymes through a duct = exocrine."},
+ "G-F045": {"trick": "ELASTIC fibers are rubber bands: stretch and snap back. Collagen is rope: strong, doesn't stretch.", "tip": "Recoil = elastic fibers. Strength against pulling = collagen. Mesh framework = reticular."},
+ "G-F046": {"trick": "Dense IRREGULAR = a woven basket: fibers run every way, so it resists pulls from every way.", "tip": "Regular = parallel fibers, one direction (tendons). Irregular = many directions (dermis)."},
+ "G-F047": {"trick": "RETICular = a neT (reticulum = little net) that holds immune cells in place.", "tip": "Lymph nodes, spleen and bone marrow are framed by reticular tissue."},
+ "G-F048": {"trick": "Blood is connective tissue in liquid form: cells floating in a fluid matrix (plasma).", "tip": "Every connective tissue = cells + matrix. In blood, the matrix is plasma."},
+ "G-F049": {"trick": "SMOOTH muscle = slow, steady squeezing you can't control, like the gut's toothpaste-tube push.", "tip": "Hollow organ walls + involuntary = smooth muscle. Striated + voluntary = skeletal. Striated + involuntary = cardiac."},
+ "G-F050": {"trick": "SERous = SERUM-like slippery fluid between organ and wall so organs glide.", "tip": "Serous membranes line closed ventral cavities. Mucous membranes line tubes that open to the outside."},
+ "C-ch5-epithelia": {"trick": "EPI-thelium = ON TOP: it covers and lines every surface.", "tip": "Epithelium has no blood vessels (avascular), sits on a basement membrane, and regenerates quickly."},
+ "C-ch5-simple": {"trick": "ENDO-thelium = lining INSIDE vessels: a single, smooth, thin layer.", "tip": "Thin simple squamous layers are for fast exchange (vessels, alveoli)."},
+ "C-ch5-stratified": {"trick": "KERATIN comes from the Greek word for horn: the same tough protein makes hair, nails and the outer skin.", "tip": "Keratin waterproofs and toughens. Its presence makes stratified squamous \"keratinized\"."},
+ "C-ch5-glands": {"trick": "EXOcrine = EXIT through a duct (sweat, saliva).", "tip": "Duct = exocrine. No duct, into the blood = endocrine."},
+ "C-ch5-matrix": {"trick": "Matrix = the Jell-O (ground substance) with fruit strings (fibers) holding the cells.", "tip": "Extracellular matrix = ground substance + fibers. It decides how a connective tissue behaves."},
+ "C-ch5-connective": {"trick": "CHONDRO = cartilage (like the chondral in costochondral). -cyte = cell.", "tip": "Chondrocyte = cartilage, osteocyte = bone. Both live in little spaces called lacunae."},
+ "C-ch5-membranes": {"trick": "SYNOVIAL = like egg white (syn + ovum): slippery joint fluid made by this lining.", "tip": "Synovial membranes are connective tissue only, with no epithelium. They line freely movable joints."}
+}

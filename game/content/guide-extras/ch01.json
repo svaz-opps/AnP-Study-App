@@ -1,0 +1,20 @@
+{
+ "G-F001": {"trick": "Organ = a team of tissues. One tissue alone is just a player, not the team.", "tip": "When an option names only one tissue type, it is too small to be an organ. Look for the answer with several tissues working together."},
+ "G-F002": {"trick": "ASSIMilation = ASSEMBLE into you. Absorption only brings it in the door.", "tip": "The stem says \"specifically\". Pick the most exact process, not a nearby one like absorption or digestion."},
+ "G-F003": {"trick": "Breathing runs on a pressure slope: air flows downhill from high to low.", "tip": "Not every survival need is something you eat or drink. Read the stem for the physical condition being described."},
+ "G-F004": {"trick": "Negative feedback = \"NEGATE the change\". The response shrinks the error.", "tip": "To spot negative feedback, ask: does the response push the variable back toward normal? If yes, it is negative."},
+ "G-F005": {"trick": "Homeostasis is a thermostat, not a statue: it wobbles inside a safe range.", "tip": "Watch for absolute words like \"every\" and \"perfectly\". They usually signal the wrong idea."},
+ "G-F006": {"trick": "PERI-cardial = AROUND the heart. The cavity is the thin fluid gap inside the sac.", "tip": "Match the location in the stem to the organ named in the term. Heart → pericardial, lungs → pleural, gut → peritoneal."},
+ "G-F007": {"trick": "RETRO = behind. Kidneys hide BEHIND the peritoneum, like a poster behind a curtain.", "tip": "Location words often carry their meaning in the prefix. Break the term apart before choosing."},
+ "G-F008": {"trick": "Kidneys MAKE urine; the tubes and bladder only MOVE and STORE it.", "tip": "\"Directly forms\" points to the organ doing the work, not the system that transports the product."},
+ "G-F009": {"trick": "CONTRA = against/opposite (like contrary). IPSI = itself, same side.", "tip": "Paired opposites (ipsi/contra, proximal/distal) are common distractors. Decide same side or opposite side first."},
+ "G-F010": {"trick": "Cross-section = slicing a hot dog into coins: across the long axis.", "tip": "For sections of a limb or organ, use the object's own long axis, not the whole body's planes."},
+ "C-ch1-organization": {"trick": "ANATOMY = \"cutting up\" (-tomy = cut, as in tracheotomy): what the body looks like inside. PHYSIOLOGY = how it works.", "tip": "Structure vs function: anatomy answers \"what and where\", physiology answers \"how and why\"."},
+ "C-ch1-life": {"trick": "METABOLISM comes from the Greek word for change: every chemical change in the body counts.", "tip": "\"All chemical reactions\" is the broadest term. Anabolism builds and catabolism breaks down; together they make metabolism."},
+ "C-ch1-homeostasis": {"trick": "HOMEO = same, STASIS = standing. \"Staying about the same\" by constant adjusting.", "tip": "The key word is \"dynamic\". Homeostasis keeps values in a range through constant small corrections."},
+ "C-ch1-cavities": {"trick": "PARIETAL = the PARTITION (wall). VISCERAL = the VISCERA (organs).", "tip": "Serous membranes always come in pairs: parietal on the wall, visceral on the organ, fluid between them."},
+ "C-ch1-systems": {"trick": "Cell → tissue → organ → SYSTEM: like player → team → league.", "tip": "If several organs share one job (e.g., digestion), the answer is an organ system."},
+ "C-ch1-directions": {"trick": "Anatomical position: stand tall, look ahead, palms out like you're asking for a hug.", "tip": "Always describe the body from the patient's anatomical position, even if they are lying down."},
+ "C-ch1-planes": {"trick": "SAGITTAL splits you like an arrow (sagitta) shot straight through: left and right.", "tip": "Sagittal = left/right, frontal (coronal) = front/back, transverse = top/bottom. Picture the cut before choosing."},
+ "C-ch1-regions": {"trick": "EPI = upon, GASTR = stomach. The epigastric region sits over the stomach, right under the ribs in the middle.", "tip": "Use the patient's right and left for regions. Epigastric (top), umbilical (middle), hypogastric (bottom) run down the center."}
+}

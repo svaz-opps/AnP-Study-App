@@ -1,0 +1,282 @@
+[
+ {
+  "id": "M2-01",
+  "sec": "ch2-atoms",
+  "focus": [
+   0
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "A calcium atom has an atomic number of 20 and a mass number of 40. How many neutrons does it have?",
+  "opts": [
+   {
+    "t": "20",
+    "c": true
+   },
+   {
+    "t": "40",
+    "w": "40 is the mass number (protons + neutrons), not the neutron count."
+   },
+   {
+    "t": "60",
+    "w": "You added instead of subtracting."
+   },
+   {
+    "t": "10",
+    "w": "Check the subtraction: 40 − 20."
+   }
+  ],
+  "why": "Neutrons = mass number − atomic number = 40 − 20 = 20.",
+  "trick": "Mass − Atomic = Neutrons (\"MAN\").",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-02",
+  "sec": "ch2-atoms",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "A calcium ion has a charge of 2+ (Ca²⁺) and 20 protons. How many electrons does it have?",
+  "opts": [
+   {
+    "t": "18",
+    "c": true
+   },
+   {
+    "t": "20",
+    "w": "That's a neutral calcium atom."
+   },
+   {
+    "t": "22",
+    "w": "A positive ion has LOST electrons, not gained them."
+   },
+   {
+    "t": "2",
+    "w": "2 is the charge, not the number of electrons."
+   }
+  ],
+  "why": "A 2+ charge means the atom lost 2 electrons. A neutral calcium atom has 20 electrons, so the ion has 20 − 2 = 18.",
+  "trick": "Positive ion = lost electrons (\"positive people lose negativity\").",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-03",
+  "sec": "ch2-ph",
+  "focus": [
+   0
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "A solution's pH drops from 7.4 to 5.4. How many times more hydrogen ions does it have now?",
+  "opts": [
+   {
+    "t": "100 times more",
+    "c": true
+   },
+   {
+    "t": "2 times more",
+    "w": "pH is logarithmic: each unit is 10×, not 1×."
+   },
+   {
+    "t": "20 times more",
+    "w": "Multiply, don't add: 10 × 10."
+   },
+   {
+    "t": "1,000 times more",
+    "w": "That would be a 3-unit drop."
+   }
+  ],
+  "why": "Each 1-unit drop in pH is about 10 times more hydrogen ions. A 2-unit drop is 10 × 10 = 100 times more.",
+  "trick": "Every pH step = ×10. Two steps = ×100.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-04",
+  "sec": "ch6-repair",
+  "focus": [
+   1
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "An adult is burned on the head and neck, the entire left arm, and the entire front of the trunk. Using the rule of nines, what percent of body surface is burned?",
+  "opts": [
+   {
+    "t": "36%",
+    "c": true
+   },
+   {
+    "t": "27%",
+    "w": "You left out one region."
+   },
+   {
+    "t": "45%",
+    "w": "The front of the trunk is 18%, not 27%."
+   },
+   {
+    "t": "18%",
+    "w": "That is only the front of the trunk."
+   }
+  ],
+  "why": "Rule of nines (adult): head and neck 9% + whole arm 9% + front of trunk 18% = 36%.",
+  "trick": "Head 9, each arm 9, each leg 18, front trunk 18, back trunk 18, groin 1.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-05",
+  "sec": "ch6-repair",
+  "focus": [
+   1
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "An adult is burned on the entire back of the trunk and the back of the right leg. Using the rule of nines, what percent of body surface is burned?",
+  "opts": [
+   {
+    "t": "27%",
+    "c": true
+   },
+   {
+    "t": "36%",
+    "w": "The back of one leg is 9%, not 18%."
+   },
+   {
+    "t": "18%",
+    "w": "You left out the leg."
+   },
+   {
+    "t": "45%",
+    "w": "Check each region again."
+   }
+  ],
+  "why": "Back of trunk 18% + back of one leg 9% (half of 18%) = 27%.",
+  "trick": "Each whole leg is 18%, so the front or back alone is 9%.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-06",
+  "sec": "ch7-aging",
+  "focus": [
+   0
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "A client with osteoporosis is prescribed calcium citrate 600 mg by mouth twice a day. Each tablet contains 300 mg. How many tablets will the client take in one day?",
+  "opts": [
+   {
+    "t": "4 tablets",
+    "c": true
+   },
+   {
+    "t": "2 tablets",
+    "w": "That is one dose. The client takes it twice a day."
+   },
+   {
+    "t": "1 tablet",
+    "w": "One tablet is only 300 mg."
+   },
+   {
+    "t": "6 tablets",
+    "w": "Check the math: 600 ÷ 300 = 2 per dose."
+   }
+  ],
+  "why": "Per dose: 600 mg ÷ 300 mg = 2 tablets. Twice a day: 2 × 2 = 4 tablets.",
+  "trick": "Desired over Have, then times how many doses.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-07",
+  "sec": "ch3-osmosis",
+  "focus": [
+   0
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "Normal saline is 0.9% sodium chloride (0.9 g per 100 mL) and is isotonic. How many grams of sodium chloride are in a 1,000 mL bag?",
+  "opts": [
+   {
+    "t": "9 g",
+    "c": true
+   },
+   {
+    "t": "0.9 g",
+    "w": "That's the amount in 100 mL, not 1,000 mL."
+   },
+   {
+    "t": "90 g",
+    "w": "Moved the decimal one place too far."
+   },
+   {
+    "t": "0.09 g",
+    "w": "Moved the decimal the wrong way."
+   }
+  ],
+  "why": "1,000 mL is 10 times 100 mL, so 0.9 g × 10 = 9 g.",
+  "trick": "Percent solution = grams per 100 mL.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-08",
+  "sec": "ch10-resting",
+  "focus": [
+   1
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "A neuron rests at −70 mV and fires when it reaches −55 mV. How much must the membrane potential change, and in which direction?",
+  "opts": [
+   {
+    "t": "+15 mV (it becomes less negative)",
+    "c": true
+   },
+   {
+    "t": "−15 mV (more negative)",
+    "w": "Going more negative is hyperpolarization, away from threshold."
+   },
+   {
+    "t": "+125 mV",
+    "w": "You added the two numbers instead of finding the difference."
+   },
+   {
+    "t": "+55 mV",
+    "w": "55 is the threshold value, not the change."
+   }
+  ],
+  "why": "From −70 to −55 is a change of 15 mV toward zero (depolarization): −55 − (−70) = +15 mV.",
+  "trick": "Toward zero = depolarizing = closer to firing.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ },
+ {
+  "id": "M2-09",
+  "sec": "ch4-glycolysis",
+  "focus": [
+   0
+  ],
+  "type": "math",
+  "diff": 2,
+  "stem": "Glycolysis makes a net of 2 ATP per glucose. How many net ATP does glycolysis make from 3 glucose molecules?",
+  "opts": [
+   {
+    "t": "6 ATP",
+    "c": true
+   },
+   {
+    "t": "12 ATP",
+    "w": "12 is the gross amount (4 per glucose); the question asks net."
+   },
+   {
+    "t": "2 ATP",
+    "w": "That's for one glucose."
+   },
+   {
+    "t": "3 ATP",
+    "w": "Multiply the net yield by 3."
+   }
+  ],
+  "why": "Net ATP = 2 per glucose × 3 glucose = 6 ATP.",
+  "trick": "Glycolysis: spend 2, make 4, keep 2.",
+  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+ }
+]

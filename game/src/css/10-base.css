@@ -18,7 +18,13 @@ body {
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0; text-wrap: balance; }
 p { margin: 0; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-button, .tap { touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+button, .tap {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
 button:disabled { cursor: default; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
 svg { display: block; }
@@ -30,7 +36,14 @@ svg { display: block; }
 
 #app { position: relative; height: 100%; overflow: hidden; }
 
-.boot { height: 100%; display: grid; place-content: center; gap: var(--s4); text-align: center; color: var(--text-dim); }
+.boot {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  gap: var(--s4);
+  text-align: center;
+  color: var(--text-dim);
+}
 .boot-ecg { width: 220px; height: 60px; margin: 0 auto;
   background: linear-gradient(90deg, transparent 0 40%, var(--ecg) 40% 41%, transparent 41%) 0 50% / 100% 2px no-repeat;
   -webkit-mask: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
@@ -47,9 +60,7 @@ svg { display: block; }
   display: flex; flex-direction: column; gap: var(--s4);
   animation: screen-in .28s ease-out both;
 }
-.screen.leaving { animation: screen-out .2s ease-in both; pointer-events: none; }
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
-@keyframes screen-out { to { opacity: 0; transform: scale(1.02); } }
 .screen.zoom-in { animation: zoom-in .38s cubic-bezier(.2, .8, .2, 1) both; }
 @keyframes zoom-in { from { opacity: 0; transform: scale(.92); } }
 
@@ -90,12 +101,24 @@ svg { display: block; }
   font-size: var(--fs-sm); font-weight: 700; white-space: nowrap;
 }
 .chip svg { width: 16px; height: 16px; }
-.label { font-size: var(--fs-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); }
+.label {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
 
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s4); }
 
 .bar { height: 10px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
-.bar > i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width .5s ease; }
+.bar > i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width .5s ease;
+}
 
 /* ---------- top bars ---------- */
 .topbar { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); }
@@ -107,7 +130,9 @@ svg { display: block; }
   position: fixed; inset: 0; z-index: 50;
   background: rgba(4, 9, 18, .7); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   display: grid; place-items: center;
-  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  padding:
+    max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
+    max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   animation: fade-in .2s ease both;
 }
 .modal {
@@ -121,12 +146,38 @@ svg { display: block; }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes pop-in { from { opacity: 0; transform: scale(.94); } }
 
+/* Toasts stack in the lower right, raised clear of the bottom row of buttons (Next patient, Submit, the
+   floor's nav bar) so they never cover the header or an action. Taps pass through them. */
+.toasts {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(max(16px, env(safe-area-inset-bottom, 0px)) + 76px);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s2);
+  max-width: min(360px, calc(100% - 32px));
+  pointer-events: none;
+}
 .toast {
-  position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 14px); z-index: 60;
-  transform: translateX(-50%);
-  background: var(--surface-3); border: 1px solid var(--line); color: var(--text);
-  padding: 10px 18px; border-radius: 999px; font-weight: 700; box-shadow: var(--shadow);
-  max-width: calc(100% - 32px); text-align: center;
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: var(--shadow);
+  text-align: center;
   animation: toast-in .3s ease both;
 }
-@keyframes toast-in { from { opacity: 0; transform: translate(-50%, -10px); } }
+.toast.out { animation: toast-out .25s ease both; }
+@keyframes toast-in { from { opacity: 0; transform: translateX(24px); } }
+@keyframes toast-out { to { opacity: 0; transform: translateX(24px); } }
+[data-calm="1"] .toast { animation-name: fade-in; }
+[data-calm="1"] .toast.out { animation-name: toast-fade-out; }
+@keyframes toast-fade-out { to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation-name: fade-in; }
+  .toast.out { animation-name: toast-fade-out; }
+}

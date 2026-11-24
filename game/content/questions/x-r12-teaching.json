@@ -1,0 +1,1008 @@
+[
+ {
+  "id": "T2-01",
+  "sec": "ch1-homeostasis",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains feedback loops to a client. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Shivering when I'm cold is an example of positive feedback.\"",
+    "c": true
+   },
+   {
+    "t": "\"Sweating when I'm hot helps bring my temperature back down.\"",
+    "w": "Accurate. Sweating opposes the rise in temperature: negative feedback."
+   },
+   {
+    "t": "\"Stronger and stronger labor contractions are positive feedback.\"",
+    "w": "Accurate. Each contraction triggers more oxytocin, which amplifies the process."
+   },
+   {
+    "t": "\"Most of my body's control systems use negative feedback.\"",
+    "w": "Accurate. Negative feedback keeps most variables in a normal range."
+   }
+  ],
+  "why": "Shivering makes heat to push a LOW temperature back up toward normal. Because it opposes the change, it is negative feedback. Positive feedback makes a change bigger, like labor contractions or blood clotting.",
+  "trick": "Negative feedback Nudges back to Normal. Positive feedback Pushes further.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-02",
+  "sec": "ch1-cavities",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse teaches a client with pleurisy (inflamed pleura). Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"The visceral pleura is the layer that lines the inside of my chest wall.\"",
+    "c": true
+   },
+   {
+    "t": "\"Fluid between the two layers lets my lungs glide when I breathe.\"",
+    "w": "Accurate. Serous fluid reduces friction."
+   },
+   {
+    "t": "\"When the layers are inflamed, they rub and it hurts to take a deep breath.\"",
+    "w": "Accurate. That rubbing causes the sharp pain of pleurisy."
+   },
+   {
+    "t": "\"The space between the layers is very thin, not a big open hole.\"",
+    "w": "Accurate. The pleural cavity is a potential space with a thin film of fluid."
+   }
+  ],
+  "why": "The visceral pleura covers the lung itself. The parietal pleura lines the chest wall. In pleurisy, the two inflamed layers rub together, so breathing in hurts.",
+  "trick": "Visceral hugs the Viscera (organ). Parietal paints the wall (partition).",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-03",
+  "sec": "ch1-regions",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nursing student describes the abdominal regions. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"The epigastric region is below the umbilical region.\"",
+    "c": true
+   },
+   {
+    "t": "\"I use the client's right and left, not my own.\"",
+    "w": "Accurate. Regions are named from the client's point of view."
+   },
+   {
+    "t": "\"The hypogastric region is below the umbilical region.\"",
+    "w": "Accurate. Hypo = below."
+   },
+   {
+    "t": "\"The four quadrants are made by two lines crossing at the umbilicus.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The epigastric region sits ABOVE the umbilical region, just under the ribs in the middle. The hypogastric region sits below it.",
+  "trick": "EPI = above (like epidermis on top). HYPO = below.",
+  "tip": "Location errors are easy to miss. Picture the 3-by-3 grid on the client's body before you choose."
+ },
+ {
+  "id": "T2-04",
+  "sec": "ch1-planes",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse reviews body landmarks with a student before a pulse check. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"The popliteal area is the front of the knee.\"",
+    "c": true
+   },
+   {
+    "t": "\"The antebrachial region is the forearm.\"",
+    "w": "Accurate. Ante = before, brachial = arm."
+   },
+   {
+    "t": "\"The brachial region is the upper arm.\"",
+    "w": "Accurate. The brachial pulse is felt here."
+   },
+   {
+    "t": "\"The patellar region is the front of the knee.\"",
+    "w": "Accurate. The patella is the kneecap."
+   }
+  ],
+  "why": "The popliteal area is the BACK of the knee, where the popliteal pulse is felt. The front of the knee is the patellar region.",
+  "trick": "Popliteal = the pit behind the knee. Patella = the plate in front.",
+  "tip": "Nurses use these terms to find pulses. Expect landmark questions tied to assessment."
+ },
+ {
+  "id": "T2-05",
+  "sec": "ch2-ph",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse teaches a client about blood pH. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"A pH of 7.2 is a little less acidic than a pH of 7.4.\"",
+    "c": true
+   },
+   {
+    "t": "\"Normal blood pH is about 7.35 to 7.45.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"A lower pH means more hydrogen ions.\"",
+    "w": "Accurate. pH and hydrogen ions move in opposite directions."
+   },
+   {
+    "t": "\"Buffers in my blood help keep the pH from changing too fast.\"",
+    "w": "Accurate. Buffers resist pH change."
+   }
+  ],
+  "why": "A pH of 7.2 is LOWER than 7.4, so it is MORE acidic. pH runs backward: as hydrogen ions go up, the pH number goes down. Each whole step is about 10 times more acid.",
+  "trick": "Lower number = more acid (think: lemon juice has a low pH).",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-06",
+  "sec": "ch2-proteins",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains why a very high fever can be dangerous. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Denatured proteins work better because they are unfolded.\"",
+    "c": true
+   },
+   {
+    "t": "\"Very high heat can change the shape of my proteins.\"",
+    "w": "Accurate. Heat can denature proteins."
+   },
+   {
+    "t": "\"A protein's shape is tied to its job.\"",
+    "w": "Accurate. Function depends on conformation."
+   },
+   {
+    "t": "\"Enzymes are proteins, so extreme heat can affect them too.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Denaturing changes a protein's shape. Because shape and job go together, a denatured protein usually works worse or not at all.",
+  "trick": "Shape = job. Lose the shape, lose the job (like a bent key).",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-07",
+  "sec": "ch2-water",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client asks about electrolytes in sports drinks. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Sugar dissolved in water is an electrolyte, because it dissolves.\"",
+    "c": true
+   },
+   {
+    "t": "\"Electrolytes break apart into charged ions in water.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Sodium and potassium are electrolytes.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Ions in my body fluids carry the current for nerves and muscles.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Sugar dissolves but does NOT split into ions, so it can't carry an electric current. It is a nonelectrolyte. Salts like sodium chloride split into ions and are electrolytes.",
+  "trick": "Dissolves is not the same as ionizes. Only ions carry current.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-08",
+  "sec": "ch3-membrane",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nursing student explains how substances cross a cell membrane. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"Large charged ions pass straight through the lipid layer easily.\"",
+    "c": true
+   },
+   {
+    "t": "\"Oxygen and carbon dioxide can pass right through the lipid layer.\"",
+    "w": "Accurate. Small nonpolar molecules diffuse through it."
+   },
+   {
+    "t": "\"Channel and carrier proteins help ions cross.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The membrane is selectively permeable.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The middle of the membrane is oily (nonpolar). Charged ions are blocked by it and need channel or carrier proteins. Small nonpolar gases like oxygen slip straight through.",
+  "trick": "Like dissolves like: oily things pass the oily layer; charged things need a door.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-09",
+  "sec": "ch3-active",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse reviews the sodium-potassium pump with a client. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"The sodium-potassium pump moves ions without using any energy.\"",
+    "c": true
+   },
+   {
+    "t": "\"It moves 3 sodium ions out and 2 potassium ions in.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"It keeps more potassium inside my cells than outside.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Its ion gradients are needed for nerve and muscle signals.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The pump moves ions AGAINST their gradients, so it uses ATP every cycle. That makes it active transport.",
+  "trick": "Pump = needs power. 3 sodium out, 2 potassium in, 1 ATP.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-10",
+  "sec": "ch3-cycle",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains cell division to a client starting chemotherapy. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"My DNA is copied during mitosis, right as the cell splits.\"",
+    "c": true
+   },
+   {
+    "t": "\"DNA is copied in the S phase, before mitosis begins.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Cytokinesis divides the cytoplasm into two cells.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Many chemotherapy drugs target cells that divide quickly.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "DNA is copied during the S phase of interphase, BEFORE mitosis. Mitosis then separates the copies, and cytokinesis splits the cytoplasm.",
+  "trick": "S phase = Synthesis of DNA. Mitosis only splits what was already copied.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-11",
+  "sec": "ch4-enzymes",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client with lactose intolerance takes lactase enzyme tablets with dairy. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Each enzyme molecule can only be used once, then it's gone.\"",
+    "c": true
+   },
+   {
+    "t": "\"Lactase speeds up breaking lactose into simpler sugars.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Enzymes lower the energy needed to start a reaction.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Each enzyme fits only certain substrates.\"",
+    "w": "Accurate. Enzymes are specific."
+   }
+  ],
+  "why": "Enzymes are not used up. After a reaction, the enzyme is released unchanged and can work again. They speed reactions by lowering activation energy.",
+  "trick": "Enzymes are reusable tools, not fuel.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-12",
+  "sec": "ch4-aerobic",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains why cells need oxygen. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Oxygen is mainly needed to make glycolysis run.\"",
+    "c": true
+   },
+   {
+    "t": "\"Oxygen is the last stop for electrons in the electron transport chain.\"",
+    "w": "Accurate. Oxygen is the final electron acceptor."
+   },
+   {
+    "t": "\"Without oxygen, my cells make much less ATP.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Mitochondria make most of my cells' ATP.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Glycolysis does NOT need oxygen. Oxygen is needed at the end of the electron transport chain, where it accepts electrons. Without it, most ATP production stops.",
+  "trick": "Oxygen = the electron chain's catcher at the end of the line.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-13",
+  "sec": "ch5-epithelia",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains skin tissue to a client with a shallow scrape. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"The top epithelial layer of my skin is full of blood vessels.\"",
+    "c": true
+   },
+   {
+    "t": "\"Epithelial cells get nutrients from the tissue underneath.\"",
+    "w": "Accurate. Nutrients diffuse up from the dermis."
+   },
+   {
+    "t": "\"Epithelium sits on a basement membrane.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Epithelial cells replace themselves quickly.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Epithelium is avascular: it has no blood vessels of its own. A scrape that stays in the epidermis may not bleed. Bleeding means the injury reached the dermis.",
+  "trick": "Epithelium has no plumbing. It gets supplies from below.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-14",
+  "sec": "ch5-glands",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nursing student compares types of glands. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"Sweat glands are endocrine glands.\"",
+    "c": true
+   },
+   {
+    "t": "\"Endocrine glands release hormones into the blood without ducts.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Salivary glands are exocrine and use ducts.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The thyroid is an endocrine gland.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Sweat glands release sweat through ducts onto the skin, so they are exocrine. Endocrine glands release hormones into the blood without ducts.",
+  "trick": "EXOcrine = EXIT through a duct. ENDOcrine = into the blood.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-15",
+  "sec": "ch6-layers",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains the skin layers before giving a subcutaneous injection. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"The medicine goes into the epidermis, the deepest skin layer.\"",
+    "c": true
+   },
+   {
+    "t": "\"Subcutaneous means under the skin, into the hypodermis.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The hypodermis has fat that helps insulate me.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The dermis has blood vessels and nerves.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The epidermis is the OUTERMOST layer, not the deepest. A subcutaneous injection goes below the dermis into the hypodermis (subcutaneous layer).",
+  "trick": "From outside in: Epidermis → Dermis → Hypodermis (\"Every Day Healthy\").",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-16",
+  "sec": "ch6-sweat",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client asks about sweat and body odor. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Fresh eccrine sweat is what makes me smell.\"",
+    "c": true
+   },
+   {
+    "t": "\"Eccrine sweat cools me as it evaporates.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Apocrine glands in my armpits drain into hair follicles.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Bacteria breaking down apocrine sweat cause most body odor.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Eccrine sweat is mostly water and salt and is for cooling. Body odor comes mainly from bacteria breaking down apocrine sweat in the armpits and groin.",
+  "trick": "Eccrine = Evaporative cooling. Apocrine = Armpits and odor.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-17",
+  "sec": "ch6-accessory",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A child asks why goosebumps happen. Which statement by the child's parent indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Goosebumps happen when the skeletal muscles in the skin contract on purpose.\"",
+    "c": true
+   },
+   {
+    "t": "\"The tiny muscles that raise hairs are smooth muscle.\"",
+    "w": "Accurate. Arrector pili are smooth muscle."
+   },
+   {
+    "t": "\"Goosebumps can happen when we're cold or scared.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Oil glands empty into the hair follicles.\"",
+    "w": "Accurate. Sebaceous glands release sebum there."
+   }
+  ],
+  "why": "Arrector pili muscles are smooth muscle, so they contract automatically, not on purpose. When they pull on hairs, goosebumps form.",
+  "trick": "Arrector pili = smooth and automatic. You can't make goosebumps on command.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-18",
+  "sec": "ch7-marrow",
+  "focus": [
+   1,
+   2
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client is scheduled for a bone marrow biopsy from the hip bone. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Yellow marrow is where my blood cells are made.\"",
+    "c": true
+   },
+   {
+    "t": "\"Red marrow makes red cells, white cells, and platelets.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"In adults, red marrow is mostly in spongy bone, like the hip bone.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Yellow marrow is mostly stored fat.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "RED marrow makes all blood cells (hematopoiesis). Yellow marrow is mostly fat. In adults, red marrow is mainly found in spongy bone of flat bones like the hip bone.",
+  "trick": "RED marrow makes blood (red for blood). YELLOW marrow = fat.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-19",
+  "sec": "ch7-growth",
+  "focus": [
+   2,
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse explains bone growth to the parents of a teenager. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Once the growth plates close, bones can never get any thicker.\"",
+    "c": true
+   },
+   {
+    "t": "\"Bones get longer at the growth plates.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Bones get thicker when new bone is added under the periosteum.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Most bones finish ossifying by about age 25.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Closed growth plates stop bones from getting LONGER. Bones can still get thicker by adding compact bone under the periosteum, for example with exercise.",
+  "trick": "Plates closed = no more length. Thickness can still grow.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-20",
+  "sec": "ch7-fractures",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client with a fractured tibia asks how bones heal. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"First a callus forms, and then the blood clot forms.\"",
+    "c": true
+   },
+   {
+    "t": "\"A blood clot (hematoma) forms first.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Granulation tissue and then a callus bridge the break.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Remodeling reshapes the bone over the following months.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The order is hematoma → granulation tissue → callus → remodeling. The blood clot comes first, not after the callus.",
+  "trick": "Healing order: Hematoma, Granulation, Callus, Remodel (\"Have Good Cold Root beer\").",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-21",
+  "sec": "ch8-movements",
+  "focus": [
+   1,
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A physical therapy student describes joint movements. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"Adduction moves my arm away from my body.\"",
+    "c": true
+   },
+   {
+    "t": "\"Abduction moves my arm away from my body.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Dorsiflexion brings my foot closer to my shin.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Flexion makes the angle at a joint smaller.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Adduction moves a body part TOWARD the midline. Abduction moves it away.",
+  "trick": "ADDuction ADDs the limb back to the body.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-22",
+  "sec": "ch8-examples",
+  "focus": [
+   3,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client is recovering from a shoulder dislocation. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"My shoulder dislocated because it is the most stable joint in my body.\"",
+    "c": true
+   },
+   {
+    "t": "\"My shoulder has the most range of motion of any joint.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The rotator cuff muscles help hold my shoulder together.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The medical name for my shoulder joint is the glenohumeral joint.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The shoulder is the MOST mobile joint, and that freedom makes it the LEAST stable and the most likely to dislocate. The rotator cuff helps hold it in place.",
+  "trick": "Mobility vs stability is a trade-off: the more it moves, the easier it pops out.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-23",
+  "sec": "ch8-types",
+  "focus": [
+   4,
+   2
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nursing student describes types of synovial joints. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"The knee is a ball-and-socket joint.\"",
+    "c": true
+   },
+   {
+    "t": "\"The elbow and knee are mainly hinge joints.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The base of the thumb is a saddle joint.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The atlas and axis form a pivot joint.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The knee is mainly a hinge joint: it bends and straightens. The ball-and-socket joints are the shoulder and hip.",
+  "trick": "Hinge = door (elbow, knee). Ball-and-socket = joystick (shoulder, hip).",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-24",
+  "sec": "ch9-nmj",
+  "focus": [
+   2,
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client with myasthenia gravis starts a drug that blocks cholinesterase. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Cholinesterase is the chemical that tells my muscles to contract.\"",
+    "c": true
+   },
+   {
+    "t": "\"Acetylcholine is released from the nerve to start a contraction.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Cholinesterase normally breaks down acetylcholine.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Blocking cholinesterase lets acetylcholine work longer.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Acetylcholine (ACh) is the signal that starts contraction. Cholinesterase is the enzyme that breaks ACh down. Blocking it keeps more ACh available, which can strengthen weak muscles.",
+  "trick": "ACh = the messenger. AChE = the eraser.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-25",
+  "sec": "ch9-energy",
+  "focus": [
+   0,
+   2
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A runner asks how muscles get energy. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Creatine phosphate can power my muscles for a whole marathon.\"",
+    "c": true
+   },
+   {
+    "t": "\"Creatine phosphate quickly helps remake ATP.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"A muscle cramp can happen when ATP runs low.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Breathing hard after a race helps repay my oxygen debt.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Creatine phosphate is a fast but tiny energy reserve that lasts only seconds. Long exercise depends on aerobic respiration in the mitochondria.",
+  "trick": "Creatine phosphate = a sprint battery, not a marathon tank.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-26",
+  "sec": "ch9-actions",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A student explains how muscles produce movement. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"The origin is the end of the muscle attached to the bone that moves.\"",
+    "c": true
+   },
+   {
+    "t": "\"The origin attaches to the more stationary bone.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The insertion attaches to the bone that moves.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"An antagonist opposes the prime mover.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The origin is attached to the bone that stays still. The insertion is on the bone that moves.",
+  "trick": "Origin = Original spot that stays put. Insertion = moves.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-27",
+  "sec": "ch10-glia",
+  "focus": [
+   1,
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client with multiple sclerosis (MS) asks about myelin. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Losing myelin makes my nerve signals travel faster.\"",
+    "c": true
+   },
+   {
+    "t": "\"Myelin helps signals jump from node to node.\"",
+    "w": "Accurate. This is saltatory conduction."
+   },
+   {
+    "t": "\"In my brain and spinal cord, oligodendrocytes make myelin.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Myelin is why white matter looks white.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Myelin speeds up conduction by letting the signal jump between nodes. Losing myelin, as in MS, slows or blocks signals.",
+  "trick": "Myelin = insulation. Strip the insulation and the signal slows down.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-28",
+  "sec": "ch10-impulse",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A student explains an action potential. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"Potassium rushing into the cell causes depolarization.\"",
+    "c": true
+   },
+   {
+    "t": "\"Sodium entering the cell depolarizes the membrane.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Potassium leaving the cell repolarizes it.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Thick, myelinated axons conduct faster.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "Depolarization is caused by SODIUM rushing IN. Potassium flowing OUT brings the membrane back down (repolarization).",
+  "trick": "Sodium In to rise; Potassium Out to fall.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-29",
+  "sec": "ch11-cord",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client with a spinal cord injury asks about spinal nerve roots. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"The dorsal roots carry motor commands out to my muscles.\"",
+    "c": true
+   },
+   {
+    "t": "\"The dorsal roots carry sensory information in.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The ventral roots carry motor signals out.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Spinal nerves carry both sensory and motor fibers.\"",
+    "w": "Accurate. Spinal nerves are mixed."
+   }
+  ],
+  "why": "Dorsal (back) roots are SENSORY and carry information in. Ventral (front) roots are MOTOR and carry commands out.",
+  "trick": "SAME DAVE: Sensory Afferent, Motor Efferent; Dorsal Afferent, Ventral Efferent.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-30",
+  "sec": "ch11-reflex",
+  "focus": [
+   0
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A nurse tests a client's knee-jerk reflex while a student watches. Which statement by the student needs correction?",
+  "opts": [
+   {
+    "t": "\"The brain has to decide to kick before the leg can move.\"",
+    "c": true
+   },
+   {
+    "t": "\"The knee-jerk is a monosynaptic reflex.\"",
+    "w": "Accurate. One synapse in the spinal cord."
+   },
+   {
+    "t": "\"A reflex arc starts at a receptor and ends at an effector.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Tapping the tendon stretches muscle spindles in the quadriceps.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The knee-jerk is handled in the spinal cord, with one synapse between the sensory and motor neuron. The brain is not needed for the kick, which is why reflexes are so fast.",
+  "trick": "Reflex = the spinal cord answers before the brain even hears the question.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-31",
+  "sec": "ch12-vision",
+  "focus": [
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client asks why it is hard to see colors at night. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"Cones are the cells that work best in dim light.\"",
+    "c": true
+   },
+   {
+    "t": "\"Rods work best in dim light.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Cones give me color and sharp detail.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The optic nerve is made of ganglion cell axons.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "RODS work in dim light but don't see color. CONES need brighter light and give color and detail. That's why colors fade at night.",
+  "trick": "Rods = dim Rooms (night vision, gray). Cones = Color.",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ },
+ {
+  "id": "T2-32",
+  "sec": "ch12-balance",
+  "focus": [
+   0,
+   1
+  ],
+  "type": "teaching",
+  "diff": 2,
+  "stem": "A client with motion sickness learns about the balance organs. Which statement by the client indicates a need for further teaching?",
+  "opts": [
+   {
+    "t": "\"The cochlea is what senses my head spinning.\"",
+    "c": true
+   },
+   {
+    "t": "\"The semicircular canals sense my head rotating.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"The utricle and saccule sense tilting and gravity.\"",
+    "w": "Accurate."
+   },
+   {
+    "t": "\"Balance signals travel on cranial nerve VIII.\"",
+    "w": "Accurate."
+   }
+  ],
+  "why": "The cochlea is for HEARING. Spinning is sensed by the semicircular canals, and tilt and gravity by the utricle and saccule.",
+  "trick": "Cochlea = hearing (snail). Semicircular canals = spinning (circles).",
+  "tip": "In \"needs further teaching\" questions, you are looking for the FALSE statement. Check each option against the rule and pick the one that is wrong."
+ }
+]

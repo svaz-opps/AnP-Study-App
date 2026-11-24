@@ -22,28 +22,39 @@ function bindEvents() {
   }, 150);
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', onResize);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { Store._local.flush(); Store._cloud.flush(); } });
-  window.addEventListener('pagehide', () => { Store._local.flush(); });
+  // leaving or hiding the page: write progress straight away
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) return;
+    if (App.run) Store.saveRun();
+    Store._local.flush();
+    Store._cloud.flush();
+  });
+  window.addEventListener('pagehide', () => { if (App.run) Store.saveRun(); Store._local.flush(); });
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG });
 
 async function start(hot) {
   App.measure();
   try {
     await Content.load();
   } catch (e) {
-    document.getElementById('app').innerHTML = `<div class="boot"><p>${esc(e.message || 'Could not load the game.')}</p><button class="btn primary" onclick="location.reload()">Try again</button></div>`;
+    document.getElementById('app').innerHTML = `<div class="boot">` +
+      `<p>${esc(e.message || 'Could not load the game.')}</p>` +
+      `<button class="btn primary" onclick="location.reload()">Try again</button></div>`;
     return;
   }
   Store.init();
+  // ask the browser not to clear saved progress when space runs low or the site goes unused (best effort)
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) { /* not supported */ }
   applySettings();
   WR.debug = location.hash === '#debug';
   bindEvents();
   Store.onChange(() => {
     applySettings();
-    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker') App.rerender();
+    // newer progress arrived from the account: redraw screens that show it
+    if (['floor', 'stats', 'missed', 'locker', 'cards'].includes(App.name)) App.rerender();
   });
   if (hot && hot.run && hot.screen) {
     try {
@@ -52,8 +63,47 @@ async function start(hot) {
       return;
     } catch (e) { App.run = null; }
   }
-  if (!WR.state.profile.onboarded) App.show('onboard', { step: 0 });
-  else App.show('floor');
+  if (!WR.state.profile.onboarded) { App.show('onboard', { step: 0 }); return; }
+  const saved = WR.state.openRun;
+  let run = null;
+  try { run = saved && Run.resume(saved.run); } catch (e) { run = null; }
+  if (!run) {
+    if (WR.state.openRun) { WR.state.openRun = null; Store.save(); }
+    App.show('floor');
+    SaveHelp.maybeRemind();
+    return;
+  }
+  Store.holdRun = true;
+  App.show('floor');
+  offerResume(run);
+}
+
+function offerResume(run) {
+  const title = run.mode === 'shift' ? Content.unitLabel(run.unit)
+    : run.mode === 'review' ? run.label || 'Missed patients'
+      : MODE_TITLE[run.mode];
+  const where = run.total ? `Patient ${run.idx + 1} of ${run.total}` : `Patient ${run.idx + 1}`;
+  const extra = run.mode === 'codeblue' ? ` · ${Math.ceil(run.timeLeft)}s left` : run.maxLives ? ` · ${run.lives} ` +
+    `of ${run.maxLives} lives` : '';
+  App.modal(`<h2>Pick up where you left off?</h2>
+    <p class="dim">Your round was autosaved: <b>${esc(title)}</b>, ${where}${extra}. Score ${fmt(run.score)}.</p>
+    <div class="actions"><button class="btn" data-m="drop">Discard round</button><button class="btn primary" data-m="go"
+      data-autofocus>Resume</button></div>`,
+  (m) => {
+    Store.holdRun = false;
+    if (m === 'go') {
+      App.run = run;
+      if (run.mode === 'codeblue') Sound.play('alarm');
+      App.show('chart', {}, 'zoom-in');
+    } else {
+      // answers already given stay saved; timed/boss rounds still count, as with Leave
+      if (run.mode === 'codeblue' || run.mode === 'boss') run.finish();
+      WR.state.openRun = null;
+      Store.save({ now: true });
+      App.toast('Round discarded. Answers you gave are still saved.');
+    }
+    return false;
+  });
 }
 
 (function boot() {

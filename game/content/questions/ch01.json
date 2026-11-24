@@ -51,10 +51,10 @@
     "id": "N1-05", "sec": "ch1-homeostasis", "focus": [0], "type": "mcq", "diff": 2,
     "stem": "Which is an example of positive feedback?",
     "opts": [
-      {"t": "Activated platelets recruit more platelets until a clot seals the injury.", "c": true},
-      {"t": "Sweating when body temperature rises", "w": "Sweating cools the body, opposing the rise, so it is negative feedback."},
-      {"t": "Shivering when body temperature drops", "w": "Shivering makes heat to oppose the drop: negative feedback."},
-      {"t": "Skin vessels constricting in the cold", "w": "This limits heat loss to oppose the drop: negative feedback."}
+      {"t": "Platelets recruiting more platelets to form a clot", "c": true},
+      {"t": "Sweating when body temperature rises above normal", "w": "Sweating cools the body, opposing the rise, so it is negative feedback."},
+      {"t": "Shivering when body temperature drops below normal", "w": "Shivering makes heat to oppose the drop: negative feedback."},
+      {"t": "Skin blood vessels narrowing in a cold room", "w": "This limits heat loss to oppose the drop: negative feedback."}
     ],
     "why": "Negative feedback opposes a change (most homeostasis). Positive feedback amplifies a process until a separate event stops it, like platelets recruiting more platelets until the injury is sealed.",
     "trick": "Negative = Neutralize the change. Positive = Pile on more.",

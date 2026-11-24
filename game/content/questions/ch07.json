@@ -133,7 +133,7 @@
       {"t": "Radius", "w": "The radius forms by endochondral ossification."},
       {"t": "Ulna", "w": "The ulna forms by endochondral ossification."}
     ],
-    "why": "Intramembranous ossification builds bone inside sheets of fibrous membrane. It forms the flat skull bones (frontal, parietal, occipital, temporal) and the clavicles. Most other bones, like the femur, radius and ulna, form from cartilage (endochondral).",
+    "why": "Intramembranous ossification builds bone inside sheets of fibrous membrane. It forms the flat bones of the skull roof (frontal, parietal, and parts of the occipital and temporal bones) and most of the clavicles. Most other bones, like the femur, radius and ulna, form from cartilage (endochondral).",
     "trick": "INTRAmembranous = flat skull bones made 'in membranes'. ENDOCHONDRAL = 'inside cartilage' (chondro = cartilage).",
     "tip": "When three options share a feature (all limb bones) and one doesn't, the odd one out is often the answer."
   },
@@ -303,7 +303,7 @@
     "id": "N7-23", "sec": "ch7-fractures", "focus": [2], "type": "mcq", "diff": 2,
     "stem": "A 3-year-old is brought in with a spiral fracture of the humerus. The parent says the child fell off the couch. What should the nurse recognize?",
     "opts": [
-      {"t": "Spiral fractures come from twisting forces and can be a sign of child abuse, so the nurse should follow the facility's reporting policy.", "c": true},
+      {"t": "A twisting injury suggests possible abuse; report per policy.", "c": true},
       {"t": "Spiral fractures are the usual result of short falls.", "w": "A spiral fracture is caused by excessive twisting, which a simple fall doesn't explain well."},
       {"t": "A spiral fracture means the bone broke through the skin.", "w": "Breaking through the skin is a compound (open) fracture."},
       {"t": "Spiral fractures happen only in adults with osteoporosis.", "w": "A break from disease-weakened bone is a pathologic fracture."}
@@ -375,7 +375,7 @@
       {"t": "A light-skinned man", "w": "Men don't have the fast bone loss that follows menopause."},
       {"t": "A dark-skinned man", "w": "This client has neither the sex nor the ancestry risk factor."}
     ],
-    "why": "Women lose bone faster after menopause because estrogen falls. Light-skinned (white or Asian) ancestry means less peak bone mass to begin with. Together they give the lowest bone mass at 65.",
+    "why": "Women lose bone faster after menopause because estrogen falls. White or Asian ancestry tends to mean less peak bone mass to begin with. Together they give the lowest bone mass at 65.",
     "trick": "Osteoporosis risk: Female + Fair skin + Frail frame.",
     "tip": "Stack the risk factors. The client with the most risk factors is the answer."
   },
@@ -383,10 +383,10 @@
     "id": "N7-29", "sec": "ch7-aging", "focus": [1], "type": "mcq", "diff": 2,
     "stem": "An 80-year-old client fractured the upper femur after a minor fall. Why does this part of the bone often break in older adults?",
     "opts": [
-      {"t": "Spongy (trabecular) bone weakens sooner than compact bone, and the femoral neck has a lot of spongy bone.", "c": true},
-      {"t": "Compact bone is lost before spongy bone.", "w": "It is the reverse. Spongy bone is lost sooner and faster."},
-      {"t": "The epiphyseal plates reopen in older adults.", "w": "Plates ossify for good. They never reopen."},
-      {"t": "Yellow marrow turns into cartilage.", "w": "Marrow does not turn into cartilage."}
+      {"t": "Its spongy bone weakens sooner than its compact bone.", "c": true},
+      {"t": "Its compact bone is lost before its spongy bone.", "w": "It is the reverse. Spongy bone is lost sooner and faster."},
+      {"t": "Its epiphyseal plates reopen in older adults.", "w": "Plates ossify for good. They never reopen."},
+      {"t": "Its yellow marrow gradually turns into cartilage.", "w": "Marrow does not turn into cartilage."}
     ],
     "why": "Trabecular (spongy) bone is lost sooner and faster than compact bone. The femoral neck and the vertebral bodies have lots of spongy bone, so they weaken first, which is why hip and vertebral compression fractures are common in older adults.",
     "trick": "Spongy goes Soonest: the hip and spine break first.",

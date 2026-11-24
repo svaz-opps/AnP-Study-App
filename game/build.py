@@ -5,6 +5,7 @@ Inputs
   ../study-guide/data/source-content.json   the guide (sections, focus points, callouts, 232 questions)
   content/units.json                        room / ward metadata, one per chapter
   content/questions/*.json                  new ATI-style questions written for the game
+  content/guide-extras/*.json               a memory trick + ATI tip for each guide question (by id)
   src/template.html, src/css/*.css, src/js/*.js
 
 Outputs (dist/)
@@ -13,7 +14,8 @@ Outputs (dist/)
   ward-rounds.html  one fully self-contained file (page + data inlined) for offline use
 
 Run from anywhere:  python3 game/build.py [--strict]
-  --strict  fail the build when any instructor focus point has no new question covering it
+  --strict  fail the build when any instructor focus point has no new question covering it,
+            or any guide question has no trick + tip
 """
 import hashlib
 import html
@@ -33,6 +35,20 @@ SINGLE = {"mcq", "priority", "teaching", "math"}
 BANNED = re.compile(r"\b(all|none) of the above\b", re.I)
 
 
+# Lets the hosted page (GitHub Pages) be added to an iPad Home Screen and open full screen like an app.
+# The icon and manifest live in game/web/ and are published next to the page by .github/workflows/pages.yml;
+# opened anywhere else, those two links just don't resolve and nothing else changes.
+HOME_SCREEN_TAGS = (
+    '<meta name="theme-color" content="#0a1322">'
+    '<meta name="mobile-web-app-capable" content="yes">'
+    '<meta name="apple-mobile-web-app-capable" content="yes">'
+    '<meta name="apple-mobile-web-app-status-bar-style" content="black">'
+    '<meta name="apple-mobile-web-app-title" content="Ward Rounds">'
+    '<link rel="apple-touch-icon" href="apple-touch-icon.png">'
+    '<link rel="manifest" href="manifest.webmanifest">'
+)
+
+
 def strip(s):
     """HTML fragment -> plain text."""
     s = re.sub(r"<[^>]+>", "", s or "")
@@ -49,7 +65,7 @@ def load_sections(src):
                 lab = re.search(r'<p class="callout-label">(.*?)</p>', body, re.S)
                 label = strip(lab.group(1)) if lab else kind.title()
                 text = strip(re.sub(r'<p class="callout-label">.*?</p>', "", body, flags=re.S))
-                if kind in ("mnemonic", "tip", "clinical", "note") and text:
+                if kind in ("mnemonic", "tip", "clinical", "note") and text and "(*)" not in text:  # (*) tips refer to the printed outline
                     tips.append({"kind": kind, "label": label, "text": text})
             sections[s["id"]] = {
                 "title": strip(s["title"]),
@@ -189,6 +205,27 @@ def main():
             errors.append(f"{f.name}: invalid JSON ({e})")
     new = validate_new(new_raw, sections, errors)
     guide = import_guide(src, sections)
+    # memory trick + ATI tip written for each guide question (content/guide-extras/*.json, keyed by id)
+    extras = {}
+    for f in sorted((GAME / "content" / "guide-extras").glob("*.json")):
+        try:
+            extras.update(json.loads(f.read_text()))
+        except json.JSONDecodeError as e:
+            errors.append(f"{f.name}: invalid JSON ({e})")
+    guide_ids = {q["id"] for q in guide}
+    errors += [f"guide-extras: unknown question id {k}" for k in extras if k not in guide_ids]
+    for q in guide:
+        ex = extras.get(q["id"], {})
+        for k in ("trick", "tip"):
+            if ex.get(k):
+                q[k] = ex[k]
+        # optional rewording of option text, by the option's index in the guide (keeps the answer key)
+        for i, text in ex.get("opts", {}).items():
+            if not (i.isdigit() and int(i) < len(q["opts"]) and text.strip()):
+                errors.append(f"guide-extras {q['id']}: bad option override {i!r}")
+            else:
+                q["opts"][int(i)]["t"] = text
+    missing_extras = [q["id"] for q in guide if not (q.get("trick") and q.get("tip"))]
     questions = new + guide
 
     ids = Counter(q["id"] for q in questions)
@@ -215,7 +252,9 @@ def main():
         cov = sum(1 for k in uf if k in covered)
         print(f"  {u['room']}   {u['id']:<5} {by_unit[u['id']]:>3}  {by_unit_g[u['id']]:>5}  {cov:>3}/{len(uf)}")
     print("  types (new):", dict(Counter(q["type"] for q in new)))
+    print("  types (all):", dict(Counter(q["type"] for q in questions)))
     print(f"  focus points covered: {len(all_focus) - len(gaps)}/{len(all_focus)}")
+    print(f"  guide questions with their own trick + tip: {len(guide) - len(missing_extras)}/{len(guide)}")
     if gaps and ("--gaps" in sys.argv or strict):
         for sid, i in gaps:
             print(f"    GAP {sid}#{i}: {sections[sid]['focus'][i][:90]}")
@@ -227,6 +266,20 @@ def main():
         sys.exit(1)
     if strict and gaps:
         print("\nStrict mode: uncovered focus points.")
+        sys.exit(1)
+    long_keys = []
+    for q in questions:
+        if q["type"] in SINGLE:
+            right = [len(o["t"]) for o in q["opts"] if o.get("c")]
+            wrong = [len(o["t"]) for o in q["opts"] if not o.get("c")]
+            if right and wrong and right[0] > 40 and right[0] > 1.8 * max(wrong):
+                long_keys.append(q["id"])
+    print(f"  answer-length cues (right answer > 1.8x longest wrong one): {len(long_keys)}")
+    if strict and long_keys:
+        print("\nStrict mode: the right answer is much longer than the others in:", ", ".join(long_keys[:20]))
+        sys.exit(1)
+    if strict and missing_extras:
+        print("\nStrict mode: guide questions without a trick + tip:", ", ".join(missing_extras[:20]))
         sys.exit(1)
 
     # ---- assemble
@@ -248,6 +301,7 @@ def main():
     standalone = (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+        + HOME_SCREEN_TAGS +
         "</head><body>" + page.replace("<!--__DATA__-->", inline) + "</body></html>"
     )
     (DIST / "ward-rounds.html").write_text(standalone)
