@@ -364,3 +364,10 @@ the work can resume (scheduled message at 2:20 am Central). Work stays on the se
 `ccr-dd43cba2-3w86f7`; nothing is pushed to main without the user. Principles + checklist: `ANIMATION_NOTES.md`.
 After animation work runs out: ideas to make the game more engaging; after that, anything useful.
 - Pending from before: the "nurse walks with device Reduce Motion on" commit is on the branch, not main.
+- A (done) Motion levels. `motionLevel()` in 00-util.js returns full / soft / calm; `<html data-motion>` carries it.
+  soft = "Auto" + device Reduce Motion: screens, feedback panel, dialogs, banners, toasts and the thank-you card
+  crossfade instead of sliding/zooming/flipping; no shake, no outage flicker, the parade fades in, confetti is a
+  lighter sprinkle; the walk, patient gags, boss projectile, screen flash and heart monitor all still play.
+  calm = the game's "Calm": still. Every `@media (prefers-reduced-motion)` rule in the CSS is gone, so "Full" is
+  really full on a Reduce-Motion device. The level follows the device switch live. Settings text explains Auto vs
+  Calm. New test `game/tests/motion.mjs` (4 cases) added to BRANCHING.md's list. All 8 test scripts pass.

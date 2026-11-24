@@ -302,7 +302,8 @@ Screens.settings = {
     return `${topbar('Settings')}
       <div class="narrow stack">
         ${row('Sound', 'Chimes, buzzers, and the Code Blue alarm.', seg('sound', [[true, 'On'], [false, 'Off']]))}
-        ${row('Motion', '"Calm" turns off walking, shaking, confetti, and the moving heart monitor.', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
+        ${row('Motion', '"Auto" follows your device: with Reduce Motion on, screens fade instead of sliding and nothing shakes. ' +
+          '"Calm" holds everything still (no walking, confetti or moving heart monitor).', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
         ${row('Silly patients', 'How wild patients get on a hot streak (and when things go wrong).',
           seg('whimsy', [['full', 'Full'], ['mild', 'Mild'], ['off', 'Off']]))}
         ${row('Text size', '', seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']]))}
@@ -399,7 +400,13 @@ Screens.settings = {
 
 function applySettings() {
   document.documentElement.style.setProperty('--text-scale', WR.state.settings.text || 1);
-  document.documentElement.dataset.calm = reducedMotion() ? '1' : '0';
+  const level = motionLevel();
+  document.documentElement.dataset.motion = level;
+  document.documentElement.dataset.calm = level === 'calm' ? '1' : '0';
+}
+// follow the device's Reduce Motion switch live (it only matters on "Auto")
+if (reducedMotionQuery && reducedMotionQuery.addEventListener) {
+  reducedMotionQuery.addEventListener('change', () => { if (window.WR && WR.state) applySettings(); });
 }
 
 // ----- onboarding

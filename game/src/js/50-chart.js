@@ -473,9 +473,10 @@ Screens.chart = {
     try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
     if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
-    const cb = !reducedMotion() && $('#clipboard', App.el);
-    const slideIn = [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
-    if (cb) cb.animate(slideIn, { duration: 260, easing: 'ease-out' });
+    const cb = !calmChosen() && $('#clipboard', App.el);
+    const slideIn = reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 260, easing: 'cubic-bezier(.2, .8, .2, 1)' });
   },
 
   act: {

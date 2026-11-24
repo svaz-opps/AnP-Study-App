@@ -177,7 +177,5 @@ svg { display: block; }
 [data-calm="1"] .toast { animation-name: fade-in; }
 [data-calm="1"] .toast.out { animation-name: toast-fade-out; }
 @keyframes toast-fade-out { to { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .toast { animation-name: fade-in; }
-  .toast.out { animation-name: toast-fade-out; }
-}
+[data-motion="soft"] .toast { animation-name: fade-in; }
+[data-motion="soft"] .toast.out { animation-name: toast-fade-out; }

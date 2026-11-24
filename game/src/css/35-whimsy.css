@@ -309,10 +309,12 @@
 [data-calm="1"] .parade *, [data-calm="1"] .pt-svg *, [data-calm="1"] .wh-banner { animation: none !important; }
 [data-calm="1"] .pp-surfer { display: none; }
 .wh-still *, .wh-still .wh-banner, .patient-card:has(.wh-still) .wh-banner { animation: none !important; }
-@media (prefers-reduced-motion: reduce) {
-  .pt-svg *, .wh-banner, .monitor.wh-sneeze, .parade * { animation: none !important; }
-  .pp-surfer { display: none; }
-}
+/* soft (device Reduce Motion on "Auto"): gags still play in place; the monitor doesn't shake, the parade fades in
+   instead of marching across, and the surfer who rides across the whole width stays home */
+[data-motion="soft"] .monitor.wh-sneeze { animation: none; }
+[data-motion="soft"] .lv-2 .parade-track, [data-motion="soft"] .lv-3 .parade-track,
+[data-motion="soft"] .lv-4 .parade-track { animation: fade-in .4s ease-out both; }
+[data-motion="soft"] .pp-surfer { display: none; }
 
 /* ---------- shift events ---------- */
 .bedside { position: relative; }
@@ -365,9 +367,9 @@
 [data-calm="1"] .ev-banner, [data-calm="1"] .visitor {
   animation: none !important;
 }
-@media (prefers-reduced-motion: reduce) {
-  .bedside.ev-rapid .patient-card, .outage-dark, .ev-banner, .visitor { animation: none !important; }
-}
+/* soft: no flicker (flashing light) and the banner fades rather than flying */
+[data-motion="soft"] .outage-dark { animation: none; }
+[data-motion="soft"] .ev-banner { animation-name: banner-fade; }
 
 /* ---------- thank-you cards ---------- */
 .tycard {
@@ -424,4 +426,4 @@
 .card-tile.ghost svg { width: 24px; height: 24px; }
 @keyframes ty-flip { from { opacity: 0; transform: perspective(600px) rotateY(90deg) scale(.9); } }
 [data-calm="1"] .tycard.reveal { animation: none; }
-@media (prefers-reduced-motion: reduce) { .tycard.reveal { animation: none; } }
+[data-motion="soft"] .tycard.reveal { animation-name: fade-in; animation-duration: .4s; }

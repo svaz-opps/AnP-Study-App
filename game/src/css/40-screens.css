@@ -338,9 +338,12 @@ input[type="date"], input[type="text"] {
 .ob-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-3); }
 .ob-dots i.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
-@media (prefers-reduced-motion: reduce) {
-  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
-}
+/* soft (device Reduce Motion on "Auto"): screens, panels and dialogs crossfade instead of sliding or zooming */
+[data-motion="soft"] .screen, [data-motion="soft"] .screen.zoom-in, [data-motion="soft"] .feedback,
+[data-motion="soft"] .modal { animation-name: fade-in; }
+/* calm: they just appear */
+[data-calm="1"] .screen, [data-calm="1"] .screen.zoom-in, [data-calm="1"] .feedback, [data-calm="1"] .bubble.pop,
+[data-calm="1"] .modal, [data-calm="1"] .ob-step { animation: none !important; }
 
 /* how-to-save guide (settings card + iPad reminder) */
 .save-help h3 { font-size: var(--fs-md, 1rem); margin: var(--s4) 0 var(--s2); }

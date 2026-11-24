@@ -144,7 +144,7 @@ const Whimsy = {
     bed.innerHTML = patientInBed(run.cur.patient, w.mood);
     const props = bed.querySelector('.pt-props');
     if (w.props && props) props.innerHTML = WH_PROPS[w.props](run.cur.patient);
-    const still = reducedMotion();
+    const still = calmChosen(); // gags play in place, so only Calm stills them
     bed.classList.add('wh', 'wh-' + w.id);
     if (still) bed.classList.add('wh-still');
     if (w.kind === 'good' && w.tier >= 2) bed.classList.add('wh-hi'); // room-theme gags join in

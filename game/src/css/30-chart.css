@@ -441,6 +441,8 @@ details.more[open] summary::before { transform: rotate(90deg); }
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-20px); }
 }
+@keyframes banner-fade { 0% { opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+[data-motion="soft"] .phase-banner, [data-motion="soft"] .wh-banner { animation-name: banner-fade; }
 .projectile {
   position: absolute;
   width: 26px;

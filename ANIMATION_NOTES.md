@@ -28,7 +28,7 @@ These are what the pass checks every animation against.
    element stuck half-way (always end on the real state).
 
 ## Audit checklist (status in PROJECT_LOG.md, "Overnight animation pass")
-- [ ] A. Motion levels: full / soft (device Reduce Motion on Auto) / calm. Replace every `@media (prefers-reduced-motion)` rule with the game's own level so "Full" really is full.
+- [x] A. Motion levels: full / soft (device Reduce Motion on Auto) / calm. Replace every `@media (prefers-reduced-motion)` rule with the game's own level so "Full" really is full.
 - [ ] B. Easing + duration tokens; move every animation onto them; exits faster than entrances.
 - [ ] C. Floor: walk cycle matches speed (no foot sliding), anticipation + settle, nurse goes *into* the room.
 - [ ] D. Screen changes: continuity (floor → room zoom from the tapped room, back out to the floor).

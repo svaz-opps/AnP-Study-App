@@ -247,10 +247,8 @@ svg { display: block; }
 [data-calm="1"] .toast { animation-name: fade-in; }
 [data-calm="1"] .toast.out { animation-name: toast-fade-out; }
 @keyframes toast-fade-out { to { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .toast { animation-name: fade-in; }
-  .toast.out { animation-name: toast-fade-out; }
-}
+[data-motion="soft"] .toast { animation-name: fade-in; }
+[data-motion="soft"] .toast.out { animation-name: toast-fade-out; }
 
 /* ---------- HUD ---------- */
 .hud { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; }
@@ -997,6 +995,8 @@ details.more[open] summary::before { transform: rotate(90deg); }
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-20px); }
 }
+@keyframes banner-fade { 0% { opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+[data-motion="soft"] .phase-banner, [data-motion="soft"] .wh-banner { animation-name: banner-fade; }
 .projectile {
   position: absolute;
   width: 26px;
@@ -1331,10 +1331,12 @@ details.more[open] summary::before { transform: rotate(90deg); }
 [data-calm="1"] .parade *, [data-calm="1"] .pt-svg *, [data-calm="1"] .wh-banner { animation: none !important; }
 [data-calm="1"] .pp-surfer { display: none; }
 .wh-still *, .wh-still .wh-banner, .patient-card:has(.wh-still) .wh-banner { animation: none !important; }
-@media (prefers-reduced-motion: reduce) {
-  .pt-svg *, .wh-banner, .monitor.wh-sneeze, .parade * { animation: none !important; }
-  .pp-surfer { display: none; }
-}
+/* soft (device Reduce Motion on "Auto"): gags still play in place; the monitor doesn't shake, the parade fades in
+   instead of marching across, and the surfer who rides across the whole width stays home */
+[data-motion="soft"] .monitor.wh-sneeze { animation: none; }
+[data-motion="soft"] .lv-2 .parade-track, [data-motion="soft"] .lv-3 .parade-track,
+[data-motion="soft"] .lv-4 .parade-track { animation: fade-in .4s ease-out both; }
+[data-motion="soft"] .pp-surfer { display: none; }
 
 /* ---------- shift events ---------- */
 .bedside { position: relative; }
@@ -1387,9 +1389,9 @@ details.more[open] summary::before { transform: rotate(90deg); }
 [data-calm="1"] .ev-banner, [data-calm="1"] .visitor {
   animation: none !important;
 }
-@media (prefers-reduced-motion: reduce) {
-  .bedside.ev-rapid .patient-card, .outage-dark, .ev-banner, .visitor { animation: none !important; }
-}
+/* soft: no flicker (flashing light) and the banner fades rather than flying */
+[data-motion="soft"] .outage-dark { animation: none; }
+[data-motion="soft"] .ev-banner { animation-name: banner-fade; }
 
 /* ---------- thank-you cards ---------- */
 .tycard {
@@ -1446,7 +1448,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .card-tile.ghost svg { width: 24px; height: 24px; }
 @keyframes ty-flip { from { opacity: 0; transform: perspective(600px) rotateY(90deg) scale(.9); } }
 [data-calm="1"] .tycard.reveal { animation: none; }
-@media (prefers-reduced-motion: reduce) { .tycard.reveal { animation: none; } }
+[data-motion="soft"] .tycard.reveal { animation-name: fade-in; animation-duration: .4s; }
 
 /* ---------- shared bits ---------- */
 .stack { display: flex; flex-direction: column; gap: var(--s4); }
@@ -1788,9 +1790,12 @@ input[type="date"], input[type="text"] {
 .ob-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-3); }
 .ob-dots i.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
-@media (prefers-reduced-motion: reduce) {
-  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
-}
+/* soft (device Reduce Motion on "Auto"): screens, panels and dialogs crossfade instead of sliding or zooming */
+[data-motion="soft"] .screen, [data-motion="soft"] .screen.zoom-in, [data-motion="soft"] .feedback,
+[data-motion="soft"] .modal { animation-name: fade-in; }
+/* calm: they just appear */
+[data-calm="1"] .screen, [data-calm="1"] .screen.zoom-in, [data-calm="1"] .feedback, [data-calm="1"] .bubble.pop,
+[data-calm="1"] .modal, [data-calm="1"] .ob-step { animation: none !important; }
 
 /* how-to-save guide (settings card + iPad reminder) */
 .save-help h3 { font-size: var(--fs-md, 1rem); margin: var(--s4) 0 var(--s2); }
@@ -1903,16 +1908,23 @@ function afterNextPaint(fn) {
 
 // asked every animation frame, so the media query is created once
 const reducedMotionQuery = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
-const reducedMotion = () => {
+// Three motion levels (see ANIMATION_NOTES.md):
+//   full  everything moves ("Full", or "Auto" with the device's Reduce Motion off)
+//   soft  "Auto" with the device's Reduce Motion on: feedback, characters, the walk and the monitor still
+//         animate, but big travel, zooms and shakes become crossfades (Apple: reduce means different, not none)
+//   calm  the game's own "Calm" setting: things hold still
+// <html data-motion> carries the level so CSS can follow it (CSS never reads the media query itself, so "Full"
+// really is full even on a device with Reduce Motion on).
+const motionLevel = () => {
   const s = window.WR && WR.state && WR.state.settings.motion;
-  if (s === 'reduced') return true;
-  if (s === 'full') return false;
-  return !!(reducedMotionQuery && reducedMotionQuery.matches);
+  if (s === 'reduced') return 'calm';
+  if (s === 'full') return 'full';
+  return reducedMotionQuery && reducedMotionQuery.matches ? 'soft' : 'full';
 };
-// Only the game's own "Calm" setting stills the heart monitor. On "Auto" it keeps sweeping even when the
-// device asks for reduced motion: a thin line moving inside a small box is not the zooming, sliding kind
-// of motion that setting is for, and a frozen monitor reads as a broken game.
-const calmChosen = () => !!(window.WR && WR.state && WR.state.settings.motion === 'reduced');
+// true when big movement (screen slides, shakes, smooth scrolling) should be swapped for a crossfade or skipped
+const reducedMotion = () => motionLevel() !== 'full';
+// true only on "Calm": the walk, the heart monitor, the patients' gags etc. stop
+const calmChosen = () => motionLevel() === 'calm';
 
 // ---------- icons (inline SVG, stroke-based) ----------
 const ICON_PATHS = {
@@ -3200,7 +3212,7 @@ const Whimsy = {
     bed.innerHTML = patientInBed(run.cur.patient, w.mood);
     const props = bed.querySelector('.pt-props');
     if (w.props && props) props.innerHTML = WH_PROPS[w.props](run.cur.patient);
-    const still = reducedMotion();
+    const still = calmChosen(); // gags play in place, so only Calm stills them
     bed.classList.add('wh', 'wh-' + w.id);
     if (still) bed.classList.add('wh-still');
     if (w.kind === 'good' && w.tier >= 2) bed.classList.add('wh-hi'); // room-theme gags join in
@@ -3410,7 +3422,7 @@ const FX = {
 
   flash(kind) {
     const layer = this.layer();
-    if (!layer || reducedMotion()) return;
+    if (!layer || calmChosen()) return; // a colour wash, not movement: kept on "soft"
     const el = document.createElement('div');
     el.className = 'screen-flash ' + kind;
     layer.appendChild(el);
@@ -3418,7 +3430,8 @@ const FX = {
   },
 
   confetti(amount = 140) {
-    if (reducedMotion()) return;
+    if (calmChosen()) return;
+    if (reducedMotion()) amount = Math.round(amount * 0.35); // soft: a lighter sprinkle
     const layer = this.layer();
     const c = document.createElement('canvas');
     c.className = 'confetti';
@@ -3453,7 +3466,7 @@ const FX = {
   },
 
   projectile(from, to, color) {
-    if (!from || !to || reducedMotion()) return Promise.resolve();
+    if (!from || !to || calmChosen()) return Promise.resolve();
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
     const el = document.createElement('div');
     el.className = 'projectile';
@@ -5089,9 +5102,10 @@ Screens.chart = {
     try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
     if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
-    const cb = !reducedMotion() && $('#clipboard', App.el);
-    const slideIn = [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
-    if (cb) cb.animate(slideIn, { duration: 260, easing: 'ease-out' });
+    const cb = !calmChosen() && $('#clipboard', App.el);
+    const slideIn = reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 260, easing: 'cubic-bezier(.2, .8, .2, 1)' });
   },
 
   act: {
@@ -5689,7 +5703,8 @@ Screens.settings = {
     return `${topbar('Settings')}
       <div class="narrow stack">
         ${row('Sound', 'Chimes, buzzers, and the Code Blue alarm.', seg('sound', [[true, 'On'], [false, 'Off']]))}
-        ${row('Motion', '"Calm" turns off walking, shaking, confetti, and the moving heart monitor.', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
+        ${row('Motion', '"Auto" follows your device: with Reduce Motion on, screens fade instead of sliding and nothing shakes. ' +
+          '"Calm" holds everything still (no walking, confetti or moving heart monitor).', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
         ${row('Silly patients', 'How wild patients get on a hot streak (and when things go wrong).',
           seg('whimsy', [['full', 'Full'], ['mild', 'Mild'], ['off', 'Off']]))}
         ${row('Text size', '', seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']]))}
@@ -5786,7 +5801,13 @@ Screens.settings = {
 
 function applySettings() {
   document.documentElement.style.setProperty('--text-scale', WR.state.settings.text || 1);
-  document.documentElement.dataset.calm = reducedMotion() ? '1' : '0';
+  const level = motionLevel();
+  document.documentElement.dataset.motion = level;
+  document.documentElement.dataset.calm = level === 'calm' ? '1' : '0';
+}
+// follow the device's Reduce Motion switch live (it only matters on "Auto")
+if (reducedMotionQuery && reducedMotionQuery.addEventListener) {
+  reducedMotionQuery.addEventListener('change', () => { if (window.WR && WR.state) applySettings(); });
 }
 
 // ----- onboarding
@@ -6076,7 +6097,7 @@ function bindEvents() {
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG, applySettings });
 
 async function start(hot) {
   App.measure();

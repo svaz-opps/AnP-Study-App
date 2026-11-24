@@ -188,7 +188,7 @@ const FX = {
 
   flash(kind) {
     const layer = this.layer();
-    if (!layer || reducedMotion()) return;
+    if (!layer || calmChosen()) return; // a colour wash, not movement: kept on "soft"
     const el = document.createElement('div');
     el.className = 'screen-flash ' + kind;
     layer.appendChild(el);
@@ -196,7 +196,8 @@ const FX = {
   },
 
   confetti(amount = 140) {
-    if (reducedMotion()) return;
+    if (calmChosen()) return;
+    if (reducedMotion()) amount = Math.round(amount * 0.35); // soft: a lighter sprinkle
     const layer = this.layer();
     const c = document.createElement('canvas');
     c.className = 'confetti';
@@ -231,7 +232,7 @@ const FX = {
   },
 
   projectile(from, to, color) {
-    if (!from || !to || reducedMotion()) return Promise.resolve();
+    if (!from || !to || calmChosen()) return Promise.resolve();
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
     const el = document.createElement('div');
     el.className = 'projectile';
