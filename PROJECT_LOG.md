@@ -440,3 +440,7 @@ After animation work runs out: ideas to make the game more engaging; after that,
   The suggested room glows (ready-drawn inset ring, opacity pulse; still on Calm). `Engine.nextStarNeed()` is shared
   with the room cards' "N to ★". Missed patients from earlier days already get the highest pick weight (4.5) in a
   shift. All 8 tests pass.
+- Engagement 3 (R29): room stars are celebrated when earned. `Run.submit` compares the room's stars before and after
+  recording the answer (`c.starUp`); the chart plays the badge sound and toasts "Room 107 Ortho: ★ earned!". Back on
+  the floor, stars earned since it was last shown stamp onto the room card (scale 2.6 → 1 with a twist, after the
+  walk back starts). Checked by seeding a room one answer short of ★. All 8 tests pass.

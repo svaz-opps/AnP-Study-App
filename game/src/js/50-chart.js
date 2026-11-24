@@ -401,6 +401,11 @@ Screens.chart = {
         FX.float(`×${Engine.multiplier(run.streak)}!`, band, 'warn');
       }
     }
+    if (c.starUp) {
+      const u = Content.unitById[c.starUp.unit];
+      Sound.play('badge');
+      App.toast(`Room ${u.room} ${u.ward}: ${'★'.repeat(c.starUp.stars)} earned!`);
+    }
     if (c.goalHit) {
       App.toast(`Daily goal reached: ${WR.state.days.answered} patients today!`);
       if (!calmChosen()) FX.confetti(60);

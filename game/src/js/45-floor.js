@@ -143,6 +143,18 @@ Screens.floor = {
     // XP earned since the floor was last shown rolls in alongside the bar
     if (hudXpNum != null && hudXpNum < WR.state.xp) FX.countUp($('#hud-xp-num', el), hudXpNum, WR.state.xp, 900);
     hudXpNum = WR.state.xp;
+    // stars earned since the floor was last shown stamp onto their room cards
+    const stars = {};
+    Content.units.forEach((u) => { stars[u.id] = Engine.mastery(u.id).stars; });
+    if (this.shownStars && !calmChosen()) {
+      Content.units.forEach((u) => {
+        const was = this.shownStars[u.id] || 0;
+        if (stars[u.id] <= was) return;
+        const lit = $$(`.room[data-unit="${u.id}"] .room-stars .on`, el);
+        lit.slice(was).forEach((s, k) => s.classList.add('stamp'));
+      });
+    }
+    this.shownStars = stars;
     // back from a shift: she comes out of the room she went into and walks back to the station
     const unit = this.lastRoom;
     this.lastRoom = null;

@@ -390,6 +390,9 @@ svg { display: block; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
 .room-meta .next-star { color: var(--warn); white-space: nowrap; }
+/* a star earned on the last shift stamps onto the card when you get back (after the walk back starts) */
+.room-stars .stamp { display: inline-block; animation: star-stamp-floor .5s var(--ease-spring) calc(.9s + var(--k, 0) * 150ms) both; }
+@keyframes star-stamp-floor { from { opacity: 0; transform: scale(2.6) rotate(-30deg); } }
 /* the room the nurse suggests: a ready-drawn ring that breathes (opacity only) */
 .room.suggest { border-color: var(--accent); }
 .room.suggest::after {
@@ -4107,8 +4110,12 @@ class Run {
     if (this.mode === 'boss') this.hitBoss(c, res);
     const every = CONFIG.lifelines.bonusCoffeeEvery;
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
+    const starsBefore = Engine.mastery(q.unit).stars;
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
+    // a room star earned on this answer is celebrated right away, not only on the report
+    const starsNow = Engine.mastery(q.unit).stars;
+    c.starUp = starsNow > starsBefore ? { unit: q.unit, stars: starsNow } : null;
     // the patient that reaches today's goal gets a small celebration (once a day)
     c.goalHit = WR.state.days.answered === Engine.dailyTarget();
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
@@ -4702,6 +4709,18 @@ Screens.floor = {
     // XP earned since the floor was last shown rolls in alongside the bar
     if (hudXpNum != null && hudXpNum < WR.state.xp) FX.countUp($('#hud-xp-num', el), hudXpNum, WR.state.xp, 900);
     hudXpNum = WR.state.xp;
+    // stars earned since the floor was last shown stamp onto their room cards
+    const stars = {};
+    Content.units.forEach((u) => { stars[u.id] = Engine.mastery(u.id).stars; });
+    if (this.shownStars && !calmChosen()) {
+      Content.units.forEach((u) => {
+        const was = this.shownStars[u.id] || 0;
+        if (stars[u.id] <= was) return;
+        const lit = $$(`.room[data-unit="${u.id}"] .room-stars .on`, el);
+        lit.slice(was).forEach((s, k) => s.classList.add('stamp'));
+      });
+    }
+    this.shownStars = stars;
     // back from a shift: she comes out of the room she went into and walks back to the station
     const unit = this.lastRoom;
     this.lastRoom = null;
@@ -5349,6 +5368,11 @@ Screens.chart = {
         replayClass(band, 'level-up');
         FX.float(`×${Engine.multiplier(run.streak)}!`, band, 'warn');
       }
+    }
+    if (c.starUp) {
+      const u = Content.unitById[c.starUp.unit];
+      Sound.play('badge');
+      App.toast(`Room ${u.room} ${u.ward}: ${'★'.repeat(c.starUp.stars)} earned!`);
     }
     if (c.goalHit) {
       App.toast(`Daily goal reached: ${WR.state.days.answered} patients today!`);

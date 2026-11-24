@@ -161,8 +161,12 @@ class Run {
     if (this.mode === 'boss') this.hitBoss(c, res);
     const every = CONFIG.lifelines.bonusCoffeeEvery;
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
+    const starsBefore = Engine.mastery(q.unit).stars;
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
+    // a room star earned on this answer is celebrated right away, not only on the report
+    const starsNow = Engine.mastery(q.unit).stars;
+    c.starUp = starsNow > starsBefore ? { unit: q.unit, stars: starsNow } : null;
     // the patient that reaches today's goal gets a small celebration (once a day)
     c.goalHit = WR.state.days.answered === Engine.dailyTarget();
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
