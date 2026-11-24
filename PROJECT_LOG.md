@@ -453,3 +453,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - Fix: during the walk back from a room the hidden Code Blue / OR buttons could still be tapped; they are now
   untappable until they pop back in. tests/motion.mjs gained a "walk back" case (she starts at the room's door, ends
   at the station, the button is blocked during and works after). All 8 tests pass.
+- Portrait/phone floor: the nurse is drawn 64x79 (was 84x104) so she fits the 64 px corridor instead of spilling
+  over the room cards while she walks. Checked at 390x844. All 8 tests pass.

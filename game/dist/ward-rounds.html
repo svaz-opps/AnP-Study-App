@@ -480,6 +480,8 @@ svg { display: block; }
   will-change: transform;
 }
 .walker svg { width: 100%; height: 100%; overflow: visible; }
+/* portrait: the corridor is 64 px wide, so she is drawn to fit it instead of spilling over the room cards */
+.floorplan.v .walker { width: 64px; height: 79px; }
 /* --step is set per walk from her speed (45-floor.js) so the legs keep pace with the ground */
 .walker.walking svg { animation: bob var(--step, .2s) ease-in-out infinite alternate; }
 .walker.walking .leg-l {
