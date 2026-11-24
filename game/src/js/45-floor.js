@@ -32,9 +32,8 @@ function roomHTML(u) {
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
   const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${m.missed ? ` ${m.missed} missed patients waiting.` : ''}`;
   return `<button class="room" data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
-    ${m.missed ? `<span class="room-dot num">${m.missed}</span>` : ''}
     <span class="room-body">
-      <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span></span>
+      <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span>${m.missed ? `<span class="room-dot num" title="Missed patients waiting">${m.missed}</span>` : ''}</span>
       <span class="room-ward">${esc(u.ward)}</span>
       <span class="room-topic">${esc(u.topic)}</span>
       <span class="room-blurb">${esc(u.blurb)}</span>

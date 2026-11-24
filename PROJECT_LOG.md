@@ -61,3 +61,9 @@
 - QA: automated overlap check of every new correct answer against its cited guide section (lowest overlap items were
   hand-checked paraphrases); `tests/hot.mjs` confirms an open round survives a live page update; full smoke suite
   passes at 4 sizes and renders all 505 questions.
+
+## 2026-11-24 (floor layout fixes)
+- Missed-patient badges on room cards now sit in the card's top row beside the stars instead of being absolutely
+  positioned, so they no longer overlap the door strip / card border on the bottom row of rooms.
+- Nurses' station desk label is centered in its box (vertical text was top-aligned because text-align defaulted to start).
+- Checked with screenshots at iPad landscape and portrait; smoke suite passes at 4 sizes.
