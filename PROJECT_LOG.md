@@ -400,3 +400,7 @@ After animation work runs out: ideas to make the game more engaging; after that,
   ease-out after 0.2 s; the HP and Code Blue timer bars (moved by script) are excluded; nothing on Calm. The floor's
   XP bar starts from where it was last shown (`--from`), so XP earned on a shift flows in when you return, and the
   XP number rolls up alongside it. All 8 tests pass.
+- G (done) Dialogs now leave instead of vanishing: on close the backdrop is moved out of #modal-root at once (so
+  the dialog counts as closed and a following dialog can open), then fades while the card sinks slightly, 160 ms
+  ease-in (entrance 260 ms spring). Toast removal timed to its 160 ms exit. The Rapid Response card glow animated
+  box-shadow every frame; it is now a ready-drawn inset ring on `::after` pulsing with opacity. All 8 tests pass.

@@ -99,7 +99,7 @@ const App = {
     box.appendChild(t);
     setTimeout(() => {
       t.classList.add('out');
-      setTimeout(() => t.remove(), 250);
+      setTimeout(() => t.remove(), 200); // 10-base.css .toast.out (160 ms)
     }, ms);
   },
 
@@ -108,7 +108,23 @@ const App = {
     root.innerHTML = `<div class="modal-backdrop" data-modal-bg>` +
       `<div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
     const bg = root.firstChild;
-    const close = () => { root.innerHTML = ''; };
+    // The dialog leaves instead of vanishing: it is moved out of #modal-root at once (so it counts as closed and
+    // a new dialog can open), then fades and sinks a little, faster than it came in (exits are quicker).
+    const close = () => {
+      if (!bg.isConnected) return;
+      if (calmChosen() || !bg.animate) { bg.remove(); return; }
+      const m = bg.querySelector('.modal');
+      if (document.activeElement && bg.contains(document.activeElement)) document.activeElement.blur();
+      bg.removeAttribute('data-modal-bg');
+      bg.style.pointerEvents = 'none';
+      bg.style.animation = 'none';
+      if (m) m.style.animation = 'none';
+      document.body.appendChild(bg);
+      const ease = 'cubic-bezier(.4, 0, .9, .4)';
+      if (m) m.animate([{ transform: 'none' }, { transform: 'scale(.96) translateY(8px)' }], { duration: 160, easing: ease, fill: 'forwards' });
+      bg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: ease, fill: 'forwards' })
+        .finished.then(() => bg.remove(), () => bg.remove());
+    };
     bg.addEventListener('click', (e) => {
       if (e.target === bg) { close(); return; }
       const b = e.target.closest('[data-m]');

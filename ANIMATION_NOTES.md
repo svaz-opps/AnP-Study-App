@@ -34,7 +34,7 @@ These are what the pass checks every animation against.
 - [x] D. Screen changes: continuity (floor → room zoom from the tapped room, back out to the floor).
 - [x] E. Chart: option press, submit, right/wrong feedback, lives lost, streak, score float, Next patient.
 - [x] F. Progress bars: animate with transform, not width.
-- [ ] G. Modals, toasts, banners: entrance/exit pairs, exit faster.
+- [x] G. Modals, toasts, banners: entrance/exit pairs, exit faster.
 - [ ] H. Report card / rank-up / confetti: staging and stagger.
 - [ ] I. Boss arena: hit/heal anticipation and follow-through.
 - [ ] J. Whimsy layer: check each patient gag for linear/odd timing.
