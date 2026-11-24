@@ -357,3 +357,10 @@
   Now the walk, the bubble/button tuck and the door swing follow the game's own Calm setting only (`calmChosen()`,
   same as the heart monitor); the CSS rule is gone. Checked frame by frame with emulated reduce-motion: she walks
   the whole corridor with stepping legs. Calm still skips the walk (as the Settings text says).
+
+## 2026-11-24 — Overnight animation pass (unattended)
+User asked for an overnight pass: research what makes good animation, apply it across the app, log progress so
+the work can resume (scheduled message at 2:20 am Central). Work stays on the session branch
+`ccr-dd43cba2-3w86f7`; nothing is pushed to main without the user. Principles + checklist: `ANIMATION_NOTES.md`.
+After animation work runs out: ideas to make the game more engaging; after that, anything useful.
+- Pending from before: the "nurse walks with device Reduce Motion on" commit is on the branch, not main.
