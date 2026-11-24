@@ -425,3 +425,11 @@ After animation work runs out: ideas to make the game more engaging; after that,
   Not changed (noted): at phone width the corridor is narrower than the nurse, so she overlaps the room cards'
   edges while walking (as before).
 - Animation checklist A–K complete. Next: ways to make the game more engaging (see ROADMAP.md / this log).
+- Engagement 1 (R29): goal-gradient nudges. Streak band shows pips toward the next multiplier (3/6/10 from
+  CONFIG.scoring) and says "N more for ×M" to screen readers; the newly earned pip pops, and reaching a new
+  multiplier makes the band jump with a floating "×2!". Room cards on the floor show "N to ★/★★/★★★" (right-once
+  counts for stars 1–2, mastered for star 3, from CONFIG.mastery). The patient that reaches today's goal gets a
+  toast + a small confetti burst (once a day: answered === target). Report: "New personal best!" tag on Best streak
+  when the round beat the all-time best (≥3). Checked at 1180x820 and 390x844; all 8 tests pass.
+- ROADMAP: R28 (animation pass) and R29 (engagement) added as in progress (on the session branch, waiting for the
+  user before main).

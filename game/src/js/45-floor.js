@@ -47,6 +47,17 @@ function dailyChip() {
     `${icon(done ? 'check' : 'sparkle')}<span>${label}</span></button>`;
 }
 
+// goal gradient on the room card: how many more patients earn the next star
+function nextStarHTML(m) {
+  const M = CONFIG.mastery, T = m.total;
+  if (!T || m.stars >= 3) return '';
+  const need = m.stars === 2 ? Math.ceil(M.threeStars * T) - m.solid
+    : Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever;
+  if (need <= 0) return '';
+  const what = m.stars === 2 ? 'mastered' : 'right';
+  return `<br><span class="next-star" title="${need} more ${what} for the next star"><span class="num">${need}</span> to ${'★'.repeat(m.stars + 1)}</span>`;
+}
+
 // one room door on the floor. `place` adds grid placement (the portrait layout)
 function roomHTML(u, place = '') {
   const m = Engine.mastery(u.id);
@@ -61,7 +72,7 @@ function roomHTML(u, place = '') {
       <span class="room-topic">${esc(u.topic)}</span>
       <span class="room-blurb">${esc(u.blurb)}</span>
       <span class="room-pt"><span class="pt">${patientHead(p, mood)}</span><span
-        class="room-meta"><span class="num">${m.solid}/${m.total}</span><br>mastered</span></span>
+        class="room-meta"><span class="num">${m.solid}/${m.total}</span> mastered${nextStarHTML(m)}</span></span>
     </span>
     <span class="door"></span>
   </button>`;

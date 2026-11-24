@@ -22,6 +22,7 @@ class Run {
     this.streak = 0;
     this.wrongRun = 0;
     this.best = 0;
+    this.bestStreakBefore = WR.state.bestStreak; // for "new personal best" on the report
     this.results = [];
     const L = CONFIG.lifelines;
     this.lifelines = m.lifelines ? { colleague: L.colleague, coffee: L.coffee } : { colleague: 0, coffee: 0 };
@@ -162,6 +163,8 @@ class Run {
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
+    // the patient that reaches today's goal gets a small celebration (once a day)
+    c.goalHit = WR.state.days.answered === Engine.dailyTarget();
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / CONFIG.scoring.pointsPerXP + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);

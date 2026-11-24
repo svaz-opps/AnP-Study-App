@@ -104,6 +104,14 @@
 .streak.hot { background: var(--warn-soft); border-color: var(--warn); }
 .streak.hot svg { animation: flame .6s ease-in-out infinite alternate; }
 @keyframes flame { to { transform: scale(1.18) rotate(-6deg); } }
+.mpips { display: inline-flex; gap: 3px; margin-left: 2px; }
+.mpips i { width: 7px; height: 7px; border-radius: 50%; background: var(--surface-3); }
+.mpips i.on { background: var(--warn); }
+.mpips i.new { animation: pip-pop .32s var(--ease-spring) both; }
+.streak.level-up { animation: level-up .5s var(--ease-spring); }
+@keyframes pip-pop { from { transform: scale(0); } 60% { transform: scale(1.6); } }
+@keyframes level-up { 30% { transform: scale(1.18) rotate(-3deg); } }
+[data-calm="1"] .mpips i.new, [data-calm="1"] .streak.level-up { animation: none; }
 
 .nurse-row { display: flex; align-items: center; gap: var(--s3); }
 .nurse-row .nurse { width: 86px; height: 104px; flex: none; }

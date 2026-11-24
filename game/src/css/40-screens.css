@@ -82,6 +82,11 @@
 .card .stat { background: var(--surface-2); }
 .stat b { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xl); }
 .stat .faint { font-size: var(--fs-xs); }
+.stat .pb {
+  align-self: flex-start; margin-top: 2px; padding: 1px 8px; border-radius: 999px; font-size: var(--fs-xs); font-weight: 800;
+  background: var(--warn-soft); color: var(--warn); animation: star-stamp .4s var(--ease-spring) .7s both;
+}
+[data-calm="1"] .stat .pb { animation: none; }
 .unit-card { display: flex; gap: var(--s5); align-items: center; flex-wrap: wrap; }
 .room-stars.big svg { width: 34px; height: 34px; }
 .mini-bars { flex: 1; min-width: 220px; display: grid; gap: 6px; font-size: var(--fs-sm); }

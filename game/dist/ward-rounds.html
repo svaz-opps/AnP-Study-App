@@ -389,6 +389,7 @@ svg { display: block; }
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
+.room-meta .next-star { color: var(--warn); white-space: nowrap; }
 .room-dot {
   flex: none; min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
@@ -679,6 +680,14 @@ svg { display: block; }
 .streak.hot { background: var(--warn-soft); border-color: var(--warn); }
 .streak.hot svg { animation: flame .6s ease-in-out infinite alternate; }
 @keyframes flame { to { transform: scale(1.18) rotate(-6deg); } }
+.mpips { display: inline-flex; gap: 3px; margin-left: 2px; }
+.mpips i { width: 7px; height: 7px; border-radius: 50%; background: var(--surface-3); }
+.mpips i.on { background: var(--warn); }
+.mpips i.new { animation: pip-pop .32s var(--ease-spring) both; }
+.streak.level-up { animation: level-up .5s var(--ease-spring); }
+@keyframes pip-pop { from { transform: scale(0); } 60% { transform: scale(1.6); } }
+@keyframes level-up { 30% { transform: scale(1.18) rotate(-3deg); } }
+[data-calm="1"] .mpips i.new, [data-calm="1"] .streak.level-up { animation: none; }
 
 .nurse-row { display: flex; align-items: center; gap: var(--s3); }
 .nurse-row .nurse { width: 86px; height: 104px; flex: none; }
@@ -1586,6 +1595,11 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .card .stat { background: var(--surface-2); }
 .stat b { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xl); }
 .stat .faint { font-size: var(--fs-xs); }
+.stat .pb {
+  align-self: flex-start; margin-top: 2px; padding: 1px 8px; border-radius: 999px; font-size: var(--fs-xs); font-weight: 800;
+  background: var(--warn-soft); color: var(--warn); animation: star-stamp .4s var(--ease-spring) .7s both;
+}
+[data-calm="1"] .stat .pb { animation: none; }
 .unit-card { display: flex; gap: var(--s5); align-items: center; flex-wrap: wrap; }
 .room-stars.big svg { width: 34px; height: 34px; }
 .mini-bars { flex: 1; min-width: 220px; display: grid; gap: 6px; font-size: var(--fs-sm); }
@@ -3917,6 +3931,7 @@ class Run {
     this.streak = 0;
     this.wrongRun = 0;
     this.best = 0;
+    this.bestStreakBefore = WR.state.bestStreak; // for "new personal best" on the report
     this.results = [];
     const L = CONFIG.lifelines;
     this.lifelines = m.lifelines ? { colleague: L.colleague, coffee: L.coffee } : { colleague: 0, coffee: 0 };
@@ -4057,6 +4072,8 @@ class Run {
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
     const rec = Engine.record(q, res);
     c.discharged = rec.discharged;
+    // the patient that reaches today's goal gets a small celebration (once a day)
+    c.goalHit = WR.state.days.answered === Engine.dailyTarget();
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / CONFIG.scoring.pointsPerXP + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
@@ -4552,6 +4569,17 @@ function dailyChip() {
     `${icon(done ? 'check' : 'sparkle')}<span>${label}</span></button>`;
 }
 
+// goal gradient on the room card: how many more patients earn the next star
+function nextStarHTML(m) {
+  const M = CONFIG.mastery, T = m.total;
+  if (!T || m.stars >= 3) return '';
+  const need = m.stars === 2 ? Math.ceil(M.threeStars * T) - m.solid
+    : Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever;
+  if (need <= 0) return '';
+  const what = m.stars === 2 ? 'mastered' : 'right';
+  return `<br><span class="next-star" title="${need} more ${what} for the next star"><span class="num">${need}</span> to ${'★'.repeat(m.stars + 1)}</span>`;
+}
+
 // one room door on the floor. `place` adds grid placement (the portrait layout)
 function roomHTML(u, place = '') {
   const m = Engine.mastery(u.id);
@@ -4566,7 +4594,7 @@ function roomHTML(u, place = '') {
       <span class="room-topic">${esc(u.topic)}</span>
       <span class="room-blurb">${esc(u.blurb)}</span>
       <span class="room-pt"><span class="pt">${patientHead(p, mood)}</span><span
-        class="room-meta"><span class="num">${m.solid}/${m.total}</span><br>mastered</span></span>
+        class="room-meta"><span class="num">${m.solid}/${m.total}</span> mastered${nextStarHTML(m)}</span></span>
     </span>
     <span class="door"></span>
   </button>`;
@@ -4903,9 +4931,19 @@ Screens.chart = {
   },
   scoreHTML(run) {
     const mult = Engine.multiplier(run.streak), hot = run.streak >= 3 ? 'hot' : '';
+    // goal gradient: a pip per right answer towards the next multiplier ("2 more for ×2")
+    const steps = CONFIG.scoring.streakMultipliers.map((m) => m.streak).sort((a, b) => a - b);
+    const next = steps.find((n) => run.streak < n);
+    let pips = '', toward = '';
+    if (next != null) {
+      const base = [0, ...steps].filter((n) => n <= run.streak).pop();
+      const have = run.streak - base, need = next - base;
+      pips = `<span class="mpips" aria-hidden="true">${'<i class="on"></i>'.repeat(have)}${'<i></i>'.repeat(need - have)}</span>`;
+      toward = `, ${next - run.streak} more for ×${Engine.multiplier(next)}`;
+    }
     return `<div class="score"><small>SCORE</small><span class="num">${fmt(run.score)}</span></div>
-      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}">${icon('flame')}<span>×${mult}</span><span
-        class="num faint">${run.streak} in a row</span></div>`;
+      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}${toward}">${icon('flame')}<span>×${mult}</span><span
+        class="num faint">${run.streak} in a row</span>${pips}</div>`;
   },
   ptMood(run) {
     const c = run.cur;
@@ -5258,6 +5296,19 @@ Screens.chart = {
     const scoreFrom = run.score - (c.pts.pts || 0);
     this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
     if (c.pts.pts) FX.countUp($('#scorebar .score .num', el), scoreFrom, run.score);
+    if (res.correct) {
+      const band = $('#scorebar .streak', el), lit = $$('#scorebar .mpips i.on', el);
+      if (lit.length) lit[lit.length - 1].classList.add('new'); // the pip just earned pops in
+      // reaching a new multiplier: the band jumps and the multiplier floats up from it
+      if (band && Engine.multiplier(run.streak) > Engine.multiplier(run.streak - 1)) {
+        replayClass(band, 'level-up');
+        FX.float(`×${Engine.multiplier(run.streak)}!`, band, 'warn');
+      }
+    }
+    if (c.goalHit) {
+      App.toast(`Daily goal reached: ${WR.state.days.answered} patients today!`);
+      if (!calmChosen()) FX.confetti(60);
+    }
     // a silly reaction redraws the patient itself; otherwise just update their face
     if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
@@ -5624,7 +5675,9 @@ Screens.report = {
       ['Score', fmt(run.score)], ['Best streak', run.best], ['XP earned', '+' + fmt(xp)],
     ];
     const kind = MODE_TITLE[run.mode] || (run.mode === 'review' ? 'Missed patients' : 'Shift report');
-    const statHTML = stats.map(([k, v], i) => `<div class="stat" style="--k:${i}"><span class="label">${k}</span><b class="num">${v}</b></div>`).join('');
+    const newBest = run.best >= 3 && run.best > run.bestStreakBefore;
+    const statHTML = stats.map(([k, v], i) => `<div class="stat" style="--k:${i}"><span class="label">${k}</span><b class="num">${v}</b>` +
+      (k === 'Best streak' && newBest ? '<span class="pb">New personal best!</span>' : '') + '</div>').join('');
     const badgeHTML = badges.length
       ? '<div class="card"><span class="label">New badges</span><div class="badge-row">' +
         badges.map((b) => `<div class="badge on">${icon(b.ico)}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`).join('') + '</div></div>'

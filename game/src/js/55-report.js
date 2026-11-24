@@ -176,7 +176,9 @@ Screens.report = {
       ['Score', fmt(run.score)], ['Best streak', run.best], ['XP earned', '+' + fmt(xp)],
     ];
     const kind = MODE_TITLE[run.mode] || (run.mode === 'review' ? 'Missed patients' : 'Shift report');
-    const statHTML = stats.map(([k, v], i) => `<div class="stat" style="--k:${i}"><span class="label">${k}</span><b class="num">${v}</b></div>`).join('');
+    const newBest = run.best >= 3 && run.best > run.bestStreakBefore;
+    const statHTML = stats.map(([k, v], i) => `<div class="stat" style="--k:${i}"><span class="label">${k}</span><b class="num">${v}</b>` +
+      (k === 'Best streak' && newBest ? '<span class="pb">New personal best!</span>' : '') + '</div>').join('');
     const badgeHTML = badges.length
       ? '<div class="card"><span class="label">New badges</span><div class="badge-row">' +
         badges.map((b) => `<div class="badge on">${icon(b.ico)}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`).join('') + '</div></div>'

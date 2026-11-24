@@ -27,9 +27,19 @@ Screens.chart = {
   },
   scoreHTML(run) {
     const mult = Engine.multiplier(run.streak), hot = run.streak >= 3 ? 'hot' : '';
+    // goal gradient: a pip per right answer towards the next multiplier ("2 more for ×2")
+    const steps = CONFIG.scoring.streakMultipliers.map((m) => m.streak).sort((a, b) => a - b);
+    const next = steps.find((n) => run.streak < n);
+    let pips = '', toward = '';
+    if (next != null) {
+      const base = [0, ...steps].filter((n) => n <= run.streak).pop();
+      const have = run.streak - base, need = next - base;
+      pips = `<span class="mpips" aria-hidden="true">${'<i class="on"></i>'.repeat(have)}${'<i></i>'.repeat(need - have)}</span>`;
+      toward = `, ${next - run.streak} more for ×${Engine.multiplier(next)}`;
+    }
     return `<div class="score"><small>SCORE</small><span class="num">${fmt(run.score)}</span></div>
-      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}">${icon('flame')}<span>×${mult}</span><span
-        class="num faint">${run.streak} in a row</span></div>`;
+      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}${toward}">${icon('flame')}<span>×${mult}</span><span
+        class="num faint">${run.streak} in a row</span>${pips}</div>`;
   },
   ptMood(run) {
     const c = run.cur;
@@ -382,6 +392,19 @@ Screens.chart = {
     const scoreFrom = run.score - (c.pts.pts || 0);
     this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
     if (c.pts.pts) FX.countUp($('#scorebar .score .num', el), scoreFrom, run.score);
+    if (res.correct) {
+      const band = $('#scorebar .streak', el), lit = $$('#scorebar .mpips i.on', el);
+      if (lit.length) lit[lit.length - 1].classList.add('new'); // the pip just earned pops in
+      // reaching a new multiplier: the band jumps and the multiplier floats up from it
+      if (band && Engine.multiplier(run.streak) > Engine.multiplier(run.streak - 1)) {
+        replayClass(band, 'level-up');
+        FX.float(`×${Engine.multiplier(run.streak)}!`, band, 'warn');
+      }
+    }
+    if (c.goalHit) {
+      App.toast(`Daily goal reached: ${WR.state.days.answered} patients today!`);
+      if (!calmChosen()) FX.confetti(60);
+    }
     // a silly reaction redraws the patient itself; otherwise just update their face
     if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }

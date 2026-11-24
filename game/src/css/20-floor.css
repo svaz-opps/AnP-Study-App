@@ -117,6 +117,7 @@
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
+.room-meta .next-star { color: var(--warn); white-space: nowrap; }
 .room-dot {
   flex: none; min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
