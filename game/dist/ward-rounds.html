@@ -390,6 +390,9 @@ svg { display: block; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
 .room-meta .next-star { color: var(--warn); white-space: nowrap; }
+/* today's goal met: the chip turns green with a check */
+.chip.today.met { border-color: var(--good); background: var(--good-soft); }
+.chip.today.met svg { color: var(--good); }
 /* a star earned on the last shift stamps onto the card when you get back (after the walk back starts) */
 .room-stars .stamp { display: inline-block; animation: star-stamp-floor .5s var(--ease-spring) calc(.9s + var(--k, 0) * 150ms) both; }
 @keyframes star-stamp-floor { from { opacity: 0; transform: scale(2.6) rotate(-30deg); } }
@@ -4615,7 +4618,8 @@ function hudHTML() {
     <div class="hud-chips">
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
         class="num">${s.days.streak || 0}</span>-day streak</span></span>
-      <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
+      <span class="chip today ${today >= goal ? 'met' : ''}" title="Patients answered today">${icon(today >= goal ? 'check' : 'target')}<span
+        class="num">${today}/${goal}</span> today</span>
       ${examChip}
       ${dailyChip()}
     </div>

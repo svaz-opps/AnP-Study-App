@@ -464,3 +464,4 @@ After animation work runs out: ideas to make the game more engaging; after that,
   the new one in 240 ms, then the new button takes over; skipped on soft/calm). It used to jump. All 8 tests pass.
 - Summary for the user written at the end of ANIMATION_NOTES.md ("What the pass changed" + one open question about
   the landscape scroll-to-explanation).
+- Floor HUD: the "N/goal today" chip turns green with a check once today's goal is met. All 8 tests pass.

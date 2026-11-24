@@ -31,7 +31,8 @@ function hudHTML() {
     <div class="hud-chips">
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
         class="num">${s.days.streak || 0}</span>-day streak</span></span>
-      <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
+      <span class="chip today ${today >= goal ? 'met' : ''}" title="Patients answered today">${icon(today >= goal ? 'check' : 'target')}<span
+        class="num">${today}/${goal}</span> today</span>
       ${examChip}
       ${dailyChip()}
     </div>
