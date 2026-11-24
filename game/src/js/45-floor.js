@@ -136,6 +136,23 @@ Screens.floor = {
     walker.style.transform = `translate(${p.x}px, ${p.y}px)`;
     if (!animate) { void walker.offsetWidth; walker.style.transition = ''; }
   },
+  // The speech bubble shrinks into the nurse (towards her head) before she sets off, so she never walks over it.
+  tuckBubble() {
+    return new Promise((resolve) => {
+      const bubble = $('#floor-bubble'), walker = $('#walker');
+      if (!bubble) { resolve(); return; }
+      const done = () => { bubble.style.visibility = 'hidden'; resolve(); };
+      if (!walker || reducedMotion() || !bubble.animate) { done(); return; }
+      const br = bubble.getBoundingClientRect(), wr = walker.getBoundingClientRect();
+      const ox = wr.left + wr.width / 2 - br.left, oy = wr.top + wr.height * 0.3 - br.top;
+      bubble.classList.remove('pop');
+      bubble.style.transformOrigin = `${ox}px ${oy}px`;
+      bubble.animate(
+        [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.05)', opacity: 0 }],
+        { duration: CONFIG.timing.bubbleTuckMs, easing: 'cubic-bezier(.5, 0, .75, 0)', fill: 'forwards' },
+      ).finished.then(done, done);
+    });
+  },
   walkTo(roomEl) {
     return new Promise((resolve) => {
       const plan = $('#floorplan'), walker = $('#walker');
@@ -164,6 +181,7 @@ Screens.floor = {
       if (Screens.floor.busy) return;
       Screens.floor.busy = true;
       Sound.play('tap');
+      await Screens.floor.tuckBubble();
       await Screens.floor.walkTo(el);
       el.classList.add('open');
       Sound.play('door');

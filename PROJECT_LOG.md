@@ -323,3 +323,8 @@
   old screen is removed at once and only the new one fades in over the plain background (Reduce Motion: it just
   appears). Removed `.screen.leaving`, `screen-out` and `CONFIG.timing.screenLeaveMs`. Checked frame by frame with
   reduce-motion on and off: never more than one screen on the page. All 7 test scripts pass.
+- Floor: the nurse used to walk straight over her own speech bubble when you tapped a room (landscape: the bubble
+  sits right of her in the corridor). Now `Screens.floor.tuckBubble()` first shrinks the bubble into her (scale to 5%
+  and fade, origin at her head, `CONFIG.timing.bubbleTuckMs` = 260 ms), then she walks. With Reduce Motion/Calm the
+  bubble just disappears (she doesn't walk then either). The new floor screen after a shift brings a fresh bubble.
+  Checked frame by frame at 1180x820. Not changed: she still passes in front of the Code Blue and OR buttons on the way to far rooms.

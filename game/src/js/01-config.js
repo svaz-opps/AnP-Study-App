@@ -223,6 +223,7 @@ const CONFIG = {
     bossHurtMs: 700,
     timerDeltaMs: 1000,      // 30-chart.css .timer-delta (1s)
     cardSoundMs: 500,
+    bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
     walkPxPerSecond: 700,    // the nurse's walk to a room
     walkMinSeconds: 0.35,
     walkMaxSeconds: 1.1,
