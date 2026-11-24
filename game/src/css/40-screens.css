@@ -340,7 +340,6 @@ input[type="date"], input[type="text"] {
 
 @media (prefers-reduced-motion: reduce) {
   .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
-  .walker { transition: none !important; }
 }
 
 /* how-to-save guide (settings card + iPad reminder) */

@@ -1790,7 +1790,6 @@ input[type="date"], input[type="text"] {
 
 @media (prefers-reduced-motion: reduce) {
   .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
-  .walker { transition: none !important; }
 }
 
 /* how-to-save guide (settings card + iPad reminder) */
@@ -4486,13 +4485,16 @@ Screens.floor = {
     walker.style.transform = `translate(${p.x}px, ${p.y}px)`;
     if (!animate) { void walker.offsetWidth; walker.style.transition = ''; }
   },
+  // The walk to a room (and the bubble/button tuck and door swing around it) stops only on the game's own Calm
+  // setting, like the heart monitor: on Auto it plays even when the device asks for reduced motion, since a
+  // nurse who jumps to the door reads as a glitch.
   // The speech bubble shrinks into the nurse (towards her head) before she sets off, so she never walks over it.
   tuckBubble() {
     return new Promise((resolve) => {
       const bubble = $('#floor-bubble'), walker = $('#walker');
       if (!bubble) { resolve(); return; }
       const done = () => { bubble.style.visibility = 'hidden'; resolve(); };
-      if (!walker || reducedMotion() || !bubble.animate) { done(); return; }
+      if (!walker || calmChosen() || !bubble.animate) { done(); return; }
       const br = bubble.getBoundingClientRect(), wr = walker.getBoundingClientRect();
       const ox = wr.left + wr.width / 2 - br.left, oy = wr.top + wr.height * 0.3 - br.top;
       bubble.classList.remove('pop');
@@ -4506,7 +4508,7 @@ Screens.floor = {
   walkTo(roomEl) {
     return new Promise((resolve) => {
       const plan = $('#floorplan'), walker = $('#walker');
-      if (!plan || !walker || reducedMotion()) { resolve(); return; }
+      if (!plan || !walker || calmChosen()) { resolve(); return; }
       const pr = plan.getBoundingClientRect(), rr = roomEl.getBoundingClientRect(), cor = $('.corridor', plan).getBoundingClientRect();
       let x, y;
       if (App.layout === 'h') {
@@ -4541,7 +4543,7 @@ Screens.floor = {
       await Screens.floor.walkTo(el);
       el.classList.add('open');
       Sound.play('door');
-      await sleep(reducedMotion() ? 0 : CONFIG.timing.doorOpenMs);
+      await sleep(calmChosen() ? 0 : CONFIG.timing.doorOpenMs);
       Screens.floor.busy = false;
       startShift(d.unit);
     },

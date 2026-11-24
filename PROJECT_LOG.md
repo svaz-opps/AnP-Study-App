@@ -351,3 +351,9 @@
   `.room-dot` offset since the dot is no longer absolutely positioned.
 - Pushed to main (196d8d8) at the user's request; Pages run #12 succeeded. The run before it (#11, from the other
   session's merge) had failed at deploy-pages after a successful upload; #12 deployed the same plus these changes.
+- "Nurse teleports to the door" (user's iPad). Cause: the walk only ran when reduced motion was off, and on Motion
+  "Auto" the game follows the iPad's Reduce Motion setting, which the user has on; a CSS rule under
+  `prefers-reduced-motion` also killed the walker's transition, so even Motion "Full" couldn't bring it back.
+  Now the walk, the bubble/button tuck and the door swing follow the game's own Calm setting only (`calmChosen()`,
+  same as the heart monitor); the CSS rule is gone. Checked frame by frame with emulated reduce-motion: she walks
+  the whole corridor with stepping legs. Calm still skips the walk (as the Settings text says).
