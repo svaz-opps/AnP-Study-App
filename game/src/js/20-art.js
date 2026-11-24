@@ -521,6 +521,6 @@ function bossSVG(phase = 0, mood = 'grin') {
 
 function starRow(n, of = 3) {
   let s = '';
-  for (let i = 0; i < of; i++) s += `<span class="${i < n ? 'on' : ''}">${icon('star')}</span>`;
+  for (let i = 0; i < of; i++) s += `<span class="${i < n ? 'on' : ''}" style="--k:${i}">${icon('star')}</span>`;
   return s;
 }

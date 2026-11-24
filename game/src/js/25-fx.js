@@ -181,16 +181,16 @@ const FX = {
   },
 
   // a number rolls from one value to another (score), easing out so it settles on the real value
-  countUp(el, from, to, ms = 450) {
+  countUp(el, from, to, ms = 450, show = fmt, delay = 0) {
     if (!el || calmChosen() || from === to) return;
-    const t0 = performance.now();
+    const t0 = performance.now() + delay;
     const step = (now) => {
       if (!el.isConnected) return;
-      const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
-      el.textContent = fmt(Math.round(from + (to - from) * e));
+      const k = Math.max(0, Math.min(1, (now - t0) / ms)), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = show(Math.round(from + (to - from) * e));
       if (k < 1) requestAnimationFrame(step);
     };
-    el.textContent = fmt(from);
+    el.textContent = show(from);
     requestAnimationFrame(step);
   },
 

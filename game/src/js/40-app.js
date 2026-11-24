@@ -43,6 +43,8 @@ const App = {
     // Reduce Motion on, both at full strength).
     if (old) old.remove();
     root.innerHTML = '';
+    // floating "+100" texts belong to the screen they were earned on
+    document.querySelectorAll('#fx-layer > .float-text').forEach((n) => n.remove());
     root.appendChild(sec);
     this.el = sec;
     if (scr.mount) scr.mount(sec, params);

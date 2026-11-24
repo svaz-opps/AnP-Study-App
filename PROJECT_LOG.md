@@ -404,3 +404,8 @@ After animation work runs out: ideas to make the game more engaging; after that,
   the dialog counts as closed and a following dialog can open), then fades while the card sinks slightly, 160 ms
   ease-in (entrance 260 ms spring). Toast removal timed to its 160 ms exit. The Rapid Response card glow animated
   box-shadow every frame; it is now a ready-drawn inset ring on `::after` pulsing with opacity. All 8 tests pass.
+- H (done) Report staging. The report builds top to bottom: the nurse pops up (spring), the headline and parade
+  rise in, the six stat tiles follow 45 ms apart, then the room card, badges and buttons; earned stars stamp in
+  after the room card (scale 2 → 1 with a twist, 120 ms apart). Score and XP tiles roll up from 0 (`FX.countUp`
+  gained a formatter and a delay). Fade on soft, nothing on Calm. Floating "+100" texts are cleared when the screen
+  changes (the last answer's float used to drift over the report). All 8 tests pass.
