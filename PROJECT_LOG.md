@@ -415,3 +415,8 @@ After animation work runs out: ideas to make the game more engaging; after that,
   (they changed at Submit, before the throw). The explanation panel (and its scroll) waits 640 ms in the arena when
   you hit (`bossFeedbackDelayMs`), because the scroll moved the page under the flying projectile so it hit empty
   space. The Superbug breathes while idle (secondary action). All 8 tests pass.
+- J (done) Patient gags. Several swings were "alternate" between two extremes, so they snapped to the first pose
+  when they started, and those with an odd count ended mid-swing and snapped back to rest. wh-bob, wh-wave,
+  wh-wobble, pp-wave and wh-blow now start and end at rest and swing out in the middle (one cycle replaces two
+  alternate iterations, same total time). Dance, party, dizzy, the theme-room hand wave, the blower and the
+  low-score parade wave use them. Other gags already started and ended at rest (checked every keyframe).
