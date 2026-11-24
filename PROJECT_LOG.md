@@ -472,3 +472,7 @@ After animation work runs out: ideas to make the game more engaging; after that,
   the redraw now skips that fade and the nurse does the same "ta-da" as in the locker. All 8 tests pass.
 - Chart: with one life left, the last heart beats (double-pulse every 1.1 s, after the lost heart has drained;
   still on Calm). All 8 tests pass.
+- Checkpoint 06:30 UTC: everything above is committed and pushed to `ccr-dd43cba2-3w86f7`; ROADMAP R28/R29 notes
+  updated. Resume point: animation checklist A–K done; engagement items 1–4 + extras done. Ideas not started:
+  stagger list entrances on secondary screens (avoid replaying on rerender), sliding highlight for locker tabs,
+  and the open question in ANIMATION_NOTES.md (needs the user).
