@@ -252,6 +252,18 @@ svg { display: block; }
   .toast.out { animation-name: toast-fade-out; }
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- HUD ---------- */
 .hud { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; }
 .hud-me {
@@ -1582,33 +1594,13 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .unit-bars { display: flex; flex-direction: column; gap: var(--s2); margin-top: var(--s2); }
 .ub {
   display: grid;
-  grid-template-columns: minmax(110px, 180px) 1fr auto;
+  grid-template-columns: minmax(110px, 180px) 1fr auto minmax(64px, auto);
   gap: var(--s3);
   align-items: center;
   font-size: var(--fs-sm);
   font-weight: 700;
 }
 .ub .room-stars svg { width: 14px; height: 14px; }
-.bar.dual { position: relative; }
-.bar.dual i {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
-}
-.bar.dual i.solid { background: var(--good); }
-.legend { margin-left: var(--s3); text-transform: none; letter-spacing: 0; font-weight: 700; }
-.legend i {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
-  margin: 0 4px 0 8px;
-  vertical-align: -1px;
-}
-.legend i.solid { background: var(--good); }
 .weak-list {
   margin: var(--s2) 0 var(--s3);
   padding-left: 1.3em;
@@ -1620,6 +1612,94 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .weak-list li span { font-size: var(--fs-xs); }
 .exam-list { list-style: none; padding: 0; margin: var(--s2) 0 0; display: flex; flex-direction: column; gap: 6px; }
 .exam-list li { display: flex; gap: var(--s4); align-items: center; }
+
+/* ---------- report card: where you stand ---------- */
+/* question states: mastered / learning / due / missed / not started (colours validated for colour-blind
+   separation in this order; every bar also has a legend with counts and an accessible name) */
+.st-mastered { background: var(--good); }
+.st-learning { background: var(--xp); }
+.st-due { background: var(--warn); }
+.st-missed { background: var(--bad); }
+.st-new { background: var(--surface-3); }
+.st-bar { display: flex; gap: 2px; height: 8px; border-radius: 999px; overflow: hidden; background: var(--surface-3); min-width: 0; }
+.st-bar i { display: block; min-width: 2px; }
+.st-bar.tall { height: 20px; border-radius: 6px; margin: var(--s2) 0; }
+.st-bar.tall i:first-child { border-radius: 6px 0 0 6px; }
+.st-bar.tall i:last-child { border-radius: 0 6px 6px 0; }
+.st-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 4px var(--s3);
+  font-size: var(--fs-sm);
+}
+.st-legend li { display: grid; grid-template-columns: 12px 1fr; column-gap: 6px; align-items: center; }
+.st-legend li .faint { grid-column: 2; font-size: var(--fs-xs); }
+.st-legend.inline { display: flex; gap: var(--s4); margin-top: var(--s2); }
+.st-legend.inline li { display: flex; gap: 6px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.stand-top { display: flex; gap: var(--s4); flex-wrap: wrap; align-items: stretch; }
+.stand-hero { flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
+.hero-num { font-family: var(--font-body); font-weight: 800; font-size: 3.2rem; line-height: 1.05; color: var(--text); }
+.stand-tiles { flex: 2 1 340px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--s3); }
+.stand-bank { margin-top: var(--s4); }
+.bank-line { margin: 4px 0 0; font-size: var(--fs-sm); }
+.rule { margin: 2px 0 0; font-size: var(--fs-xs); }
+.how { margin-top: var(--s3); font-size: var(--fs-sm); color: var(--text-dim); }
+.how summary { cursor: pointer; font-weight: 700; color: var(--text); min-height: 32px; display: flex; align-items: center; }
+.how p { margin: var(--s2) 0 0; }
+.linkish { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+.todo-list { margin: var(--s2) 0 var(--s3); padding-left: 1.2em; display: grid; gap: 2px; font-size: var(--fs-sm); }
+.report-actions.left { justify-content: flex-start; }
+.ub-note { font-size: var(--fs-xs); font-weight: 600; text-align: right; }
+.stat .tag {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--warn-soft);
+  color: var(--warn);
+  letter-spacing: 0;
+}
+.stat.weakest { border-color: color-mix(in srgb, var(--warn) 55%, var(--line)); }
+.tr-chart {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  height: 120px;
+  margin-top: var(--s3);
+  padding-top: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.tr-max { position: absolute; top: 0; left: 0; font-size: var(--fs-xs); color: var(--text-faint); }
+.tr-col { position: relative; display: flex; align-items: flex-end; justify-content: center; min-width: 0; }
+.tr-stack {
+  width: min(100%, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+.tr-stack i { display: block; min-height: 2px; }
+.tr-right { background: var(--good); }
+.tr-miss { background: var(--bad); }
+.tr-day {
+  position: absolute;
+  bottom: -20px;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+.tr-col:first-child .tr-day { left: 0; }
+.tr-col:last-child .tr-day { right: 0; }
+.trend .st-legend.inline { margin-top: 28px; }
+[data-size="compact"] .ub { grid-template-columns: 1fr auto; row-gap: 4px; }
+[data-size="compact"] .ub .st-bar { grid-column: 1 / -1; grid-row: 2; }
+[data-size="compact"] .ub-note { grid-column: 1 / -1; text-align: left; }
+[data-size="compact"] .hero-num { font-size: 2.6rem; }
 
 /* ---------- missed ---------- */
 .empty {
@@ -1845,10 +1925,16 @@ function todayStr(d = new Date()) {
   const p = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
-const yesterdayStr = () => todayStr(new Date(Date.now() - 86400000));
+// built from the calendar date, not "now minus 24 hours" (a day is 23 hours long when clocks spring forward)
+const yesterdayStr = () => { const d = new Date(); return todayStr(new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1)); };
 function dayNum(s = todayStr()) {
   const [y, m, d] = s.split('-').map(Number);
   return Math.round(Date.UTC(y, m - 1, d) / 86400000);
+}
+// the YYYY-MM-DD for a dayNum (inverse of dayNum)
+function dayStr(n) {
+  const d = new Date(n * 86400000), p = (k) => String(k).padStart(2, '0');
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}`;
 }
 
 // Run fn when the browser has nothing else to do (so it never lands mid-animation).
@@ -2028,9 +2114,13 @@ const CONFIG = {
   mastery: {
     solidDays: 2,            // right on this many different days = mastered (and a missed patient is discharged)
     // a room's stars, by the share of its questions:
-    oneStar: 0.6,            // answered right at least once
-    twoStars: 0.8,           // answered right at least once
-    threeStars: 0.9,         // mastered
+    oneStar: 0.6,            // known now: answered right (without the 50/50) and not in Missed Patients
+    twoStars: 0.8,           // known now
+    threeStars: 0.9,         // mastered (a mastered question that is due for review still counts)
+    // a mastered question comes back for review after this many days without seeing it; each extra right
+    // day moves it one step along (7, then 14, then 30 days)
+    reviewAfterDays: [7, 14, 30],
+    examWeekRefresh: 7,      // in the last N days before the exam date, every mastered question comes back once (0 = off)
   },
 
   boss: {
@@ -2083,6 +2173,7 @@ const CONFIG = {
     learning: 1.8,           // right before but not yet mastered, not right today
     learningRightToday: 0.6,
     mastered: 0.35,
+    due: 4,                  // mastered, but due for review (CONFIG.mastery.reviewAfterDays)
     recentFactor: 0.12,      // × weight for questions among your last `history.recentQuestions`
     weakRoomBias: 1.2,       // up to (1 + this) × weight for rooms you have answered least
     reviewOtherDay: 3,       // Missed Patients re-rounds: prefer misses from earlier days
@@ -2090,10 +2181,22 @@ const CONFIG = {
     rapidDueAfterDays: 3,    // Rapid Response treats an unmastered question as fading after this many days
   },
 
+  // ----- estimated exam score (report card) -----
+  // For each state a question can be in (new, learning, mastered, due, missed), your own accuracy on
+  // questions you answered while they were in that state, pulled toward `prior` until there is enough data
+  // (`priorWeight` = how many answers the prior is worth). The estimate is the bank-wide average.
+  readiness: {
+    prior: { new: 0.6, learning: 0.7, mastered: 0.9, due: 0.8, missed: 0.45 },
+    priorWeight: 10,
+    minAnswers: 20,          // no estimate before this many answers
+    confidence: { medium: 50, fair: 200 },   // answers needed for each confidence label
+  },
+
   // ----- daily study target (the "today" chip) -----
   dailyTarget: {
     noExamDate: 20,          // with no exam date set
-    min: 10,                 // otherwise: what's left ÷ days to the exam, kept within min..max
+    min: 10,                 // otherwise: right days still needed to master the bank (+ reviews due) ÷ days to
+                             // the exam, kept within min..max
     max: 150,
     choices: [20, 40, 60],   // fixed targets offered in Settings
   },
@@ -2103,6 +2206,9 @@ const CONFIG = {
     recentQuestions: 40,
     activeDays: 90,
     exams: 20,
+    log: 300,                // answers kept for the estimated exam score and recent accuracy
+    histDays: 60,            // days of daily totals kept (the report card's chart shows the last 14)
+    paceDays: 7,             // pace = questions mastered per day over this many days
   },
 
   // ----- badge thresholds -----
@@ -2277,17 +2383,21 @@ function defaultState() {
     points: 0,
     bestStreak: 0,
     badges: {},
-    items: {},          // qid -> { s: seen, r: right, w: wrong, ok: right-days streak, od: last right day, ld: last day seen, miss: bool }
+    // qid -> { s: seen, r: right, w: wrong, ok: right days since the last miss, od: last of those right days,
+    //         ld: last day seen, miss: in Missed Patients, h: right only with the 50/50 (not counted as right) }
+    items: {},
     units: {},          // uid -> { shifts, perfect, best }
     typeStats: {},      // type -> { n, r }
     originStats: {},    // new|guide -> { n, r }
+    firstStats: { since: '', type: {}, origin: {} },   // first try at each question only: { n, r } per type / origin
+    log: [],            // last answers: { d: dayNum, u: room, st: status before, c: right, t: type, o: new question, f: first try, h: helped }
     discharged: 0,
     codeBlueBest: 0,
     boss: { wins: 0, best: 0, noLifelineWin: false },
     exams: [],
-    days: { last: '', streak: 0, today: '', answered: 0, active: [] },
+    days: { last: '', streak: 0, today: '', answered: 0, active: [], hist: {} },   // hist: day -> { n, r, h, m: mastered }
     recent: [],
-    unlocks: {},
+    unlocks: {},        // things that stay open once earned, e.g. { boss: true }
     settings: { sound: true, motion: 'auto', whimsy: 'full', text: 1, examDate: '', dailyGoal: 0 },
     daily: { date: '', qids: [], last: '', streak: 0, best: 0 },
     rapid: { n: 0, r: 0 },   // Rapid Response (cross-room recall) answers
@@ -3516,8 +3626,9 @@ const Engine = {
   },
 
   // ----- per-question review records
-  // r = { s: times seen, r: times right, w: times wrong, ok: right-day streak,
-  //       od: last day answered right, ld: last day seen, miss: in Missed Patients }
+  // r = { s: times seen, r: times right, w: times wrong, ok: right days since the last miss,
+  //       od: last of those right days, ld: last day seen, miss: in Missed Patients,
+  //       h: times right only with the 50/50 (seen, but not proof you know it) }
   rec(qid) { return WR.state.items[qid]; },
   isSolid(r) { return !!r && r.ok >= CONFIG.mastery.solidDays; },
   touchDay() {
@@ -3526,61 +3637,139 @@ const Engine = {
       d.streak = d.last === yesterdayStr() ? d.streak + 1 : 1;
       d.last = t; d.today = t; d.answered = 0;
       d.active = (d.active || []).concat(t).slice(-CONFIG.history.activeDays);
+      const keep = dayNum(t) - CONFIG.history.histDays;
+      d.hist = d.hist || {};
+      for (const k of Object.keys(d.hist)) if (dayNum(k) < keep) delete d.hist[k];
     }
   },
-  record(q, res) {
+  // the day streak as it stands today: it is broken once a whole day goes by with no answers
+  dayStreak() {
+    const d = WR.state.days;
+    return d.last === todayStr() || d.last === yesterdayStr() ? d.streak || 0 : 0;
+  },
+  // opts.assisted: answered after "Ask a colleague". A right answer then counts as seen only (no mastery day,
+  // no discharge, not in accuracy); a wrong one still counts as wrong.
+  record(q, res, opts = {}) {
     this.touchDay();
     const s = WR.state, t = todayStr();
     const r = s.items[q.id] || (s.items[q.id] = { s: 0, r: 0, w: 0, ok: 0, od: '', ld: '', miss: false });
+    const before = this.statusOf(r);
     const first = r.s === 0;
+    const helped = !!opts.assisted && res.correct;
     r.s++; r.ld = t;
     let discharged = false;
-    if (res.correct) {
+    if (helped) {
+      r.h = (r.h || 0) + 1;
+    } else if (res.correct) {
       r.r++;
       if (r.od !== t) { r.ok++; r.od = t; }
       if (r.miss && this.isSolid(r)) { r.miss = false; s.discharged++; discharged = true; }
     } else {
-      r.w++; r.ok = 0; r.miss = true;
+      // a miss restarts the count of right days (so a right answer later today counts again)
+      r.w++; r.ok = 0; r.od = ''; r.miss = true;
     }
-    const ts = s.typeStats[q.type] || (s.typeStats[q.type] = { n: 0, r: 0 });
-    ts.n++; if (res.correct) ts.r++;
-    const os = s.originStats[q.origin] || (s.originStats[q.origin] = { n: 0, r: 0 });
-    os.n++; if (res.correct) os.r++;
+    const bump = (o, k) => { const x = o[k] || (o[k] = { n: 0, r: 0 }); x.n++; if (res.correct) x.r++; };
+    if (!helped) {
+      bump(s.typeStats, q.type);
+      bump(s.originStats, q.origin);
+      if (first) {
+        const f = s.firstStats;
+        if (!f.since) f.since = t;
+        bump(f.type, q.type);
+        bump(f.origin, q.origin);
+      }
+    }
     s.days.answered++;
+    const h = s.days.hist[t] || (s.days.hist[t] = { n: 0, r: 0, h: 0, m: 0 });
+    h.n++;
+    if (helped) h.h++; else if (res.correct) h.r++;
+    h.m = this.solidCount();
+    const e = { d: dayNum(t), u: q.unit, st: before, c: res.correct ? 1 : 0, t: q.type, o: q.origin === 'new' ? 1 : 0, f: first ? 1 : 0 };
+    if (helped) e.h = 1;
+    s.log.push(e);
+    if (s.log.length > CONFIG.history.log) s.log.splice(0, s.log.length - CONFIG.history.log);
     s.recent = [q.id].concat(s.recent.filter((x) => x !== q.id)).slice(0, CONFIG.history.recentQuestions);
-    return { first, discharged };
+    return { first, discharged, helped };
+  },
+
+  // ----- what you know about each question, right now
+  //   new       never answered right on your own (usually: never seen)
+  //   missed    in Missed Patients: answered wrong, not yet right on solidDays different days since
+  //   learning  answered right, not yet on solidDays different days
+  //   mastered  right on solidDays different days, and not due for review yet
+  //   due       mastered, but it's time to see it again (CONFIG.mastery.reviewAfterDays / examWeekRefresh)
+  STATUSES: ['mastered', 'learning', 'due', 'missed', 'new'],
+  // today's date and the exam-week cut-off, worked out once when classifying many questions
+  statusCtx() {
+    const today = dayNum(), M = CONFIG.mastery, left = this.daysToExam();
+    const finalWeek = M.examWeekRefresh > 0 && left != null && left >= 0 && left < M.examWeekRefresh;
+    // in the exam's final week: due if not seen since that week began
+    return { today, refreshBefore: finalWeek ? today + left - M.examWeekRefresh + 1 : null };
+  },
+  statusOf(r, ctx = this.statusCtx()) {
+    if (!r || !r.s) return 'new';
+    if (r.miss) return 'missed';
+    if (!this.isSolid(r)) return r.r ? 'learning' : 'new';
+    const M = CONFIG.mastery, gaps = M.reviewAfterDays;
+    const gap = gaps[Math.min(r.ok - M.solidDays, gaps.length - 1)];
+    if (r.od && ctx.today - dayNum(r.od) >= gap) return 'due';
+    if (ctx.refreshBefore != null && (!r.ld || dayNum(r.ld) < ctx.refreshBefore)) return 'due';
+    return 'mastered';
+  },
+  status(qid, ctx) { return this.statusOf(WR.state.items[qid], ctx); },
+  // how many questions are in each state
+  breakdown(qs = Content.all(), ctx = this.statusCtx()) {
+    const out = { total: qs.length, mastered: 0, learning: 0, due: 0, missed: 0, new: 0 };
+    for (const q of qs) out[this.statusOf(WR.state.items[q.id], ctx)]++;
+    return out;
+  },
+  solidCount() {
+    let n = 0;
+    for (const q of Content.all()) if (this.isSolid(WR.state.items[q.id])) n++;
+    return n;
   },
 
   // ----- mastery
-  mastery(uid) {
+  // known now = learning + mastered + due (right on your own, not in Missed Patients): a miss takes a question
+  // out until it is fixed. solid = mastered + due: time alone never takes a star away.
+  mastery(uid, ctx) {
     const qs = Content.byUnit[uid] || [];
-    let ever = 0, solid = 0, missed = 0, seen = 0;
-    for (const q of qs) {
-      const r = WR.state.items[q.id];
-      if (!r) continue;
-      if (r.s) seen++;
-      if (r.r) ever++;
-      if (this.isSolid(r)) solid++;
-      if (r.miss) missed++;
-    }
+    const b = this.breakdown(qs, ctx);
+    let seen = 0;
+    for (const q of qs) { const r = WR.state.items[q.id]; if (r && r.s) seen++; }
+    const known = b.learning + b.mastered + b.due, solid = b.mastered + b.due;
     const total = qs.length || 1;
     const M = CONFIG.mastery;
-    const stars = solid / total >= M.threeStars ? 3 : ever / total >= M.twoStars ? 2 : ever / total >= M.oneStar ? 1 : 0;
-    return { total: qs.length, ever, solid, missed, seen, stars, everFrac: ever / total, solidFrac: solid / total };
+    const stars = solid / total >= M.threeStars ? 3 : known / total >= M.twoStars ? 2 : known / total >= M.oneStar ? 1 : 0;
+    return {
+      total: qs.length, ever: known, solid, missed: b.missed, due: b.due, learning: b.learning, unseen: b.new, seen,
+      stars, everFrac: known / total, solidFrac: solid / total, b,
+    };
   },
   missed(uid) {
     return Content.all().filter((q) => (!uid || q.unit === uid) && WR.state.items[q.id] && WR.state.items[q.id].miss);
   },
+  due(uid) {
+    const ctx = this.statusCtx();
+    return Content.all().filter((q) => (!uid || q.unit === uid) && this.status(q.id, ctx) === 'due');
+  },
   shiftsDone() { return Object.values(WR.state.units).reduce((a, u) => a + (u.shifts || 0), 0); },
+  // once open, the OR stays open (stars can drop after a miss)
   bossUnlocked() {
-    const rooms = Content.units.filter((u) => this.mastery(u.id).stars >= 1).length;
-    return rooms >= CONFIG.boss.unlockRooms || this.shiftsDone() >= CONFIG.boss.unlockShifts;
+    const u = WR.state.unlocks;
+    if (u.boss) return true;
+    const ctx = this.statusCtx();
+    const rooms = Content.units.filter((x) => this.mastery(x.id, ctx).stars >= 1).length;
+    const open = rooms >= CONFIG.boss.unlockRooms || this.shiftsDone() >= CONFIG.boss.unlockShifts;
+    if (open) u.boss = true;
+    return open;
   },
 
   // ----- picking patients
   // A question's chance of being picked is proportional to its weight (CONFIG.picking).
   // opts.weakBias favours rooms you have answered least; opts.everFrac(uid) supplies each
   // room's "answered right once" share (pass a memo when weighing many questions at once).
+  // opts.ctx: a statusCtx() to reuse when weighing many questions
   weight(q, opts = {}) {
     const P = CONFIG.picking;
     const r = WR.state.items[q.id], t = todayStr();
@@ -3588,7 +3777,7 @@ const Engine = {
     if (!r || !r.s) w = q.origin === 'new' ? P.unseenNew : P.unseen;
     else if (r.miss) w = r.ld === t ? P.missedToday : P.missed;
     else if (!this.isSolid(r)) w = r.od === t ? P.learningRightToday : P.learning;
-    else w = P.mastered;
+    else w = this.statusOf(r, opts.ctx || this.statusCtx()) === 'due' ? P.due : P.mastered;
     if (WR.state.recent.indexOf(q.id) !== -1) w *= P.recentFactor;
     if (opts.weakBias) {
       const everFrac = opts.everFrac ? opts.everFrac(q.unit) : this.mastery(q.unit).everFrac;
@@ -3602,7 +3791,21 @@ const Engine = {
     return (uid) => (uid in memo ? memo[uid] : (memo[uid] = this.mastery(uid).everFrac));
   },
   pickShift(uid, n = MODES.shift.n) {
-    return weightedSample(Content.byUnit[uid] || [], (q) => this.weight(q), n).map((q) => q.id);
+    const ctx = this.statusCtx();
+    return weightedSample(Content.byUnit[uid] || [], (q) => this.weight(q, { ctx }), n).map((q) => q.id);
+  },
+  // mastered questions that are due for review, most overdue first
+  pickDue(n = MODES.review.n, uid = null) {
+    const ctx = this.statusCtx(), items = WR.state.items;
+    const age = (q) => ctx.today - dayNum(items[q.id].od || items[q.id].ld);
+    return shuffle(this.due(uid)).sort((a, b) => age(b) - age(a)).slice(0, n).map((q) => q.id);
+  },
+  // questions for some focus points: missed first, then due, learning, never answered; mastered last
+  pickFocus(points, n = MODES.review.n) {
+    const rank = { missed: 0, due: 1, learning: 2, new: 3, mastered: 4 };
+    const ctx = this.statusCtx();
+    const ids = shuffle([...new Set(points.flatMap((a) => a.qids))]);
+    return ids.sort((a, b) => rank[this.status(a, ctx)] - rank[this.status(b, ctx)]).slice(0, n);
   },
   pickReview(uid, n = MODES.review.n) {
     const P = CONFIG.picking;
@@ -3612,9 +3815,9 @@ const Engine = {
   },
   pickOne(filter, exclude = [], weakBias = true) {
     const pool = Content.all().filter((q) => filter(q) && exclude.indexOf(q.id) === -1);
-    const everFrac = this.everFracMemo();
+    const everFrac = this.everFracMemo(), ctx = this.statusCtx();
     const from = pool.length ? pool : Content.all().filter(filter);
-    const got = weightedSample(from, (q) => this.weight(q, { weakBias, everFrac }), 1);
+    const got = weightedSample(from, (q) => this.weight(q, { weakBias, everFrac, ctx }), 1);
     return got.length ? got[0].id : null;
   },
   // Rapid Response: questions from OTHER rooms, so the shift suddenly demands recall of
@@ -3626,10 +3829,12 @@ const Engine = {
     const others = Content.all().filter((q) => q.unit !== unit && exclude.indexOf(q.id) === -1);
     const age = (r) => (r && r.ld ? today - dayNum(r.ld) : 0);
     const played = (u) => (s.units[u] && s.units[u].shifts) || (Content.byUnit[u] || []).some((q) => s.items[q.id] && s.items[q.id].s);
+    const ctx = this.statusCtx();
     const due = others.filter((q) => {
       const r = s.items[q.id];
       if (!r || !r.s) return false;
-      return r.miss ? age(r) >= 1 : !this.isSolid(r) && age(r) >= CONFIG.picking.rapidDueAfterDays;
+      if (r.miss) return age(r) >= 1;
+      return this.isSolid(r) ? this.statusOf(r, ctx) === 'due' : age(r) >= CONFIG.picking.rapidDueAfterDays;
     });
     const stale = others.filter((q) => { const r = s.items[q.id]; return played(q.unit) && (!r || r.ld !== t); });
     const easy = others.filter((q) => (q.diff || 1) <= 1);
@@ -3643,13 +3848,13 @@ const Engine = {
     }
     return out;
   },
-  // today's daily challenge: a few weak or missed items + the rest from the whole bank, fixed for the day
+  // today's daily challenge: a few missed or due-for-review items + the rest from the whole bank, fixed for the day
   pickDaily() {
     const d = WR.state.daily, t = todayStr();
     if (d.date === t && d.qids && d.qids.length && d.qids.every((id) => Content.byId[id])) return d.qids.slice();
     const r = rng('daily:' + t);
     const byId = (a, b) => (a.id < b.id ? -1 : 1);
-    const weak = Engine.missed().sort(byId);
+    const weak = Engine.missed().concat(Engine.due()).sort(byId);
     const out = shuffle(weak, r).slice(0, CONFIG.daily.fromMissed).map((q) => q.id);
     const rest = Content.all().filter((q) => out.indexOf(q.id) === -1).sort(byId);
     out.push(...shuffle(rest, r).slice(0, MODES.daily.n - out.length).map((q) => q.id));
@@ -3659,12 +3864,13 @@ const Engine = {
   pickExam(n = MODES.exam.n) {
     const E = CONFIG.exam;
     const out = [];
+    const ctx = this.statusCtx();
     for (const u of Content.units) {
-      out.push(...weightedSample(Content.byUnit[u.id], (q) => this.weight(q), E.perRoom).map((q) => q.id));
+      out.push(...weightedSample(Content.byUnit[u.id], (q) => this.weight(q, { ctx }), E.perRoom).map((q) => q.id));
     }
     const rest = Content.all().filter((q) => out.indexOf(q.id) === -1);
     const everFrac = this.everFracMemo();
-    const w = (q) => this.weight(q, { weakBias: true, everFrac }) * (q.origin === 'new' ? E.newQuestionBoost : 1);
+    const w = (q) => this.weight(q, { weakBias: true, everFrac, ctx }) * (q.origin === 'new' ? E.newQuestionBoost : 1);
     out.push(...weightedSample(rest, w, n - out.length).map((q) => q.id));
     return shuffle(out);
   },
@@ -3707,9 +3913,98 @@ const Engine = {
     if (WR.state.settings.dailyGoal) return WR.state.settings.dailyGoal;
     const left = this.daysToExam();
     if (left == null || left <= 0) return D.noExamDate;
-    const solid = Object.values(WR.state.items).filter((r) => this.isSolid(r)).length;
-    const todo = Content.all().length - solid;
-    return clamp(Math.ceil(todo / left), D.min, D.max);
+    return clamp(Math.ceil(this.workLeft() / left), D.min, D.max);
+  },
+  // right days still needed to master every question in the bank, plus one per review that is due
+  workLeft() {
+    const M = CONFIG.mastery, ctx = this.statusCtx();
+    let n = 0;
+    for (const q of Content.all()) {
+      const r = WR.state.items[q.id], st = this.statusOf(r, ctx);
+      if (st === 'due') n++;
+      else if (st !== 'mastered') n += M.solidDays - Math.min(r ? r.ok : 0, M.solidDays - 1);
+    }
+    return n;
+  },
+
+  // ----- where you stand (report card)
+  // Estimated exam score: your accuracy on questions answered in each state, pulled toward CONFIG.readiness.prior
+  // while there are few answers, averaged over the whole bank by how many questions are in each state now.
+  readiness() {
+    const R = CONFIG.readiness, b = this.breakdown();
+    const obs = {};
+    for (const k of this.STATUSES) obs[k] = { n: 0, r: 0 };
+    let n = 0;
+    for (const e of WR.state.log) {
+      if (e.h || !obs[e.st]) continue;
+      obs[e.st].n++; obs[e.st].r += e.c; n++;
+    }
+    const parts = {};
+    let est = 0;
+    for (const k of this.STATUSES) {
+      const acc = (obs[k].r + R.prior[k] * R.priorWeight) / (obs[k].n + R.priorWeight);
+      parts[k] = { share: b[k] / (b.total || 1), acc, n: obs[k].n };
+      est += parts[k].share * acc;
+    }
+    const conf = n >= R.confidence.fair ? 'fair' : n >= R.confidence.medium ? 'medium' : 'low';
+    return { pct: n >= R.minAnswers ? Math.round(est * 100) : null, conf, n, need: Math.max(0, R.minAnswers - n), parts, b };
+  },
+  // questions mastered per day lately, and when the whole bank would be mastered at that rate
+  pace() {
+    const hist = WR.state.days.hist || {}, today = dayNum(), W = CONFIG.history.paceDays;
+    const now = this.solidCount(), total = Content.all().length;
+    // mastered count at the end of the last active day before the window (or the earliest day on record)
+    let base = null, baseDay = null;
+    const days = Object.keys(hist).sort();
+    for (const k of days) { const dn = dayNum(k); if (dn <= today - W) { base = hist[k].m; baseDay = dn; } }
+    if (base == null && days.length && dayNum(days[0]) < today) { base = hist[days[0]].m; baseDay = dayNum(days[0]); }
+    const span = baseDay == null ? 0 : today - baseDay;
+    const rate = span > 0 ? (now - base) / span : null;
+    const left = total - now, examIn = this.daysToExam();
+    const finishIn = rate > 0 ? Math.ceil(left / rate) : left === 0 ? 0 : null;
+    return { now, total, left, rate, span, finishIn, examIn, onTrack: examIn != null && finishIn != null && finishIn <= examIn };
+  },
+  // accuracy on your last answers (not counting ones helped by the 50/50), and the day-by-day totals
+  recent(days = 14) {
+    const today = dayNum(), hist = WR.state.days.hist || {};
+    const series = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const k = dayStr(today - i), h = hist[k] || { n: 0, r: 0, h: 0 };
+      series.push({ day: k, n: h.n, r: h.r, graded: h.n - (h.h || 0) });
+    }
+    const sum = (arr) => arr.reduce((a, x) => ({ n: a.n + x.graded, r: a.r + x.r, all: a.all + x.n }), { n: 0, r: 0, all: 0 });
+    const thisWeek = sum(series.slice(-7)), lastWeek = sum(series.slice(-14, -7));
+    return { series, thisWeek, lastWeek };
+  },
+  // every instructor focus point, with how many of its (new) questions are in each state
+  focusReport() {
+    const ctx = this.statusCtx(), map = {};
+    for (const sid of Object.keys(Content.sections)) {
+      (Content.sections[sid].focus || []).forEach((_, i) => {
+        map[sid + '#' + i] = { sec: sid, i, qids: [], b: { mastered: 0, learning: 0, due: 0, missed: 0, new: 0 } };
+      });
+    }
+    for (const q of Content.all()) {
+      for (const [sec, i] of q.focus || []) {
+        const a = map[sec + '#' + i];
+        if (!a) continue;
+        a.qids.push(q.id);
+        a.b[this.status(q.id, ctx)]++;
+      }
+    }
+    const list = Object.values(map);
+    for (const a of list) {
+      const n = a.qids.length, seen = n - a.b.new;
+      a.state = !n || a.b.new === n ? 'new' : a.b.mastered + a.b.due === n ? 'mastered' : 'progress';
+      // share of the answered questions you don't know now (a due one counts half), smoothed by one
+      // pretend right answer so 1 miss out of 1 doesn't outrank 3 out of 4
+      a.weak = (a.b.missed + 0.5 * a.b.due) / (seen + 1);
+    }
+    return list;
+  },
+  weakFocus(n = 5) {
+    return this.focusReport().filter((a) => a.b.missed + a.b.due > 0)
+      .sort((x, y) => y.weak - x.weak || y.b.missed - x.b.missed).slice(0, n);
   },
 
   // ----- badges
@@ -3910,8 +4205,9 @@ class Run {
     if (this.mode === 'boss') this.hitBoss(c, res);
     const every = CONFIG.lifelines.bonusCoffeeEvery;
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
-    const rec = Engine.record(q, res);
+    const rec = Engine.record(q, res, { assisted: !!c.assisted });
     c.discharged = rec.discharged;
+    c.helped = rec.helped;
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / CONFIG.scoring.pointsPerXP + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
@@ -3967,7 +4263,7 @@ class Run {
     const c = this.cur, q = this.q;
     if (!this.canColleague()) return false;
     if (q.type === 'order') {
-      this.lifelines.colleague--; this.usedLifeline = true;
+      this.lifelines.colleague--; this.usedLifeline = true; c.assisted = true;
       c.sel = [0];
       c.gone = [];
       c.hint = 'Your colleague placed the first step for you.';
@@ -3975,7 +4271,7 @@ class Run {
       // single answer: a true 50/50 (the right answer + one wrong one stay)
       // select all that apply: half the wrong options go, rounded up
       const remove = this.colleagueCuts();
-      this.lifelines.colleague--; this.usedLifeline = true;
+      this.lifelines.colleague--; this.usedLifeline = true; c.assisted = true;
       c.gone.push(...remove);
       c.sel = c.sel.filter((i) => remove.indexOf(i) === -1);
       c.hint = q.type === 'sata'
@@ -4357,7 +4653,7 @@ function hudHTML() {
     </div>
     <div class="hud-chips">
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
-        class="num">${s.days.streak || 0}</span>-day streak</span></span>
+        class="num">${Engine.dayStreak()}</span>-day streak</span></span>
       <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
       ${examChip}
       ${dailyChip()}
@@ -4523,8 +4819,8 @@ Screens.floor = {
         const BOSS = CONFIG.boss;
         const why = `The Superbug only fights experienced nurses. Earn a star in ${BOSS.unlockRooms} rooms, `
           + `or finish ${BOSS.unlockShifts} shifts (you've finished ${Engine.shiftsDone()}). `
-          + `A star means you've answered ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients right ` +
-            `at least once.`;
+          + `A star means you know ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients: answered right, ` +
+            'and not waiting in Missed Patients.';
         App.modal(`<h2>The OR is locked</h2><p class="dim">${why}</p>`
           + '<div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>');
         return;
@@ -4548,7 +4844,7 @@ function startShift(unit) {
   App.show('chart', {}, 'zoom-in');
 }
 function startReview(qids, label) {
-  if (!qids.length) { App.toast('No missed patients here. Nice work!'); return; }
+  if (!qids.length) { App.toast('Nothing to review here. Nice work!'); return; }
   App.run = new Run('review', { queue: qids });
   App.run.label = label || 'Missed patients';
   App.run.next();
@@ -4787,6 +5083,7 @@ Screens.chart = {
       notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
     }
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
+    if (c.helped) notes.push(`${icon('users')} Right with your colleague's help: it doesn't count toward mastery yet.`);
     if (c.bonusCoffee) {
       notes.push(`${icon('coffee')} ${CONFIG.lifelines.bonusCoffeeEvery} in a row earned you an extra coffee break.`);
     }
@@ -5194,7 +5491,7 @@ const ReportSummary = {
     const m = Engine.mastery(run.unit);
     out.extra = `<div class="card unit-card"><div><span class="label">Room ${Content.unitById[run.unit].room} mastery</span>
         <div class="room-stars big">${starRow(m.stars)}</div></div>
-        <div class="mini-bars"><div><span>Answered right at least once</span><b class="num">${m.ever}/${m.total}</b></div>${fillBar(m.everFrac)}
+        <div class="mini-bars"><div><span>Known now (right, not in Missed Patients)</span><b class="num">${m.ever}/${m.total}</b></div>${fillBar(m.everFrac)}
         <div><span>Mastered (right on ${CONFIG.mastery.solidDays} different days)</span><b
           class="num">${m.solid}/${m.total}</b></div>${fillBar(m.solidFrac, 'var(--good)')}</div></div>`;
     const ev = run.event;
@@ -5483,74 +5780,237 @@ Screens.locker = {
   },
 };
 
-// ----- report card
-function weakFocus() {
-  const agg = {};
-  for (const q of Content.all()) {
-    const r = WR.state.items[q.id];
-    if (!r || !r.s || !q.focus || !q.focus.length) continue;
-    for (const [sec, i] of q.focus) {
-      const k = sec + '#' + i;
-      const a = agg[k] || (agg[k] = { sec, i, s: 0, w: 0, qids: [] });
-      a.s += r.s; a.w += r.w; a.qids.push(q.id);
-    }
-  }
-  return Object.values(agg).filter((a) => a.w > 0).sort((a, b) => b.w / b.s - a.w / a.s || b.w - a.w).slice(0, 5);
+// ----- report card: where you stand
+// Every question is in one state (Engine.statusOf); the report card shows those states for the whole bank,
+// each room and each instructor focus point, plus first-try accuracy, the last two weeks and exam simulations.
+const STATUS_INFO = {
+  mastered: { label: 'Mastered', note: () => `right on ${CONFIG.mastery.solidDays} different days` },
+  learning: { label: 'Learning', note: () => `right, not yet on ${CONFIG.mastery.solidDays} days` },
+  due: { label: 'Due for review', note: () => 'mastered, time for a refresh' },
+  missed: { label: 'Missed', note: () => 'waiting in Missed Patients' },
+  new: { label: 'Not started', note: () => 'not answered right yet' },
+};
+const pctText = (x) => Math.round(x * 100) + '%';
+const shortDate = (d) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+// one whole split into the five states. tall: the bank-wide bar; otherwise a thin row bar
+function statusBar(b, tall) {
+  const total = b.total || 1;
+  const parts = Engine.STATUSES.filter((k) => b[k] > 0);
+  const name = parts.map((k) => `${STATUS_INFO[k].label} ${b[k]}`).join(', ');
+  const segs = parts.map((k) => `<i class="st-${k}" style="flex-grow:${b[k]}" ` +
+    `title="${STATUS_INFO[k].label}: ${b[k]} (${pctText(b[k] / total)})"></i>`).join('');
+  return `<div class="st-bar ${tall ? 'tall' : ''}" role="img" aria-label="${esc(name || 'No questions')}">${segs}</div>`;
 }
+function statusLegend(b) {
+  return `<ul class="st-legend">${Engine.STATUSES.map((k) => `<li><i class="sw st-${k}"></i><span>${STATUS_INFO[k].label}` +
+    ` <b class="num">${b[k]}</b></span><span class="faint">${STATUS_INFO[k].note()}</span></li>`).join('')}</ul>`;
+}
+
+const StatsParts = {
+  // the headline: estimated score, last exam simulation, exam countdown, pace, and the whole bank
+  stand(s) {
+    const rd = Engine.readiness(), pace = Engine.pace(), b = rd.b;
+    const solid = b.mastered + b.due;
+    const confText = { low: 'low confidence', medium: 'medium confidence', fair: 'fair confidence' }[rd.conf];
+    const hero = rd.pct == null
+      ? `<b class="hero-num">—</b><span class="faint">Answer ${rd.need} more question${rd.need === 1 ? '' : 's'} for an estimate.</span>`
+      : `<b class="hero-num num">${rd.pct}%</b><span class="faint">Rough estimate · ${confText} (last ${rd.n} answers)</span>`;
+    const last = s.exams[s.exams.length - 1];
+    const examTile = last
+      ? this.tile('Last exam simulation', pctText(last.right / last.n), `${last.right}/${last.n} on ${shortDate(last.date)}`)
+      : this.tile('Last exam simulation', '—', 'Take one from the floor: the truest test');
+    const days = pace.examIn;
+    const daysTile = days == null ? this.tile('Exam', '—', '<button class="linkish" data-action="settings">Set the exam date</button>')
+      : this.tile('Days to exam', days > 0 ? days : days === 0 ? 'Today' : 'Done', days > 0 ? `Daily target ${Engine.dailyTarget()} answers` : '');
+    let paceNote;
+    if (pace.left === 0) paceNote = 'Every question mastered!';
+    else if (pace.rate == null) paceNote = 'Shows after a few days of play';
+    else if (pace.rate <= 0) paceNote = `No net gain over ${pace.span} days`;
+    else {
+      const when = pace.finishIn <= 365 ? shortDate(dayStr(dayNum() + pace.finishIn)) : 'over a year';
+      const need = days > 0 ? (pace.left / days).toFixed(1) : null;
+      paceNote = `All mastered by ${when}` + (need ? (pace.onTrack ? ' · on track' : ` · behind: ${need}/day needed`) : '');
+    }
+    const paceTile = this.tile('Pace', pace.rate == null ? '—' : `${pace.rate.toFixed(1)}/day`, `mastered lately · ${paceNote}`);
+    return `<div class="card stand">
+      <div class="stand-top">
+        <div class="stand-hero"><span class="label">Estimated exam score</span>${hero}</div>
+        <div class="stand-tiles">${examTile}${daysTile}${paceTile}</div>
+      </div>
+      <div class="stand-bank"><span class="label">Question bank</span>
+        <p class="bank-line"><b class="num">${solid}</b> of <b class="num">${b.total}</b> mastered` +
+        `${b.due ? ` (${b.due} due for review)` : ''} · <b class="num">${b.learning}</b> learning · ` +
+        `<b class="num">${b.missed}</b> missed · <b class="num">${b.new}</b> not started</p>
+        ${statusBar(b, true)}${statusLegend(b)}</div>
+      <details class="how"><summary>How is this worked out?</summary>
+        <p>Every question is in one state. <b>Mastered</b>: right on ${CONFIG.mastery.solidDays} different days (with no
+        colleague's help). Mastered questions come back after ${CONFIG.mastery.reviewAfterDays.join(', then ')} days, and
+        once more in the last ${CONFIG.mastery.examWeekRefresh} days before the exam; until you answer them they are
+        <b>due for review</b>. A miss puts a question in <b>Missed</b> until it is right on ${CONFIG.mastery.solidDays}
+        different days again. Stars count what you know now, so a miss can take a star away until you fix it.</p>
+        <p>The estimated score uses your own accuracy on questions in each state, across the whole bank. It is a rough
+        guide: an exam simulation is the real test.</p></details>
+    </div>`;
+  },
+  tile(label, value, note) {
+    return `<div class="stat"><span class="label">${label}</span><b class="num">${value}</b><span class="faint">${note}</span></div>`;
+  },
+  // what to do next: due reviews, missed patients, today's target
+  todo(s) {
+    const due = Engine.due().length, missed = Engine.missed().length;
+    const today = s.days.today === todayStr() ? s.days.answered : 0, goal = Engine.dailyTarget();
+    const btns = [];
+    if (due) btns.push(`<button class="btn primary" data-action="refreshDue">${icon('play')}Refresh fading (${Math.min(due, MODES.review.n)})</button>`);
+    if (missed) btns.push(`<button class="btn" data-action="missed">${icon('bed')}Missed patients (${missed})</button>`);
+    const lines = [
+      `<b class="num">${due}</b> mastered question${due === 1 ? '' : 's'} due for review`,
+      `<b class="num">${missed}</b> missed patient${missed === 1 ? '' : 's'} waiting`,
+      `<b class="num">${today}/${goal}</b> answered today`,
+    ];
+    return `<div class="card todo-card"><span class="label">Next up</span>
+      <ul class="todo-list">${lines.map((l) => `<li>${l}</li>`).join('')}</ul>
+      ${btns.length ? `<div class="report-actions left">${btns.join('')}</div>` : '<p class="dim">Nothing due. Nice work!</p>'}</div>`;
+  },
+  rooms() {
+    const ctx = Engine.statusCtx();
+    const rows = Content.units.map((u) => {
+      const m = Engine.mastery(u.id, ctx);
+      const bits = [];
+      if (m.missed) bits.push(`${m.missed} missed`);
+      if (m.due) bits.push(`${m.due} due`);
+      return `<div class="ub"><span>${u.room} ${esc(u.topic)}</span>${statusBar(m.b)}` +
+        `<span class="room-stars" aria-label="${m.stars} of 3 stars">${starRow(m.stars)}</span>` +
+        `<span class="ub-note faint num">${m.solid}/${m.total} mastered${bits.length ? ' · ' + bits.join(' · ') : ''}</span></div>`;
+    }).join('');
+    const M = CONFIG.mastery;
+    const rule = `★ ${pctText(M.oneStar)} known · ★★ ${pctText(M.twoStars)} known · ★★★ ${pctText(M.threeStars)} mastered`;
+    return `<div class="card"><span class="label">Rooms</span><p class="faint rule">${rule} (known = right and not missed)</p>
+      <div class="unit-bars">${rows}</div></div>`;
+  },
+  focus() {
+    const rep = Engine.focusReport();
+    const n = { mastered: 0, progress: 0, new: 0 };
+    rep.forEach((a) => { n[a.state]++; });
+    const weak = Engine.weakFocus();
+    const row = (a) => {
+      const sec = Content.section(a.sec), seen = a.qids.length - a.b.new;
+      const bits = [`missed ${a.b.missed} of ${seen} answered`];
+      if (a.b.due) bits.push(`${a.b.due} due for review`);
+      return `<li><b>${esc(sec.focus[a.i])}</b><span class="faint">${esc(sec.num + ' ' + sec.title)} · ${bits.join(' · ')}</span></li>`;
+    };
+    const weakHTML = weak.length ? `<span class="label">Weakest right now</span><ol class="weak-list">${weak.map(row).join('')}</ol>
+      <button class="btn primary" data-action="practiceWeak">${icon('target')}Practice these</button>`
+      : '<p class="dim">No weak focus points right now. Missed questions put their focus points here until you fix them.</p>';
+    const covB = { total: rep.length, mastered: n.mastered, learning: n.progress, due: 0, missed: 0, new: n.new };
+    return `<div class="card focus-cov"><span class="label">Instructor focus points</span>
+      <p class="bank-line"><b class="num">${n.mastered}</b> of <b class="num">${rep.length}</b> fully mastered · ` +
+      `<b class="num">${n.progress}</b> in progress · <b class="num">${n.new}</b> not started</p>
+      ${statusBar(covB)}
+      <p class="faint rule">From the new ATI-style questions, which are each tagged to the focus points they test.</p>
+      ${weakHTML}</div>`;
+  },
+  types(s) {
+    const f = s.firstStats || { type: {} };
+    const rows = Object.keys(TYPE_INFO).map((t) => ({ t, first: f.type[t], all: s.typeStats[t] }));
+    const rate = (o) => (o && o.n ? o.r / o.n : null);
+    const ranked = rows.filter((x) => x.first && x.first.n >= 5).sort((x, y) => rate(x.first) - rate(y.first));
+    const weakest = ranked.length > 1 ? ranked[0].t : null;
+    const cells = rows.map(({ t, first, all }) => {
+      const main = rate(first) != null ? pctText(rate(first)) : '—';
+      const over = all && all.n ? `overall ${pctText(rate(all))} of ${all.n}` : 'not answered yet';
+      const tag = t === weakest ? '<span class="tag">weakest</span>' : '';
+      return `<div class="stat ${t === weakest ? 'weakest' : ''}"><span class="label">${TYPE_INFO[t].label}${tag}</span>` +
+        `<b class="num">${main}</b><span class="faint num">first try${first ? ` · ${first.n}` : ''} · ${over}</span></div>`;
+    }).join('');
+    const since = f.since ? ` First-try counts started ${shortDate(f.since)}.` : '';
+    return `<div class="card"><span class="label">Accuracy by question type</span>
+      <p class="faint rule">First try = the first time you saw each question: the honest number. Overall includes repeats.${since}</p>
+      <div class="stat-grid type-grid">${cells}</div></div>`;
+  },
+  trend() {
+    const { series, thisWeek, lastWeek } = Engine.recent(14);
+    const max = Math.max(1, ...series.map((d) => d.n));
+    const cols = series.map((d, i) => {
+      const lbl = i === series.length - 1 ? 'Today' : i === 0 ? shortDate(d.day) : '';
+      const tip = `${shortDate(d.day)}: ${d.n} answers, ${d.r} right`;
+      return `<div class="tr-col" title="${tip}"><div class="tr-stack" style="height:${(d.n / max) * 100}%">` +
+        `${d.n - d.r ? `<i class="tr-miss" style="flex-grow:${d.n - d.r}"></i>` : ''}` +
+        `${d.r ? `<i class="tr-right" style="flex-grow:${d.r}"></i>` : ''}</div><span class="tr-day">${lbl}</span></div>`;
+    }).join('');
+    const wk = (w) => (w.n ? `${pctText(w.r / w.n)} right of ${w.n}` : 'no answers');
+    let delta = '';
+    if (thisWeek.n && lastWeek.n) {
+      const dd = Math.round((thisWeek.r / thisWeek.n - lastWeek.r / lastWeek.n) * 100);
+      delta = dd === 0 ? ' · same as last week' : ` · ${dd > 0 ? '▲' : '▼'} ${Math.abs(dd)} points vs last week`;
+    }
+    const rows = series.map((d) => `<tr><td>${d.day}</td><td>${d.n}</td><td>${d.r}</td></tr>`).join('');
+    return `<div class="card trend"><span class="label">Last 14 days</span>
+      <p class="bank-line">This week: <b>${wk(thisWeek)}</b>${delta}. Last week: ${wk(lastWeek)}.</p>
+      <div class="tr-chart" aria-hidden="true"><span class="tr-max num">${max}</span>${cols}</div>
+      <ul class="st-legend inline"><li><i class="sw tr-right"></i>right</li><li><i class="sw tr-miss"></i>wrong or helped</li></ul>
+      <table class="sr-only"><caption>Answers per day, last 14 days</caption><tr><th>Day</th><th>Answers</th><th>Right</th></tr>${rows}</table>
+    </div>`;
+  },
+  exams(s) {
+    if (!s.exams.length) return '<div class="card"><span class="label">Exam simulations</span><p class="dim">No exam simulations yet. ' +
+      `Find it on the floor: ${MODES.exam.n} mixed questions, no hints, like the real final.</p></div>`;
+    const list = s.exams.slice().reverse();
+    const pct = (e) => Math.round((e.right / e.n) * 100);
+    const row = (e, i) => {
+      const prev = list[i + 1];
+      const d = prev ? pct(e) - pct(prev) : null;
+      const ch = d == null ? '' : `<span class="faint num">${d > 0 ? '▲' : d < 0 ? '▼' : '='} ${Math.abs(d)}</span>`;
+      return `<li><span>${esc(shortDate(e.date))}</span><b class="num">${pct(e)}%</b><span class="faint num">${e.right}/${e.n}</span>${ch}</li>`;
+    };
+    const latest = list[0];
+    let weakest = '';
+    if (latest.byUnit) {
+      const rooms = Object.keys(latest.byUnit).filter((u) => Content.unitById[u])
+        .map((u) => ({ u: Content.unitById[u], r: latest.byUnit[u][0], n: latest.byUnit[u][1] }))
+        .sort((x, y) => x.r / x.n - y.r / y.n).slice(0, 3);
+      weakest = `<p class="faint rule">Weakest rooms last time: ${rooms.map((x) =>
+        `Room ${x.u.room} ${esc(x.u.topic)} ${x.r}/${x.n}`).join(' · ')}</p>`;
+    }
+    return `<div class="card"><span class="label">Exam simulations</span>${weakest}<ul class="exam-list">${list.map(row).join('')}</ul></div>`;
+  },
+  extras(s) {
+    const pctOf = (o) => (o && o.n ? pctText(o.r / o.n) : '—');
+    const f = (s.firstStats && s.firstStats.origin) || {};
+    return `<div class="stat-grid">
+      ${this.tile('New ATI-style questions', pctOf(f.new), `first try · overall ${pctOf(s.originStats.new)}`)}
+      ${this.tile('Guide questions', pctOf(f.guide), `first try · overall ${pctOf(s.originStats.guide)} (may be memorized)`)}
+      ${this.tile('Cross-room recall', pctOf(s.rapid), 'Rapid Response questions from other rooms')}
+      ${this.tile('Discharged', s.discharged, 'missed, then fixed')}
+    </div>`;
+  },
+};
 
 Screens.stats = {
   render() {
     const s = WR.state, rp = Engine.rankProgress();
-    const pctOf = (o) => (o && o.n ? Math.round((o.r / o.n) * 100) + '%' : '—');
-    const stat = (label, value, note, noteCls = 'faint') =>
-      `<div class="stat"><span class="label">${label}</span><b class="num">${value}</b><span class="${noteCls}">${note}</span></div>`;
-    const units = Content.units.map((u) => {
-      const m = Engine.mastery(u.id);
-      return `<div class="ub"><span>${u.room} ${esc(u.topic)}</span><div class="bar dual">` +
-        `<i style="width:${m.everFrac * 100}%"></i><i class="solid" style="width:${m.solidFrac * 100}%"></i></div>` +
-        `<span class="room-stars">${starRow(m.stars)}</span></div>`;
-    }).join('');
-    const types = Object.keys(TYPE_INFO).map((t) =>
-      stat(TYPE_INFO[t].label, pctOf(s.typeStats[t]), `${s.typeStats[t] ? s.typeStats[t].n : 0} answered`, 'faint num')).join('');
-    const weak = weakFocus();
-    const weakRow = (a) => {
-      const sec = Content.section(a.sec);
-      return `<li><b>${esc(sec.focus[a.i])}</b><span class="faint">${esc(sec.num + ' ' + sec.title)} · missed ${a.w} of ${a.s}</span></li>`;
-    };
-    const weakHTML = weak.length ? `<ol class="weak-list">${weak.map(weakRow).join('')}</ol>
-      <button class="btn primary" data-action="practiceWeak">${icon('target')}Practice these</button>`
-      : '<p class="dim">Answer some new ATI-style questions and your weakest instructor focus points will show up here.</p>';
     const badges = BADGES.map((b) => {
       const got = !!s.badges[b.id];
       return `<div class="badge ${got ? 'on' : ''}">${icon(got ? b.ico : 'lock')}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`;
     }).join('');
-    const examRow = (e) => `<li><span>${esc(e.date)}</span><b class="num">${Math.round((e.right / e.n) * 100)}%</b>` +
-      `<span class="faint num">${e.right}/${e.n}</span></li>`;
-    const exams = s.exams.length
-      ? `<ul class="exam-list">${s.exams.slice().reverse().map(examRow).join('')}</ul>`
-      : '<p class="dim">No exam simulations yet. Find it on the floor.</p>';
     const sub = `${esc(rp.cur.n)} · ${fmt(s.xp)} XP · ${Object.keys(s.badges).length} of ${BADGES.length} badges`;
-    const legend = '<span class="legend"><i></i>right once <i class="solid"></i>mastered</span>';
+    const P = StatsParts;
     return `${topbar('Report card', sub)}
       <div class="narrow stack">
-        <div class="stat-grid">
-          ${stat('New ATI-style questions', pctOf(s.originStats.new), 'your honest readiness score')}
-          ${stat('Guide questions', pctOf(s.originStats.guide), 'may include memorized ones')}
-          ${stat('Discharged', s.discharged, 'missed, then fixed')}
-          ${stat('Cross-room recall', pctOf(s.rapid), 'Rapid Response questions from other rooms')}
-        </div>
-        <div class="card"><span class="label">Weakest instructor focus points</span>${weakHTML}</div>
-        <div class="card"><span class="label">Rooms ${legend}</span><div class="unit-bars">${units}</div></div>
-        <div class="card"><span class="label">Accuracy by question type</span><div class="stat-grid">${types}</div></div>
+        ${P.stand(s)}
+        ${P.todo(s)}
+        ${P.rooms()}
+        ${P.focus()}
+        ${P.types(s)}
+        ${P.trend()}
+        ${P.exams(s)}
+        ${P.extras(s)}
         <div class="card"><span class="label">Badges</span><div class="badge-row">${badges}</div></div>
-        <div class="card"><span class="label">Exam simulations</span>${exams}</div>
       </div>`;
   },
   act: {
-    practiceWeak() {
-      const ids = [...new Set(weakFocus().flatMap((a) => a.qids))];
-      startReview(shuffle(ids).slice(0, MODES.review.n), 'Weak focus points');
-    },
+    practiceWeak() { startReview(Engine.pickFocus(Engine.weakFocus()), 'Weak focus points'); },
+    refreshDue() { startReview(Engine.pickDue(), 'Due for review'); },
   },
 };
 
@@ -5757,7 +6217,8 @@ const TUTORIAL = [
     ico: 'heart', t: 'Lives, streaks, lifelines',
     d: `You get ${MODES.shift.lives} lives per shift. Right answers in a row raise your score multiplier up to ` +
       `×${topMultiplier}. `
-      + 'Stuck? Ask a colleague to cross out wrong options, or take a coffee break for +1 life.',
+      + 'Stuck? Ask a colleague to cross out wrong options (a right answer with help doesn\'t count toward mastery), '
+      + 'or take a coffee break for +1 life.',
   },
   {
     ico: 'star', t: 'Learn from every miss',
@@ -6031,7 +6492,7 @@ function bindEvents() {
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG, util: { todayStr, yesterdayStr, dayNum, dayStr } });
 
 async function start(hot) {
   App.measure();

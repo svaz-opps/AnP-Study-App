@@ -160,8 +160,9 @@ class Run {
     if (this.mode === 'boss') this.hitBoss(c, res);
     const every = CONFIG.lifelines.bonusCoffeeEvery;
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
-    const rec = Engine.record(q, res);
+    const rec = Engine.record(q, res, { assisted: !!c.assisted });
     c.discharged = rec.discharged;
+    c.helped = rec.helped;
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / CONFIG.scoring.pointsPerXP + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
@@ -217,7 +218,7 @@ class Run {
     const c = this.cur, q = this.q;
     if (!this.canColleague()) return false;
     if (q.type === 'order') {
-      this.lifelines.colleague--; this.usedLifeline = true;
+      this.lifelines.colleague--; this.usedLifeline = true; c.assisted = true;
       c.sel = [0];
       c.gone = [];
       c.hint = 'Your colleague placed the first step for you.';
@@ -225,7 +226,7 @@ class Run {
       // single answer: a true 50/50 (the right answer + one wrong one stay)
       // select all that apply: half the wrong options go, rounded up
       const remove = this.colleagueCuts();
-      this.lifelines.colleague--; this.usedLifeline = true;
+      this.lifelines.colleague--; this.usedLifeline = true; c.assisted = true;
       c.gone.push(...remove);
       c.sel = c.sel.filter((i) => remove.indexOf(i) === -1);
       c.hint = q.type === 'sata'

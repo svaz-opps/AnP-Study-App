@@ -216,6 +216,7 @@ Screens.chart = {
       notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
     }
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
+    if (c.helped) notes.push(`${icon('users')} Right with your colleague's help: it doesn't count toward mastery yet.`);
     if (c.bonusCoffee) {
       notes.push(`${icon('coffee')} ${CONFIG.lifelines.bonusCoffeeEvery} in a row earned you an extra coffee break.`);
     }

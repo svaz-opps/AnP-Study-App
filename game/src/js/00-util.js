@@ -47,10 +47,16 @@ function todayStr(d = new Date()) {
   const p = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
-const yesterdayStr = () => todayStr(new Date(Date.now() - 86400000));
+// built from the calendar date, not "now minus 24 hours" (a day is 23 hours long when clocks spring forward)
+const yesterdayStr = () => { const d = new Date(); return todayStr(new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1)); };
 function dayNum(s = todayStr()) {
   const [y, m, d] = s.split('-').map(Number);
   return Math.round(Date.UTC(y, m - 1, d) / 86400000);
+}
+// the YYYY-MM-DD for a dayNum (inverse of dayNum)
+function dayStr(n) {
+  const d = new Date(n * 86400000), p = (k) => String(k).padStart(2, '0');
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}`;
 }
 
 // Run fn when the browser has nothing else to do (so it never lands mid-animation).

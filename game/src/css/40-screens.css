@@ -149,33 +149,13 @@
 .unit-bars { display: flex; flex-direction: column; gap: var(--s2); margin-top: var(--s2); }
 .ub {
   display: grid;
-  grid-template-columns: minmax(110px, 180px) 1fr auto;
+  grid-template-columns: minmax(110px, 180px) 1fr auto minmax(64px, auto);
   gap: var(--s3);
   align-items: center;
   font-size: var(--fs-sm);
   font-weight: 700;
 }
 .ub .room-stars svg { width: 14px; height: 14px; }
-.bar.dual { position: relative; }
-.bar.dual i {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
-}
-.bar.dual i.solid { background: var(--good); }
-.legend { margin-left: var(--s3); text-transform: none; letter-spacing: 0; font-weight: 700; }
-.legend i {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
-  margin: 0 4px 0 8px;
-  vertical-align: -1px;
-}
-.legend i.solid { background: var(--good); }
 .weak-list {
   margin: var(--s2) 0 var(--s3);
   padding-left: 1.3em;
@@ -187,6 +167,94 @@
 .weak-list li span { font-size: var(--fs-xs); }
 .exam-list { list-style: none; padding: 0; margin: var(--s2) 0 0; display: flex; flex-direction: column; gap: 6px; }
 .exam-list li { display: flex; gap: var(--s4); align-items: center; }
+
+/* ---------- report card: where you stand ---------- */
+/* question states: mastered / learning / due / missed / not started (colours validated for colour-blind
+   separation in this order; every bar also has a legend with counts and an accessible name) */
+.st-mastered { background: var(--good); }
+.st-learning { background: var(--xp); }
+.st-due { background: var(--warn); }
+.st-missed { background: var(--bad); }
+.st-new { background: var(--surface-3); }
+.st-bar { display: flex; gap: 2px; height: 8px; border-radius: 999px; overflow: hidden; background: var(--surface-3); min-width: 0; }
+.st-bar i { display: block; min-width: 2px; }
+.st-bar.tall { height: 20px; border-radius: 6px; margin: var(--s2) 0; }
+.st-bar.tall i:first-child { border-radius: 6px 0 0 6px; }
+.st-bar.tall i:last-child { border-radius: 0 6px 6px 0; }
+.st-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 4px var(--s3);
+  font-size: var(--fs-sm);
+}
+.st-legend li { display: grid; grid-template-columns: 12px 1fr; column-gap: 6px; align-items: center; }
+.st-legend li .faint { grid-column: 2; font-size: var(--fs-xs); }
+.st-legend.inline { display: flex; gap: var(--s4); margin-top: var(--s2); }
+.st-legend.inline li { display: flex; gap: 6px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.stand-top { display: flex; gap: var(--s4); flex-wrap: wrap; align-items: stretch; }
+.stand-hero { flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
+.hero-num { font-family: var(--font-body); font-weight: 800; font-size: 3.2rem; line-height: 1.05; color: var(--text); }
+.stand-tiles { flex: 2 1 340px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--s3); }
+.stand-bank { margin-top: var(--s4); }
+.bank-line { margin: 4px 0 0; font-size: var(--fs-sm); }
+.rule { margin: 2px 0 0; font-size: var(--fs-xs); }
+.how { margin-top: var(--s3); font-size: var(--fs-sm); color: var(--text-dim); }
+.how summary { cursor: pointer; font-weight: 700; color: var(--text); min-height: 32px; display: flex; align-items: center; }
+.how p { margin: var(--s2) 0 0; }
+.linkish { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+.todo-list { margin: var(--s2) 0 var(--s3); padding-left: 1.2em; display: grid; gap: 2px; font-size: var(--fs-sm); }
+.report-actions.left { justify-content: flex-start; }
+.ub-note { font-size: var(--fs-xs); font-weight: 600; text-align: right; }
+.stat .tag {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--warn-soft);
+  color: var(--warn);
+  letter-spacing: 0;
+}
+.stat.weakest { border-color: color-mix(in srgb, var(--warn) 55%, var(--line)); }
+.tr-chart {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  height: 120px;
+  margin-top: var(--s3);
+  padding-top: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.tr-max { position: absolute; top: 0; left: 0; font-size: var(--fs-xs); color: var(--text-faint); }
+.tr-col { position: relative; display: flex; align-items: flex-end; justify-content: center; min-width: 0; }
+.tr-stack {
+  width: min(100%, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+.tr-stack i { display: block; min-height: 2px; }
+.tr-right { background: var(--good); }
+.tr-miss { background: var(--bad); }
+.tr-day {
+  position: absolute;
+  bottom: -20px;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+.tr-col:first-child .tr-day { left: 0; }
+.tr-col:last-child .tr-day { right: 0; }
+.trend .st-legend.inline { margin-top: 28px; }
+[data-size="compact"] .ub { grid-template-columns: 1fr auto; row-gap: 4px; }
+[data-size="compact"] .ub .st-bar { grid-column: 1 / -1; grid-row: 2; }
+[data-size="compact"] .ub-note { grid-column: 1 / -1; text-align: left; }
+[data-size="compact"] .hero-num { font-size: 2.6rem; }
 
 /* ---------- missed ---------- */
 .empty {

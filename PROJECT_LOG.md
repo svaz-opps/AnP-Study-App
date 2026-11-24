@@ -329,3 +329,40 @@
   positioned, so they no longer overlap the door strip / card border on the bottom row of rooms.
 - Nurses' station desk label is centered in its box (vertical text was top-aligned because text-align defaulted to start).
 - Checked with screenshots at iPad landscape and portrait; smoke suite passes at 4 sizes.
+
+## 2026-11-24 — R28 learning engine audit + "where you stand" report card
+- Went through every part of the engine that decides what the player knows (`game/src/js/30-engine.js`: record,
+  mastery/stars, Missed Patients/discharge, picking weights, Rapid Response/daily/exam picks, daily target,
+  weak focus points; plus the HUD streak and the date helpers). Benchmarks looked up: Khan Academy mastery levels
+  (levels drop after misses), Anki/FSRS (memory fades; review when recall is predicted to drop; due counts),
+  UWorld (performance by subject; timed results as the honest readiness signal), Quizlet/Leitner state counts.
+- Bugs fixed (each has a check in the new `game/tests/learning.mjs`, which failed on the old code):
+  1. HUD day streak kept showing the old streak after days away (now 0 unless last played today/yesterday).
+  2. `yesterdayStr` used "now − 24 h", which skips a day between midnight and 1 AM after clocks spring forward.
+  3. Right → wrong → right on one day didn't count that day as a right day (a miss now clears `od`).
+  4. A right answer after "Ask a colleague" mastered/discharged questions and counted in accuracy. Now it is "seen"
+     only (points still awarded); a wrong answer with help still counts as wrong. The feedback says so.
+  5. 1★/2★ used "ever answered right", so a question you now miss still counted. Now "known now" = right and not in
+     Missed Patients. (User's choice: misses can lower stars; time alone doesn't.)
+  6. Daily target divided unmastered questions by days left, ignoring that each needs up to 2 right days, and counted
+     records for questions no longer in the bank. Now: right days still needed + reviews due, ÷ days left.
+  7. Weak focus points used lifetime miss ratios with no smoothing, never dropped fixed ones, hid unseen focus points,
+     and "Practice these" pulled mastered questions. Now ranked by current state, smoothed, all 239 reported.
+  8. "Honest readiness" accuracy included repeats; added first-try accuracy (`firstStats`, counted from this update on).
+  9. With stars able to drop, the OR could re-lock; it now stays open once opened (`state.unlocks.boss`).
+  10. Mastered questions never came due. New states: mastered questions come back after 7, then 14, then 30 days
+      (each extra right day moves them along), and once more in the last 7 days before the exam date.
+- Report card rebuilt around "where you stand": estimated exam score, last exam simulation, days to exam, pace;
+  the whole bank as mastered / learning / due / missed / not started; next-up list with "Refresh fading"; per-room
+  state bars; focus-point coverage + weakest 5; first-try vs overall accuracy by type (weakest flagged); last 14 days
+  chart with this week vs last; exam simulation trend + weakest rooms last time.
+- Assumptions: estimated score = Σ (share of bank in each state × your accuracy on questions answered in that state),
+  pulled toward priors new 60%, learning 70%, mastered 90%, due 80%, missed 45% with weight 10 answers; hidden until 20
+  answers; confidence low < 50 ≤ medium < 200 ≤ fair. Only the last 300 answers are kept (`state.log`) and 60 days of
+  daily totals (`days.hist`). Review gaps 7/14/30 days and the 7-day exam refresh are guesses tuned for a final a few
+  weeks out; all of these are in `game/src/js/01-config.js`. The state colours (good / xp blue / warn / bad) are the
+  game's existing tokens; their order in the bars was chosen so neighbours stay apart for colour-blind players, and
+  every bar has a legend with counts and an accessible name. Old saves load unchanged (new fields are additive);
+  first-try accuracy and the 14-day chart start from this update.
+- All suites pass: build --strict, smoke, hot, autosave, lifeline, backup, whimsy, smooth, learning.
+

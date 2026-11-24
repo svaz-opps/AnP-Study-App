@@ -17,17 +17,21 @@ function defaultState() {
     points: 0,
     bestStreak: 0,
     badges: {},
-    items: {},          // qid -> { s: seen, r: right, w: wrong, ok: right-days streak, od: last right day, ld: last day seen, miss: bool }
+    // qid -> { s: seen, r: right, w: wrong, ok: right days since the last miss, od: last of those right days,
+    //         ld: last day seen, miss: in Missed Patients, h: right only with the 50/50 (not counted as right) }
+    items: {},
     units: {},          // uid -> { shifts, perfect, best }
     typeStats: {},      // type -> { n, r }
     originStats: {},    // new|guide -> { n, r }
+    firstStats: { since: '', type: {}, origin: {} },   // first try at each question only: { n, r } per type / origin
+    log: [],            // last answers: { d: dayNum, u: room, st: status before, c: right, t: type, o: new question, f: first try, h: helped }
     discharged: 0,
     codeBlueBest: 0,
     boss: { wins: 0, best: 0, noLifelineWin: false },
     exams: [],
-    days: { last: '', streak: 0, today: '', answered: 0, active: [] },
+    days: { last: '', streak: 0, today: '', answered: 0, active: [], hist: {} },   // hist: day -> { n, r, h, m: mastered }
     recent: [],
-    unlocks: {},
+    unlocks: {},        // things that stay open once earned, e.g. { boss: true }
     settings: { sound: true, motion: 'auto', whimsy: 'full', text: 1, examDate: '', dailyGoal: 0 },
     daily: { date: '', qids: [], last: '', streak: 0, best: 0 },
     rapid: { n: 0, r: 0 },   // Rapid Response (cross-room recall) answers

@@ -76,7 +76,7 @@ const ReportSummary = {
     const m = Engine.mastery(run.unit);
     out.extra = `<div class="card unit-card"><div><span class="label">Room ${Content.unitById[run.unit].room} mastery</span>
         <div class="room-stars big">${starRow(m.stars)}</div></div>
-        <div class="mini-bars"><div><span>Answered right at least once</span><b class="num">${m.ever}/${m.total}</b></div>${fillBar(m.everFrac)}
+        <div class="mini-bars"><div><span>Known now (right, not in Missed Patients)</span><b class="num">${m.ever}/${m.total}</b></div>${fillBar(m.everFrac)}
         <div><span>Mastered (right on ${CONFIG.mastery.solidDays} different days)</span><b
           class="num">${m.solid}/${m.total}</b></div>${fillBar(m.solidFrac, 'var(--good)')}</div></div>`;
     const ev = run.event;

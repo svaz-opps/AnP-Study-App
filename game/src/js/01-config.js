@@ -69,9 +69,13 @@ const CONFIG = {
   mastery: {
     solidDays: 2,            // right on this many different days = mastered (and a missed patient is discharged)
     // a room's stars, by the share of its questions:
-    oneStar: 0.6,            // answered right at least once
-    twoStars: 0.8,           // answered right at least once
-    threeStars: 0.9,         // mastered
+    oneStar: 0.6,            // known now: answered right (without the 50/50) and not in Missed Patients
+    twoStars: 0.8,           // known now
+    threeStars: 0.9,         // mastered (a mastered question that is due for review still counts)
+    // a mastered question comes back for review after this many days without seeing it; each extra right
+    // day moves it one step along (7, then 14, then 30 days)
+    reviewAfterDays: [7, 14, 30],
+    examWeekRefresh: 7,      // in the last N days before the exam date, every mastered question comes back once (0 = off)
   },
 
   boss: {
@@ -124,6 +128,7 @@ const CONFIG = {
     learning: 1.8,           // right before but not yet mastered, not right today
     learningRightToday: 0.6,
     mastered: 0.35,
+    due: 4,                  // mastered, but due for review (CONFIG.mastery.reviewAfterDays)
     recentFactor: 0.12,      // × weight for questions among your last `history.recentQuestions`
     weakRoomBias: 1.2,       // up to (1 + this) × weight for rooms you have answered least
     reviewOtherDay: 3,       // Missed Patients re-rounds: prefer misses from earlier days
@@ -131,10 +136,22 @@ const CONFIG = {
     rapidDueAfterDays: 3,    // Rapid Response treats an unmastered question as fading after this many days
   },
 
+  // ----- estimated exam score (report card) -----
+  // For each state a question can be in (new, learning, mastered, due, missed), your own accuracy on
+  // questions you answered while they were in that state, pulled toward `prior` until there is enough data
+  // (`priorWeight` = how many answers the prior is worth). The estimate is the bank-wide average.
+  readiness: {
+    prior: { new: 0.6, learning: 0.7, mastered: 0.9, due: 0.8, missed: 0.45 },
+    priorWeight: 10,
+    minAnswers: 20,          // no estimate before this many answers
+    confidence: { medium: 50, fair: 200 },   // answers needed for each confidence label
+  },
+
   // ----- daily study target (the "today" chip) -----
   dailyTarget: {
     noExamDate: 20,          // with no exam date set
-    min: 10,                 // otherwise: what's left ÷ days to the exam, kept within min..max
+    min: 10,                 // otherwise: right days still needed to master the bank (+ reviews due) ÷ days to
+                             // the exam, kept within min..max
     max: 150,
     choices: [20, 40, 60],   // fixed targets offered in Settings
   },
@@ -144,6 +161,9 @@ const CONFIG = {
     recentQuestions: 40,
     activeDays: 90,
     exams: 20,
+    log: 300,                // answers kept for the estimated exam score and recent accuracy
+    histDays: 60,            // days of daily totals kept (the report card's chart shows the last 14)
+    paceDays: 7,             // pace = questions mastered per day over this many days
   },
 
   // ----- badge thresholds -----

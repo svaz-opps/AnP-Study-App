@@ -25,7 +25,7 @@ function hudHTML() {
     </div>
     <div class="hud-chips">
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
-        class="num">${s.days.streak || 0}</span>-day streak</span></span>
+        class="num">${Engine.dayStreak()}</span>-day streak</span></span>
       <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
       ${examChip}
       ${dailyChip()}
@@ -191,8 +191,8 @@ Screens.floor = {
         const BOSS = CONFIG.boss;
         const why = `The Superbug only fights experienced nurses. Earn a star in ${BOSS.unlockRooms} rooms, `
           + `or finish ${BOSS.unlockShifts} shifts (you've finished ${Engine.shiftsDone()}). `
-          + `A star means you've answered ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients right ` +
-            `at least once.`;
+          + `A star means you know ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients: answered right, ` +
+            'and not waiting in Missed Patients.';
         App.modal(`<h2>The OR is locked</h2><p class="dim">${why}</p>`
           + '<div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>');
         return;
@@ -216,7 +216,7 @@ function startShift(unit) {
   App.show('chart', {}, 'zoom-in');
 }
 function startReview(qids, label) {
-  if (!qids.length) { App.toast('No missed patients here. Nice work!'); return; }
+  if (!qids.length) { App.toast('Nothing to review here. Nice work!'); return; }
   App.run = new Run('review', { queue: qids });
   App.run.label = label || 'Missed patients';
   App.run.next();

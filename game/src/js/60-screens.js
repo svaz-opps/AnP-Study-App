@@ -141,74 +141,237 @@ Screens.locker = {
   },
 };
 
-// ----- report card
-function weakFocus() {
-  const agg = {};
-  for (const q of Content.all()) {
-    const r = WR.state.items[q.id];
-    if (!r || !r.s || !q.focus || !q.focus.length) continue;
-    for (const [sec, i] of q.focus) {
-      const k = sec + '#' + i;
-      const a = agg[k] || (agg[k] = { sec, i, s: 0, w: 0, qids: [] });
-      a.s += r.s; a.w += r.w; a.qids.push(q.id);
-    }
-  }
-  return Object.values(agg).filter((a) => a.w > 0).sort((a, b) => b.w / b.s - a.w / a.s || b.w - a.w).slice(0, 5);
+// ----- report card: where you stand
+// Every question is in one state (Engine.statusOf); the report card shows those states for the whole bank,
+// each room and each instructor focus point, plus first-try accuracy, the last two weeks and exam simulations.
+const STATUS_INFO = {
+  mastered: { label: 'Mastered', note: () => `right on ${CONFIG.mastery.solidDays} different days` },
+  learning: { label: 'Learning', note: () => `right, not yet on ${CONFIG.mastery.solidDays} days` },
+  due: { label: 'Due for review', note: () => 'mastered, time for a refresh' },
+  missed: { label: 'Missed', note: () => 'waiting in Missed Patients' },
+  new: { label: 'Not started', note: () => 'not answered right yet' },
+};
+const pctText = (x) => Math.round(x * 100) + '%';
+const shortDate = (d) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+// one whole split into the five states. tall: the bank-wide bar; otherwise a thin row bar
+function statusBar(b, tall) {
+  const total = b.total || 1;
+  const parts = Engine.STATUSES.filter((k) => b[k] > 0);
+  const name = parts.map((k) => `${STATUS_INFO[k].label} ${b[k]}`).join(', ');
+  const segs = parts.map((k) => `<i class="st-${k}" style="flex-grow:${b[k]}" ` +
+    `title="${STATUS_INFO[k].label}: ${b[k]} (${pctText(b[k] / total)})"></i>`).join('');
+  return `<div class="st-bar ${tall ? 'tall' : ''}" role="img" aria-label="${esc(name || 'No questions')}">${segs}</div>`;
 }
+function statusLegend(b) {
+  return `<ul class="st-legend">${Engine.STATUSES.map((k) => `<li><i class="sw st-${k}"></i><span>${STATUS_INFO[k].label}` +
+    ` <b class="num">${b[k]}</b></span><span class="faint">${STATUS_INFO[k].note()}</span></li>`).join('')}</ul>`;
+}
+
+const StatsParts = {
+  // the headline: estimated score, last exam simulation, exam countdown, pace, and the whole bank
+  stand(s) {
+    const rd = Engine.readiness(), pace = Engine.pace(), b = rd.b;
+    const solid = b.mastered + b.due;
+    const confText = { low: 'low confidence', medium: 'medium confidence', fair: 'fair confidence' }[rd.conf];
+    const hero = rd.pct == null
+      ? `<b class="hero-num">—</b><span class="faint">Answer ${rd.need} more question${rd.need === 1 ? '' : 's'} for an estimate.</span>`
+      : `<b class="hero-num num">${rd.pct}%</b><span class="faint">Rough estimate · ${confText} (last ${rd.n} answers)</span>`;
+    const last = s.exams[s.exams.length - 1];
+    const examTile = last
+      ? this.tile('Last exam simulation', pctText(last.right / last.n), `${last.right}/${last.n} on ${shortDate(last.date)}`)
+      : this.tile('Last exam simulation', '—', 'Take one from the floor: the truest test');
+    const days = pace.examIn;
+    const daysTile = days == null ? this.tile('Exam', '—', '<button class="linkish" data-action="settings">Set the exam date</button>')
+      : this.tile('Days to exam', days > 0 ? days : days === 0 ? 'Today' : 'Done', days > 0 ? `Daily target ${Engine.dailyTarget()} answers` : '');
+    let paceNote;
+    if (pace.left === 0) paceNote = 'Every question mastered!';
+    else if (pace.rate == null) paceNote = 'Shows after a few days of play';
+    else if (pace.rate <= 0) paceNote = `No net gain over ${pace.span} days`;
+    else {
+      const when = pace.finishIn <= 365 ? shortDate(dayStr(dayNum() + pace.finishIn)) : 'over a year';
+      const need = days > 0 ? (pace.left / days).toFixed(1) : null;
+      paceNote = `All mastered by ${when}` + (need ? (pace.onTrack ? ' · on track' : ` · behind: ${need}/day needed`) : '');
+    }
+    const paceTile = this.tile('Pace', pace.rate == null ? '—' : `${pace.rate.toFixed(1)}/day`, `mastered lately · ${paceNote}`);
+    return `<div class="card stand">
+      <div class="stand-top">
+        <div class="stand-hero"><span class="label">Estimated exam score</span>${hero}</div>
+        <div class="stand-tiles">${examTile}${daysTile}${paceTile}</div>
+      </div>
+      <div class="stand-bank"><span class="label">Question bank</span>
+        <p class="bank-line"><b class="num">${solid}</b> of <b class="num">${b.total}</b> mastered` +
+        `${b.due ? ` (${b.due} due for review)` : ''} · <b class="num">${b.learning}</b> learning · ` +
+        `<b class="num">${b.missed}</b> missed · <b class="num">${b.new}</b> not started</p>
+        ${statusBar(b, true)}${statusLegend(b)}</div>
+      <details class="how"><summary>How is this worked out?</summary>
+        <p>Every question is in one state. <b>Mastered</b>: right on ${CONFIG.mastery.solidDays} different days (with no
+        colleague's help). Mastered questions come back after ${CONFIG.mastery.reviewAfterDays.join(', then ')} days, and
+        once more in the last ${CONFIG.mastery.examWeekRefresh} days before the exam; until you answer them they are
+        <b>due for review</b>. A miss puts a question in <b>Missed</b> until it is right on ${CONFIG.mastery.solidDays}
+        different days again. Stars count what you know now, so a miss can take a star away until you fix it.</p>
+        <p>The estimated score uses your own accuracy on questions in each state, across the whole bank. It is a rough
+        guide: an exam simulation is the real test.</p></details>
+    </div>`;
+  },
+  tile(label, value, note) {
+    return `<div class="stat"><span class="label">${label}</span><b class="num">${value}</b><span class="faint">${note}</span></div>`;
+  },
+  // what to do next: due reviews, missed patients, today's target
+  todo(s) {
+    const due = Engine.due().length, missed = Engine.missed().length;
+    const today = s.days.today === todayStr() ? s.days.answered : 0, goal = Engine.dailyTarget();
+    const btns = [];
+    if (due) btns.push(`<button class="btn primary" data-action="refreshDue">${icon('play')}Refresh fading (${Math.min(due, MODES.review.n)})</button>`);
+    if (missed) btns.push(`<button class="btn" data-action="missed">${icon('bed')}Missed patients (${missed})</button>`);
+    const lines = [
+      `<b class="num">${due}</b> mastered question${due === 1 ? '' : 's'} due for review`,
+      `<b class="num">${missed}</b> missed patient${missed === 1 ? '' : 's'} waiting`,
+      `<b class="num">${today}/${goal}</b> answered today`,
+    ];
+    return `<div class="card todo-card"><span class="label">Next up</span>
+      <ul class="todo-list">${lines.map((l) => `<li>${l}</li>`).join('')}</ul>
+      ${btns.length ? `<div class="report-actions left">${btns.join('')}</div>` : '<p class="dim">Nothing due. Nice work!</p>'}</div>`;
+  },
+  rooms() {
+    const ctx = Engine.statusCtx();
+    const rows = Content.units.map((u) => {
+      const m = Engine.mastery(u.id, ctx);
+      const bits = [];
+      if (m.missed) bits.push(`${m.missed} missed`);
+      if (m.due) bits.push(`${m.due} due`);
+      return `<div class="ub"><span>${u.room} ${esc(u.topic)}</span>${statusBar(m.b)}` +
+        `<span class="room-stars" aria-label="${m.stars} of 3 stars">${starRow(m.stars)}</span>` +
+        `<span class="ub-note faint num">${m.solid}/${m.total} mastered${bits.length ? ' · ' + bits.join(' · ') : ''}</span></div>`;
+    }).join('');
+    const M = CONFIG.mastery;
+    const rule = `★ ${pctText(M.oneStar)} known · ★★ ${pctText(M.twoStars)} known · ★★★ ${pctText(M.threeStars)} mastered`;
+    return `<div class="card"><span class="label">Rooms</span><p class="faint rule">${rule} (known = right and not missed)</p>
+      <div class="unit-bars">${rows}</div></div>`;
+  },
+  focus() {
+    const rep = Engine.focusReport();
+    const n = { mastered: 0, progress: 0, new: 0 };
+    rep.forEach((a) => { n[a.state]++; });
+    const weak = Engine.weakFocus();
+    const row = (a) => {
+      const sec = Content.section(a.sec), seen = a.qids.length - a.b.new;
+      const bits = [`missed ${a.b.missed} of ${seen} answered`];
+      if (a.b.due) bits.push(`${a.b.due} due for review`);
+      return `<li><b>${esc(sec.focus[a.i])}</b><span class="faint">${esc(sec.num + ' ' + sec.title)} · ${bits.join(' · ')}</span></li>`;
+    };
+    const weakHTML = weak.length ? `<span class="label">Weakest right now</span><ol class="weak-list">${weak.map(row).join('')}</ol>
+      <button class="btn primary" data-action="practiceWeak">${icon('target')}Practice these</button>`
+      : '<p class="dim">No weak focus points right now. Missed questions put their focus points here until you fix them.</p>';
+    const covB = { total: rep.length, mastered: n.mastered, learning: n.progress, due: 0, missed: 0, new: n.new };
+    return `<div class="card focus-cov"><span class="label">Instructor focus points</span>
+      <p class="bank-line"><b class="num">${n.mastered}</b> of <b class="num">${rep.length}</b> fully mastered · ` +
+      `<b class="num">${n.progress}</b> in progress · <b class="num">${n.new}</b> not started</p>
+      ${statusBar(covB)}
+      <p class="faint rule">From the new ATI-style questions, which are each tagged to the focus points they test.</p>
+      ${weakHTML}</div>`;
+  },
+  types(s) {
+    const f = s.firstStats || { type: {} };
+    const rows = Object.keys(TYPE_INFO).map((t) => ({ t, first: f.type[t], all: s.typeStats[t] }));
+    const rate = (o) => (o && o.n ? o.r / o.n : null);
+    const ranked = rows.filter((x) => x.first && x.first.n >= 5).sort((x, y) => rate(x.first) - rate(y.first));
+    const weakest = ranked.length > 1 ? ranked[0].t : null;
+    const cells = rows.map(({ t, first, all }) => {
+      const main = rate(first) != null ? pctText(rate(first)) : '—';
+      const over = all && all.n ? `overall ${pctText(rate(all))} of ${all.n}` : 'not answered yet';
+      const tag = t === weakest ? '<span class="tag">weakest</span>' : '';
+      return `<div class="stat ${t === weakest ? 'weakest' : ''}"><span class="label">${TYPE_INFO[t].label}${tag}</span>` +
+        `<b class="num">${main}</b><span class="faint num">first try${first ? ` · ${first.n}` : ''} · ${over}</span></div>`;
+    }).join('');
+    const since = f.since ? ` First-try counts started ${shortDate(f.since)}.` : '';
+    return `<div class="card"><span class="label">Accuracy by question type</span>
+      <p class="faint rule">First try = the first time you saw each question: the honest number. Overall includes repeats.${since}</p>
+      <div class="stat-grid type-grid">${cells}</div></div>`;
+  },
+  trend() {
+    const { series, thisWeek, lastWeek } = Engine.recent(14);
+    const max = Math.max(1, ...series.map((d) => d.n));
+    const cols = series.map((d, i) => {
+      const lbl = i === series.length - 1 ? 'Today' : i === 0 ? shortDate(d.day) : '';
+      const tip = `${shortDate(d.day)}: ${d.n} answers, ${d.r} right`;
+      return `<div class="tr-col" title="${tip}"><div class="tr-stack" style="height:${(d.n / max) * 100}%">` +
+        `${d.n - d.r ? `<i class="tr-miss" style="flex-grow:${d.n - d.r}"></i>` : ''}` +
+        `${d.r ? `<i class="tr-right" style="flex-grow:${d.r}"></i>` : ''}</div><span class="tr-day">${lbl}</span></div>`;
+    }).join('');
+    const wk = (w) => (w.n ? `${pctText(w.r / w.n)} right of ${w.n}` : 'no answers');
+    let delta = '';
+    if (thisWeek.n && lastWeek.n) {
+      const dd = Math.round((thisWeek.r / thisWeek.n - lastWeek.r / lastWeek.n) * 100);
+      delta = dd === 0 ? ' · same as last week' : ` · ${dd > 0 ? '▲' : '▼'} ${Math.abs(dd)} points vs last week`;
+    }
+    const rows = series.map((d) => `<tr><td>${d.day}</td><td>${d.n}</td><td>${d.r}</td></tr>`).join('');
+    return `<div class="card trend"><span class="label">Last 14 days</span>
+      <p class="bank-line">This week: <b>${wk(thisWeek)}</b>${delta}. Last week: ${wk(lastWeek)}.</p>
+      <div class="tr-chart" aria-hidden="true"><span class="tr-max num">${max}</span>${cols}</div>
+      <ul class="st-legend inline"><li><i class="sw tr-right"></i>right</li><li><i class="sw tr-miss"></i>wrong or helped</li></ul>
+      <table class="sr-only"><caption>Answers per day, last 14 days</caption><tr><th>Day</th><th>Answers</th><th>Right</th></tr>${rows}</table>
+    </div>`;
+  },
+  exams(s) {
+    if (!s.exams.length) return '<div class="card"><span class="label">Exam simulations</span><p class="dim">No exam simulations yet. ' +
+      `Find it on the floor: ${MODES.exam.n} mixed questions, no hints, like the real final.</p></div>`;
+    const list = s.exams.slice().reverse();
+    const pct = (e) => Math.round((e.right / e.n) * 100);
+    const row = (e, i) => {
+      const prev = list[i + 1];
+      const d = prev ? pct(e) - pct(prev) : null;
+      const ch = d == null ? '' : `<span class="faint num">${d > 0 ? '▲' : d < 0 ? '▼' : '='} ${Math.abs(d)}</span>`;
+      return `<li><span>${esc(shortDate(e.date))}</span><b class="num">${pct(e)}%</b><span class="faint num">${e.right}/${e.n}</span>${ch}</li>`;
+    };
+    const latest = list[0];
+    let weakest = '';
+    if (latest.byUnit) {
+      const rooms = Object.keys(latest.byUnit).filter((u) => Content.unitById[u])
+        .map((u) => ({ u: Content.unitById[u], r: latest.byUnit[u][0], n: latest.byUnit[u][1] }))
+        .sort((x, y) => x.r / x.n - y.r / y.n).slice(0, 3);
+      weakest = `<p class="faint rule">Weakest rooms last time: ${rooms.map((x) =>
+        `Room ${x.u.room} ${esc(x.u.topic)} ${x.r}/${x.n}`).join(' · ')}</p>`;
+    }
+    return `<div class="card"><span class="label">Exam simulations</span>${weakest}<ul class="exam-list">${list.map(row).join('')}</ul></div>`;
+  },
+  extras(s) {
+    const pctOf = (o) => (o && o.n ? pctText(o.r / o.n) : '—');
+    const f = (s.firstStats && s.firstStats.origin) || {};
+    return `<div class="stat-grid">
+      ${this.tile('New ATI-style questions', pctOf(f.new), `first try · overall ${pctOf(s.originStats.new)}`)}
+      ${this.tile('Guide questions', pctOf(f.guide), `first try · overall ${pctOf(s.originStats.guide)} (may be memorized)`)}
+      ${this.tile('Cross-room recall', pctOf(s.rapid), 'Rapid Response questions from other rooms')}
+      ${this.tile('Discharged', s.discharged, 'missed, then fixed')}
+    </div>`;
+  },
+};
 
 Screens.stats = {
   render() {
     const s = WR.state, rp = Engine.rankProgress();
-    const pctOf = (o) => (o && o.n ? Math.round((o.r / o.n) * 100) + '%' : '—');
-    const stat = (label, value, note, noteCls = 'faint') =>
-      `<div class="stat"><span class="label">${label}</span><b class="num">${value}</b><span class="${noteCls}">${note}</span></div>`;
-    const units = Content.units.map((u) => {
-      const m = Engine.mastery(u.id);
-      return `<div class="ub"><span>${u.room} ${esc(u.topic)}</span><div class="bar dual">` +
-        `<i style="width:${m.everFrac * 100}%"></i><i class="solid" style="width:${m.solidFrac * 100}%"></i></div>` +
-        `<span class="room-stars">${starRow(m.stars)}</span></div>`;
-    }).join('');
-    const types = Object.keys(TYPE_INFO).map((t) =>
-      stat(TYPE_INFO[t].label, pctOf(s.typeStats[t]), `${s.typeStats[t] ? s.typeStats[t].n : 0} answered`, 'faint num')).join('');
-    const weak = weakFocus();
-    const weakRow = (a) => {
-      const sec = Content.section(a.sec);
-      return `<li><b>${esc(sec.focus[a.i])}</b><span class="faint">${esc(sec.num + ' ' + sec.title)} · missed ${a.w} of ${a.s}</span></li>`;
-    };
-    const weakHTML = weak.length ? `<ol class="weak-list">${weak.map(weakRow).join('')}</ol>
-      <button class="btn primary" data-action="practiceWeak">${icon('target')}Practice these</button>`
-      : '<p class="dim">Answer some new ATI-style questions and your weakest instructor focus points will show up here.</p>';
     const badges = BADGES.map((b) => {
       const got = !!s.badges[b.id];
       return `<div class="badge ${got ? 'on' : ''}">${icon(got ? b.ico : 'lock')}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`;
     }).join('');
-    const examRow = (e) => `<li><span>${esc(e.date)}</span><b class="num">${Math.round((e.right / e.n) * 100)}%</b>` +
-      `<span class="faint num">${e.right}/${e.n}</span></li>`;
-    const exams = s.exams.length
-      ? `<ul class="exam-list">${s.exams.slice().reverse().map(examRow).join('')}</ul>`
-      : '<p class="dim">No exam simulations yet. Find it on the floor.</p>';
     const sub = `${esc(rp.cur.n)} · ${fmt(s.xp)} XP · ${Object.keys(s.badges).length} of ${BADGES.length} badges`;
-    const legend = '<span class="legend"><i></i>right once <i class="solid"></i>mastered</span>';
+    const P = StatsParts;
     return `${topbar('Report card', sub)}
       <div class="narrow stack">
-        <div class="stat-grid">
-          ${stat('New ATI-style questions', pctOf(s.originStats.new), 'your honest readiness score')}
-          ${stat('Guide questions', pctOf(s.originStats.guide), 'may include memorized ones')}
-          ${stat('Discharged', s.discharged, 'missed, then fixed')}
-          ${stat('Cross-room recall', pctOf(s.rapid), 'Rapid Response questions from other rooms')}
-        </div>
-        <div class="card"><span class="label">Weakest instructor focus points</span>${weakHTML}</div>
-        <div class="card"><span class="label">Rooms ${legend}</span><div class="unit-bars">${units}</div></div>
-        <div class="card"><span class="label">Accuracy by question type</span><div class="stat-grid">${types}</div></div>
+        ${P.stand(s)}
+        ${P.todo(s)}
+        ${P.rooms()}
+        ${P.focus()}
+        ${P.types(s)}
+        ${P.trend()}
+        ${P.exams(s)}
+        ${P.extras(s)}
         <div class="card"><span class="label">Badges</span><div class="badge-row">${badges}</div></div>
-        <div class="card"><span class="label">Exam simulations</span>${exams}</div>
       </div>`;
   },
   act: {
-    practiceWeak() {
-      const ids = [...new Set(weakFocus().flatMap((a) => a.qids))];
-      startReview(shuffle(ids).slice(0, MODES.review.n), 'Weak focus points');
-    },
+    practiceWeak() { startReview(Engine.pickFocus(Engine.weakFocus()), 'Weak focus points'); },
+    refreshDue() { startReview(Engine.pickDue(), 'Due for review'); },
   },
 };
 
@@ -415,7 +578,8 @@ const TUTORIAL = [
     ico: 'heart', t: 'Lives, streaks, lifelines',
     d: `You get ${MODES.shift.lives} lives per shift. Right answers in a row raise your score multiplier up to ` +
       `×${topMultiplier}. `
-      + 'Stuck? Ask a colleague to cross out wrong options, or take a coffee break for +1 life.',
+      + 'Stuck? Ask a colleague to cross out wrong options (a right answer with help doesn\'t count toward mastery), '
+      + 'or take a coffee break for +1 life.',
   },
   {
     ico: 'star', t: 'Learn from every miss',
