@@ -500,3 +500,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
   (one button). The boss-fight delay that waited out the scroll is gone (`bossFeedbackDelayMs` removed).
 - tests/motion.mjs: checks at 1180x820 and 390x844 that the page doesn't scroll by itself, there is one Next
   button on screen, and it is still on screen at the bottom of the explanation. All 8 tests pass.
+- ROADMAP: R28, R29 marked done, R30 ("Next patient" always on screen) added. Leveling `main` and `beta` to this
+  branch at the user's request (both fast-forward; neither had commits the branch lacks).
