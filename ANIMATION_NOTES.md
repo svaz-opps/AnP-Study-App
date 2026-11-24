@@ -38,4 +38,4 @@ These are what the pass checks every animation against.
 - [x] H. Report card / rank-up / confetti: staging and stagger.
 - [x] I. Boss arena: hit/heal anticipation and follow-through.
 - [x] J. Whimsy layer: check each patient gag for linear/odd timing.
-- [ ] K. Check every flow frame by frame at landscape + portrait, with and without reduce-motion.
+- [x] K. Check every flow frame by frame at landscape + portrait, with and without reduce-motion.

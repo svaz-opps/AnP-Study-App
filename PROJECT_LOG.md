@@ -420,3 +420,8 @@ After animation work runs out: ideas to make the game more engaging; after that,
   wh-wobble, pp-wave and wh-blow now start and end at rest and swing out in the middle (one cycle replaces two
   alternate iterations, same total time). Dance, party, dizzy, the theme-room hand wave, the blower and the
   low-score parade wave use them. Other gags already started and ended at rest (checked every keyframe).
+- K (done) Flow check: walk in / step in / grow-from-room / walk back checked frame by frame at landscape 1180x820,
+  portrait 820x1180 (both door sides) and phone 390x844; reduce-motion levels covered by tests/motion.mjs.
+  Not changed (noted): at phone width the corridor is narrower than the nurse, so she overlaps the room cards'
+  edges while walking (as before).
+- Animation checklist A–K complete. Next: ways to make the game more engaging (see ROADMAP.md / this log).
