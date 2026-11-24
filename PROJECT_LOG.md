@@ -462,3 +462,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - Settings: the highlight in each segmented control (Sound, Motion, Silly patients, Text size, Daily target) now
   slides to the new choice (FLIP: `slidePill` in 60-screens.js puts a pill where the old choice was, animates it to
   the new one in 240 ms, then the new button takes over; skipped on soft/calm). It used to jump. All 8 tests pass.
+- Summary for the user written at the end of ANIMATION_NOTES.md ("What the pass changed" + one open question about
+  the landscape scroll-to-explanation).

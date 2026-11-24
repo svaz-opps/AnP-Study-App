@@ -39,3 +39,19 @@ These are what the pass checks every animation against.
 - [x] I. Boss arena: hit/heal anticipation and follow-through.
 - [x] J. Whimsy layer: check each patient gag for linear/odd timing.
 - [x] K. Check every flow frame by frame at landscape + portrait, with and without reduce-motion.
+
+## What the pass changed (for review)
+- Motion levels: Full / soft (device Reduce Motion on "Auto": crossfades instead of slides, no shakes) / Calm.
+- Floor: bubble tucks into the nurse; she crouches, walks with steps matched to her speed, the door opens as she
+  arrives, she steps in; the bedside screen grows out of that room; afterwards she comes back out of the room and
+  walks to the station before the bubble and corridor buttons pop back. Portrait: she fits the corridor.
+- Chart: answer marks pop in down the list, then the explanation; score rolls up; lost heart drains to grey;
+  the old chart slides off as the next patient's slides in; streak pips + multiplier level-up.
+- Bars fill when they appear; the floor XP bar fills from where it was.
+- Dialogs fade out; report builds up in stages; stars stamp in; boss wind-up / arc / squash on impact; settings
+  highlight slides; locker nurse shows off a change.
+
+## Left for the user to decide
+- In the wide (landscape) layout the page still scrolls down to the explanation, which takes the question and its
+  marks off screen. Option: scroll only part way (explanation header at ~35% of the screen) so the marks stay
+  visible, at the cost of scrolling to reach "Next patient". Not changed without asking.
