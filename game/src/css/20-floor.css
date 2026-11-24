@@ -142,9 +142,25 @@
 }
 /* door pinned to the corridor side (absolute, so it never depends on flex order inside the button) */
 .rooms-top .room-body { padding-bottom: calc(var(--s3) + 14px); }
-.rooms-bottom .door, .floorplan.v .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
-.rooms-bottom .room-body, .floorplan.v .room-body { padding-top: calc(var(--s3) + 14px); }
+.rooms-bottom .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
+.rooms-bottom .room-body { padding-top: calc(var(--s3) + 14px); }
 .room.open .door::before { transform: rotateY(-75deg); }
+/* Portrait: the corridor runs down the middle, so the door is an upright strip on the room's corridor side
+   (right side for the left column, left side for the right column; rooms alternate left, right in source order).
+   The panel hangs from its top edge and swings open towards the viewer. */
+.floorplan.v .door {
+  width: 14px; height: auto; top: 0; bottom: 0; left: auto; right: 0;
+  border-top: 0; border-left: 2px solid var(--line);
+}
+.floorplan.v .room:nth-child(even) .door { right: auto; left: 0; border-left: 0; border-right: 2px solid var(--line); }
+.floorplan.v .door::before {
+  left: 2px; width: 8px; top: 22%; height: 56%;
+  background: linear-gradient(180deg, #6f86a8, #9ab0cc); transform-origin: center top;
+}
+.floorplan.v .room.open .door::before { transform: rotateX(75deg); }
+.floorplan.v .room:nth-child(odd) .room-body { padding-right: calc(var(--s3) + 14px); }
+.floorplan.v .room:nth-child(even) .room-body { padding-left: calc(var(--s3) + 14px); }
+.floorplan.v .room:nth-child(odd) .room-dot { right: 22px; }
 .room.open { border-color: var(--accent); }
 
 /* ---------- corridor ---------- */

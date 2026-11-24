@@ -337,3 +337,8 @@
   the moment she starts walking, so she is always in view. They come back with the floor after the shift. The
   layering change from before stays (harmless: for the first frames she is still behind them as they shrink).
   Portrait is unaffected (those buttons sit below the floor plan there, out of her path). Checked frame by frame at 1180x820.
+- Portrait floor: doors now face the hallway. They used to be a horizontal strip across the top of every room; now
+  each is an upright strip on the corridor side (right edge for the left column, left edge for the right column,
+  picked by `:nth-child(odd/even)`, since rooms alternate left/right in source order). The door panel hangs from its
+  top and opens with `rotateX(75deg)` (landscape keeps `rotateY(-75deg)`). Room padding and the red missed-count dot
+  move off the door. Checked opening rooms 103 (left) and 104 (right) at 820x1180.
