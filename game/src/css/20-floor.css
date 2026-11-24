@@ -195,14 +195,15 @@
   will-change: transform;
 }
 .walker svg { width: 100%; height: 100%; overflow: visible; }
-.walker.walking svg { animation: bob .32s ease-in-out infinite alternate; }
+/* --step is set per walk from her speed (45-floor.js) so the legs keep pace with the ground */
+.walker.walking svg { animation: bob var(--step, .2s) ease-in-out infinite alternate; }
 .walker.walking .leg-l {
-  animation: step .32s ease-in-out infinite alternate;
+  animation: step var(--step, .2s) ease-in-out infinite alternate;
   transform-origin: 50% 0;
   transform-box: fill-box;
 }
 .walker.walking .leg-r {
-  animation: step .32s ease-in-out infinite alternate-reverse;
+  animation: step var(--step, .2s) ease-in-out infinite alternate-reverse;
   transform-origin: 50% 0;
   transform-box: fill-box;
 }

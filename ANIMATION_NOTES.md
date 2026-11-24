@@ -30,8 +30,8 @@ These are what the pass checks every animation against.
 ## Audit checklist (status in PROJECT_LOG.md, "Overnight animation pass")
 - [x] A. Motion levels: full / soft (device Reduce Motion on Auto) / calm. Replace every `@media (prefers-reduced-motion)` rule with the game's own level so "Full" really is full.
 - [x] B. Easing + duration tokens; move every animation onto them; exits faster than entrances.
-- [ ] C. Floor: walk cycle matches speed (no foot sliding), anticipation + settle, nurse goes *into* the room.
-- [ ] D. Screen changes: continuity (floor → room zoom from the tapped room, back out to the floor).
+- [x] C. Floor: walk cycle matches speed (no foot sliding), anticipation + settle, nurse goes *into* the room.
+- [x] D. Screen changes: continuity (floor → room zoom from the tapped room, back out to the floor).
 - [ ] E. Chart: option press, submit, right/wrong feedback, lives lost, streak, score float, Next patient.
 - [ ] F. Progress bars: animate with transform, not width.
 - [ ] G. Modals, toasts, banners: entrance/exit pairs, exit faster.

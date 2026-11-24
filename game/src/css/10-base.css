@@ -63,6 +63,9 @@ svg { display: block; }
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
 .screen.zoom-in { animation: zoom-in .38s var(--ease-out) both; }
 @keyframes zoom-in { from { opacity: 0; transform: scale(.92); } }
+/* grows out of the tapped room (transform-origin set in App.show) */
+.screen.zoom-in.from-point { animation: zoom-from .42s var(--ease-out) both; }
+@keyframes zoom-from { from { opacity: 0; transform: scale(.55); } 40% { opacity: 1; } }
 
 .wrap { width: 100%; max-width: 1180px; margin-inline: auto; }
 .narrow { width: 100%; max-width: 760px; margin-inline: auto; }

@@ -340,10 +340,10 @@ input[type="date"], input[type="text"] {
 
 /* soft (device Reduce Motion on "Auto"): screens, panels and dialogs crossfade instead of sliding or zooming */
 [data-motion="soft"] .screen, [data-motion="soft"] .screen.zoom-in, [data-motion="soft"] .feedback,
-[data-motion="soft"] .modal { animation-name: fade-in; }
+[data-motion="soft"] .modal, [data-motion="soft"] .screen.zoom-in.from-point { animation-name: fade-in; }
 /* calm: they just appear */
 [data-calm="1"] .screen, [data-calm="1"] .screen.zoom-in, [data-calm="1"] .feedback, [data-calm="1"] .bubble.pop,
-[data-calm="1"] .modal, [data-calm="1"] .ob-step { animation: none !important; }
+[data-calm="1"] .modal, [data-calm="1"] .ob-step, [data-calm="1"] .screen.zoom-in.from-point { animation: none !important; }
 
 /* how-to-save guide (settings card + iPad reminder) */
 .save-help h3 { font-size: var(--fs-md, 1rem); margin: var(--s4) 0 var(--s2); }

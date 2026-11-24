@@ -116,7 +116,72 @@ Screens.floor = {
   },
   mount(el) {
     this.placeWalker(false);
+    // back from a shift: she comes out of the room she went into and walks back to the station
+    const unit = this.lastRoom;
+    this.lastRoom = null;
+    if (unit && !calmChosen()) this.comeBack(unit);
   },
+  // where she stands outside a room's door (walker's top-left, in floor-plan coordinates)
+  doorPos(roomEl) {
+    const plan = $('#floorplan'), walker = $('#walker');
+    const pr = plan.getBoundingClientRect(), rr = roomEl.getBoundingClientRect(), cor = $('.corridor', plan).getBoundingClientRect();
+    if (App.layout === 'h') {
+      return { x: rr.left - pr.left + rr.width / 2 - walker.offsetWidth / 2, y: cor.top - pr.top + cor.height / 2 - walker.offsetHeight / 2 };
+    }
+    return { x: cor.left - pr.left + cor.width / 2 - walker.offsetWidth / 2, y: rr.top - pr.top + rr.height / 2 - walker.offsetHeight / 2 };
+  },
+  // which way "into the room" is from the corridor, for stepping in and out of the door
+  doorDir(roomEl) {
+    const d = 34;
+    if (App.layout === 'h') return { dx: 0, dy: roomEl.closest('.rooms-top') ? -d : d };
+    return { dx: Array.from(roomEl.parentNode.children).indexOf(roomEl) % 2 ? d : -d, dy: 0 };
+  },
+  // Continuity for the trip back: the door opens, she steps out, it closes behind her, she walks to the station,
+  // and only then do her speech bubble and the corridor buttons pop back in (one after another, not all at once).
+  // A tap on a room while this plays takes over cleanly (walkId).
+  comeBack(unit) {
+    const plan = $('#floorplan'), walker = $('#walker'), room = plan && $(`.room[data-unit="${unit}"]`, plan);
+    const svg = walker && $('svg', walker);
+    if (!room || !svg || !svg.animate) return;
+    const id = ++this.walkId;
+    const T = CONFIG.timing;
+    const bubble = $('#floor-bubble');
+    const btns = $$('.corridor .alarm, .corridor .elevator', plan);
+    if (bubble) { bubble.classList.remove('pop'); bubble.style.visibility = 'hidden'; }
+    btns.forEach((b) => { b.style.opacity = '0'; });
+    const start = this.doorPos(room), home = this.home(), dir = this.doorDir(room);
+    walker.style.transition = 'none';
+    walker.style.transform = `translate(${start.x}px, ${start.y}px)`;
+    void walker.offsetWidth;
+    walker.style.transition = '';
+    room.classList.add('open');
+    svg.style.transformOrigin = '50% 100%';
+    svg.animate([{ transform: `translate(${dir.dx}px, ${dir.dy}px) scale(.85)`, opacity: 0 }, { transform: 'none', opacity: 1 }],
+      { duration: T.stepInMs, easing: 'cubic-bezier(.2, .8, .2, 1)', delay: 120, fill: 'backwards' });
+    setTimeout(() => {
+      if (id !== this.walkId) return;
+      room.classList.remove('open');
+      const dist = Math.hypot(home.x - start.x, home.y - start.y);
+      const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
+      walker.style.setProperty('--step', clamp(T.walkStridePx / Math.max(1, dist / dur), 0.1, 0.22).toFixed(3) + 's');
+      walker.style.transitionDuration = dur + 's';
+      walker.classList.add('walking');
+      walker.style.transform = `translate(${home.x}px, ${home.y}px)`;
+      setTimeout(() => {
+        if (id !== this.walkId) return;
+        walker.classList.remove('walking');
+        svg.animate([{ transform: 'scaleY(.95) translateY(2px)' }, { transform: 'none' }],
+          { duration: 180, easing: 'cubic-bezier(.2, .9, .3, 1.4)' });
+        if (bubble) { bubble.style.visibility = ''; bubble.classList.add('pop'); }
+        btns.forEach((b, i) => {
+          b.style.opacity = '';
+          b.animate([{ transform: 'scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+            { duration: 280, delay: 120 + i * 70, easing: 'cubic-bezier(.2, .9, .3, 1.25)', fill: 'backwards' });
+        });
+      }, dur * 1000 + 30);
+    }, 120 + T.stepInMs + 60);
+  },
+  walkId: 0,
   home() {
     const plan = $('#floorplan'), walker = $('#walker');
     if (!plan || !walker) return { x: 0, y: 0 };
@@ -155,34 +220,60 @@ Screens.floor = {
       ).finished.then(done, done);
     });
   },
+  // Walk to a room's door. Character-animation rules (ANIMATION_NOTES.md): a little crouch before she sets off
+  // (anticipation), a step rate that matches her speed so her feet don't slide, the door starting to open just
+  // before she gets there (overlapping action), and a small settle when she stops.
   walkTo(roomEl) {
     return new Promise((resolve) => {
       const plan = $('#floorplan'), walker = $('#walker');
       if (!plan || !walker || calmChosen()) { resolve(); return; }
-      const pr = plan.getBoundingClientRect(), rr = roomEl.getBoundingClientRect(), cor = $('.corridor', plan).getBoundingClientRect();
-      let x, y;
-      if (App.layout === 'h') {
-        x = rr.left - pr.left + rr.width / 2 - walker.offsetWidth / 2;
-        y = cor.top - pr.top + cor.height / 2 - walker.offsetHeight / 2;
-      } else {
-        x = cor.left - pr.left + cor.width / 2 - walker.offsetWidth / 2;
-        y = rr.top - pr.top + rr.height / 2 - walker.offsetHeight / 2;
-      }
+      this.walkId++; // cancels a walk back from a room that is still playing
+      const { x, y } = this.doorPos(roomEl);
       const m = /translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(walker.style.transform) || [0, 0, 0];
       const dist = Math.hypot(x - m[1], y - m[2]);
       const T = CONFIG.timing;
       const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
+      // one step per stride length travelled, kept between a brisk patter and a stroll
+      walker.style.setProperty('--step', clamp(T.walkStridePx / Math.max(1, dist / dur), 0.1, 0.22).toFixed(3) + 's');
       walker.style.transitionDuration = dur + 's';
       // the Code Blue and OR buttons shrink away as she sets off, so she is never hidden behind them
       $$('.corridor .alarm, .corridor .elevator', plan).forEach((b) => {
+        b.style.opacity = '';
         b.style.pointerEvents = 'none';
         b.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.05)', opacity: 0 }],
           { duration: T.buttonTuckMs, easing: 'cubic-bezier(.5, 0, .75, 0)', fill: 'forwards' });
       });
-      walker.classList.add('walking');
-      walker.style.transform = `translate(${x}px, ${y}px)`;
-      setTimeout(() => { walker.classList.remove('walking'); resolve(); }, dur * 1000 + 30);
+      const svg = $('svg', walker);
+      const canAnimate = !!(svg && svg.animate);
+      if (canAnimate) svg.style.transformOrigin = '50% 100%';
+      const go = () => {
+        walker.classList.add('walking');
+        walker.style.transform = `translate(${x}px, ${y}px)`;
+        setTimeout(() => roomEl.classList.add('open'), Math.max(0, dur * 1000 - T.doorLeadMs));
+        setTimeout(() => {
+          walker.classList.remove('walking');
+          if (canAnimate) {
+            svg.animate([{ transform: 'scaleY(.95) translateY(2px)' }, { transform: 'none' }],
+              { duration: 180, easing: 'cubic-bezier(.2, .9, .3, 1.4)' });
+          }
+          resolve();
+        }, dur * 1000 + 30);
+      };
+      if (canAnimate) {
+        svg.animate([{ transform: 'none' }, { transform: 'scaleY(.93) translateY(3px)' }, { transform: 'none' }],
+          { duration: T.walkCrouchMs, easing: 'ease-in-out' });
+        setTimeout(go, T.walkCrouchMs * 0.6);
+      } else go();
     });
+  },
+  // She steps through the open door: a short move towards the room and a fade, so she goes somewhere instead of
+  // vanishing when the screen changes.
+  stepIn(roomEl) {
+    const walker = $('#walker'), svg = walker && $('svg', walker);
+    if (!svg || !svg.animate || calmChosen()) return Promise.resolve();
+    const { dx, dy } = this.doorDir(roomEl);
+    return svg.animate([{ transform: 'none', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.85)`, opacity: 0 }],
+      { duration: CONFIG.timing.stepInMs, easing: 'cubic-bezier(.4, 0, .9, .4)', fill: 'forwards' }).finished.catch(() => {});
   },
   act: {
     async room(d, el) {
@@ -193,9 +284,15 @@ Screens.floor = {
       await Screens.floor.walkTo(el);
       el.classList.add('open');
       Sound.play('door');
-      await sleep(calmChosen() ? 0 : CONFIG.timing.doorOpenMs);
+      if (!calmChosen()) {
+        await sleep(CONFIG.timing.doorSettleMs);
+        await Screens.floor.stepIn(el);
+      }
       Screens.floor.busy = false;
+      const r = el.getBoundingClientRect();
+      App.zoomFrom = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; // the room grows into the bedside screen
       startShift(d.unit);
+      Screens.floor.lastRoom = d.unit;
     },
     codeblue() { startMode('codeblue'); },
     daily() {

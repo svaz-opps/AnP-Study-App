@@ -376,3 +376,13 @@ After animation work runs out: ideas to make the game more engaging; after that,
   Core UI moved onto them: screens, buttons, room cards, options, modal + backdrop, toasts (exit now 160 ms ease-in,
   faster than the 260 ms entrance), feedback panel/sheet, walker, bubble, HP bar, details arrow. Whimsy gags keep
   their own hand-tuned curves.
+- C (done) Floor walk. Her step rate now follows her speed (`--step` = stride 58 px / speed, 0.10–0.22 s), so her
+  feet no longer slide (before: one step per 224 px). Walk 600 px/s, 0.4–1.4 s. A 150 ms crouch before she sets off
+  (anticipation), the door starts opening 160 ms before she arrives (overlap), a small spring settle when she stops,
+  then she steps through the doorway (34 px towards the room, shrink + fade, 240 ms) before the screen changes.
+  New timings in CONFIG.timing (walkStridePx, walkCrouchMs, doorLeadMs, doorSettleMs, stepInMs); doorOpenMs removed.
+- D (done) Screen continuity. Tapping a room: the bedside screen grows out of that room (`App.zoomFrom` sets the
+  transform-origin, `.from-point` / `zoom-from` 0.55 → 1, 420 ms ease-out; a fade on soft, nothing on calm).
+  Coming back to the floor from that shift (report → home, or Leave): the door opens, she steps out, the door closes
+  behind her, she walks back to the station, then her bubble and the corridor buttons pop back in one after another.
+  A room tap during that walk takes over cleanly (`walkId`). Checked frame by frame at 1180x820. All 8 tests pass.

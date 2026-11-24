@@ -30,6 +30,13 @@ const App = {
     const sec = document.createElement('section');
     sec.className = 'screen ' + (scr.cls || name) + (anim ? ' ' + anim : '');
     sec.setAttribute('data-screen', name);
+    // continuity: a zoom that starts from the thing that was tapped (a room) grows out of that spot
+    if (anim === 'zoom-in' && this.zoomFrom) {
+      const rr = root.getBoundingClientRect();
+      sec.style.transformOrigin = `${Math.round(this.zoomFrom.x - rr.left)}px ${Math.round(this.zoomFrom.y - rr.top)}px`;
+      sec.classList.add('from-point');
+    }
+    this.zoomFrom = null;
     sec.innerHTML = scr.render(params);
     // The old screen goes at once and only the new one fades in, over the plain background, so two
     // screens are never drawn on top of each other (a cross-fade showed both mid-way, and with
