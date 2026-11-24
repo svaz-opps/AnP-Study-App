@@ -107,6 +107,8 @@ button, .tap {
 }
 button:disabled { cursor: default; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+/* headings focused by script (tabindex=-1) so screen readers start there are not controls: no ring */
+[tabindex="-1"]:focus { outline: none; }
 svg { display: block; }
 .num { font-variant-numeric: tabular-nums; }
 .mono { font-family: var(--font-mono); }

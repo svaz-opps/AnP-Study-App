@@ -54,4 +54,5 @@ These are what the pass checks every animation against.
 ## Left for the user to decide
 - In the wide (landscape) layout the page still scrolls down to the explanation, which takes the question and its
   marks off screen. Option: scroll only part way (explanation header at ~35% of the screen) so the marks stay
-  visible, at the cost of scrolling to reach "Next patient". Not changed without asking.
+  visible, at the cost of scrolling to reach "Next patient". In portrait the explanation is a bottom sheet (up to
+  82% of the screen) that covers the options the same way; it could stop lower. Not changed without asking.
