@@ -59,7 +59,10 @@ const App = {
     const y = sec.scrollTop; // read before anything changes, so it costs no extra layout
     if (scr.leave) scr.leave();
     const want = opts.scrollTop != null ? opts.scrollTop : y;
-    sec.className = 'screen ' + (scr.cls || this.name);
+    // keep the entrance-animation classes: dropping them swaps the animation name, which replays an entrance
+    // on the whole screen (this made the first "Next patient" after a room's zoom-in fade the entire screen)
+    const keep = ['zoom-in', 'from-point'].filter((k) => sec.classList.contains(k));
+    sec.className = ['screen', scr.cls || this.name, ...keep].join(' ');
     sec.innerHTML = scr.render(this.params);
     if (scr.mount) scr.mount(sec, this.params);
     // writing scrollTop forces a layout on the spot, so only do it when it has to move

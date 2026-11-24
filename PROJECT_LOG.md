@@ -386,3 +386,12 @@ After animation work runs out: ideas to make the game more engaging; after that,
   Coming back to the floor from that shift (report → home, or Leave): the door opens, she steps out, the door closes
   behind her, she walks back to the station, then her bubble and the corridor buttons pop back in one after another.
   A room tap during that walk takes over cleanly (`walkId`). Checked frame by frame at 1180x820. All 8 tests pass.
+- E (done) Chart. After Submit: the check/cross marks pop in down the list (45 ms apart, spring), the right answer
+  gives a small nod, and the explanation panel follows 240 ms later (`CONFIG.timing.feedbackDelayMs`; right after
+  the first paint on Calm) instead of arriving together with the marks and the scroll. The wide-layout panel now
+  rises from below (it sits under the options) instead of sliding in from the side. The score rolls up to its new
+  value (`FX.countUp`, 450 ms ease-out). A lost heart swells, tips and drains to grey (it went grey at once before).
+  Next patient: a copy of the old chart slides off to the left while the new one slides in (`FX.ghostOut`; a
+  crossfade on soft; nothing waits for it, and it is placed where the chart sits after the scroll back to the top).
+  Bug fixed on the way: `App.rerender` reset the screen's classes, which swapped the animation name and replayed an
+  entrance on the whole screen at the first "Next patient" after zooming into a room. All 8 tests pass.

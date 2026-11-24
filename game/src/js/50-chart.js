@@ -147,7 +147,7 @@ Screens.chart = {
       const label = `${isOrder ? '' : 'Option ' + LETTERS[k] + ': '}${o.t}${state}`;
       const attrs = `data-action="pick" data-i="${i}" ${c.revealed || gone ? 'disabled' : ''} aria-label="${esc(label)}" ` +
         (isMulti ? `aria-pressed="${sel}"` : '');
-      s += `<li><button class="${cls.join(' ')}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
+      s += `<li><button class="${cls.join(' ')}" style="--i:${k}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
         `<span class="mark">${mark}</span></button></li>`;
     });
     return s + '</ol>';
@@ -379,7 +379,9 @@ Screens.chart = {
       this.say(run.maxLives && run.lives === 1 ? 'low' : 'wrong');
     }
     if (run.mode === 'boss') this.bossFx(c);
+    const scoreFrom = run.score - (c.pts.pts || 0);
     this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
+    if (c.pts.pts) FX.countUp($('#scorebar .score .num', el), scoreFrom, run.score);
     // a silly reaction redraws the patient itself; otherwise just update their face
     if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
@@ -398,15 +400,17 @@ Screens.chart = {
       this.autoT = setTimeout(() => this.advance(), res.correct ? CB.nextAfterRightMs : CB.nextAfterWrongMs);
       return;
     }
-    // The explanation comes one frame later: the answer marks, sound and patient reaction
-    // paint first instead of waiting on the panel's layout (it slides in, so the frame is invisible).
-    afterNextPaint(() => {
+    // Staging: the answer marks, sound and patient reaction land first; the explanation panel follows once the
+    // marks have popped in (one thing at a time), and right after the first paint on Calm.
+    const showFeedback = () => {
       if (App.run !== run || run.cur !== c || App.name !== 'chart') return; // moved on already
       this.refresh(['feedback']);
       if (c.card) Sound.play('tada', CONFIG.timing.cardSoundMs);
       celebrate(run);
       if (c.badges && c.badges.length) badgeToast(c.badges);
-    });
+    };
+    if (calmChosen()) afterNextPaint(showFeedback);
+    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {
@@ -468,6 +472,12 @@ Screens.chart = {
     else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < CONFIG.talk.chatterChance) {
       this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
     }
+    // the old chart leaves as the new one arrives: copy it before the redraw (a read before any write, so it costs
+    // no extra layout) and let the copy slide off on top
+    const oldCb = !calmChosen() && $('#clipboard', App.el);
+    const ghost = oldCb && oldCb.cloneNode(true), r0 = oldCb && oldCb.getBoundingClientRect();
+    // the redraw scrolls back to the top, so the copy goes where the old chart sits at the top of the page
+    const ghostRect = r0 && { left: r0.left, top: r0.top + App.el.scrollTop, width: r0.width, height: r0.height };
     // redraw for the new patient, keeping the heart monitor running, and scroll back to the top
     this.keepMonitor = true;
     try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
@@ -475,8 +485,9 @@ Screens.chart = {
     Store.saveRun();
     const cb = !calmChosen() && $('#clipboard', App.el);
     const slideIn = reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }]
-      : [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
-    if (cb) cb.animate(slideIn, { duration: 260, easing: 'cubic-bezier(.2, .8, .2, 1)' });
+      : [{ opacity: 0, transform: 'translateX(32px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 280, delay: 60, easing: 'cubic-bezier(.2, .8, .2, 1)', fill: 'backwards' });
+    if (ghost && ghostRect.width) FX.ghostOut(ghost, ghostRect);
   },
 
   act: {

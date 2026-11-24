@@ -587,8 +587,14 @@ svg { display: block; }
 .lives svg { width: 26px; height: 26px; }
 .lives .on { color: var(--bad); }
 .lives .off { color: var(--surface-3); }
-.lives .lost { animation: heart-break .5s ease both; }
-@keyframes heart-break { 30% { transform: scale(1.35); } 100% { transform: scale(1); } }
+/* the lost heart swells, then drains to grey as it settles (it used to go grey at once and then pulse) */
+.lives .lost { animation: heart-break .55s var(--ease-out) both; }
+@keyframes heart-break {
+  0% { transform: scale(1); color: var(--bad); }
+  30% { transform: scale(1.35); color: var(--bad); }
+  60% { transform: scale(.9) rotate(-8deg); }
+  100% { transform: none; color: var(--surface-3); }
+}
 
 .patient-card {
   display: flex;
@@ -787,6 +793,14 @@ svg { display: block; }
 .opt.missed { border-style: dashed; border-color: var(--ink-good); }
 .opt .mark svg { width: 26px; height: 26px; }
 .opt.right .mark { color: var(--ink-good); }
+/* the marks pop in down the list, one after another; the right answer gives a small nod */
+.opt.right .mark svg, .opt.wrong .mark svg, .opt.missed .mark svg {
+  animation: mark-pop .3s var(--ease-spring) calc(var(--i, 0) * 45ms) both;
+}
+.opt.right:not(.missed) { animation: right-nod .42s var(--ease-out) .12s both; }
+@keyframes mark-pop { from { transform: scale(0) rotate(-25deg); opacity: 0; } }
+@keyframes right-nod { 40% { transform: scale(1.025); } }
+[data-calm="1"] .opt .mark svg, [data-calm="1"] .opt.right { animation: none; }
 .opt.wrong .mark { color: var(--ink-bad); }
 .opt:disabled { cursor: default; }
 .opt .ord {
@@ -830,7 +844,8 @@ svg { display: block; }
   padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
   animation: sheet-up var(--dur-panel) var(--ease-out) both;
 }
-@keyframes slide-in { from { opacity: 0; transform: translateX(30px); } }
+/* the panel sits under the options, so it rises from below, the way the page scrolls to it */
+@keyframes slide-in { from { opacity: 0; transform: translateY(16px); } }
 @keyframes sheet-up { from { transform: translateY(100%); } }
 .fb-head { display: flex; align-items: center; gap: var(--s3); }
 .fb-head .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
@@ -2226,6 +2241,7 @@ const CONFIG = {
     cardSoundMs: 500,
     bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
     buttonTuckMs: 200,       // the Code Blue and OR buttons shrink away as she starts walking
+    feedbackDelayMs: 240,    // the explanation panel follows the answer marks (30-chart.css mark-pop)
     walkPxPerSecond: 600,    // the nurse's walk to a room
     walkMinSeconds: 0.4,
     walkMaxSeconds: 1.4,
@@ -3432,6 +3448,38 @@ const FX = {
     setTimeout(() => el.remove(), CONFIG.timing.floatTextMs);
   },
 
+  // a number rolls from one value to another (score), easing out so it settles on the real value
+  countUp(el, from, to, ms = 450) {
+    if (!el || calmChosen() || from === to) return;
+    const t0 = performance.now();
+    const step = (now) => {
+      if (!el.isConnected) return;
+      const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(Math.round(from + (to - from) * e));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    el.textContent = fmt(from);
+    requestAnimationFrame(step);
+  },
+
+  // a copy of something that was just replaced, laid over its old spot, leaving to the left
+  ghostOut(node, rect) {
+    const layer = this.layer();
+    if (!layer || !node.animate) return;
+    node.removeAttribute('id');
+    node.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    node.setAttribute('aria-hidden', 'true');
+    Object.assign(node.style, {
+      position: 'fixed', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px',
+      margin: '0', pointerEvents: 'none', zIndex: '1',
+    });
+    layer.appendChild(node);
+    const out = reducedMotion() ? [{ opacity: 1 }, { opacity: 0 }]
+      : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-40px) rotate(-1.5deg)' }];
+    node.animate(out, { duration: 180, easing: 'cubic-bezier(.4, 0, .9, .4)', fill: 'forwards' })
+      .finished.then(() => node.remove(), () => node.remove());
+  },
+
   shake(el) {
     if (!el || reducedMotion()) return;
     replayClass(el, 'shake');
@@ -4287,7 +4335,10 @@ const App = {
     const y = sec.scrollTop; // read before anything changes, so it costs no extra layout
     if (scr.leave) scr.leave();
     const want = opts.scrollTop != null ? opts.scrollTop : y;
-    sec.className = 'screen ' + (scr.cls || this.name);
+    // keep the entrance-animation classes: dropping them swaps the animation name, which replays an entrance
+    // on the whole screen (this made the first "Next patient" after a room's zoom-in fade the entire screen)
+    const keep = ['zoom-in', 'from-point'].filter((k) => sec.classList.contains(k));
+    sec.className = ['screen', scr.cls || this.name, ...keep].join(' ');
     sec.innerHTML = scr.render(this.params);
     if (scr.mount) scr.mount(sec, this.params);
     // writing scrollTop forces a layout on the spot, so only do it when it has to move
@@ -4898,7 +4949,7 @@ Screens.chart = {
       const label = `${isOrder ? '' : 'Option ' + LETTERS[k] + ': '}${o.t}${state}`;
       const attrs = `data-action="pick" data-i="${i}" ${c.revealed || gone ? 'disabled' : ''} aria-label="${esc(label)}" ` +
         (isMulti ? `aria-pressed="${sel}"` : '');
-      s += `<li><button class="${cls.join(' ')}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
+      s += `<li><button class="${cls.join(' ')}" style="--i:${k}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
         `<span class="mark">${mark}</span></button></li>`;
     });
     return s + '</ol>';
@@ -5130,7 +5181,9 @@ Screens.chart = {
       this.say(run.maxLives && run.lives === 1 ? 'low' : 'wrong');
     }
     if (run.mode === 'boss') this.bossFx(c);
+    const scoreFrom = run.score - (c.pts.pts || 0);
     this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
+    if (c.pts.pts) FX.countUp($('#scorebar .score .num', el), scoreFrom, run.score);
     // a silly reaction redraws the patient itself; otherwise just update their face
     if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
@@ -5149,15 +5202,17 @@ Screens.chart = {
       this.autoT = setTimeout(() => this.advance(), res.correct ? CB.nextAfterRightMs : CB.nextAfterWrongMs);
       return;
     }
-    // The explanation comes one frame later: the answer marks, sound and patient reaction
-    // paint first instead of waiting on the panel's layout (it slides in, so the frame is invisible).
-    afterNextPaint(() => {
+    // Staging: the answer marks, sound and patient reaction land first; the explanation panel follows once the
+    // marks have popped in (one thing at a time), and right after the first paint on Calm.
+    const showFeedback = () => {
       if (App.run !== run || run.cur !== c || App.name !== 'chart') return; // moved on already
       this.refresh(['feedback']);
       if (c.card) Sound.play('tada', CONFIG.timing.cardSoundMs);
       celebrate(run);
       if (c.badges && c.badges.length) badgeToast(c.badges);
-    });
+    };
+    if (calmChosen()) afterNextPaint(showFeedback);
+    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {
@@ -5219,6 +5274,12 @@ Screens.chart = {
     else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < CONFIG.talk.chatterChance) {
       this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
     }
+    // the old chart leaves as the new one arrives: copy it before the redraw (a read before any write, so it costs
+    // no extra layout) and let the copy slide off on top
+    const oldCb = !calmChosen() && $('#clipboard', App.el);
+    const ghost = oldCb && oldCb.cloneNode(true), r0 = oldCb && oldCb.getBoundingClientRect();
+    // the redraw scrolls back to the top, so the copy goes where the old chart sits at the top of the page
+    const ghostRect = r0 && { left: r0.left, top: r0.top + App.el.scrollTop, width: r0.width, height: r0.height };
     // redraw for the new patient, keeping the heart monitor running, and scroll back to the top
     this.keepMonitor = true;
     try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
@@ -5226,8 +5287,9 @@ Screens.chart = {
     Store.saveRun();
     const cb = !calmChosen() && $('#clipboard', App.el);
     const slideIn = reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }]
-      : [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
-    if (cb) cb.animate(slideIn, { duration: 260, easing: 'cubic-bezier(.2, .8, .2, 1)' });
+      : [{ opacity: 0, transform: 'translateX(32px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 280, delay: 60, easing: 'cubic-bezier(.2, .8, .2, 1)', fill: 'backwards' });
+    if (ghost && ghostRect.width) FX.ghostOut(ghost, ghostRect);
   },
 
   act: {

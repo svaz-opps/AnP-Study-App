@@ -180,6 +180,38 @@ const FX = {
     setTimeout(() => el.remove(), CONFIG.timing.floatTextMs);
   },
 
+  // a number rolls from one value to another (score), easing out so it settles on the real value
+  countUp(el, from, to, ms = 450) {
+    if (!el || calmChosen() || from === to) return;
+    const t0 = performance.now();
+    const step = (now) => {
+      if (!el.isConnected) return;
+      const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(Math.round(from + (to - from) * e));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    el.textContent = fmt(from);
+    requestAnimationFrame(step);
+  },
+
+  // a copy of something that was just replaced, laid over its old spot, leaving to the left
+  ghostOut(node, rect) {
+    const layer = this.layer();
+    if (!layer || !node.animate) return;
+    node.removeAttribute('id');
+    node.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    node.setAttribute('aria-hidden', 'true');
+    Object.assign(node.style, {
+      position: 'fixed', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px',
+      margin: '0', pointerEvents: 'none', zIndex: '1',
+    });
+    layer.appendChild(node);
+    const out = reducedMotion() ? [{ opacity: 1 }, { opacity: 0 }]
+      : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-40px) rotate(-1.5deg)' }];
+    node.animate(out, { duration: 180, easing: 'cubic-bezier(.4, 0, .9, .4)', fill: 'forwards' })
+      .finished.then(() => node.remove(), () => node.remove());
+  },
+
   shake(el) {
     if (!el || reducedMotion()) return;
     replayClass(el, 'shake');

@@ -32,7 +32,7 @@ These are what the pass checks every animation against.
 - [x] B. Easing + duration tokens; move every animation onto them; exits faster than entrances.
 - [x] C. Floor: walk cycle matches speed (no foot sliding), anticipation + settle, nurse goes *into* the room.
 - [x] D. Screen changes: continuity (floor → room zoom from the tapped room, back out to the floor).
-- [ ] E. Chart: option press, submit, right/wrong feedback, lives lost, streak, score float, Next patient.
+- [x] E. Chart: option press, submit, right/wrong feedback, lives lost, streak, score float, Next patient.
 - [ ] F. Progress bars: animate with transform, not width.
 - [ ] G. Modals, toasts, banners: entrance/exit pairs, exit faster.
 - [ ] H. Report card / rank-up / confetti: staging and stagger.

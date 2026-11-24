@@ -19,8 +19,14 @@
 .lives svg { width: 26px; height: 26px; }
 .lives .on { color: var(--bad); }
 .lives .off { color: var(--surface-3); }
-.lives .lost { animation: heart-break .5s ease both; }
-@keyframes heart-break { 30% { transform: scale(1.35); } 100% { transform: scale(1); } }
+/* the lost heart swells, then drains to grey as it settles (it used to go grey at once and then pulse) */
+.lives .lost { animation: heart-break .55s var(--ease-out) both; }
+@keyframes heart-break {
+  0% { transform: scale(1); color: var(--bad); }
+  30% { transform: scale(1.35); color: var(--bad); }
+  60% { transform: scale(.9) rotate(-8deg); }
+  100% { transform: none; color: var(--surface-3); }
+}
 
 .patient-card {
   display: flex;
@@ -219,6 +225,14 @@
 .opt.missed { border-style: dashed; border-color: var(--ink-good); }
 .opt .mark svg { width: 26px; height: 26px; }
 .opt.right .mark { color: var(--ink-good); }
+/* the marks pop in down the list, one after another; the right answer gives a small nod */
+.opt.right .mark svg, .opt.wrong .mark svg, .opt.missed .mark svg {
+  animation: mark-pop .3s var(--ease-spring) calc(var(--i, 0) * 45ms) both;
+}
+.opt.right:not(.missed) { animation: right-nod .42s var(--ease-out) .12s both; }
+@keyframes mark-pop { from { transform: scale(0) rotate(-25deg); opacity: 0; } }
+@keyframes right-nod { 40% { transform: scale(1.025); } }
+[data-calm="1"] .opt .mark svg, [data-calm="1"] .opt.right { animation: none; }
 .opt.wrong .mark { color: var(--ink-bad); }
 .opt:disabled { cursor: default; }
 .opt .ord {
@@ -262,7 +276,8 @@
   padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
   animation: sheet-up var(--dur-panel) var(--ease-out) both;
 }
-@keyframes slide-in { from { opacity: 0; transform: translateX(30px); } }
+/* the panel sits under the options, so it rises from below, the way the page scrolls to it */
+@keyframes slide-in { from { opacity: 0; transform: translateY(16px); } }
 @keyframes sheet-up { from { transform: translateY(100%); } }
 .fb-head { display: flex; align-items: center; gap: var(--s3); }
 .fb-head .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
