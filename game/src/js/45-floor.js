@@ -171,6 +171,12 @@ Screens.floor = {
       const T = CONFIG.timing;
       const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
       walker.style.transitionDuration = dur + 's';
+      // the Code Blue and OR buttons shrink away as she sets off, so she is never hidden behind them
+      $$('.corridor .alarm, .corridor .elevator', plan).forEach((b) => {
+        b.style.pointerEvents = 'none';
+        b.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.05)', opacity: 0 }],
+          { duration: T.buttonTuckMs, easing: 'cubic-bezier(.5, 0, .75, 0)', fill: 'forwards' });
+      });
       walker.classList.add('walking');
       walker.style.transform = `translate(${x}px, ${y}px)`;
       setTimeout(() => { walker.classList.remove('walking'); resolve(); }, dur * 1000 + 30);

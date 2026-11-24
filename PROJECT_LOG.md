@@ -332,3 +332,8 @@
   request. The locked OR button used `opacity: .6` on the whole button, so she'd have shown through it; now its
   background and border are dimmed with opaque colours and only its contents are at .6. Checked frame by frame at
   1180x820 walking to room 106 (she ends partly hidden behind the OR button just before the door opens).
+- Floor, at the user's request: instead of her ending up half-hidden behind the OR button, the Code Blue and OR
+  buttons in the corridor now shrink away (scale to 5% and fade, `CONFIG.timing.buttonTuckMs` = 200 ms, clicks off)
+  the moment she starts walking, so she is always in view. They come back with the floor after the shift. The
+  layering change from before stays (harmless: for the first frames she is still behind them as they shrink).
+  Portrait is unaffected (those buttons sit below the floor plan there, out of her path). Checked frame by frame at 1180x820.
