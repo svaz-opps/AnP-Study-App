@@ -533,6 +533,19 @@ Screens.onboard = {
       const ob = $('.onboard', App.el);
       if (ob) ob.classList.add('ob-step');
     },
-    obset(d) { WR.state.profile.avatar[d.key] = +d.val; Sound.play('tap'); App.rerender(); },
+    obset(d) {
+      WR.state.profile.avatar[d.key] = +d.val; Sound.play('tap'); App.rerender();
+      // the redraw is the same step: skip its fade-in (it flickered the whole step on every tap) and let the
+      // nurse show off the change instead
+      const step = $('.ob-step', App.el);
+      if (step && step.getAnimations) step.getAnimations().forEach((a) => a.finish());
+      const svg = $('.ob-hero svg', App.el);
+      if (svg && svg.animate && !calmChosen()) {
+        svg.style.transformOrigin = '50% 100%';
+        svg.animate([{ transform: 'none' }, { transform: 'scale(1.08, .9)', offset: 0.25 },
+          { transform: 'scale(.95, 1.07) translateY(-6px)', offset: 0.55 }, { transform: 'none' }],
+        { duration: 420, easing: 'cubic-bezier(.3, .7, .4, 1)' });
+      }
+    },
   },
 };

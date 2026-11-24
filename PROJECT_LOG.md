@@ -468,3 +468,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - Headings focused by script for screen readers (`tabindex="-1"`, e.g. "Welcome to Ward Rounds", report titles)
   no longer show the focus ring box on desktop; real controls keep their `:focus-visible` ring. Open question in
   ANIMATION_NOTES.md now also covers the portrait explanation sheet covering the options. All 8 tests pass.
+- Onboarding "Make your nurse": each swatch tap redrew the step and replayed its fade-in, flickering the whole step;
+  the redraw now skips that fade and the nurse does the same "ta-da" as in the locker. All 8 tests pass.
