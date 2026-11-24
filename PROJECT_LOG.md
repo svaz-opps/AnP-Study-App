@@ -476,3 +476,7 @@ After animation work runs out: ideas to make the game more engaging; after that,
   updated. Resume point: animation checklist A–K done; engagement items 1–4 + extras done. Ideas not started:
   stagger list entrances on secondary screens (avoid replaying on rerender), sliding highlight for locker tabs,
   and the open question in ANIMATION_NOTES.md (needs the user).
+- Missed patients, Report card and Get-well cards screens: their cards rise in one after another (50 ms apart,
+  capped at 0.4 s; fade on soft, none on Calm). These screens are not redrawn while in use, so it only plays on
+  arrival. Checked all three end fully shown. All 8 tests pass. (Locker tabs were left as they are: their tabs
+  have their own backgrounds, so a sliding pill would pass behind them.)

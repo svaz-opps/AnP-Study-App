@@ -381,3 +381,17 @@ input[type="date"], input[type="text"] {
 .save-help .steps b { color: var(--text, inherit); }
 .save-help p .ic { width: 18px; height: 18px; vertical-align: -3px; color: var(--accent); }
 .modal .save-help { max-height: min(52vh, 420px); overflow-y: auto; margin: var(--s3) 0; padding-right: 4px; }
+
+/* Missed patients, Report card and Get-well cards: the cards come in one after another (these screens are not
+   redrawn while you use them, so the stagger only plays on arrival) */
+[data-screen="missed"] .card, [data-screen="stats"] .card, [data-screen="cards"] .card { animation: rise-in .34s var(--ease-out) both; }
+[data-screen="missed"] .card:nth-child(2), [data-screen="stats"] .card:nth-child(2), [data-screen="cards"] .card:nth-child(2) { animation-delay: 0.05s; }
+[data-screen="missed"] .card:nth-child(3), [data-screen="stats"] .card:nth-child(3), [data-screen="cards"] .card:nth-child(3) { animation-delay: 0.10s; }
+[data-screen="missed"] .card:nth-child(4), [data-screen="stats"] .card:nth-child(4), [data-screen="cards"] .card:nth-child(4) { animation-delay: 0.15s; }
+[data-screen="missed"] .card:nth-child(5), [data-screen="stats"] .card:nth-child(5), [data-screen="cards"] .card:nth-child(5) { animation-delay: 0.20s; }
+[data-screen="missed"] .card:nth-child(6), [data-screen="stats"] .card:nth-child(6), [data-screen="cards"] .card:nth-child(6) { animation-delay: 0.25s; }
+[data-screen="missed"] .card:nth-child(7), [data-screen="stats"] .card:nth-child(7), [data-screen="cards"] .card:nth-child(7) { animation-delay: 0.30s; }
+[data-screen="missed"] .card:nth-child(8), [data-screen="stats"] .card:nth-child(8), [data-screen="cards"] .card:nth-child(8) { animation-delay: 0.35s; }
+[data-screen="missed"] .card:nth-child(n+9), [data-screen="stats"] .card:nth-child(n+9), [data-screen="cards"] .card:nth-child(n+9) { animation-delay: .4s; }
+[data-motion="soft"] [data-screen="missed"] .card, [data-motion="soft"] [data-screen="stats"] .card, [data-motion="soft"] [data-screen="cards"] .card { animation-name: fade-in; }
+[data-calm="1"] [data-screen="missed"] .card, [data-calm="1"] [data-screen="stats"] .card, [data-calm="1"] [data-screen="cards"] .card { animation: none; }
