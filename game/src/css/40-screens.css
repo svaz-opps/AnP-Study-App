@@ -320,6 +320,10 @@
   color: var(--text-dim);
 }
 .seg button.on { background: var(--accent); color: var(--accent-ink); }
+.seg { position: relative; }
+.seg button { position: relative; z-index: 1; transition: color .2s var(--ease-out); }
+.seg button.on.arriving { background: transparent; color: var(--text-dim); }
+.seg-pill { position: absolute; z-index: 0; border-radius: 999px; background: var(--accent); pointer-events: none; }
 input[type="date"], input[type="text"] {
   min-height: var(--tap); padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2);
   color: var(--text); font: inherit; font-weight: 700; max-width: 100%;

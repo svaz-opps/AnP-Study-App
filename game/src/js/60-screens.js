@@ -360,7 +360,11 @@ Screens.settings = {
     });
   },
   act: {
-    setting(d) {
+    setting(d, el) {
+      // continuity: remember where the highlight was, so after the redraw it can slide to the new choice
+      const groups = $$('.seg', App.el), group = el && el.closest('.seg'), gi = groups.indexOf(group);
+      const oldOn = group && $('.on', group);
+      const from = oldOn && { x: oldOn.offsetLeft, w: oldOn.offsetWidth };
       let v = d.val;
       // buttons carry text: turn it back into a boolean or number (motion and whimsy stay words)
       if (v === 'true') v = true;
@@ -368,6 +372,7 @@ Screens.settings = {
       else if (!isNaN(+v) && d.key !== 'motion' && d.key !== 'whimsy') v = +v;
       WR.state.settings[d.key] = v;
       Store.save(); applySettings(); Sound.play('tap'); App.rerender();
+      if (from && gi >= 0) slidePill($$('.seg', App.el)[gi], from);
     },
     async backup() {
       const text = Store.exportText();
@@ -411,6 +416,21 @@ Screens.settings = {
     },
   },
 };
+
+// FLIP for a segmented control: a pill starts where the old choice was and slides to the new one, then the new
+// button takes over the highlight (the pill exists only during the move)
+function slidePill(group, from) {
+  const on = group && $('.on', group);
+  if (!on || reducedMotion() || from.x === on.offsetLeft) return;
+  const pill = document.createElement('span');
+  pill.className = 'seg-pill';
+  Object.assign(pill.style, { left: from.x + 'px', width: from.w + 'px', top: on.offsetTop + 'px', height: on.offsetHeight + 'px' });
+  group.appendChild(pill);
+  on.classList.add('arriving');
+  const done = () => { pill.remove(); on.classList.remove('arriving'); };
+  pill.animate([{ left: from.x + 'px', width: from.w + 'px' }, { left: on.offsetLeft + 'px', width: on.offsetWidth + 'px' }],
+    { duration: 240, easing: 'cubic-bezier(.45, .05, .35, 1)', fill: 'forwards' }).finished.then(done, done);
+}
 
 function applySettings() {
   document.documentElement.style.setProperty('--text-scale', WR.state.settings.text || 1);

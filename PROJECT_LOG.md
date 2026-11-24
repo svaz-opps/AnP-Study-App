@@ -459,3 +459,6 @@ After animation work runs out: ideas to make the game more engaging; after that,
   nurse" on the suggested room. All 8 tests pass.
 - tests/motion.mjs: added a Code Blue play-through in soft, calm and full (answer marks, feedback, auto-advance,
   the last-seconds tick, report fully shown at the end, no page errors). Passed 3 runs in a row.
+- Settings: the highlight in each segmented control (Sound, Motion, Silly patients, Text size, Daily target) now
+  slides to the new choice (FLIP: `slidePill` in 60-screens.js puts a pill where the old choice was, animates it to
+  the new one in 240 ms, then the new button takes over; skipped on soft/calm). It used to jump. All 8 tests pass.
