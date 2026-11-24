@@ -527,3 +527,4 @@ After animation work runs out: ideas to make the game more engaging; after that,
   shift"; the first-time flow is unchanged).
 - Settings: new "Your name" row at the top (saves as you type; toast on change). Assumption: the user wanted the
   name editable both in the replayed intro and directly in Settings.
+- Pushed to `main` and `beta` at the user's request (both fast-forward).
