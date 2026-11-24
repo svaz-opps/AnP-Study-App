@@ -296,6 +296,12 @@
   `.chart-grid` now has `align-content: start`. Landscape is unchanged (one row there).
 - Test fix, not a game bug: the shift-report and boss-report screenshots were taken mid-animation (screen
   cross-fade, patients walking out), so they looked overlapped/clipped. `smoke.mjs` now waits 1.8 s before both.
-- Noted, not changed: the "Badge earned" toast sits top-centre and briefly covers part of the header (XP bar on the
-  floor, hearts in the OR). It disappears after a few seconds.
+- Toasts ("Badge earned", "Promoted to…", backup messages) moved from top-centre, where they covered the header (XP
+  bar on the floor, hearts in the OR), to the lower right, as asked. They sit 76 px above the bottom edge (plus the
+  safe area) so they clear the bottom row of buttons: mid-round badges fire while the feedback panel is open, and its
+  Next patient button is in the bottom-right corner (also the floor's nav bar and Settings). Checked by measurement at
+  landscape, portrait and 375 px: no overlap with Next patient. Taps pass through toasts (`pointer-events: none`).
+  Several toasts now stack in a column (they used to land on the same spot and hide each other, e.g. three badges at
+  the end of the boss fight), slide in/out from the right, and only fade under Calm motion or reduced motion.
+  Trade-off: a toast can briefly cover a line of text above those buttons; it is gone after 2.6 s (3.2 s for rank-ups).
 - Committed screenshots in `game/dist/shots/` refreshed.

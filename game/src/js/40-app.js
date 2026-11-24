@@ -82,8 +82,17 @@ const App = {
     t.className = 'toast';
     t.setAttribute('role', 'status');
     t.textContent = text;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), ms);
+    let box = document.querySelector('.toasts');
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'toasts';
+      document.body.appendChild(box);
+    }
+    box.appendChild(t);
+    setTimeout(() => {
+      t.classList.add('out');
+      setTimeout(() => t.remove(), 250);
+    }, ms);
   },
 
   modal(html, onAct) {
