@@ -317,3 +317,9 @@
   setting stills it (`calmChosen()` in 00-util.js). Walking, shaking, confetti etc. still follow Reduce Motion on
   "Auto", unchanged. Settings text now says Calm also stops the moving heart monitor. Checked: moving with reduce
   off/Auto, reduce on/Auto, reduce on/Full; still (but drawn) on Calm. All 7 test scripts pass.
+- Screens overlapping during a change (user's iPad screenshots: the chart drawn over the floor). Cause: `App.show`
+  kept the old screen for 220 ms with a fade-out while the new one faded in, so mid-way both were visible; with the
+  iPad's Reduce Motion on, the CSS turns off the fade-out, so both were fully opaque on top of each other. Now the
+  old screen is removed at once and only the new one fades in over the plain background (Reduce Motion: it just
+  appears). Removed `.screen.leaving`, `screen-out` and `CONFIG.timing.screenLeaveMs`. Checked frame by frame with
+  reduce-motion on and off: never more than one screen on the page. All 7 test scripts pass.

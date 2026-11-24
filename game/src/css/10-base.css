@@ -60,9 +60,7 @@ svg { display: block; }
   display: flex; flex-direction: column; gap: var(--s4);
   animation: screen-in .28s ease-out both;
 }
-.screen.leaving { animation: screen-out .2s ease-in both; pointer-events: none; }
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
-@keyframes screen-out { to { opacity: 0; transform: scale(1.02); } }
 .screen.zoom-in { animation: zoom-in .38s cubic-bezier(.2, .8, .2, 1) both; }
 @keyframes zoom-in { from { opacity: 0; transform: scale(.92); } }
 

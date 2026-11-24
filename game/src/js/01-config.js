@@ -211,7 +211,6 @@ const CONFIG = {
   // ----- timings (ms) -----
   // Some must match a CSS animation; the CSS file and rule are named.
   timing: {
-    screenLeaveMs: 220,      // 10-base.css .screen.leaving (.2s)
     toastMs: 2600,
     rankToastMs: 3200,
     badgeToastDelayMs: 600,

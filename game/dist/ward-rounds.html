@@ -130,9 +130,7 @@ svg { display: block; }
   display: flex; flex-direction: column; gap: var(--s4);
   animation: screen-in .28s ease-out both;
 }
-.screen.leaving { animation: screen-out .2s ease-in both; pointer-events: none; }
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
-@keyframes screen-out { to { opacity: 0; transform: scale(1.02); } }
 .screen.zoom-in { animation: zoom-in .38s cubic-bezier(.2, .8, .2, 1) both; }
 @keyframes zoom-in { from { opacity: 0; transform: scale(.92); } }
 
@@ -2172,7 +2170,6 @@ const CONFIG = {
   // ----- timings (ms) -----
   // Some must match a CSS animation; the CSS file and rule are named.
   timing: {
-    screenLeaveMs: 220,      // 10-base.css .screen.leaving (.2s)
     toastMs: 2600,
     rankToastMs: 3200,
     badgeToastDelayMs: 600,
@@ -4213,14 +4210,12 @@ const App = {
     sec.className = 'screen ' + (scr.cls || name) + (anim ? ' ' + anim : '');
     sec.setAttribute('data-screen', name);
     sec.innerHTML = scr.render(params);
-    if (old) {
-      old.classList.add('leaving');
-      setTimeout(() => old.remove(), CONFIG.timing.screenLeaveMs);
-      root.appendChild(sec);
-    } else {
-      root.innerHTML = '';
-      root.appendChild(sec);
-    }
+    // The old screen goes at once and only the new one fades in, over the plain background, so two
+    // screens are never drawn on top of each other (a cross-fade showed both mid-way, and with
+    // Reduce Motion on, both at full strength).
+    if (old) old.remove();
+    root.innerHTML = '';
+    root.appendChild(sec);
     this.el = sec;
     if (scr.mount) scr.mount(sec, params);
     const focusEl = sec.querySelector('[data-autofocus]') || sec.querySelector('h1');

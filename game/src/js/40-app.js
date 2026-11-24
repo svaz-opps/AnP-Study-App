@@ -31,14 +31,12 @@ const App = {
     sec.className = 'screen ' + (scr.cls || name) + (anim ? ' ' + anim : '');
     sec.setAttribute('data-screen', name);
     sec.innerHTML = scr.render(params);
-    if (old) {
-      old.classList.add('leaving');
-      setTimeout(() => old.remove(), CONFIG.timing.screenLeaveMs);
-      root.appendChild(sec);
-    } else {
-      root.innerHTML = '';
-      root.appendChild(sec);
-    }
+    // The old screen goes at once and only the new one fades in, over the plain background, so two
+    // screens are never drawn on top of each other (a cross-fade showed both mid-way, and with
+    // Reduce Motion on, both at full strength).
+    if (old) old.remove();
+    root.innerHTML = '';
+    root.appendChild(sec);
     this.el = sec;
     if (scr.mount) scr.mount(sec, params);
     const focusEl = sec.querySelector('[data-autofocus]') || sec.querySelector('h1');
