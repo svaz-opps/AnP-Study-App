@@ -302,7 +302,7 @@ Screens.settings = {
     return `${topbar('Settings')}
       <div class="narrow stack">
         ${row('Sound', 'Chimes, buzzers, and the Code Blue alarm.', seg('sound', [[true, 'On'], [false, 'Off']]))}
-        ${row('Motion', '"Calm" turns off walking, shaking, and confetti.', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
+        ${row('Motion', '"Calm" turns off walking, shaking, confetti, and the moving heart monitor.', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
         ${row('Silly patients', 'How wild patients get on a hot streak (and when things go wrong).',
           seg('whimsy', [['full', 'Full'], ['mild', 'Mild'], ['off', 'Off']]))}
         ${row('Text size', '', seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']]))}

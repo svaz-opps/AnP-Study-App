@@ -103,7 +103,7 @@ class ECG {
         this.mon.classList.toggle('red', this.shown > M.redAt);
       }
     }
-    if (reducedMotion()) {
+    if (calmChosen()) {
       if (!this.drewStill) { this.drawStill(); this.drewStill = true; }
       return;
     }

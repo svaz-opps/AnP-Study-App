@@ -311,3 +311,9 @@
   the nurse's feet). In the boss arena the bubble sits under the nurse, so its tail now points up at the nurse instead
   of out to the side. Checked close up at landscape, portrait and 375 px with one-line and three-line bubbles, on the
   chart, the floor and the boss arena.
+- Heart monitor looked frozen on the user's iPad. Cause: on Motion "Auto" the game follows the iPad's Reduce Motion
+  setting, and the monitor drew one still trace under it (confirmed on the live site with emulated reduce-motion).
+  At the user's request it now keeps sweeping on "Auto" even with Reduce Motion on; only the game's own "Calm"
+  setting stills it (`calmChosen()` in 00-util.js). Walking, shaking, confetti etc. still follow Reduce Motion on
+  "Auto", unchanged. Settings text now says Calm also stops the moving heart monitor. Checked: moving with reduce
+  off/Auto, reduce on/Auto, reduce on/Full; still (but drawn) on Calm. All 7 test scripts pass.

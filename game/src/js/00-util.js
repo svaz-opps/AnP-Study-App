@@ -95,6 +95,10 @@ const reducedMotion = () => {
   if (s === 'full') return false;
   return !!(reducedMotionQuery && reducedMotionQuery.matches);
 };
+// Only the game's own "Calm" setting stills the heart monitor. On "Auto" it keeps sweeping even when the
+// device asks for reduced motion: a thin line moving inside a small box is not the zooming, sliding kind
+// of motion that setting is for, and a frozen monitor reads as a broken game.
+const calmChosen = () => !!(window.WR && WR.state && WR.state.settings.motion === 'reduced');
 
 // ---------- icons (inline SVG, stroke-based) ----------
 const ICON_PATHS = {
