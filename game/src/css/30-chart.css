@@ -19,8 +19,17 @@
 .lives svg { width: 26px; height: 26px; }
 .lives .on { color: var(--bad); }
 .lives .off { color: var(--surface-3); }
-.lives .lost { animation: heart-break .5s ease both; }
-@keyframes heart-break { 30% { transform: scale(1.35); } 100% { transform: scale(1); } }
+.lives .last { display: inline-block; animation: heartbeat 1.1s ease-in-out .6s infinite; }
+@keyframes heartbeat { 0%, 40%, 100% { transform: none; } 10% { transform: scale(1.22); } 25% { transform: scale(1.1); } }
+[data-calm="1"] .lives .last { animation: none; }
+/* the lost heart swells, then drains to grey as it settles (it used to go grey at once and then pulse) */
+.lives .lost { animation: heart-break .55s var(--ease-out) both; }
+@keyframes heart-break {
+  0% { transform: scale(1); color: var(--bad); }
+  30% { transform: scale(1.35); color: var(--bad); }
+  60% { transform: scale(.9) rotate(-8deg); }
+  100% { transform: none; color: var(--surface-3); }
+}
 
 .patient-card {
   display: flex;
@@ -98,6 +107,14 @@
 .streak.hot { background: var(--warn-soft); border-color: var(--warn); }
 .streak.hot svg { animation: flame .6s ease-in-out infinite alternate; }
 @keyframes flame { to { transform: scale(1.18) rotate(-6deg); } }
+.mpips { display: inline-flex; gap: 3px; margin-left: 2px; }
+.mpips i { width: 7px; height: 7px; border-radius: 50%; background: var(--surface-3); }
+.mpips i.on { background: var(--warn); }
+.mpips i.new { animation: pip-pop .32s var(--ease-spring) both; }
+.streak.level-up { animation: level-up .5s var(--ease-spring); }
+@keyframes pip-pop { from { transform: scale(0); } 60% { transform: scale(1.6); } }
+@keyframes level-up { 30% { transform: scale(1.18) rotate(-3deg); } }
+[data-calm="1"] .mpips i.new, [data-calm="1"] .streak.level-up { animation: none; }
 
 .nurse-row { display: flex; align-items: center; gap: var(--s3); }
 .nurse-row .nurse { width: 86px; height: 104px; flex: none; }
@@ -196,7 +213,7 @@
 .opt {
   width: 100%; min-height: 56px; display: flex; align-items: center; gap: var(--s3); text-align: left;
   padding: 10px 14px; border-radius: 12px; background: #fff; border: 2px solid var(--paper-line); color: var(--ink);
-  font-weight: 600; line-height: 1.3; transition: border-color .15s, background-color .15s, transform .1s;
+  font-weight: 600; line-height: 1.3; transition: border-color .15s var(--ease-out), background-color .15s var(--ease-out), transform var(--dur-tap) var(--ease-out);
 }
 .opt:active:not(:disabled) { transform: scale(.99); }
 @media (hover: hover) { .opt:hover:not(:disabled) { border-color: #8fb3d9; } }
@@ -219,6 +236,14 @@
 .opt.missed { border-style: dashed; border-color: var(--ink-good); }
 .opt .mark svg { width: 26px; height: 26px; }
 .opt.right .mark { color: var(--ink-good); }
+/* the marks pop in down the list, one after another; the right answer gives a small nod */
+.opt.right .mark svg, .opt.wrong .mark svg, .opt.missed .mark svg {
+  animation: mark-pop .3s var(--ease-spring) calc(var(--i, 0) * 45ms) both;
+}
+.opt.right:not(.missed) { animation: right-nod .42s var(--ease-out) .12s both; }
+@keyframes mark-pop { from { transform: scale(0) rotate(-25deg); opacity: 0; } }
+@keyframes right-nod { 40% { transform: scale(1.025); } }
+[data-calm="1"] .opt .mark svg, [data-calm="1"] .opt.right { animation: none; }
 .opt.wrong .mark { color: var(--ink-bad); }
 .opt:disabled { cursor: default; }
 .opt .ord {
@@ -238,6 +263,14 @@
 
 .tray { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
 .tray .grow { flex: 1; }
+/* after an answer the tray holds only "Next patient" and sticks to the top (or bottom) edge of the screen while you
+   scroll, so it is always on screen; only the button catches taps and covers text, the rest of the row is
+   see-through */
+.tray:has(.next-btn) {
+  position: sticky; top: var(--s2); bottom: calc(var(--s2) + env(safe-area-inset-bottom, 0px)); z-index: 6; pointer-events: none;
+}
+.tray .next-btn { pointer-events: auto; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); }
+.tray .next-btn svg { width: 18px; height: 18px; }
 .life-btn {
   display: flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 14px; border-radius: 999px;
   background: var(--surface); border: 1px solid var(--line); font-weight: 800; font-size: var(--fs-sm);
@@ -254,16 +287,11 @@
   box-shadow: var(--shadow);
 }
 .feedback[hidden] { display: none; }
-[data-size="wide"] .feedback { animation: slide-in .32s cubic-bezier(.2, .8, .2, 1) both; scroll-margin-bottom: 16px; }
-[data-size="regular"] .feedback, [data-size="compact"] .feedback {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 82%; overflow-y: auto;
-  border-radius: var(--r-lg) var(--r-lg) 0 0; border-bottom: 0;
-  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
-  padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
-  animation: sheet-up .32s cubic-bezier(.2, .8, .2, 1) both;
-}
-@keyframes slide-in { from { opacity: 0; transform: translateX(30px); } }
-@keyframes sheet-up { from { transform: translateY(100%); } }
+/* the explanation sits under the question on every screen size (it used to be a bottom sheet on narrow screens
+   that covered the answers); scroll down to read it */
+.feedback { animation: slide-in var(--dur-panel) var(--ease-out) both; }
+/* the panel sits under the options, so it rises from below, the way the page scrolls to it */
+@keyframes slide-in { from { opacity: 0; transform: translateY(16px); } }
 .fb-head { display: flex; align-items: center; gap: var(--s3); }
 .fb-head .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .fb-head .ico svg { width: 26px; height: 26px; }
@@ -322,7 +350,7 @@ details.more summary {
   list-style: none;
 }
 details.more summary::-webkit-details-marker { display: none; }
-details.more summary::before { content: "▸"; margin-right: 8px; transition: transform .2s; }
+details.more summary::before { content: "▸"; margin-right: 8px; transition: transform var(--dur-small) var(--ease-out); }
 details.more[open] summary::before { transform: rotate(90deg); }
 .why-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--s2); }
 .why-list li { padding-left: var(--s3); border-left: 3px solid var(--line); font-size: var(--fs-sm); }
@@ -330,17 +358,6 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .why-list li.c { border-left-color: var(--good); }
 .focus-list { margin: 4px 0 0; padding-left: 1.2em; font-size: var(--fs-sm); color: var(--text-dim); }
 .focus-list li.hit { color: var(--text); font-weight: 700; }
-.fb-actions .btn { white-space: nowrap; }
-.fb-actions .btn svg { width: 18px; height: 18px; }
-.fb-actions {
-  display: flex;
-  gap: var(--s3);
-  justify-content: flex-end;
-  position: sticky;
-  bottom: 0;
-  padding-top: var(--s2);
-}
-[data-size="wide"] .fb-actions { margin-top: auto; }
 
 /* ---------- code blue ---------- */
 .mode-codeblue { background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 71, 87, .18)); }
@@ -370,6 +387,9 @@ details.more[open] summary::before { transform: rotate(90deg); }
   min-width: 3.2ch;
   text-align: right;
 }
+.timer b.tick { color: var(--code); animation: tick .35s var(--ease-spring); }
+@keyframes tick { 30% { transform: scale(1.35); } }
+[data-calm="1"] .timer b.tick { animation: none; }
 .timer-delta {
   position: absolute;
   right: 0;
@@ -400,13 +420,20 @@ details.more[open] summary::before { transform: rotate(90deg); }
 }
 .arena .boss { width: 170px; height: 170px; flex: none; transition: filter .3s; }
 .arena .boss svg { width: 100%; height: 100%; overflow: visible; }
-.arena .boss.hit { animation: boss-hit .45s ease both; }
-.arena .boss.heal { animation: boss-heal .6s ease both; }
+/* the Superbug breathes while it waits (secondary action: it reads as alive, not as a sticker) */
+.arena .boss svg { animation: boss-idle 2.4s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+@keyframes boss-idle { to { transform: scale(1.03, .97) translateY(1px); } }
+/* hit: a white flash and a squash as the blow lands, knocked back, then it wobbles back into shape */
+.arena .boss { transform-origin: 50% 100%; }
+.arena .boss.hit { animation: boss-hit .5s var(--ease-out) both; }
+.arena .boss.heal { animation: boss-heal .6s var(--ease-out) both; }
 @keyframes boss-hit {
-  20% { transform: translateX(10px) rotate(4deg); filter: brightness(2.2) saturate(.3); }
-  60% { transform: translateX(-6px); }
+  12% { transform: translateX(12px) scale(.88, 1.1) rotate(5deg); filter: brightness(2.2) saturate(.3); }
+  35% { transform: translateX(6px) scale(1.06, .95); filter: none; }
+  65% { transform: translateX(-3px) scale(.99, 1.01) rotate(-1deg); }
 }
 @keyframes boss-heal { 40% { transform: scale(1.12); filter: drop-shadow(0 0 18px #7dffb2); } }
+[data-calm="1"] .arena .boss svg { animation: none; }
 .arena .nurse { width: 96px; height: 116px; flex: none; }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
 /* In the arena the bubble sits under the nurse, so its tail points up at the nurse instead of out to the side. */
@@ -419,7 +446,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 }
 .hp { display: flex; flex-direction: column; gap: 4px; }
 .hp .bar { height: 16px; background: #2a1420; border: 1px solid #5a2a3c; }
-.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s ease; }
+.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s var(--ease-out); }
 .hp-row { display: flex; justify-content: space-between; font-weight: 800; font-size: var(--fs-sm); }
 .phase-banner {
   position: absolute;
@@ -441,6 +468,8 @@ details.more[open] summary::before { transform: rotate(90deg); }
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-20px); }
 }
+@keyframes banner-fade { 0% { opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+[data-motion="soft"] .phase-banner, [data-motion="soft"] .wh-banner { animation-name: banner-fade; }
 .projectile {
   position: absolute;
   width: 26px;

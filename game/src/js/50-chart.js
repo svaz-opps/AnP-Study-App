@@ -21,15 +21,26 @@ Screens.chart = {
     if (!run.maxLives) return '';
     let s = `<div class="lives" id="lives" aria-label="${run.lives} of ${run.maxLives} lives">`;
     for (let i = 0; i < run.maxLives; i++) {
-      s += `<span class="${i < run.lives ? 'on' : 'off'} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
+      const last = run.lives === 1 && i === 0 ? ' last' : ''; // the last life beats: one more miss ends the shift
+      s += `<span class="${i < run.lives ? 'on' : 'off'}${last} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
     }
     return s + '</div>';
   },
   scoreHTML(run) {
     const mult = Engine.multiplier(run.streak), hot = run.streak >= 3 ? 'hot' : '';
+    // goal gradient: a pip per right answer towards the next multiplier ("2 more for ×2")
+    const steps = CONFIG.scoring.streakMultipliers.map((m) => m.streak).sort((a, b) => a - b);
+    const next = steps.find((n) => run.streak < n);
+    let pips = '', toward = '';
+    if (next != null) {
+      const base = [0, ...steps].filter((n) => n <= run.streak).pop();
+      const have = run.streak - base, need = next - base;
+      pips = `<span class="mpips" aria-hidden="true">${'<i class="on"></i>'.repeat(have)}${'<i></i>'.repeat(need - have)}</span>`;
+      toward = `, ${next - run.streak} more for ×${Engine.multiplier(next)}`;
+    }
     return `<div class="score"><small>SCORE</small><span class="num">${fmt(run.score)}</span></div>
-      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}">${icon('flame')}<span>×${mult}</span><span
-        class="num faint">${run.streak} in a row</span></div>`;
+      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}${toward}">${icon('flame')}<span>×${mult}</span><span
+        class="num faint">${run.streak} in a row</span>${pips}</div>`;
   },
   ptMood(run) {
     const c = run.cur;
@@ -147,7 +158,7 @@ Screens.chart = {
       const label = `${isOrder ? '' : 'Option ' + LETTERS[k] + ': '}${o.t}${state}`;
       const attrs = `data-action="pick" data-i="${i}" ${c.revealed || gone ? 'disabled' : ''} aria-label="${esc(label)}" ` +
         (isMulti ? `aria-pressed="${sel}"` : '');
-      s += `<li><button class="${cls.join(' ')}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
+      s += `<li><button class="${cls.join(' ')}" style="--i:${k}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
         `<span class="mark">${mark}</span></button></li>`;
     });
     return s + '</ol>';
@@ -166,9 +177,21 @@ Screens.chart = {
       ${c.hint && !c.revealed ? `<p class="paper-hint">${icon('users')}${esc(c.hint)}</p>` : ''}
       ${this.optsHTML(run)}`;
   },
+  // what the button that moves on says
+  nextLabel(run) {
+    if (!run.isEnd()) return 'Next patient';
+    return run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
+  },
   trayHTML(run) {
     const q = run.q, c = run.cur, L = run.lifelines;
-    if (c.revealed) return '';
+    // After an answer, Submit becomes "Next patient" in the same spot. The tray then sticks to the top of the
+    // screen (30-chart.css), so moving on is always one tap away, even while scrolling down through the
+    // explanation; the page no longer scrolls to the explanation by itself.
+    if (c.revealed) {
+      return run.cfg.feedback
+        ? `<span class="grow"></span><button class="btn primary big next-btn" data-action="next" data-autofocus>${this.nextLabel(run)}${icon('play')}</button>`
+        : '';
+    }
     let s = '';
     if (run.cfg.lifelines) {
       const colleagueHelp = 'Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, '
@@ -258,8 +281,6 @@ Screens.chart = {
       : '<p class="dim">This section has no instructor focus points.</p>';
     const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary>` +
       `<p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
-    let endLabel = 'Next patient';
-    if (run.isEnd()) endLabel = run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
     const headIcon = icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x');
     return `<div class="fb-head ${st}"><span class="ico">${headIcon}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
       ${notes.length ? `<div class="fb-notes">${notes.map((n) => `<p>${n}</p>`).join('')}</div>` : ''}
@@ -267,8 +288,7 @@ Screens.chart = {
       <p class="fb-why">${esc(q.why)}</p>
       <div class="fb-tips">${this.feedbackTips(q, sec)}</div>
       ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
-      ${others}${guide}
-      <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
+      ${others}${guide}`;
   },
 
   // ----- lifecycle
@@ -309,7 +329,14 @@ Screens.chart = {
     const bar = document.getElementById('timer-bar'), num = document.getElementById('timer-num');
     if (bar) bar.style.transform = barShift(run.timeLeft / run.cfg.time);
     const secs = String(Math.ceil(run.timeLeft));
-    if (num && num.textContent !== secs) num.textContent = secs;
+    if (num && num.textContent !== secs) {
+      num.textContent = secs;
+      // the last seconds tick: the number jumps and beeps once a second
+      if (run.timeLeft > 0 && run.timeLeft <= CONFIG.codeBlue.urgentSeconds) {
+        replayClass(num, 'tick');
+        Sound.play('beep');
+      } else num.classList.remove('tick');
+    }
     if (this.ecg) this.ecg.stress = run.stress();
     if (run.timeLeft <= 0) {
       this.timerOff(); this.timerOff = null;
@@ -343,10 +370,10 @@ Screens.chart = {
         f.hidden = !show;
         f.innerHTML = show ? this.feedbackHTML(run) : '';
         if (show) {
-          // (the panel is new for every patient, so it is already scrolled to the top)
-          const b = $('[data-action="next"]', f);
+          // no scrolling to the panel: the question and its answer marks stay in view, and the Next button
+          // (in the tray, which sticks to the top) is always reachable
+          const b = $('#tray [data-action="next"]', el);
           if (b && !('ontouchstart' in window)) b.focus({ preventScroll: true });
-          if (App.size === 'wide') f.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
         }
       }
     }
@@ -364,7 +391,7 @@ Screens.chart = {
     const stem = $('#stem', el);
     const ptsTxt = c.pts.pts ? `+${c.pts.pts}${c.pts.mult > 1 ? ' ×' + c.pts.mult : ''}` : '';
     if (res.correct) {
-      Sound.play('right');
+      Sound.right(run.streak);
       FX.float(ptsTxt, stem, 'good');
       if (CONFIG.talk.streakShoutouts.includes(run.streak)) this.say('streak', { streak: run.streak });
       else if (run.results.length > 1 && !run.results[run.results.length - 2].correct) this.say('back');
@@ -380,7 +407,27 @@ Screens.chart = {
       this.say(run.maxLives && run.lives === 1 ? 'low' : 'wrong');
     }
     if (run.mode === 'boss') this.bossFx(c);
+    const scoreFrom = run.score - (c.pts.pts || 0);
     this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
+    if (c.pts.pts) FX.countUp($('#scorebar .score .num', el), scoreFrom, run.score);
+    if (res.correct) {
+      const band = $('#scorebar .streak', el), lit = $$('#scorebar .mpips i.on', el);
+      if (lit.length) lit[lit.length - 1].classList.add('new'); // the pip just earned pops in
+      // reaching a new multiplier: the band jumps and the multiplier floats up from it
+      if (band && Engine.multiplier(run.streak) > Engine.multiplier(run.streak - 1)) {
+        replayClass(band, 'level-up');
+        FX.float(`×${Engine.multiplier(run.streak)}!`, band, 'warn');
+      }
+    }
+    if (c.starUp) {
+      const u = Content.unitById[c.starUp.unit];
+      Sound.play('badge');
+      App.toast(`Room ${u.room} ${u.ward}: ${'★'.repeat(c.starUp.stars)} earned!`);
+    }
+    if (c.goalHit) {
+      App.toast(`Daily goal reached: ${WR.state.days.answered} patients today!`);
+      if (!calmChosen()) FX.confetti(60);
+    }
     // a silly reaction redraws the patient itself; otherwise just update their face
     if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
@@ -399,23 +446,40 @@ Screens.chart = {
       this.autoT = setTimeout(() => this.advance(), res.correct ? CB.nextAfterRightMs : CB.nextAfterWrongMs);
       return;
     }
-    // The explanation comes one frame later: the answer marks, sound and patient reaction
-    // paint first instead of waiting on the panel's layout (it slides in, so the frame is invisible).
-    afterNextPaint(() => {
+    // Staging: the answer marks, sound and patient reaction land first; the explanation panel follows once the
+    // marks have popped in (one thing at a time), and right after the first paint on Calm.
+    const showFeedback = () => {
       if (App.run !== run || run.cur !== c || App.name !== 'chart') return; // moved on already
       this.refresh(['feedback']);
       if (c.card) Sound.play('tada', CONFIG.timing.cardSoundMs);
       celebrate(run);
       if (c.badges && c.badges.length) badgeToast(c.badges);
-    });
+    };
+    if (calmChosen()) afterNextPaint(showFeedback);
+    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {
     const run = App.run, el = App.el;
     const boss = $('#boss', el), nurse = $('#arena-nurse', el);
+    // the HP bar moves when the blow lands (cause, then effect), not when the answer is submitted
+    const showHp = () => {
+      const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
+      if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
+      if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+    };
     if (c.dmg) {
-      FX.projectile(nurse, boss).then(() => {
+      // anticipation: she winds up before the throw
+      const nsvg = nurse && $('svg', nurse);
+      if (nsvg && nsvg.animate && !calmChosen()) {
+        nsvg.style.transformOrigin = '50% 100%';
+        nsvg.animate([{ transform: 'none' }, { transform: 'rotate(-9deg) translateX(-6px)', offset: 0.45 },
+          { transform: 'rotate(7deg) translateX(5px)', offset: 0.7 }, { transform: 'none' }],
+        { duration: 380, easing: 'ease-in-out' });
+      }
+      FX.projectile(nurse, boss, null, calmChosen() ? 0 : 170).then(() => {
         Sound.play('hit');
+        showHp();
         if (boss) { boss.innerHTML = bossSVG(run.phase, 'hurt'); replayClass(boss, 'hit'); }
         FX.float('−' + c.dmg, boss, 'bad');
         setTimeout(() => { if (boss && boss.isConnected) boss.innerHTML = bossSVG(run.phase); }, CONFIG.timing.bossHurtMs);
@@ -424,10 +488,8 @@ Screens.chart = {
       Sound.play('heal');
       replayClass(boss, 'heal');
       FX.float('+' + c.heal + ' HP', boss, 'good');
-    }
-    const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
-    if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
-    if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+      showHp();
+    } else showHp();
     if (c.phaseUp && run.hp > 0) {
       const ar = $('#arena', el);
       if (ar) {
@@ -469,14 +531,22 @@ Screens.chart = {
     else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < CONFIG.talk.chatterChance) {
       this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
     }
+    // the old chart leaves as the new one arrives: copy it before the redraw (a read before any write, so it costs
+    // no extra layout) and let the copy slide off on top
+    const oldCb = !calmChosen() && $('#clipboard', App.el);
+    const ghost = oldCb && oldCb.cloneNode(true), r0 = oldCb && oldCb.getBoundingClientRect();
+    // the redraw scrolls back to the top, so the copy goes where the old chart sits at the top of the page
+    const ghostRect = r0 && { left: r0.left, top: r0.top + App.el.scrollTop, width: r0.width, height: r0.height };
     // redraw for the new patient, keeping the heart monitor running, and scroll back to the top
     this.keepMonitor = true;
     try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
     if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
-    const cb = !reducedMotion() && $('#clipboard', App.el);
-    const slideIn = [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
-    if (cb) cb.animate(slideIn, { duration: 260, easing: 'ease-out' });
+    const cb = !calmChosen() && $('#clipboard', App.el);
+    const slideIn = reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateX(32px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 280, delay: 60, easing: 'cubic-bezier(.2, .8, .2, 1)', fill: 'backwards' });
+    if (ghost && ghostRect.width) FX.ghostOut(ghost, ghostRect);
   },
 
   act: {

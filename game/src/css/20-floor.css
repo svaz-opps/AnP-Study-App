@@ -59,10 +59,15 @@
     var(--floor-tile);
   border: 2px solid var(--line); border-radius: var(--r-md);
   text-align: left; overflow: hidden;
-  transition: border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+  transition: border-color var(--dur-small) var(--ease-out), transform var(--dur-tap) var(--ease-out), box-shadow var(--dur-small) var(--ease-out);
 }
 .room:active { transform: scale(.985); }
-@media (hover: hover) { .room:hover { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); } }
+/* mouse/trackpad only, and only once it has moved over the new floor (hover-off: see Screens.floor.mount) */
+@media (hover: hover) {
+  html:not([data-input="touch"]) .floorplan:not(.hover-off) .room:hover {
+    border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+}
 /* only the blurb row (4) gives way when space is short; the patient row (5) is always shown */
 .room-body {
   display: grid;
@@ -117,6 +122,22 @@
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
+.room-meta .next-star { color: var(--warn); white-space: nowrap; }
+/* today's goal met: the chip turns green with a check */
+.chip.today.met { border-color: var(--good); background: var(--good-soft); }
+.chip.today.met svg { color: var(--good); }
+/* a star earned on the last shift stamps onto the card when you get back (after the walk back starts) */
+.room-stars .stamp { display: inline-block; animation: star-stamp-floor .5s var(--ease-spring) calc(.9s + var(--k, 0) * 150ms) both; }
+@keyframes star-stamp-floor { from { opacity: 0; transform: scale(2.6) rotate(-30deg); } }
+/* the room the nurse suggests: a ready-drawn ring that breathes (opacity only) */
+.room.suggest { border-color: var(--accent); }
+.room.suggest::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 22px var(--accent-soft);
+  animation: suggest-glow 1.6s ease-in-out infinite alternate;
+}
+@keyframes suggest-glow { from { opacity: .25; } to { opacity: 1; } }
+[data-calm="1"] .room.suggest::after { animation: none; }
 .room-dot {
   flex: none; min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
@@ -141,9 +162,24 @@
 }
 /* door pinned to the corridor side (absolute, so it never depends on flex order inside the button) */
 .rooms-top .room-body { padding-bottom: calc(var(--s3) + 14px); }
-.rooms-bottom .door, .floorplan.v .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
-.rooms-bottom .room-body, .floorplan.v .room-body { padding-top: calc(var(--s3) + 14px); }
+.rooms-bottom .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
+.rooms-bottom .room-body { padding-top: calc(var(--s3) + 14px); }
 .room.open .door::before { transform: rotateY(-75deg); }
+/* Portrait: the corridor runs down the middle, so the door is an upright strip on the room's corridor side
+   (right side for the left column, left side for the right column; rooms alternate left, right in source order).
+   The panel hangs from its top edge and swings open towards the viewer. */
+.floorplan.v .door {
+  width: 14px; height: auto; top: 0; bottom: 0; left: auto; right: 0;
+  border-top: 0; border-left: 2px solid var(--line);
+}
+.floorplan.v .room:nth-child(even) .door { right: auto; left: 0; border-left: 0; border-right: 2px solid var(--line); }
+.floorplan.v .door::before {
+  left: 2px; width: 8px; top: 22%; height: 56%;
+  background: linear-gradient(180deg, #6f86a8, #9ab0cc); transform-origin: center top;
+}
+.floorplan.v .room.open .door::before { transform: rotateX(75deg); }
+.floorplan.v .room:nth-child(odd) .room-body { padding-right: calc(var(--s3) + 14px); }
+.floorplan.v .room:nth-child(even) .room-body { padding-left: calc(var(--s3) + 14px); }
 .room.open { border-color: var(--accent); }
 
 /* ---------- corridor ---------- */
@@ -176,18 +212,21 @@
   height: 104px;
   z-index: 3;
   pointer-events: none;
-  transition: transform .75s cubic-bezier(.45, .05, .35, 1);
+  transition: transform .75s var(--ease-move);
   will-change: transform;
 }
 .walker svg { width: 100%; height: 100%; overflow: visible; }
-.walker.walking svg { animation: bob .32s ease-in-out infinite alternate; }
+/* portrait: the corridor is 64 px wide, so she is drawn to fit it instead of spilling over the room cards */
+.floorplan.v .walker { width: 64px; height: 79px; }
+/* --step is set per walk from her speed (45-floor.js) so the legs keep pace with the ground */
+.walker.walking svg { animation: bob var(--step, .2s) ease-in-out infinite alternate; }
 .walker.walking .leg-l {
-  animation: step .32s ease-in-out infinite alternate;
+  animation: step var(--step, .2s) ease-in-out infinite alternate;
   transform-origin: 50% 0;
   transform-box: fill-box;
 }
 .walker.walking .leg-r {
-  animation: step .32s ease-in-out infinite alternate-reverse;
+  animation: step var(--step, .2s) ease-in-out infinite alternate-reverse;
   transform-origin: 50% 0;
   transform-box: fill-box;
 }
@@ -209,7 +248,7 @@
   border-left: 0;
   border-right-color: var(--paper);
 }
-.bubble.pop { animation: pop-in .3s cubic-bezier(.2, .9, .3, 1.3) both; }
+.bubble.pop { animation: pop-in .3s var(--ease-spring) both; }
 .floor .station .bubble { margin-left: 92px; }
 .station-card { align-items: center; gap: var(--s3); }
 .station-card .station-desk { height: 64px; }
@@ -217,7 +256,7 @@
 .alarm {
   display: flex; align-items: center; gap: var(--s2); padding: 10px 16px; min-height: var(--tap);
   border-radius: 14px; background: color-mix(in srgb, var(--code) 18%, var(--surface)); border: 2px solid var(--code);
-  color: #ffd9dd; font-weight: 800; z-index: 2;
+  color: #ffd9dd; font-weight: 800; z-index: 4; /* above .walker (3): the nurse walks behind it */
 }
 /* the light pulses with opacity only: animating box-shadow would repaint it every frame */
 .alarm .light {
@@ -231,7 +270,7 @@
 @keyframes blink { 50% { opacity: .35; } }
 .elevator {
   display: flex; align-items: center; gap: var(--s3); padding: 8px 14px 8px 8px; min-height: var(--tap);
-  border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 2;
+  border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 4; /* above .walker */
 }
 .elevator .doors {
   width: 44px;
@@ -242,7 +281,9 @@
   flex: none;
 }
 .elevator small { display: block; font-weight: 700; color: var(--text-dim); font-size: var(--fs-xs); }
-.elevator.locked { opacity: .6; }
+/* Locked: dimmed, but the button stays opaque so the nurse doesn't show through it as she walks behind. */
+.elevator.locked { background: color-mix(in srgb, var(--surface-2) 60%, var(--floor)); border-color: color-mix(in srgb, var(--line) 60%, var(--floor)); }
+.elevator.locked > * { opacity: .6; }
 
 .floor-end { display: none; }
 .floorplan.v .floor-end {

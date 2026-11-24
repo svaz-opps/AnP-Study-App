@@ -10,7 +10,7 @@ Goals are tracked as R1, R2, … in [ROADMAP.md](ROADMAP.md). Update it whenever
 Workflow
 1. Small, safe fixes can go straight to `main`.
 2. Anything risky is committed to `beta` first.
-3. Run `python3 game/build.py --strict`, `node game/tests/smoke.mjs`, `node game/tests/hot.mjs`, `node game/tests/autosave.mjs`, `node game/tests/lifeline.mjs`, `node game/tests/backup.mjs`, `node game/tests/whimsy.mjs`, `node game/tests/smooth.mjs` and `node game/tests/learning.mjs` on `beta`.
+3. Run `python3 game/build.py --strict`, `node game/tests/smoke.mjs`, `node game/tests/hot.mjs`, `node game/tests/autosave.mjs`, `node game/tests/lifeline.mjs`, `node game/tests/backup.mjs`, `node game/tests/whimsy.mjs`, `node game/tests/smooth.mjs` `node game/tests/motion.mjs` and `node game/tests/learning.mjs` on `beta`.
 4. Commit the rebuilt `game/dist/ward-rounds.html` too (that is the file you download).
 5. When they pass (and it plays right), merge `beta` into `main`, then bring `beta` back level with `main`.
 

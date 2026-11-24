@@ -180,6 +180,38 @@ const FX = {
     setTimeout(() => el.remove(), CONFIG.timing.floatTextMs);
   },
 
+  // a number rolls from one value to another (score), easing out so it settles on the real value
+  countUp(el, from, to, ms = 450, show = fmt, delay = 0) {
+    if (!el || calmChosen() || from === to) return;
+    const t0 = performance.now() + delay;
+    const step = (now) => {
+      if (!el.isConnected) return;
+      const k = Math.max(0, Math.min(1, (now - t0) / ms)), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = show(Math.round(from + (to - from) * e));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    el.textContent = show(from);
+    requestAnimationFrame(step);
+  },
+
+  // a copy of something that was just replaced, laid over its old spot, leaving to the left
+  ghostOut(node, rect) {
+    const layer = this.layer();
+    if (!layer || !node.animate) return;
+    node.removeAttribute('id');
+    node.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    node.setAttribute('aria-hidden', 'true');
+    Object.assign(node.style, {
+      position: 'fixed', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px',
+      margin: '0', pointerEvents: 'none', zIndex: '1', contain: 'layout paint style', willChange: 'transform, opacity',
+    });
+    layer.appendChild(node);
+    const out = reducedMotion() ? [{ opacity: 1 }, { opacity: 0 }]
+      : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-40px) rotate(-1.5deg)' }];
+    node.animate(out, { duration: 180, easing: 'cubic-bezier(.4, 0, .9, .4)', fill: 'forwards' })
+      .finished.then(() => node.remove(), () => node.remove());
+  },
+
   shake(el) {
     if (!el || reducedMotion()) return;
     replayClass(el, 'shake');
@@ -188,7 +220,7 @@ const FX = {
 
   flash(kind) {
     const layer = this.layer();
-    if (!layer || reducedMotion()) return;
+    if (!layer || calmChosen()) return; // a colour wash, not movement: kept on "soft"
     const el = document.createElement('div');
     el.className = 'screen-flash ' + kind;
     layer.appendChild(el);
@@ -196,7 +228,8 @@ const FX = {
   },
 
   confetti(amount = 140) {
-    if (reducedMotion()) return;
+    if (calmChosen()) return;
+    if (reducedMotion()) amount = Math.round(amount * 0.35); // soft: a lighter sprinkle
     const layer = this.layer();
     const c = document.createElement('canvas');
     c.className = 'confetti';
@@ -230,8 +263,9 @@ const FX = {
     });
   },
 
-  projectile(from, to, color) {
-    if (!from || !to || reducedMotion()) return Promise.resolve();
+  // thrown along a smooth arc (sampled from a curve; three keyframes made a kinked path), spinning as it flies
+  projectile(from, to, color, delay = 0) {
+    if (!from || !to || calmChosen()) return Promise.resolve();
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
     const el = document.createElement('div');
     el.className = 'projectile';
@@ -239,11 +273,14 @@ const FX = {
     this.layer().appendChild(el);
     const x0 = a.left + a.width * 0.7, y0 = a.top + a.height * 0.4, x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
     el.style.left = '0px'; el.style.top = '0px';
-    const anim = el.animate([
-      { transform: `translate(${x0}px, ${y0}px) scale(.6)` },
-      { transform: `translate(${(x0 + x1) / 2}px, ${Math.min(y0, y1) - 60}px) scale(1.1)` },
-      { transform: `translate(${x1}px, ${y1}px) scale(1.4)`, opacity: 0.9 },
-    ], { duration: 420, easing: 'ease-in' });
+    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - 70, N = 10, frames = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, u = 1 - t;
+      const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+      frames.push({ transform: `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${Math.round(t * 540)}deg) scale(${(0.6 + 0.8 * t).toFixed(2)})` });
+    }
+    frames[N].opacity = 0.9;
+    const anim = el.animate(frames, { duration: 420, delay, easing: 'cubic-bezier(.35, 0, .65, 1)', fill: 'backwards' });
     return anim.finished.then(() => el.remove()).catch(() => el.remove());
   },
 };

@@ -82,11 +82,36 @@
 .card .stat { background: var(--surface-2); }
 .stat b { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xl); }
 .stat .faint { font-size: var(--fs-xs); }
+.stat .pb {
+  align-self: flex-start; margin-top: 2px; padding: 1px 8px; border-radius: 999px; font-size: var(--fs-xs); font-weight: 800;
+  background: var(--warn-soft); color: var(--warn); animation: star-stamp .4s var(--ease-spring) .7s both;
+}
+[data-calm="1"] .stat .pb { animation: none; }
 .unit-card { display: flex; gap: var(--s5); align-items: center; flex-wrap: wrap; }
 .room-stars.big svg { width: 34px; height: 34px; }
 .mini-bars { flex: 1; min-width: 220px; display: grid; gap: 6px; font-size: var(--fs-sm); }
 .mini-bars > div:not(.bar) { display: flex; justify-content: space-between; gap: var(--s2); }
 .report-actions { display: flex; gap: var(--s3); flex-wrap: wrap; justify-content: center; }
+/* Staging: the report builds top to bottom instead of landing all at once. The nurse pops, then the headline,
+   the stat tiles one after another, the cards, then the buttons; earned stars stamp in after the room card. */
+.report-wrap > * { animation: rise-in .36s var(--ease-out) both; }
+.report-wrap > :nth-child(2) { animation-delay: .08s; }
+.report-wrap > :nth-child(3) { animation-delay: .16s; }
+.report-wrap > :nth-child(4) { animation-delay: .38s; }
+.report-wrap > :nth-child(5) { animation-delay: .46s; }
+.report-wrap > :nth-child(6) { animation-delay: .54s; }
+.report-wrap > :nth-child(n+7) { animation-delay: .62s; }
+.report-wrap .stat-grid { animation: none; }
+.stat-grid .stat { animation: rise-in .32s var(--ease-out) calc(.16s + var(--k, 0) * 45ms) both; }
+.report-nurse { animation: nurse-pop .5s var(--ease-spring) both; transform-origin: 50% 100%; }
+.room-stars.big .on { animation: star-stamp .4s var(--ease-spring) calc(.75s + var(--k, 0) * 120ms) both; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes nurse-pop { from { opacity: 0; transform: scale(.6) translateY(10px); } }
+@keyframes star-stamp { from { opacity: 0; transform: scale(2) rotate(-20deg); } }
+[data-motion="soft"] .report-wrap > *, [data-motion="soft"] .stat-grid .stat, [data-motion="soft"] .report-nurse,
+[data-motion="soft"] .room-stars.big .on { animation-name: fade-in; }
+[data-calm="1"] .report-wrap > *, [data-calm="1"] .stat-grid .stat, [data-calm="1"] .report-nurse,
+[data-calm="1"] .room-stars.big .on { animation: none; }
 .badge-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -363,6 +388,10 @@
   color: var(--text-dim);
 }
 .seg button.on { background: var(--accent); color: var(--accent-ink); }
+.seg { position: relative; }
+.seg button { position: relative; z-index: 1; transition: color .2s var(--ease-out); }
+.seg button.on.arriving { background: transparent; color: var(--text-dim); }
+.seg-pill { position: absolute; z-index: 0; border-radius: 999px; background: var(--accent); pointer-events: none; }
 input[type="date"], input[type="text"] {
   min-height: var(--tap); padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2);
   color: var(--text); font: inherit; font-weight: 700; max-width: 100%;
@@ -406,10 +435,12 @@ input[type="date"], input[type="text"] {
 .ob-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-3); }
 .ob-dots i.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
-@media (prefers-reduced-motion: reduce) {
-  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
-  .walker { transition: none !important; }
-}
+/* soft (device Reduce Motion on "Auto"): screens, panels and dialogs crossfade instead of sliding or zooming */
+[data-motion="soft"] .screen, [data-motion="soft"] .screen.zoom-in, [data-motion="soft"] .feedback,
+[data-motion="soft"] .modal, [data-motion="soft"] .screen.zoom-in.from-point { animation-name: fade-in; }
+/* calm: they just appear */
+[data-calm="1"] .screen, [data-calm="1"] .screen.zoom-in, [data-calm="1"] .feedback, [data-calm="1"] .bubble.pop,
+[data-calm="1"] .modal, [data-calm="1"] .ob-step, [data-calm="1"] .screen.zoom-in.from-point { animation: none !important; }
 
 /* how-to-save guide (settings card + iPad reminder) */
 .save-help h3 { font-size: var(--fs-md, 1rem); margin: var(--s4) 0 var(--s2); }
@@ -418,3 +449,20 @@ input[type="date"], input[type="text"] {
 .save-help .steps b { color: var(--text, inherit); }
 .save-help p .ic { width: 18px; height: 18px; vertical-align: -3px; color: var(--accent); }
 .modal .save-help { max-height: min(52vh, 420px); overflow-y: auto; margin: var(--s3) 0; padding-right: 4px; }
+
+/* Missed patients, Report card and Get-well cards: the cards come in one after another (these screens are not
+   redrawn while you use them, so the stagger only plays on arrival) */
+[data-screen="missed"] .card, [data-screen="stats"] .card, [data-screen="cards"] .card { animation: rise-in .34s var(--ease-out) both; }
+[data-screen="missed"] .card:nth-child(2), [data-screen="stats"] .card:nth-child(2), [data-screen="cards"] .card:nth-child(2) { animation-delay: 0.05s; }
+[data-screen="missed"] .card:nth-child(3), [data-screen="stats"] .card:nth-child(3), [data-screen="cards"] .card:nth-child(3) { animation-delay: 0.10s; }
+[data-screen="missed"] .card:nth-child(4), [data-screen="stats"] .card:nth-child(4), [data-screen="cards"] .card:nth-child(4) { animation-delay: 0.15s; }
+[data-screen="missed"] .card:nth-child(5), [data-screen="stats"] .card:nth-child(5), [data-screen="cards"] .card:nth-child(5) { animation-delay: 0.20s; }
+[data-screen="missed"] .card:nth-child(6), [data-screen="stats"] .card:nth-child(6), [data-screen="cards"] .card:nth-child(6) { animation-delay: 0.25s; }
+[data-screen="missed"] .card:nth-child(7), [data-screen="stats"] .card:nth-child(7), [data-screen="cards"] .card:nth-child(7) { animation-delay: 0.30s; }
+[data-screen="missed"] .card:nth-child(8), [data-screen="stats"] .card:nth-child(8), [data-screen="cards"] .card:nth-child(8) { animation-delay: 0.35s; }
+[data-screen="missed"] .card:nth-child(n+9), [data-screen="stats"] .card:nth-child(n+9), [data-screen="cards"] .card:nth-child(n+9) { animation-delay: .4s; }
+[data-motion="soft"] [data-screen="missed"] .card, [data-motion="soft"] [data-screen="stats"] .card, [data-motion="soft"] [data-screen="cards"] .card { animation-name: fade-in; }
+[data-calm="1"] [data-screen="missed"] .card, [data-calm="1"] [data-screen="stats"] .card, [data-calm="1"] [data-screen="cards"] .card { animation: none; }
+
+/* dedication at the bottom of Settings */
+.dedication { margin-top: -4px; font-size: var(--fs-sm); font-style: italic; color: var(--text-dim); }

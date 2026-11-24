@@ -41,6 +41,16 @@
   --clip: #c4ced9;
   --shadow: 0 10px 30px rgba(0, 0, 0, .35);
 
+  /* motion (ANIMATION_NOTES.md): entrances decelerate, exits accelerate, moves ease both ways, small pops overshoot */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ease-in: cubic-bezier(.4, 0, .9, .4);
+  --ease-move: cubic-bezier(.45, .05, .35, 1);
+  --ease-spring: cubic-bezier(.2, .9, .3, 1.25);
+  --dur-tap: 110ms;
+  --dur-small: 200ms;
+  --dur-panel: 300ms;
+  --dur-exit: 160ms;
+
   --font-display: "Fredoka", "Nunito", system-ui, -apple-system, sans-serif;
   --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -97,6 +107,8 @@ button, .tap {
 }
 button:disabled { cursor: default; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+/* headings focused by script (tabindex=-1) so screen readers start there are not controls: no ring */
+[tabindex="-1"]:focus { outline: none; }
 svg { display: block; }
 .num { font-variant-numeric: tabular-nums; }
 .mono { font-family: var(--font-mono); }
@@ -128,11 +140,14 @@ svg { display: block; }
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: var(--s3) var(--s5);
   display: flex; flex-direction: column; gap: var(--s4);
-  animation: screen-in .28s ease-out both;
+  animation: screen-in var(--dur-panel) var(--ease-out) both;
 }
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px) scale(.99); } }
-.screen.zoom-in { animation: zoom-in .38s cubic-bezier(.2, .8, .2, 1) both; }
+.screen.zoom-in { animation: zoom-in .38s var(--ease-out) both; }
 @keyframes zoom-in { from { opacity: 0; transform: scale(.92); } }
+/* grows out of the tapped room (transform-origin set in App.show) */
+.screen.zoom-in.from-point { animation: zoom-from .42s var(--ease-out) both; }
+@keyframes zoom-from { from { opacity: 0; transform: scale(.55); } 40% { opacity: 1; } }
 
 .wrap { width: 100%; max-width: 1180px; margin-inline: auto; }
 .narrow { width: 100%; max-width: 760px; margin-inline: auto; }
@@ -144,7 +159,7 @@ svg { display: block; }
   border-radius: 999px; font-weight: 800; letter-spacing: .01em;
   background: var(--surface-2); color: var(--text);
   border: 1px solid var(--line);
-  transition: transform .12s ease, background-color .15s ease, opacity .15s ease;
+  transition: transform var(--dur-tap) var(--ease-out), background-color .15s var(--ease-out), opacity .15s var(--ease-out);
 }
 .btn:active { transform: scale(.97); }
 .btn svg { width: 20px; height: 20px; flex: none; }
@@ -187,8 +202,15 @@ svg { display: block; }
   height: 100%;
   border-radius: inherit;
   background: var(--accent);
-  transition: width .5s ease;
+  /* bars fill when they appear (scaleX, not width: no layout per frame); --from starts part-way, e.g. the XP bar
+     after a shift starts from where it was */
+  transform-origin: left center;
+  animation: bar-fill .8s var(--ease-out) .2s both;
 }
+@keyframes bar-fill { from { transform: scaleX(var(--from, 0)); } }
+/* the HP and Code Blue timer bars are moved by script */
+.bar > i#hp-bar, .bar > i#timer-bar { animation: none; }
+[data-calm="1"] .bar > i { animation: none; }
 
 /* ---------- top bars ---------- */
 .topbar { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); }
@@ -203,13 +225,13 @@ svg { display: block; }
   padding:
     max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
     max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
-  animation: fade-in .2s ease both;
+  animation: fade-in var(--dur-small) var(--ease-out) both;
 }
 .modal {
   width: min(520px, 100%); max-height: 100%; overflow-y: auto;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
   padding: var(--s5); display: flex; flex-direction: column; gap: var(--s4);
-  box-shadow: var(--shadow); animation: pop-in .25s cubic-bezier(.2, .9, .3, 1.2) both;
+  box-shadow: var(--shadow); animation: pop-in .26s var(--ease-spring) both;
 }
 .modal h2 { font-size: var(--fs-xl); }
 .modal .actions { display: flex; gap: var(--s3); justify-content: flex-end; flex-wrap: wrap; }
@@ -239,18 +261,16 @@ svg { display: block; }
   font-weight: 700;
   box-shadow: var(--shadow);
   text-align: center;
-  animation: toast-in .3s ease both;
+  animation: toast-in .26s var(--ease-out) both;
 }
-.toast.out { animation: toast-out .25s ease both; }
+.toast.out { animation: toast-out var(--dur-exit) var(--ease-in) both; }
 @keyframes toast-in { from { opacity: 0; transform: translateX(24px); } }
 @keyframes toast-out { to { opacity: 0; transform: translateX(24px); } }
 [data-calm="1"] .toast { animation-name: fade-in; }
 [data-calm="1"] .toast.out { animation-name: toast-fade-out; }
 @keyframes toast-fade-out { to { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .toast { animation-name: fade-in; }
-  .toast.out { animation-name: toast-fade-out; }
-}
+[data-motion="soft"] .toast { animation-name: fade-in; }
+[data-motion="soft"] .toast.out { animation-name: toast-fade-out; }
 
 .sr-only {
   position: absolute;
@@ -325,10 +345,15 @@ svg { display: block; }
     var(--floor-tile);
   border: 2px solid var(--line); border-radius: var(--r-md);
   text-align: left; overflow: hidden;
-  transition: border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+  transition: border-color var(--dur-small) var(--ease-out), transform var(--dur-tap) var(--ease-out), box-shadow var(--dur-small) var(--ease-out);
 }
 .room:active { transform: scale(.985); }
-@media (hover: hover) { .room:hover { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); } }
+/* mouse/trackpad only, and only once it has moved over the new floor (hover-off: see Screens.floor.mount) */
+@media (hover: hover) {
+  html:not([data-input="touch"]) .floorplan:not(.hover-off) .room:hover {
+    border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+}
 /* only the blurb row (4) gives way when space is short; the patient row (5) is always shown */
 .room-body {
   display: grid;
@@ -383,6 +408,22 @@ svg { display: block; }
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
+.room-meta .next-star { color: var(--warn); white-space: nowrap; }
+/* today's goal met: the chip turns green with a check */
+.chip.today.met { border-color: var(--good); background: var(--good-soft); }
+.chip.today.met svg { color: var(--good); }
+/* a star earned on the last shift stamps onto the card when you get back (after the walk back starts) */
+.room-stars .stamp { display: inline-block; animation: star-stamp-floor .5s var(--ease-spring) calc(.9s + var(--k, 0) * 150ms) both; }
+@keyframes star-stamp-floor { from { opacity: 0; transform: scale(2.6) rotate(-30deg); } }
+/* the room the nurse suggests: a ready-drawn ring that breathes (opacity only) */
+.room.suggest { border-color: var(--accent); }
+.room.suggest::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 22px var(--accent-soft);
+  animation: suggest-glow 1.6s ease-in-out infinite alternate;
+}
+@keyframes suggest-glow { from { opacity: .25; } to { opacity: 1; } }
+[data-calm="1"] .room.suggest::after { animation: none; }
 .room-dot {
   flex: none; min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
@@ -407,9 +448,24 @@ svg { display: block; }
 }
 /* door pinned to the corridor side (absolute, so it never depends on flex order inside the button) */
 .rooms-top .room-body { padding-bottom: calc(var(--s3) + 14px); }
-.rooms-bottom .door, .floorplan.v .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
-.rooms-bottom .room-body, .floorplan.v .room-body { padding-top: calc(var(--s3) + 14px); }
+.rooms-bottom .door { top: 0; bottom: auto; border-top: 0; border-bottom: 2px solid var(--line); }
+.rooms-bottom .room-body { padding-top: calc(var(--s3) + 14px); }
 .room.open .door::before { transform: rotateY(-75deg); }
+/* Portrait: the corridor runs down the middle, so the door is an upright strip on the room's corridor side
+   (right side for the left column, left side for the right column; rooms alternate left, right in source order).
+   The panel hangs from its top edge and swings open towards the viewer. */
+.floorplan.v .door {
+  width: 14px; height: auto; top: 0; bottom: 0; left: auto; right: 0;
+  border-top: 0; border-left: 2px solid var(--line);
+}
+.floorplan.v .room:nth-child(even) .door { right: auto; left: 0; border-left: 0; border-right: 2px solid var(--line); }
+.floorplan.v .door::before {
+  left: 2px; width: 8px; top: 22%; height: 56%;
+  background: linear-gradient(180deg, #6f86a8, #9ab0cc); transform-origin: center top;
+}
+.floorplan.v .room.open .door::before { transform: rotateX(75deg); }
+.floorplan.v .room:nth-child(odd) .room-body { padding-right: calc(var(--s3) + 14px); }
+.floorplan.v .room:nth-child(even) .room-body { padding-left: calc(var(--s3) + 14px); }
 .room.open { border-color: var(--accent); }
 
 /* ---------- corridor ---------- */
@@ -442,18 +498,21 @@ svg { display: block; }
   height: 104px;
   z-index: 3;
   pointer-events: none;
-  transition: transform .75s cubic-bezier(.45, .05, .35, 1);
+  transition: transform .75s var(--ease-move);
   will-change: transform;
 }
 .walker svg { width: 100%; height: 100%; overflow: visible; }
-.walker.walking svg { animation: bob .32s ease-in-out infinite alternate; }
+/* portrait: the corridor is 64 px wide, so she is drawn to fit it instead of spilling over the room cards */
+.floorplan.v .walker { width: 64px; height: 79px; }
+/* --step is set per walk from her speed (45-floor.js) so the legs keep pace with the ground */
+.walker.walking svg { animation: bob var(--step, .2s) ease-in-out infinite alternate; }
 .walker.walking .leg-l {
-  animation: step .32s ease-in-out infinite alternate;
+  animation: step var(--step, .2s) ease-in-out infinite alternate;
   transform-origin: 50% 0;
   transform-box: fill-box;
 }
 .walker.walking .leg-r {
-  animation: step .32s ease-in-out infinite alternate-reverse;
+  animation: step var(--step, .2s) ease-in-out infinite alternate-reverse;
   transform-origin: 50% 0;
   transform-box: fill-box;
 }
@@ -475,7 +534,7 @@ svg { display: block; }
   border-left: 0;
   border-right-color: var(--paper);
 }
-.bubble.pop { animation: pop-in .3s cubic-bezier(.2, .9, .3, 1.3) both; }
+.bubble.pop { animation: pop-in .3s var(--ease-spring) both; }
 .floor .station .bubble { margin-left: 92px; }
 .station-card { align-items: center; gap: var(--s3); }
 .station-card .station-desk { height: 64px; }
@@ -483,7 +542,7 @@ svg { display: block; }
 .alarm {
   display: flex; align-items: center; gap: var(--s2); padding: 10px 16px; min-height: var(--tap);
   border-radius: 14px; background: color-mix(in srgb, var(--code) 18%, var(--surface)); border: 2px solid var(--code);
-  color: #ffd9dd; font-weight: 800; z-index: 2;
+  color: #ffd9dd; font-weight: 800; z-index: 4; /* above .walker (3): the nurse walks behind it */
 }
 /* the light pulses with opacity only: animating box-shadow would repaint it every frame */
 .alarm .light {
@@ -497,7 +556,7 @@ svg { display: block; }
 @keyframes blink { 50% { opacity: .35; } }
 .elevator {
   display: flex; align-items: center; gap: var(--s3); padding: 8px 14px 8px 8px; min-height: var(--tap);
-  border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 2;
+  border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 4; /* above .walker */
 }
 .elevator .doors {
   width: 44px;
@@ -508,7 +567,9 @@ svg { display: block; }
   flex: none;
 }
 .elevator small { display: block; font-weight: 700; color: var(--text-dim); font-size: var(--fs-xs); }
-.elevator.locked { opacity: .6; }
+/* Locked: dimmed, but the button stays opaque so the nurse doesn't show through it as she walks behind. */
+.elevator.locked { background: color-mix(in srgb, var(--surface-2) 60%, var(--floor)); border-color: color-mix(in srgb, var(--line) 60%, var(--floor)); }
+.elevator.locked > * { opacity: .6; }
 
 .floor-end { display: none; }
 .floorplan.v .floor-end {
@@ -570,8 +631,17 @@ svg { display: block; }
 .lives svg { width: 26px; height: 26px; }
 .lives .on { color: var(--bad); }
 .lives .off { color: var(--surface-3); }
-.lives .lost { animation: heart-break .5s ease both; }
-@keyframes heart-break { 30% { transform: scale(1.35); } 100% { transform: scale(1); } }
+.lives .last { display: inline-block; animation: heartbeat 1.1s ease-in-out .6s infinite; }
+@keyframes heartbeat { 0%, 40%, 100% { transform: none; } 10% { transform: scale(1.22); } 25% { transform: scale(1.1); } }
+[data-calm="1"] .lives .last { animation: none; }
+/* the lost heart swells, then drains to grey as it settles (it used to go grey at once and then pulse) */
+.lives .lost { animation: heart-break .55s var(--ease-out) both; }
+@keyframes heart-break {
+  0% { transform: scale(1); color: var(--bad); }
+  30% { transform: scale(1.35); color: var(--bad); }
+  60% { transform: scale(.9) rotate(-8deg); }
+  100% { transform: none; color: var(--surface-3); }
+}
 
 .patient-card {
   display: flex;
@@ -649,6 +719,14 @@ svg { display: block; }
 .streak.hot { background: var(--warn-soft); border-color: var(--warn); }
 .streak.hot svg { animation: flame .6s ease-in-out infinite alternate; }
 @keyframes flame { to { transform: scale(1.18) rotate(-6deg); } }
+.mpips { display: inline-flex; gap: 3px; margin-left: 2px; }
+.mpips i { width: 7px; height: 7px; border-radius: 50%; background: var(--surface-3); }
+.mpips i.on { background: var(--warn); }
+.mpips i.new { animation: pip-pop .32s var(--ease-spring) both; }
+.streak.level-up { animation: level-up .5s var(--ease-spring); }
+@keyframes pip-pop { from { transform: scale(0); } 60% { transform: scale(1.6); } }
+@keyframes level-up { 30% { transform: scale(1.18) rotate(-3deg); } }
+[data-calm="1"] .mpips i.new, [data-calm="1"] .streak.level-up { animation: none; }
 
 .nurse-row { display: flex; align-items: center; gap: var(--s3); }
 .nurse-row .nurse { width: 86px; height: 104px; flex: none; }
@@ -747,7 +825,7 @@ svg { display: block; }
 .opt {
   width: 100%; min-height: 56px; display: flex; align-items: center; gap: var(--s3); text-align: left;
   padding: 10px 14px; border-radius: 12px; background: #fff; border: 2px solid var(--paper-line); color: var(--ink);
-  font-weight: 600; line-height: 1.3; transition: border-color .15s, background-color .15s, transform .1s;
+  font-weight: 600; line-height: 1.3; transition: border-color .15s var(--ease-out), background-color .15s var(--ease-out), transform var(--dur-tap) var(--ease-out);
 }
 .opt:active:not(:disabled) { transform: scale(.99); }
 @media (hover: hover) { .opt:hover:not(:disabled) { border-color: #8fb3d9; } }
@@ -770,6 +848,14 @@ svg { display: block; }
 .opt.missed { border-style: dashed; border-color: var(--ink-good); }
 .opt .mark svg { width: 26px; height: 26px; }
 .opt.right .mark { color: var(--ink-good); }
+/* the marks pop in down the list, one after another; the right answer gives a small nod */
+.opt.right .mark svg, .opt.wrong .mark svg, .opt.missed .mark svg {
+  animation: mark-pop .3s var(--ease-spring) calc(var(--i, 0) * 45ms) both;
+}
+.opt.right:not(.missed) { animation: right-nod .42s var(--ease-out) .12s both; }
+@keyframes mark-pop { from { transform: scale(0) rotate(-25deg); opacity: 0; } }
+@keyframes right-nod { 40% { transform: scale(1.025); } }
+[data-calm="1"] .opt .mark svg, [data-calm="1"] .opt.right { animation: none; }
 .opt.wrong .mark { color: var(--ink-bad); }
 .opt:disabled { cursor: default; }
 .opt .ord {
@@ -789,6 +875,14 @@ svg { display: block; }
 
 .tray { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
 .tray .grow { flex: 1; }
+/* after an answer the tray holds only "Next patient" and sticks to the top (or bottom) edge of the screen while you
+   scroll, so it is always on screen; only the button catches taps and covers text, the rest of the row is
+   see-through */
+.tray:has(.next-btn) {
+  position: sticky; top: var(--s2); bottom: calc(var(--s2) + env(safe-area-inset-bottom, 0px)); z-index: 6; pointer-events: none;
+}
+.tray .next-btn { pointer-events: auto; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); }
+.tray .next-btn svg { width: 18px; height: 18px; }
 .life-btn {
   display: flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 14px; border-radius: 999px;
   background: var(--surface); border: 1px solid var(--line); font-weight: 800; font-size: var(--fs-sm);
@@ -805,16 +899,11 @@ svg { display: block; }
   box-shadow: var(--shadow);
 }
 .feedback[hidden] { display: none; }
-[data-size="wide"] .feedback { animation: slide-in .32s cubic-bezier(.2, .8, .2, 1) both; scroll-margin-bottom: 16px; }
-[data-size="regular"] .feedback, [data-size="compact"] .feedback {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 82%; overflow-y: auto;
-  border-radius: var(--r-lg) var(--r-lg) 0 0; border-bottom: 0;
-  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
-  padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
-  animation: sheet-up .32s cubic-bezier(.2, .8, .2, 1) both;
-}
-@keyframes slide-in { from { opacity: 0; transform: translateX(30px); } }
-@keyframes sheet-up { from { transform: translateY(100%); } }
+/* the explanation sits under the question on every screen size (it used to be a bottom sheet on narrow screens
+   that covered the answers); scroll down to read it */
+.feedback { animation: slide-in var(--dur-panel) var(--ease-out) both; }
+/* the panel sits under the options, so it rises from below, the way the page scrolls to it */
+@keyframes slide-in { from { opacity: 0; transform: translateY(16px); } }
 .fb-head { display: flex; align-items: center; gap: var(--s3); }
 .fb-head .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .fb-head .ico svg { width: 26px; height: 26px; }
@@ -873,7 +962,7 @@ details.more summary {
   list-style: none;
 }
 details.more summary::-webkit-details-marker { display: none; }
-details.more summary::before { content: "▸"; margin-right: 8px; transition: transform .2s; }
+details.more summary::before { content: "▸"; margin-right: 8px; transition: transform var(--dur-small) var(--ease-out); }
 details.more[open] summary::before { transform: rotate(90deg); }
 .why-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--s2); }
 .why-list li { padding-left: var(--s3); border-left: 3px solid var(--line); font-size: var(--fs-sm); }
@@ -881,17 +970,6 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .why-list li.c { border-left-color: var(--good); }
 .focus-list { margin: 4px 0 0; padding-left: 1.2em; font-size: var(--fs-sm); color: var(--text-dim); }
 .focus-list li.hit { color: var(--text); font-weight: 700; }
-.fb-actions .btn { white-space: nowrap; }
-.fb-actions .btn svg { width: 18px; height: 18px; }
-.fb-actions {
-  display: flex;
-  gap: var(--s3);
-  justify-content: flex-end;
-  position: sticky;
-  bottom: 0;
-  padding-top: var(--s2);
-}
-[data-size="wide"] .fb-actions { margin-top: auto; }
 
 /* ---------- code blue ---------- */
 .mode-codeblue { background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 71, 87, .18)); }
@@ -921,6 +999,9 @@ details.more[open] summary::before { transform: rotate(90deg); }
   min-width: 3.2ch;
   text-align: right;
 }
+.timer b.tick { color: var(--code); animation: tick .35s var(--ease-spring); }
+@keyframes tick { 30% { transform: scale(1.35); } }
+[data-calm="1"] .timer b.tick { animation: none; }
 .timer-delta {
   position: absolute;
   right: 0;
@@ -951,13 +1032,20 @@ details.more[open] summary::before { transform: rotate(90deg); }
 }
 .arena .boss { width: 170px; height: 170px; flex: none; transition: filter .3s; }
 .arena .boss svg { width: 100%; height: 100%; overflow: visible; }
-.arena .boss.hit { animation: boss-hit .45s ease both; }
-.arena .boss.heal { animation: boss-heal .6s ease both; }
+/* the Superbug breathes while it waits (secondary action: it reads as alive, not as a sticker) */
+.arena .boss svg { animation: boss-idle 2.4s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+@keyframes boss-idle { to { transform: scale(1.03, .97) translateY(1px); } }
+/* hit: a white flash and a squash as the blow lands, knocked back, then it wobbles back into shape */
+.arena .boss { transform-origin: 50% 100%; }
+.arena .boss.hit { animation: boss-hit .5s var(--ease-out) both; }
+.arena .boss.heal { animation: boss-heal .6s var(--ease-out) both; }
 @keyframes boss-hit {
-  20% { transform: translateX(10px) rotate(4deg); filter: brightness(2.2) saturate(.3); }
-  60% { transform: translateX(-6px); }
+  12% { transform: translateX(12px) scale(.88, 1.1) rotate(5deg); filter: brightness(2.2) saturate(.3); }
+  35% { transform: translateX(6px) scale(1.06, .95); filter: none; }
+  65% { transform: translateX(-3px) scale(.99, 1.01) rotate(-1deg); }
 }
 @keyframes boss-heal { 40% { transform: scale(1.12); filter: drop-shadow(0 0 18px #7dffb2); } }
+[data-calm="1"] .arena .boss svg { animation: none; }
 .arena .nurse { width: 96px; height: 116px; flex: none; }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
 /* In the arena the bubble sits under the nurse, so its tail points up at the nurse instead of out to the side. */
@@ -970,7 +1058,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 }
 .hp { display: flex; flex-direction: column; gap: 4px; }
 .hp .bar { height: 16px; background: #2a1420; border: 1px solid #5a2a3c; }
-.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s ease; }
+.hp .bar > i { background: linear-gradient(90deg, #ff5d8f, #ff9a5d); transition: transform .5s var(--ease-out); }
 .hp-row { display: flex; justify-content: space-between; font-weight: 800; font-size: var(--fs-sm); }
 .phase-banner {
   position: absolute;
@@ -992,6 +1080,8 @@ details.more[open] summary::before { transform: rotate(90deg); }
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-20px); }
 }
+@keyframes banner-fade { 0% { opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+[data-motion="soft"] .phase-banner, [data-motion="soft"] .wh-banner { animation-name: banner-fade; }
 .projectile {
   position: absolute;
   width: 26px;
@@ -1054,21 +1144,21 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .wh-thumbs .pt-arm-r { animation: wh-pop-up .45s cubic-bezier(.2, 1.6, .4, 1) both; }
 .wh-wiggle .pt-head { animation: wh-wiggle .9s ease-in-out; }
 .wh-hearts .pt-head { animation: wh-nod .6s ease-in-out 2; }
-.wh-dance .pt-head { animation: wh-bob .35s ease-in-out 4 alternate; }
-.wh-dance .pt-arm-r { animation: wh-wave .35s ease-in-out 4 alternate; }
-.wh-dance .pt-arm-l { animation: wh-wave .35s ease-in-out 4 alternate-reverse; }
+.wh-dance .pt-head { animation: wh-bob .7s ease-in-out 2; }
+.wh-dance .pt-arm-r { animation: wh-wave .7s ease-in-out 2; }
+.wh-dance .pt-arm-l { animation: wh-wave .7s ease-in-out 2 reverse; }
 .wh-dance .pt-body { animation: wh-shimmy .35s ease-in-out 4 alternate; }
 .wh-fingerguns .pt-arm { animation: wh-pew .3s ease-out 3; }
 .wh-ivtwirl .pt-iv { animation: wh-twirl 1s ease-in-out; transform-origin: 129px 46px; }
 .wh-backflip .pt-person { animation: wh-backflip 1.1s cubic-bezier(.45, 0, .3, 1); }
 .wh-surf .pt-all { animation: wh-surf 1.3s ease-in-out; }
 .wh-surf .pt-props .wh-waves { animation: wh-wave-roll 1.3s linear; }
-.wh-party .pt-head { animation: wh-bob .3s ease-in-out 4 alternate; }
-.wh-party .pt-arm-l { animation: wh-wave .3s ease-in-out 4 alternate; }
+.wh-party .pt-head { animation: wh-bob .6s ease-in-out 2; }
+.wh-party .pt-arm-l { animation: wh-wave .6s ease-in-out 2; }
 .wh-party .wh-blower {
   transform-box: view-box;
   transform-origin: 48px 49px;
-  animation: wh-blow .35s ease-in-out 3 alternate;
+  animation: wh-blow .5s ease-in-out 3;
 }
 .wh-wheelie .pt-all { animation: wh-wheelie 1.4s cubic-bezier(.3, 1.4, .5, 1); transform-origin: 136px 97px; }
 .wh-rocket .pt-all { animation: wh-rocket 1.4s ease-in-out; }
@@ -1087,7 +1177,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .wh-blanket .pt-body { animation: wh-blanket 1.1s ease-in-out; }
 .wh-roll .pt-all { animation: wh-roll 1.15s ease-in-out; }
 .wh-roll .wh-speed { animation: wh-fade 1.1s ease-out both; }
-.wh-dizzy .pt-head { animation: wh-wobble .4s ease-in-out 3 alternate; }
+.wh-dizzy .pt-head { animation: wh-wobble .6s ease-in-out 2; }
 .wh-dizzy .wh-orbit { transform-box: view-box; transform-origin: 40px 14px; animation: wh-orbit .6s linear 2; }
 .wh-topple .pt-iv { animation: wh-topple 1.15s cubic-bezier(.5, 0, .7, 1); }
 .wh-topple .pt-head { animation: wh-bonk .5s ease-out .5s; }
@@ -1111,7 +1201,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .wh-hi .th-tag {
   transform-box: view-box;
   transform-origin: 136px 55px;
-  animation: wh-wave .3s ease-in-out 4 alternate;
+  animation: wh-wave .6s ease-in-out 2;
 }
 
 /* ----- prop motion */
@@ -1159,11 +1249,17 @@ details.more[open] summary::before { transform: rotate(90deg); }
   80% { transform: rotate(6deg); }
 }
 @keyframes wh-nod { 50% { transform: translateY(-3px) rotate(-6deg); } }
+/* swings that start and end at rest (an alternate from one extreme to the other snapped to the first pose) */
 @keyframes wh-bob {
-  from { transform: translate(-2px, 0) rotate(-8deg); }
-  to { transform: translate(3px, -6px) rotate(8deg); }
+  0%, 100% { transform: none; }
+  25% { transform: translate(-2px, 0) rotate(-8deg); }
+  75% { transform: translate(3px, -6px) rotate(8deg); }
 }
-@keyframes wh-wave { from { transform: rotate(-35deg); } to { transform: rotate(30deg); } }
+@keyframes wh-wave {
+  0%, 100% { transform: none; }
+  25% { transform: rotate(-35deg); }
+  75% { transform: rotate(30deg); }
+}
 @keyframes wh-shimmy { from { transform: translateX(-2px); } to { transform: translateX(2px); } }
 @keyframes wh-pew { 40% { translate: 2px -2px; } }
 @keyframes wh-twirl {
@@ -1188,7 +1284,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
   70% { transform: translate(-4px, -8px) rotate(-4deg); }
 }
 @keyframes wh-wave-roll { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
-@keyframes wh-blow { from { transform: scaleX(.4); } to { transform: scaleX(1.2); } }
+@keyframes wh-blow { 0%, 100% { transform: none; } 45% { transform: scaleX(.4); } 75% { transform: scaleX(1.15); } }
 @keyframes wh-wheelie {
   0% { transform: none; }
   25% { transform: rotate(16deg); }
@@ -1238,7 +1334,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
   100% { transform: none; }
 }
 @keyframes wh-fade { from { opacity: 1; } to { opacity: 0; transform: translateX(-30px); } }
-@keyframes wh-wobble { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
+@keyframes wh-wobble { 0%, 100% { transform: none; } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
 @keyframes wh-orbit { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 @keyframes wh-topple {
   0% { transform: none; }
@@ -1289,7 +1385,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .pp > svg:not(.pp-hat) { width: 100%; height: 100%; }
 .pp-hat { position: absolute; left: 16px; top: -10px; width: 20px; height: 24px; }
 .pp.missed { opacity: .85; }
-.lv-1 .pp { animation: pp-wave 1.2s ease-in-out calc(var(--i) * .1s) 3 alternate; transform-origin: 50% 100%; }
+.lv-1 .pp { animation: pp-wave 1.6s ease-in-out calc(var(--i) * .1s) 2; transform-origin: 50% 100%; }
 .lv-2 .parade-track, .lv-3 .parade-track, .lv-4 .parade-track {
   animation: pp-march 2.4s cubic-bezier(.2, .6, .3, 1) both;
 }
@@ -1306,7 +1402,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .pp-surfer svg { width: 100%; height: 100%; }
 [data-size="compact"] .pp { width: 38px; height: 38px; }
 [data-size="compact"] .pp-hat { left: 11px; top: -12px; }
-@keyframes pp-wave { from { transform: rotate(-5deg); } to { transform: rotate(5deg) translateY(-2px); } }
+@keyframes pp-wave { 0%, 100% { transform: none; } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg) translateY(-2px); } }
 @keyframes pp-march { from { transform: translateX(-110%); } }
 @keyframes pp-hop { from { transform: translateY(0) rotate(-4deg); } to { transform: translateY(-7px) rotate(4deg); } }
 @keyframes pp-toss {
@@ -1326,14 +1422,22 @@ details.more[open] summary::before { transform: rotate(90deg); }
 [data-calm="1"] .parade *, [data-calm="1"] .pt-svg *, [data-calm="1"] .wh-banner { animation: none !important; }
 [data-calm="1"] .pp-surfer { display: none; }
 .wh-still *, .wh-still .wh-banner, .patient-card:has(.wh-still) .wh-banner { animation: none !important; }
-@media (prefers-reduced-motion: reduce) {
-  .pt-svg *, .wh-banner, .monitor.wh-sneeze, .parade * { animation: none !important; }
-  .pp-surfer { display: none; }
-}
+/* soft (device Reduce Motion on "Auto"): gags still play in place; the monitor doesn't shake, the parade fades in
+   instead of marching across, and the surfer who rides across the whole width stays home */
+[data-motion="soft"] .monitor.wh-sneeze { animation: none; }
+[data-motion="soft"] .lv-2 .parade-track, [data-motion="soft"] .lv-3 .parade-track,
+[data-motion="soft"] .lv-4 .parade-track { animation: fade-in .4s ease-out both; }
+[data-motion="soft"] .pp-surfer { display: none; }
 
 /* ---------- shift events ---------- */
 .bedside { position: relative; }
-.bedside.ev-rapid .patient-card { border-color: var(--code); animation: ev-alarm 1s ease-in-out infinite alternate; }
+.bedside.ev-rapid .patient-card { border-color: var(--code); }
+/* the alarm glow pulses with opacity on a ready-drawn ring (animating box-shadow repainted it every frame) */
+.bedside.ev-rapid .patient-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 3px rgba(255, 71, 87, .55), inset 0 0 18px rgba(255, 71, 87, .25);
+  animation: ev-alarm 1s ease-in-out infinite alternate;
+}
 .bedside.ev-rapid .topbar b { color: var(--code); }
 .bedside.ev-visitor .topbar b, .bedside.ev-outage .topbar b { color: var(--warn); }
 .visitor {
@@ -1367,10 +1471,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .chip.daily.todo { border-color: var(--accent); background: var(--accent-soft); }
 .chip.daily.todo svg { color: var(--accent); }
 .chip.daily.done svg { color: var(--good); }
-@keyframes ev-alarm {
-  from { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
-  to { box-shadow: 0 0 0 4px rgba(255, 71, 87, .45); }
-}
+@keyframes ev-alarm { from { opacity: 0; } to { opacity: 1; } }
 @keyframes ev-flicker {
   0%, 100% { opacity: 1; }
   3% { opacity: .55; }
@@ -1378,13 +1479,13 @@ details.more[open] summary::before { transform: rotate(90deg); }
   47% { opacity: .7; }
   48% { opacity: 1; }
 }
-[data-calm="1"] .bedside.ev-rapid .patient-card, [data-calm="1"] .outage-dark,
+[data-calm="1"] .bedside.ev-rapid .patient-card::after, [data-calm="1"] .outage-dark,
 [data-calm="1"] .ev-banner, [data-calm="1"] .visitor {
   animation: none !important;
 }
-@media (prefers-reduced-motion: reduce) {
-  .bedside.ev-rapid .patient-card, .outage-dark, .ev-banner, .visitor { animation: none !important; }
-}
+/* soft: no flicker (flashing light) and the banner fades rather than flying */
+[data-motion="soft"] .outage-dark { animation: none; }
+[data-motion="soft"] .ev-banner { animation-name: banner-fade; }
 
 /* ---------- thank-you cards ---------- */
 .tycard {
@@ -1441,7 +1542,7 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .card-tile.ghost svg { width: 24px; height: 24px; }
 @keyframes ty-flip { from { opacity: 0; transform: perspective(600px) rotateY(90deg) scale(.9); } }
 [data-calm="1"] .tycard.reveal { animation: none; }
-@media (prefers-reduced-motion: reduce) { .tycard.reveal { animation: none; } }
+[data-motion="soft"] .tycard.reveal { animation-name: fade-in; animation-duration: .4s; }
 
 /* ---------- shared bits ---------- */
 .stack { display: flex; flex-direction: column; gap: var(--s4); }
@@ -1527,11 +1628,36 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .card .stat { background: var(--surface-2); }
 .stat b { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-xl); }
 .stat .faint { font-size: var(--fs-xs); }
+.stat .pb {
+  align-self: flex-start; margin-top: 2px; padding: 1px 8px; border-radius: 999px; font-size: var(--fs-xs); font-weight: 800;
+  background: var(--warn-soft); color: var(--warn); animation: star-stamp .4s var(--ease-spring) .7s both;
+}
+[data-calm="1"] .stat .pb { animation: none; }
 .unit-card { display: flex; gap: var(--s5); align-items: center; flex-wrap: wrap; }
 .room-stars.big svg { width: 34px; height: 34px; }
 .mini-bars { flex: 1; min-width: 220px; display: grid; gap: 6px; font-size: var(--fs-sm); }
 .mini-bars > div:not(.bar) { display: flex; justify-content: space-between; gap: var(--s2); }
 .report-actions { display: flex; gap: var(--s3); flex-wrap: wrap; justify-content: center; }
+/* Staging: the report builds top to bottom instead of landing all at once. The nurse pops, then the headline,
+   the stat tiles one after another, the cards, then the buttons; earned stars stamp in after the room card. */
+.report-wrap > * { animation: rise-in .36s var(--ease-out) both; }
+.report-wrap > :nth-child(2) { animation-delay: .08s; }
+.report-wrap > :nth-child(3) { animation-delay: .16s; }
+.report-wrap > :nth-child(4) { animation-delay: .38s; }
+.report-wrap > :nth-child(5) { animation-delay: .46s; }
+.report-wrap > :nth-child(6) { animation-delay: .54s; }
+.report-wrap > :nth-child(n+7) { animation-delay: .62s; }
+.report-wrap .stat-grid { animation: none; }
+.stat-grid .stat { animation: rise-in .32s var(--ease-out) calc(.16s + var(--k, 0) * 45ms) both; }
+.report-nurse { animation: nurse-pop .5s var(--ease-spring) both; transform-origin: 50% 100%; }
+.room-stars.big .on { animation: star-stamp .4s var(--ease-spring) calc(.75s + var(--k, 0) * 120ms) both; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes nurse-pop { from { opacity: 0; transform: scale(.6) translateY(10px); } }
+@keyframes star-stamp { from { opacity: 0; transform: scale(2) rotate(-20deg); } }
+[data-motion="soft"] .report-wrap > *, [data-motion="soft"] .stat-grid .stat, [data-motion="soft"] .report-nurse,
+[data-motion="soft"] .room-stars.big .on { animation-name: fade-in; }
+[data-calm="1"] .report-wrap > *, [data-calm="1"] .stat-grid .stat, [data-calm="1"] .report-nurse,
+[data-calm="1"] .room-stars.big .on { animation: none; }
 .badge-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -1808,6 +1934,10 @@ details.more[open] summary::before { transform: rotate(90deg); }
   color: var(--text-dim);
 }
 .seg button.on { background: var(--accent); color: var(--accent-ink); }
+.seg { position: relative; }
+.seg button { position: relative; z-index: 1; transition: color .2s var(--ease-out); }
+.seg button.on.arriving { background: transparent; color: var(--text-dim); }
+.seg-pill { position: absolute; z-index: 0; border-radius: 999px; background: var(--accent); pointer-events: none; }
 input[type="date"], input[type="text"] {
   min-height: var(--tap); padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2);
   color: var(--text); font: inherit; font-weight: 700; max-width: 100%;
@@ -1851,10 +1981,12 @@ input[type="date"], input[type="text"] {
 .ob-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--surface-3); }
 .ob-dots i.on { background: var(--accent); width: 22px; border-radius: 999px; }
 
-@media (prefers-reduced-motion: reduce) {
-  .screen, .screen.zoom-in, .feedback, .bubble.pop, .modal, .ob-step { animation: none !important; }
-  .walker { transition: none !important; }
-}
+/* soft (device Reduce Motion on "Auto"): screens, panels and dialogs crossfade instead of sliding or zooming */
+[data-motion="soft"] .screen, [data-motion="soft"] .screen.zoom-in, [data-motion="soft"] .feedback,
+[data-motion="soft"] .modal, [data-motion="soft"] .screen.zoom-in.from-point { animation-name: fade-in; }
+/* calm: they just appear */
+[data-calm="1"] .screen, [data-calm="1"] .screen.zoom-in, [data-calm="1"] .feedback, [data-calm="1"] .bubble.pop,
+[data-calm="1"] .modal, [data-calm="1"] .ob-step, [data-calm="1"] .screen.zoom-in.from-point { animation: none !important; }
 
 /* how-to-save guide (settings card + iPad reminder) */
 .save-help h3 { font-size: var(--fs-md, 1rem); margin: var(--s4) 0 var(--s2); }
@@ -1863,6 +1995,23 @@ input[type="date"], input[type="text"] {
 .save-help .steps b { color: var(--text, inherit); }
 .save-help p .ic { width: 18px; height: 18px; vertical-align: -3px; color: var(--accent); }
 .modal .save-help { max-height: min(52vh, 420px); overflow-y: auto; margin: var(--s3) 0; padding-right: 4px; }
+
+/* Missed patients, Report card and Get-well cards: the cards come in one after another (these screens are not
+   redrawn while you use them, so the stagger only plays on arrival) */
+[data-screen="missed"] .card, [data-screen="stats"] .card, [data-screen="cards"] .card { animation: rise-in .34s var(--ease-out) both; }
+[data-screen="missed"] .card:nth-child(2), [data-screen="stats"] .card:nth-child(2), [data-screen="cards"] .card:nth-child(2) { animation-delay: 0.05s; }
+[data-screen="missed"] .card:nth-child(3), [data-screen="stats"] .card:nth-child(3), [data-screen="cards"] .card:nth-child(3) { animation-delay: 0.10s; }
+[data-screen="missed"] .card:nth-child(4), [data-screen="stats"] .card:nth-child(4), [data-screen="cards"] .card:nth-child(4) { animation-delay: 0.15s; }
+[data-screen="missed"] .card:nth-child(5), [data-screen="stats"] .card:nth-child(5), [data-screen="cards"] .card:nth-child(5) { animation-delay: 0.20s; }
+[data-screen="missed"] .card:nth-child(6), [data-screen="stats"] .card:nth-child(6), [data-screen="cards"] .card:nth-child(6) { animation-delay: 0.25s; }
+[data-screen="missed"] .card:nth-child(7), [data-screen="stats"] .card:nth-child(7), [data-screen="cards"] .card:nth-child(7) { animation-delay: 0.30s; }
+[data-screen="missed"] .card:nth-child(8), [data-screen="stats"] .card:nth-child(8), [data-screen="cards"] .card:nth-child(8) { animation-delay: 0.35s; }
+[data-screen="missed"] .card:nth-child(n+9), [data-screen="stats"] .card:nth-child(n+9), [data-screen="cards"] .card:nth-child(n+9) { animation-delay: .4s; }
+[data-motion="soft"] [data-screen="missed"] .card, [data-motion="soft"] [data-screen="stats"] .card, [data-motion="soft"] [data-screen="cards"] .card { animation-name: fade-in; }
+[data-calm="1"] [data-screen="missed"] .card, [data-calm="1"] [data-screen="stats"] .card, [data-calm="1"] [data-screen="cards"] .card { animation: none; }
+
+/* dedication at the bottom of Settings */
+.dedication { margin-top: -4px; font-size: var(--fs-sm); font-style: italic; color: var(--text-dim); }
 </style>
 <div id="app" aria-live="polite">
   <div class="boot">
@@ -1973,16 +2122,23 @@ function afterNextPaint(fn) {
 
 // asked every animation frame, so the media query is created once
 const reducedMotionQuery = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
-const reducedMotion = () => {
+// Three motion levels (see ANIMATION_NOTES.md):
+//   full  everything moves ("Full", or "Auto" with the device's Reduce Motion off)
+//   soft  "Auto" with the device's Reduce Motion on: feedback, characters, the walk and the monitor still
+//         animate, but big travel, zooms and shakes become crossfades (Apple: reduce means different, not none)
+//   calm  the game's own "Calm" setting: things hold still
+// <html data-motion> carries the level so CSS can follow it (CSS never reads the media query itself, so "Full"
+// really is full even on a device with Reduce Motion on).
+const motionLevel = () => {
   const s = window.WR && WR.state && WR.state.settings.motion;
-  if (s === 'reduced') return true;
-  if (s === 'full') return false;
-  return !!(reducedMotionQuery && reducedMotionQuery.matches);
+  if (s === 'reduced') return 'calm';
+  if (s === 'full') return 'full';
+  return reducedMotionQuery && reducedMotionQuery.matches ? 'soft' : 'full';
 };
-// Only the game's own "Calm" setting stills the heart monitor. On "Auto" it keeps sweeping even when the
-// device asks for reduced motion: a thin line moving inside a small box is not the zooming, sliding kind
-// of motion that setting is for, and a frozen monitor reads as a broken game.
-const calmChosen = () => !!(window.WR && WR.state && WR.state.settings.motion === 'reduced');
+// true when big movement (screen slides, shakes, smooth scrolling) should be swapped for a crossfade or skipped
+const reducedMotion = () => motionLevel() !== 'full';
+// true only on "Calm": the walk, the heart monitor, the patients' gags etc. stop
+const calmChosen = () => motionLevel() === 'calm';
 
 // ---------- icons (inline SVG, stroke-based) ----------
 const ICON_PATHS = {
@@ -2138,6 +2294,7 @@ const CONFIG = {
     nextAfterRightMs: 420,   // pause before the next patient
     nextAfterWrongMs: 900,
     skipRecent: 10,          // don't repeat any of the last N questions you saw anywhere
+    urgentSeconds: 5,        // the timer ticks (jumps + beeps) for the last seconds
   },
 
   exam: {
@@ -2237,6 +2394,7 @@ const CONFIG = {
 
   // ----- the nurse's chatter -----
   talk: {
+    suggestChance: 0.6,      // how often the floor nurse points at a room that is behind (always for ready discharges)
     streakShoutouts: [3, 6, 10, 15, 20, 25],
     chatterChance: 0.25,     // chance of a new line on each new patient
     trickChance: 0.4,        // chance a right answer repeats the memory trick
@@ -2288,10 +2446,17 @@ const CONFIG = {
     bossHurtMs: 700,
     timerDeltaMs: 1000,      // 30-chart.css .timer-delta (1s)
     cardSoundMs: 500,
-    walkPxPerSecond: 700,    // the nurse's walk to a room
-    walkMinSeconds: 0.35,
-    walkMaxSeconds: 1.1,
-    doorOpenMs: 360,
+    bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
+    buttonTuckMs: 200,       // the Code Blue and OR buttons shrink away as she starts walking
+    feedbackDelayMs: 240,    // the explanation panel follows the answer marks (30-chart.css mark-pop)
+    walkPxPerSecond: 600,    // the nurse's walk to a room
+    walkMinSeconds: 0.4,
+    walkMaxSeconds: 1.4,
+    walkStridePx: 58,        // ground covered per step: sets her step rate so her feet don't slide
+    walkCrouchMs: 150,       // little crouch before she sets off
+    doorLeadMs: 160,         // the door starts opening this long before she arrives
+    doorSettleMs: 140,       // pause at the open door before she steps in
+    stepInMs: 240,           // she steps through the door and fades
     confettiSeconds: 3.2,
     saveLocalMs: 1000,       // write progress to this browser this long after the last change (always on leaving the page)
     saveCloudMs: 2500,       // and to the Claude account (claude.ai only)
@@ -2581,6 +2746,14 @@ const Sound = {
     src.start(t0); src.stop(t0 + dur + 0.05);
   },
 
+  // the right-answer chime climbs a major scale with the streak (resets on a miss), so a hot streak sounds hot
+  right(streak) {
+    if (!this.on()) return;
+    const steps = [0, 2, 4, 5, 7, 9, 11, 12];
+    const k = Math.pow(2, steps[Math.min(Math.max(streak - 1, 0), steps.length - 1)] / 12);
+    try { this.tone(784 * k, 0, 0.14, 'triangle', 0.8); this.tone(1175 * k, 0.09, 0.22, 'triangle', 0.7); } catch (e) { /* audio is optional */ }
+  },
+
   play(name, delay = 0) {
     if (delay) { setTimeout(() => this.play(name), delay); return; }
     if (!this.on()) return;
@@ -2631,6 +2804,7 @@ const AVATAR = {
   scrubs: [
     { n: 'Ceil blue', c: '#7fa9d9' }, { n: 'Navy', c: '#2f4d80' }, { n: 'Teal', c: '#22a093' }, { n: 'Wine', c: '#8e2f4f' },
     { n: 'Charcoal', c: '#33373f' }, { n: 'Lilac', c: '#a68bd6' }, { n: 'Rose', c: '#e7889f' }, { n: 'Hunter', c: '#2f6b4f' },
+    { n: 'Pink', c: '#f08cba' },
   ],
   pattern: ['Solid', 'Hearts', 'Stars', 'Paws', 'Dots', 'Bandages', 'Ducks'],
   shoes: [
@@ -3141,7 +3315,7 @@ function bossSVG(phase = 0, mood = 'grin') {
 
 function starRow(n, of = 3) {
   let s = '';
-  for (let i = 0; i < of; i++) s += `<span class="${i < n ? 'on' : ''}">${icon('star')}</span>`;
+  for (let i = 0; i < of; i++) s += `<span class="${i < n ? 'on' : ''}" style="--k:${i}">${icon('star')}</span>`;
   return s;
 }
 
@@ -3292,7 +3466,7 @@ const Whimsy = {
     bed.innerHTML = patientInBed(run.cur.patient, w.mood);
     const props = bed.querySelector('.pt-props');
     if (w.props && props) props.innerHTML = WH_PROPS[w.props](run.cur.patient);
-    const still = reducedMotion();
+    const still = calmChosen(); // gags play in place, so only Calm stills them
     bed.classList.add('wh', 'wh-' + w.id);
     if (still) bed.classList.add('wh-still');
     if (w.kind === 'good' && w.tier >= 2) bed.classList.add('wh-hi'); // room-theme gags join in
@@ -3494,6 +3668,38 @@ const FX = {
     setTimeout(() => el.remove(), CONFIG.timing.floatTextMs);
   },
 
+  // a number rolls from one value to another (score), easing out so it settles on the real value
+  countUp(el, from, to, ms = 450, show = fmt, delay = 0) {
+    if (!el || calmChosen() || from === to) return;
+    const t0 = performance.now() + delay;
+    const step = (now) => {
+      if (!el.isConnected) return;
+      const k = Math.max(0, Math.min(1, (now - t0) / ms)), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = show(Math.round(from + (to - from) * e));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    el.textContent = show(from);
+    requestAnimationFrame(step);
+  },
+
+  // a copy of something that was just replaced, laid over its old spot, leaving to the left
+  ghostOut(node, rect) {
+    const layer = this.layer();
+    if (!layer || !node.animate) return;
+    node.removeAttribute('id');
+    node.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    node.setAttribute('aria-hidden', 'true');
+    Object.assign(node.style, {
+      position: 'fixed', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px',
+      margin: '0', pointerEvents: 'none', zIndex: '1', contain: 'layout paint style', willChange: 'transform, opacity',
+    });
+    layer.appendChild(node);
+    const out = reducedMotion() ? [{ opacity: 1 }, { opacity: 0 }]
+      : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-40px) rotate(-1.5deg)' }];
+    node.animate(out, { duration: 180, easing: 'cubic-bezier(.4, 0, .9, .4)', fill: 'forwards' })
+      .finished.then(() => node.remove(), () => node.remove());
+  },
+
   shake(el) {
     if (!el || reducedMotion()) return;
     replayClass(el, 'shake');
@@ -3502,7 +3708,7 @@ const FX = {
 
   flash(kind) {
     const layer = this.layer();
-    if (!layer || reducedMotion()) return;
+    if (!layer || calmChosen()) return; // a colour wash, not movement: kept on "soft"
     const el = document.createElement('div');
     el.className = 'screen-flash ' + kind;
     layer.appendChild(el);
@@ -3510,7 +3716,8 @@ const FX = {
   },
 
   confetti(amount = 140) {
-    if (reducedMotion()) return;
+    if (calmChosen()) return;
+    if (reducedMotion()) amount = Math.round(amount * 0.35); // soft: a lighter sprinkle
     const layer = this.layer();
     const c = document.createElement('canvas');
     c.className = 'confetti';
@@ -3544,8 +3751,9 @@ const FX = {
     });
   },
 
-  projectile(from, to, color) {
-    if (!from || !to || reducedMotion()) return Promise.resolve();
+  // thrown along a smooth arc (sampled from a curve; three keyframes made a kinked path), spinning as it flies
+  projectile(from, to, color, delay = 0) {
+    if (!from || !to || calmChosen()) return Promise.resolve();
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
     const el = document.createElement('div');
     el.className = 'projectile';
@@ -3553,11 +3761,14 @@ const FX = {
     this.layer().appendChild(el);
     const x0 = a.left + a.width * 0.7, y0 = a.top + a.height * 0.4, x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
     el.style.left = '0px'; el.style.top = '0px';
-    const anim = el.animate([
-      { transform: `translate(${x0}px, ${y0}px) scale(.6)` },
-      { transform: `translate(${(x0 + x1) / 2}px, ${Math.min(y0, y1) - 60}px) scale(1.1)` },
-      { transform: `translate(${x1}px, ${y1}px) scale(1.4)`, opacity: 0.9 },
-    ], { duration: 420, easing: 'ease-in' });
+    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - 70, N = 10, frames = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, u = 1 - t;
+      const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+      frames.push({ transform: `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${Math.round(t * 540)}deg) scale(${(0.6 + 0.8 * t).toFixed(2)})` });
+    }
+    frames[N].opacity = 0.9;
+    const anim = el.animate(frames, { duration: 420, delay, easing: 'cubic-bezier(.35, 0, .65, 1)', fill: 'backwards' });
     return anim.finished.then(() => el.remove()).catch(() => el.remove());
   },
 };
@@ -3631,6 +3842,33 @@ const Engine = {
   //       h: times right only with the 50/50 (seen, but not proof you know it) }
   rec(qid) { return WR.state.items[qid]; },
   isSolid(r) { return !!r && r.ok >= CONFIG.mastery.solidDays; },
+  // patients to answer right for a room's next star (0 when it has three)
+  nextStarNeed(m) {
+    const M = CONFIG.mastery, T = m.total;
+    if (!T || m.stars >= 3) return 0;
+    if (m.stars === 2) return Math.max(0, Math.ceil(M.threeStars * T) - m.solid);
+    return Math.max(0, Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever);
+  },
+  // Which room the floor nurse points you to: first the room with the most missed patients who can be discharged
+  // today (right on an earlier day, so one more right answer today sends them home: spaced review), otherwise the
+  // started room furthest behind on stars. Nothing for a brand-new player (the first shift is the tutorial's).
+  suggestRoom() {
+    const t = todayStr(), need = CONFIG.mastery.solidDays - 1;
+    let best = null;
+    for (const u of Content.units) {
+      let n = 0;
+      for (const q of Content.byUnit[u.id] || []) {
+        const r = WR.state.items[q.id];
+        if (r && r.miss && r.ok >= need && r.od !== t) n++;
+      }
+      if (n && (!best || n > best.n)) best = { unit: u, n, why: 'ready' };
+    }
+    if (best) return best;
+    const started = Content.units.map((u) => ({ unit: u, m: this.mastery(u.id) })).filter((x) => x.m.seen && x.m.stars < 3);
+    if (!started.length) return null;
+    started.sort((a, b) => a.m.stars - b.m.stars || a.m.everFrac - b.m.everFrac);
+    return { unit: started[0].unit, n: this.nextStarNeed(started[0].m), why: 'weak' };
+  },
   touchDay() {
     const d = WR.state.days, t = todayStr();
     if (d.today !== t) {
@@ -4067,6 +4305,7 @@ class Run {
     this.streak = 0;
     this.wrongRun = 0;
     this.best = 0;
+    this.bestStreakBefore = WR.state.bestStreak; // for "new personal best" on the report
     this.results = [];
     const L = CONFIG.lifelines;
     this.lifelines = m.lifelines ? { colleague: L.colleague, coffee: L.coffee } : { colleague: 0, coffee: 0 };
@@ -4205,9 +4444,15 @@ class Run {
     if (this.mode === 'boss') this.hitBoss(c, res);
     const every = CONFIG.lifelines.bonusCoffeeEvery;
     if (this.streak > 0 && this.streak % every === 0 && this.cfg.lifelines) { this.lifelines.coffee++; c.bonusCoffee = true; }
+    const starsBefore = Engine.mastery(q.unit).stars;
     const rec = Engine.record(q, res, { assisted: !!c.assisted });
     c.discharged = rec.discharged;
     c.helped = rec.helped;
+    // a room star earned on this answer is celebrated right away, not only on the report
+    const starsNow = Engine.mastery(q.unit).stars;
+    c.starUp = starsNow > starsBefore ? { unit: q.unit, stars: starsNow } : null;
+    // the patient that reaches today's goal gets a small celebration (once a day)
+    c.goalHit = WR.state.days.answered === Engine.dailyTarget();
     c.card = rec.discharged && Cards.give(q) ? q.id : null;
     this.results.push({ qid: q.id, correct: res.correct, frac: res.frac, pts: pts.pts, ans });
     const xp = pts.pts / CONFIG.scoring.pointsPerXP + (evInfo && evInfo.xp && res.correct ? evInfo.xp : 0);
@@ -4505,12 +4750,21 @@ const App = {
     const sec = document.createElement('section');
     sec.className = 'screen ' + (scr.cls || name) + (anim ? ' ' + anim : '');
     sec.setAttribute('data-screen', name);
+    // continuity: a zoom that starts from the thing that was tapped (a room) grows out of that spot
+    if (anim === 'zoom-in' && this.zoomFrom) {
+      const rr = root.getBoundingClientRect();
+      sec.style.transformOrigin = `${Math.round(this.zoomFrom.x - rr.left)}px ${Math.round(this.zoomFrom.y - rr.top)}px`;
+      sec.classList.add('from-point');
+    }
+    this.zoomFrom = null;
     sec.innerHTML = scr.render(params);
     // The old screen goes at once and only the new one fades in, over the plain background, so two
     // screens are never drawn on top of each other (a cross-fade showed both mid-way, and with
     // Reduce Motion on, both at full strength).
     if (old) old.remove();
     root.innerHTML = '';
+    // floating "+100" texts belong to the screen they were earned on
+    document.querySelectorAll('#fx-layer > .float-text').forEach((n) => n.remove());
     root.appendChild(sec);
     this.el = sec;
     if (scr.mount) scr.mount(sec, params);
@@ -4527,7 +4781,10 @@ const App = {
     const y = sec.scrollTop; // read before anything changes, so it costs no extra layout
     if (scr.leave) scr.leave();
     const want = opts.scrollTop != null ? opts.scrollTop : y;
-    sec.className = 'screen ' + (scr.cls || this.name);
+    // keep the entrance-animation classes: dropping them swaps the animation name, which replays an entrance
+    // on the whole screen (this made the first "Next patient" after a room's zoom-in fade the entire screen)
+    const keep = ['zoom-in', 'from-point'].filter((k) => sec.classList.contains(k));
+    sec.className = ['screen', scr.cls || this.name, ...keep].join(' ');
     sec.innerHTML = scr.render(this.params);
     if (scr.mount) scr.mount(sec, this.params);
     // writing scrollTop forces a layout on the spot, so only do it when it has to move
@@ -4564,7 +4821,7 @@ const App = {
     box.appendChild(t);
     setTimeout(() => {
       t.classList.add('out');
-      setTimeout(() => t.remove(), 250);
+      setTimeout(() => t.remove(), 200); // 10-base.css .toast.out (160 ms)
     }, ms);
   },
 
@@ -4573,7 +4830,23 @@ const App = {
     root.innerHTML = `<div class="modal-backdrop" data-modal-bg>` +
       `<div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
     const bg = root.firstChild;
-    const close = () => { root.innerHTML = ''; };
+    // The dialog leaves instead of vanishing: it is moved out of #modal-root at once (so it counts as closed and
+    // a new dialog can open), then fades and sinks a little, faster than it came in (exits are quicker).
+    const close = () => {
+      if (!bg.isConnected) return;
+      if (calmChosen() || !bg.animate) { bg.remove(); return; }
+      const m = bg.querySelector('.modal');
+      if (document.activeElement && bg.contains(document.activeElement)) document.activeElement.blur();
+      bg.removeAttribute('data-modal-bg');
+      bg.style.pointerEvents = 'none';
+      bg.style.animation = 'none';
+      if (m) m.style.animation = 'none';
+      document.body.appendChild(bg);
+      const ease = 'cubic-bezier(.4, 0, .9, .4)';
+      if (m) m.animate([{ transform: 'none' }, { transform: 'scale(.96) translateY(8px)' }], { duration: 160, easing: ease, fill: 'forwards' });
+      bg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: ease, fill: 'forwards' })
+        .finished.then(() => bg.remove(), () => bg.remove());
+    };
     bg.addEventListener('click', (e) => {
       if (e.target === bg) { close(); return; }
       const b = e.target.closest('[data-m]');
@@ -4627,6 +4900,8 @@ function badgeToast(ids) {
 
 /* ---- 45-floor.js ---- */
 // ---------- hospital floor (home) ----------
+// the XP bar fills from where it was last shown, so XP earned on a shift visibly flows in when you get back
+let hudXpShown = null, hudXpNum = null;
 function hudHTML() {
   const s = WR.state;
   const rp = Engine.rankProgress();
@@ -4640,6 +4915,9 @@ function hudHTML() {
   else if (days === 0) examChip = `<span class="chip exam">${cal}Exam day. You've got this!</span>`;
   else examChip = `<span class="chip exam">${cal}Exam done</span>`;
   const pct = Math.round(rp.frac * 100);
+  // fraction of the current fill to start from: 0 the first time (or after a rank-up), the old level after a shift
+  const xpFrom = hudXpShown == null || pct < hudXpShown || !pct ? 0 : (hudXpShown / pct).toFixed(3);
+  hudXpShown = pct;
   const toNext = rp.nxt ? `${fmt(rp.toGo)} to ${esc(rp.nxt.n)}` : 'Top rank!';
   return `<header class="hud wrap">
     <button class="hud-me" data-action="locker" aria-label="Open locker room to change your nurse">
@@ -4647,14 +4925,15 @@ function hudHTML() {
       <span><b>${esc(s.profile.name || 'Nurse')}</b><span>${esc(rp.cur.n)}</span></span>
     </button>
     <div class="hud-xp">
-      <div class="label"><span>XP <span class="num">${fmt(s.xp)}</span></span><span>${toNext}</span></div>
+      <div class="label"><span>XP <span class="num" id="hud-xp-num">${fmt(s.xp)}</span></span><span>${toNext}</span></div>
       <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
-        aria-label="Progress to next rank"><i style="width:${pct}%"></i></div>
+        aria-label="Progress to next rank"><i style="width:${pct}%;--from:${xpFrom}"></i></div>
     </div>
     <div class="hud-chips">
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
         class="num">${Engine.dayStreak()}</span>-day streak</span></span>
-      <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
+      <span class="chip today ${today >= goal ? 'met' : ''}" title="Patients answered today">${icon(today >= goal ? 'check' : 'target')}<span
+        class="num">${today}/${goal}</span> today</span>
       ${examChip}
       ${dailyChip()}
     </div>
@@ -4670,21 +4949,32 @@ function dailyChip() {
     `${icon(done ? 'check' : 'sparkle')}<span>${label}</span></button>`;
 }
 
+// goal gradient on the room card: how many more patients earn the next star
+function nextStarHTML(m) {
+  const need = Engine.nextStarNeed(m);
+  if (need <= 0) return '';
+  const what = m.stars === 2 ? 'mastered' : 'right';
+  return `<br><span class="next-star" title="${need} more ${what} for the next star"><span class="num">${need}</span> to ${'★'.repeat(m.stars + 1)}</span>`;
+}
+
 // one room door on the floor. `place` adds grid placement (the portrait layout)
-function roomHTML(u, place = '') {
+function roomHTML(u, place = '', suggested = false) {
   const m = Engine.mastery(u.id);
   const p = patientFor({ id: 'room-' + u.id, stem: '', unit: u.id });
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
   const waiting = m.missed ? ` ${m.missed} missed patients waiting.` : '';
-  const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${waiting}`;
-  return `<button class="room"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
+  const need = Engine.nextStarNeed(m);
+  const toStar = need ? ` ${need} more ${m.stars === 2 ? 'mastered' : 'right'} for the next star.` : '';
+  const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${toStar}${waiting}` +
+    (suggested ? ' Suggested by your nurse.' : '');
+  return `<button class="room${suggested ? ' suggest' : ''}"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
     <span class="room-body">
       <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span>${m.missed ? `<span class="room-dot num" title="Missed patients waiting">${m.missed}</span>` : ''}</span>
       <span class="room-ward">${esc(u.ward)}</span>
       <span class="room-topic">${esc(u.topic)}</span>
       <span class="room-blurb">${esc(u.blurb)}</span>
       <span class="room-pt"><span class="pt">${patientHead(p, mood)}</span><span
-        class="room-meta"><span class="num">${m.solid}/${m.total}</span><br>mastered</span></span>
+        class="room-meta"><span class="num">${m.solid}/${m.total}</span> mastered${nextStarHTML(m)}</span></span>
     </span>
     <span class="door"></span>
   </button>`;
@@ -4716,22 +5006,33 @@ Screens.floor = {
     const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" ` +
       `aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span>` +
       `<span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : lockNote}</small></span></button>`;
-    const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
+    // the nurse usually points at a room worth visiting (and it glows); otherwise she shares a tip
+    const sug = Engine.suggestRoom();
+    const pointAt = sug && (sug.why === 'ready' || Math.random() < CONFIG.talk.suggestChance) ? sug : null;
+    let say = Talk.line('floor');
+    if (pointAt) {
+      const r = pointAt.unit.room, n = pointAt.n;
+      say = pointAt.why === 'ready'
+        ? `Room ${r} has ${n} missed patient${n === 1 ? '' : 's'} ready to go home. One right answer today each!`
+        : `Room ${r} could use a visit: ${n} more right for its next star.`;
+    }
+    const sugId = pointAt && pointAt.unit.id;
+    const bubble = `<div class="bubble pop" id="floor-bubble">${esc(say)}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
     if (App.layout === 'h') {
       plan = `<div class="floorplan h wrap" id="floorplan">
-        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u)).join('')}</div>
+        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u, '', u.id === sugId)).join('')}</div>
         <div class="corridor">
           <div class="station"><div class="station-desk" aria-hidden="true">NURSES' STATION</div>${bubble}</div>
           ${alarm}${elev}
         </div>
-        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u)).join('')}</div>
+        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u, '', u.id === sugId)).join('')}</div>
         ${walker}
       </div>`;
     } else {
       // two columns of rooms either side of the corridor
-      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`)).join('');
+      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`, u.id === sugId)).join('');
       plan = `<div class="station-card show"><div class="station-desk" aria-hidden="true">STATION</div>${bubble}</div>
       <div class="floorplan v wrap" id="floorplan">
         <div class="rooms">${rows}</div>
@@ -4744,7 +5045,97 @@ Screens.floor = {
   },
   mount(el) {
     this.placeWalker(false);
+    // No room hover glow until the pointer actually moves: the floor is redrawn under a mouse or trackpad that
+    // is still resting on the room you just left, and that room would stay lit until you nudged it.
+    // Touch never lights it (a tap leaves :hover stuck on the last room touched); see data-input in 90-boot.js.
+    const plan = $('#floorplan', el);
+    if (plan) {
+      plan.classList.add('hover-off');
+      plan.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'touch') plan.classList.remove('hover-off');
+      }, { passive: true });
+    }
+    // XP earned since the floor was last shown rolls in alongside the bar
+    if (hudXpNum != null && hudXpNum < WR.state.xp) FX.countUp($('#hud-xp-num', el), hudXpNum, WR.state.xp, 900);
+    hudXpNum = WR.state.xp;
+    // stars earned since the floor was last shown stamp onto their room cards
+    const stars = {};
+    Content.units.forEach((u) => { stars[u.id] = Engine.mastery(u.id).stars; });
+    if (this.shownStars && !calmChosen()) {
+      Content.units.forEach((u) => {
+        const was = this.shownStars[u.id] || 0;
+        if (stars[u.id] <= was) return;
+        const lit = $$(`.room[data-unit="${u.id}"] .room-stars .on`, el);
+        lit.slice(was).forEach((s, k) => s.classList.add('stamp'));
+      });
+    }
+    this.shownStars = stars;
+    // back from a shift: she comes out of the room she went into and walks back to the station
+    const unit = this.lastRoom;
+    this.lastRoom = null;
+    if (unit && !calmChosen()) this.comeBack(unit);
   },
+  // where she stands outside a room's door (walker's top-left, in floor-plan coordinates)
+  doorPos(roomEl) {
+    const plan = $('#floorplan'), walker = $('#walker');
+    const pr = plan.getBoundingClientRect(), rr = roomEl.getBoundingClientRect(), cor = $('.corridor', plan).getBoundingClientRect();
+    if (App.layout === 'h') {
+      return { x: rr.left - pr.left + rr.width / 2 - walker.offsetWidth / 2, y: cor.top - pr.top + cor.height / 2 - walker.offsetHeight / 2 };
+    }
+    return { x: cor.left - pr.left + cor.width / 2 - walker.offsetWidth / 2, y: rr.top - pr.top + rr.height / 2 - walker.offsetHeight / 2 };
+  },
+  // which way "into the room" is from the corridor, for stepping in and out of the door
+  doorDir(roomEl) {
+    const d = 34;
+    if (App.layout === 'h') return { dx: 0, dy: roomEl.closest('.rooms-top') ? -d : d };
+    return { dx: Array.from(roomEl.parentNode.children).indexOf(roomEl) % 2 ? d : -d, dy: 0 };
+  },
+  // Continuity for the trip back: the door opens, she steps out, it closes behind her, she walks to the station,
+  // and only then do her speech bubble and the corridor buttons pop back in (one after another, not all at once).
+  // A tap on a room while this plays takes over cleanly (walkId).
+  comeBack(unit) {
+    const plan = $('#floorplan'), walker = $('#walker'), room = plan && $(`.room[data-unit="${unit}"]`, plan);
+    const svg = walker && $('svg', walker);
+    if (!room || !svg || !svg.animate) return;
+    const id = ++this.walkId;
+    const T = CONFIG.timing;
+    const bubble = $('#floor-bubble');
+    const btns = $$('.corridor .alarm, .corridor .elevator', plan);
+    if (bubble) { bubble.classList.remove('pop'); bubble.style.visibility = 'hidden'; }
+    btns.forEach((b) => { b.style.opacity = '0'; b.style.pointerEvents = 'none'; }); // hidden buttons can't be tapped
+    const start = this.doorPos(room), home = this.home(), dir = this.doorDir(room);
+    walker.style.transition = 'none';
+    walker.style.transform = `translate(${start.x}px, ${start.y}px)`;
+    void walker.offsetWidth;
+    walker.style.transition = '';
+    room.classList.add('open');
+    svg.style.transformOrigin = '50% 100%';
+    svg.animate([{ transform: `translate(${dir.dx}px, ${dir.dy}px) scale(.85)`, opacity: 0 }, { transform: 'none', opacity: 1 }],
+      { duration: T.stepInMs, easing: 'cubic-bezier(.2, .8, .2, 1)', delay: 120, fill: 'backwards' });
+    setTimeout(() => {
+      if (id !== this.walkId) return;
+      room.classList.remove('open');
+      const dist = Math.hypot(home.x - start.x, home.y - start.y);
+      const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
+      walker.style.setProperty('--step', clamp(T.walkStridePx / Math.max(1, dist / dur), 0.1, 0.22).toFixed(3) + 's');
+      walker.style.transitionDuration = dur + 's';
+      walker.classList.add('walking');
+      walker.style.transform = `translate(${home.x}px, ${home.y}px)`;
+      setTimeout(() => {
+        if (id !== this.walkId) return;
+        walker.classList.remove('walking');
+        svg.animate([{ transform: 'scaleY(.95) translateY(2px)' }, { transform: 'none' }],
+          { duration: 180, easing: 'cubic-bezier(.2, .9, .3, 1.4)' });
+        if (bubble) { bubble.style.visibility = ''; bubble.classList.add('pop'); }
+        btns.forEach((b, i) => {
+          b.style.opacity = ''; b.style.pointerEvents = '';
+          b.animate([{ transform: 'scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+            { duration: 280, delay: 120 + i * 70, easing: 'cubic-bezier(.2, .9, .3, 1.25)', fill: 'backwards' });
+        });
+      }, dur * 1000 + 30);
+    }, 120 + T.stepInMs + 60);
+  },
+  walkId: 0,
   home() {
     const plan = $('#floorplan'), walker = $('#walker');
     if (!plan || !walker) return { x: 0, y: 0 };
@@ -4763,40 +5154,101 @@ Screens.floor = {
     walker.style.transform = `translate(${p.x}px, ${p.y}px)`;
     if (!animate) { void walker.offsetWidth; walker.style.transition = ''; }
   },
+  // The walk to a room (and the bubble/button tuck and door swing around it) stops only on the game's own Calm
+  // setting, like the heart monitor: on Auto it plays even when the device asks for reduced motion, since a
+  // nurse who jumps to the door reads as a glitch.
+  // The speech bubble shrinks into the nurse (towards her head) before she sets off, so she never walks over it.
+  tuckBubble() {
+    return new Promise((resolve) => {
+      const bubble = $('#floor-bubble'), walker = $('#walker');
+      if (!bubble) { resolve(); return; }
+      const done = () => { bubble.style.visibility = 'hidden'; resolve(); };
+      if (!walker || calmChosen() || !bubble.animate) { done(); return; }
+      const br = bubble.getBoundingClientRect(), wr = walker.getBoundingClientRect();
+      const ox = wr.left + wr.width / 2 - br.left, oy = wr.top + wr.height * 0.3 - br.top;
+      bubble.classList.remove('pop');
+      bubble.style.transformOrigin = `${ox}px ${oy}px`;
+      bubble.animate(
+        [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.05)', opacity: 0 }],
+        { duration: CONFIG.timing.bubbleTuckMs, easing: 'cubic-bezier(.5, 0, .75, 0)', fill: 'forwards' },
+      ).finished.then(done, done);
+    });
+  },
+  // Walk to a room's door. Character-animation rules (ANIMATION_NOTES.md): a little crouch before she sets off
+  // (anticipation), a step rate that matches her speed so her feet don't slide, the door starting to open just
+  // before she gets there (overlapping action), and a small settle when she stops.
   walkTo(roomEl) {
     return new Promise((resolve) => {
       const plan = $('#floorplan'), walker = $('#walker');
-      if (!plan || !walker || reducedMotion()) { resolve(); return; }
-      const pr = plan.getBoundingClientRect(), rr = roomEl.getBoundingClientRect(), cor = $('.corridor', plan).getBoundingClientRect();
-      let x, y;
-      if (App.layout === 'h') {
-        x = rr.left - pr.left + rr.width / 2 - walker.offsetWidth / 2;
-        y = cor.top - pr.top + cor.height / 2 - walker.offsetHeight / 2;
-      } else {
-        x = cor.left - pr.left + cor.width / 2 - walker.offsetWidth / 2;
-        y = rr.top - pr.top + rr.height / 2 - walker.offsetHeight / 2;
-      }
+      if (!plan || !walker || calmChosen()) { resolve(); return; }
+      this.walkId++; // cancels a walk back from a room that is still playing
+      const { x, y } = this.doorPos(roomEl);
       const m = /translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(walker.style.transform) || [0, 0, 0];
       const dist = Math.hypot(x - m[1], y - m[2]);
       const T = CONFIG.timing;
       const dur = clamp(dist / T.walkPxPerSecond, T.walkMinSeconds, T.walkMaxSeconds);
+      // one step per stride length travelled, kept between a brisk patter and a stroll
+      walker.style.setProperty('--step', clamp(T.walkStridePx / Math.max(1, dist / dur), 0.1, 0.22).toFixed(3) + 's');
       walker.style.transitionDuration = dur + 's';
-      walker.classList.add('walking');
-      walker.style.transform = `translate(${x}px, ${y}px)`;
-      setTimeout(() => { walker.classList.remove('walking'); resolve(); }, dur * 1000 + 30);
+      // the Code Blue and OR buttons shrink away as she sets off, so she is never hidden behind them
+      $$('.corridor .alarm, .corridor .elevator', plan).forEach((b) => {
+        b.style.opacity = '';
+        b.style.pointerEvents = 'none';
+        b.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(.05)', opacity: 0 }],
+          { duration: T.buttonTuckMs, easing: 'cubic-bezier(.5, 0, .75, 0)', fill: 'forwards' });
+      });
+      const svg = $('svg', walker);
+      const canAnimate = !!(svg && svg.animate);
+      if (canAnimate) svg.style.transformOrigin = '50% 100%';
+      const go = () => {
+        walker.classList.add('walking');
+        walker.style.transform = `translate(${x}px, ${y}px)`;
+        setTimeout(() => roomEl.classList.add('open'), Math.max(0, dur * 1000 - T.doorLeadMs));
+        setTimeout(() => {
+          walker.classList.remove('walking');
+          if (canAnimate) {
+            svg.animate([{ transform: 'scaleY(.95) translateY(2px)' }, { transform: 'none' }],
+              { duration: 180, easing: 'cubic-bezier(.2, .9, .3, 1.4)' });
+          }
+          resolve();
+        }, dur * 1000 + 30);
+      };
+      if (canAnimate) {
+        svg.animate([{ transform: 'none' }, { transform: 'scaleY(.93) translateY(3px)' }, { transform: 'none' }],
+          { duration: T.walkCrouchMs, easing: 'ease-in-out' });
+        setTimeout(go, T.walkCrouchMs * 0.6);
+      } else go();
     });
+  },
+  // She steps through the open door: a short move towards the room and a fade, so she goes somewhere instead of
+  // vanishing when the screen changes.
+  stepIn(roomEl) {
+    const walker = $('#walker'), svg = walker && $('svg', walker);
+    if (!svg || !svg.animate || calmChosen()) return Promise.resolve();
+    const { dx, dy } = this.doorDir(roomEl);
+    return svg.animate([{ transform: 'none', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) scale(.85)`, opacity: 0 }],
+      { duration: CONFIG.timing.stepInMs, easing: 'cubic-bezier(.4, 0, .9, .4)', fill: 'forwards' }).finished.catch(() => {});
   },
   act: {
     async room(d, el) {
       if (Screens.floor.busy) return;
       Screens.floor.busy = true;
+      // a walk back from another room may still be playing: close its door now, or that room stays lit
+      $$('.room.open').forEach((r) => { if (r !== el) r.classList.remove('open'); });
       Sound.play('tap');
+      await Screens.floor.tuckBubble();
       await Screens.floor.walkTo(el);
       el.classList.add('open');
       Sound.play('door');
-      await sleep(reducedMotion() ? 0 : CONFIG.timing.doorOpenMs);
+      if (!calmChosen()) {
+        await sleep(CONFIG.timing.doorSettleMs);
+        await Screens.floor.stepIn(el);
+      }
       Screens.floor.busy = false;
+      const r = el.getBoundingClientRect();
+      App.zoomFrom = { x: r.left + r.width / 2, y: r.top + r.height / 2 }; // the room grows into the bedside screen
       startShift(d.unit);
+      Screens.floor.lastRoom = d.unit;
     },
     codeblue() { startMode('codeblue'); },
     daily() {
@@ -4888,15 +5340,26 @@ Screens.chart = {
     if (!run.maxLives) return '';
     let s = `<div class="lives" id="lives" aria-label="${run.lives} of ${run.maxLives} lives">`;
     for (let i = 0; i < run.maxLives; i++) {
-      s += `<span class="${i < run.lives ? 'on' : 'off'} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
+      const last = run.lives === 1 && i === 0 ? ' last' : ''; // the last life beats: one more miss ends the shift
+      s += `<span class="${i < run.lives ? 'on' : 'off'}${last} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
     }
     return s + '</div>';
   },
   scoreHTML(run) {
     const mult = Engine.multiplier(run.streak), hot = run.streak >= 3 ? 'hot' : '';
+    // goal gradient: a pip per right answer towards the next multiplier ("2 more for ×2")
+    const steps = CONFIG.scoring.streakMultipliers.map((m) => m.streak).sort((a, b) => a - b);
+    const next = steps.find((n) => run.streak < n);
+    let pips = '', toward = '';
+    if (next != null) {
+      const base = [0, ...steps].filter((n) => n <= run.streak).pop();
+      const have = run.streak - base, need = next - base;
+      pips = `<span class="mpips" aria-hidden="true">${'<i class="on"></i>'.repeat(have)}${'<i></i>'.repeat(need - have)}</span>`;
+      toward = `, ${next - run.streak} more for ×${Engine.multiplier(next)}`;
+    }
     return `<div class="score"><small>SCORE</small><span class="num">${fmt(run.score)}</span></div>
-      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}">${icon('flame')}<span>×${mult}</span><span
-        class="num faint">${run.streak} in a row</span></div>`;
+      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}${toward}">${icon('flame')}<span>×${mult}</span><span
+        class="num faint">${run.streak} in a row</span>${pips}</div>`;
   },
   ptMood(run) {
     const c = run.cur;
@@ -5014,7 +5477,7 @@ Screens.chart = {
       const label = `${isOrder ? '' : 'Option ' + LETTERS[k] + ': '}${o.t}${state}`;
       const attrs = `data-action="pick" data-i="${i}" ${c.revealed || gone ? 'disabled' : ''} aria-label="${esc(label)}" ` +
         (isMulti ? `aria-pressed="${sel}"` : '');
-      s += `<li><button class="${cls.join(' ')}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
+      s += `<li><button class="${cls.join(' ')}" style="--i:${k}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
         `<span class="mark">${mark}</span></button></li>`;
     });
     return s + '</ol>';
@@ -5033,9 +5496,21 @@ Screens.chart = {
       ${c.hint && !c.revealed ? `<p class="paper-hint">${icon('users')}${esc(c.hint)}</p>` : ''}
       ${this.optsHTML(run)}`;
   },
+  // what the button that moves on says
+  nextLabel(run) {
+    if (!run.isEnd()) return 'Next patient';
+    return run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
+  },
   trayHTML(run) {
     const q = run.q, c = run.cur, L = run.lifelines;
-    if (c.revealed) return '';
+    // After an answer, Submit becomes "Next patient" in the same spot. The tray then sticks to the top of the
+    // screen (30-chart.css), so moving on is always one tap away, even while scrolling down through the
+    // explanation; the page no longer scrolls to the explanation by itself.
+    if (c.revealed) {
+      return run.cfg.feedback
+        ? `<span class="grow"></span><button class="btn primary big next-btn" data-action="next" data-autofocus>${this.nextLabel(run)}${icon('play')}</button>`
+        : '';
+    }
     let s = '';
     if (run.cfg.lifelines) {
       const colleagueHelp = 'Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, '
@@ -5125,8 +5600,6 @@ Screens.chart = {
       : '<p class="dim">This section has no instructor focus points.</p>';
     const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary>` +
       `<p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
-    let endLabel = 'Next patient';
-    if (run.isEnd()) endLabel = run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
     const headIcon = icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x');
     return `<div class="fb-head ${st}"><span class="ico">${headIcon}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
       ${notes.length ? `<div class="fb-notes">${notes.map((n) => `<p>${n}</p>`).join('')}</div>` : ''}
@@ -5134,8 +5607,7 @@ Screens.chart = {
       <p class="fb-why">${esc(q.why)}</p>
       <div class="fb-tips">${this.feedbackTips(q, sec)}</div>
       ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
-      ${others}${guide}
-      <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
+      ${others}${guide}`;
   },
 
   // ----- lifecycle
@@ -5176,7 +5648,14 @@ Screens.chart = {
     const bar = document.getElementById('timer-bar'), num = document.getElementById('timer-num');
     if (bar) bar.style.transform = barShift(run.timeLeft / run.cfg.time);
     const secs = String(Math.ceil(run.timeLeft));
-    if (num && num.textContent !== secs) num.textContent = secs;
+    if (num && num.textContent !== secs) {
+      num.textContent = secs;
+      // the last seconds tick: the number jumps and beeps once a second
+      if (run.timeLeft > 0 && run.timeLeft <= CONFIG.codeBlue.urgentSeconds) {
+        replayClass(num, 'tick');
+        Sound.play('beep');
+      } else num.classList.remove('tick');
+    }
     if (this.ecg) this.ecg.stress = run.stress();
     if (run.timeLeft <= 0) {
       this.timerOff(); this.timerOff = null;
@@ -5210,10 +5689,10 @@ Screens.chart = {
         f.hidden = !show;
         f.innerHTML = show ? this.feedbackHTML(run) : '';
         if (show) {
-          // (the panel is new for every patient, so it is already scrolled to the top)
-          const b = $('[data-action="next"]', f);
+          // no scrolling to the panel: the question and its answer marks stay in view, and the Next button
+          // (in the tray, which sticks to the top) is always reachable
+          const b = $('#tray [data-action="next"]', el);
           if (b && !('ontouchstart' in window)) b.focus({ preventScroll: true });
-          if (App.size === 'wide') f.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
         }
       }
     }
@@ -5231,7 +5710,7 @@ Screens.chart = {
     const stem = $('#stem', el);
     const ptsTxt = c.pts.pts ? `+${c.pts.pts}${c.pts.mult > 1 ? ' ×' + c.pts.mult : ''}` : '';
     if (res.correct) {
-      Sound.play('right');
+      Sound.right(run.streak);
       FX.float(ptsTxt, stem, 'good');
       if (CONFIG.talk.streakShoutouts.includes(run.streak)) this.say('streak', { streak: run.streak });
       else if (run.results.length > 1 && !run.results[run.results.length - 2].correct) this.say('back');
@@ -5247,7 +5726,27 @@ Screens.chart = {
       this.say(run.maxLives && run.lives === 1 ? 'low' : 'wrong');
     }
     if (run.mode === 'boss') this.bossFx(c);
+    const scoreFrom = run.score - (c.pts.pts || 0);
     this.refresh(['paper', 'tray', 'prog', 'score', 'talk']);
+    if (c.pts.pts) FX.countUp($('#scorebar .score .num', el), scoreFrom, run.score);
+    if (res.correct) {
+      const band = $('#scorebar .streak', el), lit = $$('#scorebar .mpips i.on', el);
+      if (lit.length) lit[lit.length - 1].classList.add('new'); // the pip just earned pops in
+      // reaching a new multiplier: the band jumps and the multiplier floats up from it
+      if (band && Engine.multiplier(run.streak) > Engine.multiplier(run.streak - 1)) {
+        replayClass(band, 'level-up');
+        FX.float(`×${Engine.multiplier(run.streak)}!`, band, 'warn');
+      }
+    }
+    if (c.starUp) {
+      const u = Content.unitById[c.starUp.unit];
+      Sound.play('badge');
+      App.toast(`Room ${u.room} ${u.ward}: ${'★'.repeat(c.starUp.stars)} earned!`);
+    }
+    if (c.goalHit) {
+      App.toast(`Daily goal reached: ${WR.state.days.answered} patients today!`);
+      if (!calmChosen()) FX.confetti(60);
+    }
     // a silly reaction redraws the patient itself; otherwise just update their face
     if (!Whimsy.react(run, res)) this.refresh(['bed']);
     if (c.lostLife) { const l = $('#lives', el); if (l) l.outerHTML = this.livesHTML(run, run.lives); }
@@ -5266,23 +5765,40 @@ Screens.chart = {
       this.autoT = setTimeout(() => this.advance(), res.correct ? CB.nextAfterRightMs : CB.nextAfterWrongMs);
       return;
     }
-    // The explanation comes one frame later: the answer marks, sound and patient reaction
-    // paint first instead of waiting on the panel's layout (it slides in, so the frame is invisible).
-    afterNextPaint(() => {
+    // Staging: the answer marks, sound and patient reaction land first; the explanation panel follows once the
+    // marks have popped in (one thing at a time), and right after the first paint on Calm.
+    const showFeedback = () => {
       if (App.run !== run || run.cur !== c || App.name !== 'chart') return; // moved on already
       this.refresh(['feedback']);
       if (c.card) Sound.play('tada', CONFIG.timing.cardSoundMs);
       celebrate(run);
       if (c.badges && c.badges.length) badgeToast(c.badges);
-    });
+    };
+    if (calmChosen()) afterNextPaint(showFeedback);
+    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {
     const run = App.run, el = App.el;
     const boss = $('#boss', el), nurse = $('#arena-nurse', el);
+    // the HP bar moves when the blow lands (cause, then effect), not when the answer is submitted
+    const showHp = () => {
+      const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
+      if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
+      if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+    };
     if (c.dmg) {
-      FX.projectile(nurse, boss).then(() => {
+      // anticipation: she winds up before the throw
+      const nsvg = nurse && $('svg', nurse);
+      if (nsvg && nsvg.animate && !calmChosen()) {
+        nsvg.style.transformOrigin = '50% 100%';
+        nsvg.animate([{ transform: 'none' }, { transform: 'rotate(-9deg) translateX(-6px)', offset: 0.45 },
+          { transform: 'rotate(7deg) translateX(5px)', offset: 0.7 }, { transform: 'none' }],
+        { duration: 380, easing: 'ease-in-out' });
+      }
+      FX.projectile(nurse, boss, null, calmChosen() ? 0 : 170).then(() => {
         Sound.play('hit');
+        showHp();
         if (boss) { boss.innerHTML = bossSVG(run.phase, 'hurt'); replayClass(boss, 'hit'); }
         FX.float('−' + c.dmg, boss, 'bad');
         setTimeout(() => { if (boss && boss.isConnected) boss.innerHTML = bossSVG(run.phase); }, CONFIG.timing.bossHurtMs);
@@ -5291,10 +5807,8 @@ Screens.chart = {
       Sound.play('heal');
       replayClass(boss, 'heal');
       FX.float('+' + c.heal + ' HP', boss, 'good');
-    }
-    const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
-    if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
-    if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+      showHp();
+    } else showHp();
     if (c.phaseUp && run.hp > 0) {
       const ar = $('#arena', el);
       if (ar) {
@@ -5336,14 +5850,22 @@ Screens.chart = {
     else if (run.mode !== 'codeblue' && run.mode !== 'exam' && Math.random() < CONFIG.talk.chatterChance) {
       this.say(run.mode === 'boss' ? 'boss' : run.mode === 'daily' ? 'daily' : 'start');
     }
+    // the old chart leaves as the new one arrives: copy it before the redraw (a read before any write, so it costs
+    // no extra layout) and let the copy slide off on top
+    const oldCb = !calmChosen() && $('#clipboard', App.el);
+    const ghost = oldCb && oldCb.cloneNode(true), r0 = oldCb && oldCb.getBoundingClientRect();
+    // the redraw scrolls back to the top, so the copy goes where the old chart sits at the top of the page
+    const ghostRect = r0 && { left: r0.left, top: r0.top + App.el.scrollTop, width: r0.width, height: r0.height };
     // redraw for the new patient, keeping the heart monitor running, and scroll back to the top
     this.keepMonitor = true;
     try { App.rerender({ scrollTop: 0 }); } finally { this.keepMonitor = false; }
     if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
-    const cb = !reducedMotion() && $('#clipboard', App.el);
-    const slideIn = [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
-    if (cb) cb.animate(slideIn, { duration: 260, easing: 'ease-out' });
+    const cb = !calmChosen() && $('#clipboard', App.el);
+    const slideIn = reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateX(32px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 280, delay: 60, easing: 'cubic-bezier(.2, .8, .2, 1)', fill: 'backwards' });
+    if (ghost && ghostRect.width) FX.ghostOut(ghost, ghostRect);
   },
 
   act: {
@@ -5591,7 +6113,9 @@ Screens.report = {
       ['Score', fmt(run.score)], ['Best streak', run.best], ['XP earned', '+' + fmt(xp)],
     ];
     const kind = MODE_TITLE[run.mode] || (run.mode === 'review' ? 'Missed patients' : 'Shift report');
-    const statHTML = stats.map(([k, v]) => `<div class="stat"><span class="label">${k}</span><b class="num">${v}</b></div>`).join('');
+    const newBest = run.best >= 3 && run.best > run.bestStreakBefore;
+    const statHTML = stats.map(([k, v], i) => `<div class="stat" style="--k:${i}"><span class="label">${k}</span><b class="num">${v}</b>` +
+      (k === 'Best streak' && newBest ? '<span class="pb">New personal best!</span>' : '') + '</div>').join('');
     const badgeHTML = badges.length
       ? '<div class="card"><span class="label">New badges</span><div class="badge-row">' +
         badges.map((b) => `<div class="badge on">${icon(b.ico)}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`).join('') + '</div></div>'
@@ -5620,6 +6144,11 @@ Screens.report = {
     if (paradeLevel(run) === 4 && whimsyOn) { Sound.play('tada'); FX.confetti(); }
     else if (good) { Sound.play('win'); FX.confetti(); }
     else if (run.mode === 'boss' || (run.maxLives && run.lives <= 0)) Sound.play('lose');
+    // the score and XP tiles roll up as they arrive
+    const tiles = $$('.stat-grid .stat b', App.el);
+    const xp = WR.state.xp - run.xpStart;
+    if (tiles[3]) FX.countUp(tiles[3], 0, run.score, 700, fmt, 220);
+    if (tiles[5] && xp > 0) FX.countUp(tiles[5], 0, xp, 700, (v) => '+' + fmt(v), 380);
     celebrate(run);
     badgeToast(run.endBadges || []);
     run.endBadges = [];
@@ -5711,6 +6240,20 @@ Screens.locker = {
   cls: 'locker-screen',
   tab: 'hair',
   mood: 'happy',
+  // feedback for a change: the nurse does a quick squash-and-stretch "ta-da" in the new look
+  flourish() {
+    const svg = $('.locker-nurse svg', App.el);
+    if (!svg || !svg.animate || calmChosen()) return;
+    svg.style.transformOrigin = '50% 100%';
+    svg.animate([{ transform: 'none' }, { transform: 'scale(1.08, .9)', offset: 0.25 }, { transform: 'scale(.95, 1.07) translateY(-6px)', offset: 0.55 },
+      { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.3, .7, .4, 1)' });
+  },
+  // a locked choice shakes its head
+  nope(el) {
+    if (!el || !el.animate || reducedMotion()) return;
+    el.animate([{ transform: 'none' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(4px)' }, { transform: 'translateX(-2px)' },
+      { transform: 'none' }], { duration: 320, easing: 'ease-out' });
+  },
   render() {
     const av = WR.state.profile.avatar;
     const tab = this.tab;
@@ -5757,20 +6300,20 @@ Screens.locker = {
   },
   act: {
     tab(d) { Screens.locker.tab = d.tab; App.rerender(); },
-    set(d) {
+    set(d, el) {
       const lk = `${d.key}:${d.val}`;
-      if (!isUnlocked(lk)) { App.toast(`Locked: ${reqText(lk)}`); return; }
+      if (!isUnlocked(lk)) { Screens.locker.nope(el); App.toast(`Locked: ${reqText(lk)}`); return; }
       WR.state.profile.avatar[d.key] = +d.val;
       const av = WR.state.profile.avatar;
       if (d.key === 'hair' && +d.val === 7) av.hairColor = Math.min(av.hairColor, AVATAR.hijab.length - 1); // fewer hijab colours
-      Sound.play('tap'); Store.save(); App.rerender();
+      Sound.play('tap'); Store.save(); App.rerender(); Screens.locker.flourish();
     },
-    acc(d) {
-      if (!isUnlocked('acc:' + d.id)) { App.toast(`Locked: ${reqText('acc:' + d.id)}`); return; }
+    acc(d, el) {
+      if (!isUnlocked('acc:' + d.id)) { Screens.locker.nope(el); App.toast(`Locked: ${reqText('acc:' + d.id)}`); return; }
       const a = WR.state.profile.avatar; a.acc = a.acc || [];
       const k = a.acc.indexOf(d.id);
       if (k === -1) a.acc.push(d.id); else a.acc.splice(k, 1);
-      Sound.play('tap'); Store.save(); App.rerender();
+      Sound.play('tap'); Store.save(); App.rerender(); Screens.locker.flourish();
     },
     poke() {
       const moods = ['happy', 'cheer', 'focus', 'cool', 'silly', 'starry', 'sleepy', 'worried', 'dizzy', 'neutral'];
@@ -6103,8 +6646,12 @@ Screens.settings = {
     }
     return `${topbar('Settings')}
       <div class="narrow stack">
+        <div class="card set-row"><div><b>Your name</b><p class="dim">What your patients call you.</p></div>
+          <input type="text" id="set-name" maxlength="${CONFIG.profile.nameMaxLength}" autocomplete="nickname"
+            value="${esc(WR.state.profile.name)}" placeholder="Nurse name" aria-label="Your name"></div>
         ${row('Sound', 'Chimes, buzzers, and the Code Blue alarm.', seg('sound', [[true, 'On'], [false, 'Off']]))}
-        ${row('Motion', '"Calm" turns off walking, shaking, confetti, and the moving heart monitor.', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
+        ${row('Motion', '"Auto" follows your device: with Reduce Motion on, screens fade instead of sliding and nothing shakes. ' +
+          '"Calm" holds everything still (no walking, confetti or moving heart monitor).', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
         ${row('Silly patients', 'How wild patients get on a hot streak (and when things go wrong).',
           seg('whimsy', [['full', 'Full'], ['mild', 'Mild'], ['off', 'Off']]))}
         ${row('Text size', '', seg('text', [[1, 'A'], [1.12, 'A+'], [1.25, 'A++']]))}
@@ -6115,13 +6662,19 @@ Screens.settings = {
           <div class="btn-row"><button class="btn" data-action="backup">${icon('download')}Download backup</button>
           <label class="btn file-btn">${icon('upload')}Restore from backup<input type="file" id="restore"
             accept=".json,application/json"></label>
-          <button class="btn" data-action="tutorial">${icon('book')}Show tutorial</button>
+          <button class="btn" data-action="tutorial">${icon('book')}Replay intro</button>
           <button class="btn danger" data-action="reset">Reset progress</button></div></div>
         ${saveHelp}
         <p class="faint center">Ward Rounds · BIOL 2401 study guide edition · ${Content.all().length} patients</p>
+        <p class="dedication center">Made with love for My Tuna 💗</p>
       </div>`;
   },
   mount(el) {
+    const nm = $('#set-name', el);
+    if (nm) {
+      nm.addEventListener('input', () => { WR.state.profile.name = nm.value.trim().slice(0, CONFIG.profile.nameMaxLength); });
+      nm.addEventListener('change', () => { Store.save(); App.toast(WR.state.profile.name ? 'Name saved.' : 'Name cleared.'); });
+    }
     const d = $('#exam-date', el);
     if (d) d.addEventListener('change', () => {
       WR.state.settings.examDate = d.value;
@@ -6147,7 +6700,11 @@ Screens.settings = {
     });
   },
   act: {
-    setting(d) {
+    setting(d, el) {
+      // continuity: remember where the highlight was, so after the redraw it can slide to the new choice
+      const groups = $$('.seg', App.el), group = el && el.closest('.seg'), gi = groups.indexOf(group);
+      const oldOn = group && $('.on', group);
+      const from = oldOn && { x: oldOn.offsetLeft, w: oldOn.offsetWidth };
       let v = d.val;
       // buttons carry text: turn it back into a boolean or number (motion and whimsy stay words)
       if (v === 'true') v = true;
@@ -6155,6 +6712,7 @@ Screens.settings = {
       else if (!isNaN(+v) && d.key !== 'motion' && d.key !== 'whimsy') v = +v;
       WR.state.settings[d.key] = v;
       Store.save(); applySettings(); Sound.play('tap'); App.rerender();
+      if (from && gi >= 0) slidePill($$('.seg', App.el)[gi], from);
     },
     async backup() {
       const text = Store.exportText();
@@ -6189,7 +6747,7 @@ Screens.settings = {
         'as a .json file.'); }
       catch (e) { App.toast('Saving files is not available here.'); }
     },
-    tutorial() { App.show('onboard', { step: 2 }); },
+    tutorial() { App.show('onboard', { step: 0 }); }, // the whole intro, name and nurse included
     async reset() {
       if (await App.confirm('Reset all progress?', 'XP, badges, stars, and missed patients will be erased. Your ' +
         'settings stay.', 'Erase everything', true)) {
@@ -6199,9 +6757,30 @@ Screens.settings = {
   },
 };
 
+// FLIP for a segmented control: a pill starts where the old choice was and slides to the new one, then the new
+// button takes over the highlight (the pill exists only during the move)
+function slidePill(group, from) {
+  const on = group && $('.on', group);
+  if (!on || reducedMotion() || from.x === on.offsetLeft) return;
+  const pill = document.createElement('span');
+  pill.className = 'seg-pill';
+  Object.assign(pill.style, { left: from.x + 'px', width: from.w + 'px', top: on.offsetTop + 'px', height: on.offsetHeight + 'px' });
+  group.appendChild(pill);
+  on.classList.add('arriving');
+  const done = () => { pill.remove(); on.classList.remove('arriving'); };
+  pill.animate([{ left: from.x + 'px', width: from.w + 'px' }, { left: on.offsetLeft + 'px', width: on.offsetWidth + 'px' }],
+    { duration: 240, easing: 'cubic-bezier(.45, .05, .35, 1)', fill: 'forwards' }).finished.then(done, done);
+}
+
 function applySettings() {
   document.documentElement.style.setProperty('--text-scale', WR.state.settings.text || 1);
-  document.documentElement.dataset.calm = reducedMotion() ? '1' : '0';
+  const level = motionLevel();
+  document.documentElement.dataset.motion = level;
+  document.documentElement.dataset.calm = level === 'calm' ? '1' : '0';
+}
+// follow the device's Reduce Motion switch live (it only matters on "Auto")
+if (reducedMotionQuery && reducedMotionQuery.addEventListener) {
+  reducedMotionQuery.addEventListener('change', () => { if (window.WR && WR.state) applySettings(); });
 }
 
 // ----- onboarding
@@ -6232,6 +6811,8 @@ Screens.onboard = {
   cls: 'onboard-screen',
   render(p) {
     const step = p.step || 0, s = WR.state, av = s.profile.avatar;
+    const replay = s.profile.onboarded; // replayed from Settings: can be left at any step
+    const skip = `<button class="btn ghost block" data-action="ob" data-to="5">${replay ? 'Skip intro' : 'Skip'}</button>`;
     const dots = `<div class="ob-dots">${[0, 1, 2, 3, 4].map((i) => `<i class="${i === step ? 'on' : ''}"></i>`).join('')}</div>`;
     let body;
     if (step === 0) {
@@ -6243,7 +6824,8 @@ Screens.onboard = {
         <label class="ob-name"><span class="label">What should your patients call you? (optional)</span>
           <input id="nurse-name" type="text" maxlength="${CONFIG.profile.nameMaxLength}" autocomplete="nickname"
             value="${esc(s.profile.name)}" placeholder="Nurse name"></label>
-        <button class="btn primary big block" data-action="ob" data-to="1">Next: make your nurse</button>`;
+        <button class="btn primary big block" data-action="ob" data-to="1">Next: make your nurse</button>
+        ${replay ? skip : ''}`;
     } else if (step === 1) {
       // one row of choices: colour dots, or little nurse heads for hair styles
       const row = (key, list, isColor) => {
@@ -6262,13 +6844,14 @@ Screens.onboard = {
         <span class="label">Hair</span>${row('hair', AVATAR.hair, false)}
         <span class="label">Scrubs</span>${row('scrubs', AVATAR.scrubs.slice(0, 6), true)}
         <p class="faint">More in the Locker room later, including unlockable patterns and extras.</p>
-        <button class="btn primary big block" data-action="ob" data-to="2">Looks good!</button>`;
+        <button class="btn primary big block" data-action="ob" data-to="2">Looks good!</button>
+        ${replay ? skip : ''}`;
     } else if (step <= 4) {
       const t = TUTORIAL[step - 2];
       body = `<div class="ob-card">${icon(t.ico)}</div><h1 tabindex="-1">${esc(t.t)}</h1><p class="dim ob-text">${esc(t.d)}</p>
         <button class="btn primary big block" data-action="ob"
-          data-to="${step + 1}">${step === 4 ? 'Start my first shift' : 'Next'}</button>
-        ${step < 4 ? `<button class="btn ghost block" data-action="ob" data-to="5">Skip</button>` : ''}`;
+          data-to="${step + 1}">${step < 4 ? 'Next' : replay ? 'Back to the floor' : 'Start my first shift'}</button>
+        ${step < 4 ? skip : ''}`;
     }
     return `<div class="onboard narrow">${body}${dots}</div>`;
   },
@@ -6295,7 +6878,20 @@ Screens.onboard = {
       const ob = $('.onboard', App.el);
       if (ob) ob.classList.add('ob-step');
     },
-    obset(d) { WR.state.profile.avatar[d.key] = +d.val; Sound.play('tap'); App.rerender(); },
+    obset(d) {
+      WR.state.profile.avatar[d.key] = +d.val; Sound.play('tap'); App.rerender();
+      // the redraw is the same step: skip its fade-in (it flickered the whole step on every tap) and let the
+      // nurse show off the change instead
+      const step = $('.ob-step', App.el);
+      if (step && step.getAnimations) step.getAnimations().forEach((a) => a.finish());
+      const svg = $('.ob-hero svg', App.el);
+      if (svg && svg.animate && !calmChosen()) {
+        svg.style.transformOrigin = '50% 100%';
+        svg.animate([{ transform: 'none' }, { transform: 'scale(1.08, .9)', offset: 0.25 },
+          { transform: 'scale(.95, 1.07) translateY(-6px)', offset: 0.55 }, { transform: 'none' }],
+        { duration: 420, easing: 'cubic-bezier(.3, .7, .4, 1)' });
+      }
+    },
   },
 };
 
@@ -6490,9 +7086,13 @@ function bindEvents() {
   });
   window.addEventListener('pagehide', () => { if (App.run) Store.saveRun(); Store._local.flush(); });
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
+  // touch or mouse, from the last pointer used: hover highlights are for a mouse or trackpad only
+  window.addEventListener('pointerdown', (e) => {
+    document.documentElement.dataset.input = e.pointerType === 'touch' ? 'touch' : 'mouse';
+  }, { passive: true, capture: true });
 }
 
-Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG, util: { todayStr, yesterdayStr, dayNum, dayStr } });
+Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG, applySettings, util: { todayStr, yesterdayStr, dayNum, dayStr } });
 
 async function start(hot) {
   App.measure();

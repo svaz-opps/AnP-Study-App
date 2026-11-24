@@ -176,7 +176,9 @@ Screens.report = {
       ['Score', fmt(run.score)], ['Best streak', run.best], ['XP earned', '+' + fmt(xp)],
     ];
     const kind = MODE_TITLE[run.mode] || (run.mode === 'review' ? 'Missed patients' : 'Shift report');
-    const statHTML = stats.map(([k, v]) => `<div class="stat"><span class="label">${k}</span><b class="num">${v}</b></div>`).join('');
+    const newBest = run.best >= 3 && run.best > run.bestStreakBefore;
+    const statHTML = stats.map(([k, v], i) => `<div class="stat" style="--k:${i}"><span class="label">${k}</span><b class="num">${v}</b>` +
+      (k === 'Best streak' && newBest ? '<span class="pb">New personal best!</span>' : '') + '</div>').join('');
     const badgeHTML = badges.length
       ? '<div class="card"><span class="label">New badges</span><div class="badge-row">' +
         badges.map((b) => `<div class="badge on">${icon(b.ico)}<b>${esc(b.n)}</b><span>${esc(b.d)}</span></div>`).join('') + '</div></div>'
@@ -205,6 +207,11 @@ Screens.report = {
     if (paradeLevel(run) === 4 && whimsyOn) { Sound.play('tada'); FX.confetti(); }
     else if (good) { Sound.play('win'); FX.confetti(); }
     else if (run.mode === 'boss' || (run.maxLives && run.lives <= 0)) Sound.play('lose');
+    // the score and XP tiles roll up as they arrive
+    const tiles = $$('.stat-grid .stat b', App.el);
+    const xp = WR.state.xp - run.xpStart;
+    if (tiles[3]) FX.countUp(tiles[3], 0, run.score, 700, fmt, 220);
+    if (tiles[5] && xp > 0) FX.countUp(tiles[5], 0, xp, 700, (v) => '+' + fmt(v), 380);
     celebrate(run);
     badgeToast(run.endBadges || []);
     run.endBadges = [];

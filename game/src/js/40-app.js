@@ -30,12 +30,21 @@ const App = {
     const sec = document.createElement('section');
     sec.className = 'screen ' + (scr.cls || name) + (anim ? ' ' + anim : '');
     sec.setAttribute('data-screen', name);
+    // continuity: a zoom that starts from the thing that was tapped (a room) grows out of that spot
+    if (anim === 'zoom-in' && this.zoomFrom) {
+      const rr = root.getBoundingClientRect();
+      sec.style.transformOrigin = `${Math.round(this.zoomFrom.x - rr.left)}px ${Math.round(this.zoomFrom.y - rr.top)}px`;
+      sec.classList.add('from-point');
+    }
+    this.zoomFrom = null;
     sec.innerHTML = scr.render(params);
     // The old screen goes at once and only the new one fades in, over the plain background, so two
     // screens are never drawn on top of each other (a cross-fade showed both mid-way, and with
     // Reduce Motion on, both at full strength).
     if (old) old.remove();
     root.innerHTML = '';
+    // floating "+100" texts belong to the screen they were earned on
+    document.querySelectorAll('#fx-layer > .float-text').forEach((n) => n.remove());
     root.appendChild(sec);
     this.el = sec;
     if (scr.mount) scr.mount(sec, params);
@@ -52,7 +61,10 @@ const App = {
     const y = sec.scrollTop; // read before anything changes, so it costs no extra layout
     if (scr.leave) scr.leave();
     const want = opts.scrollTop != null ? opts.scrollTop : y;
-    sec.className = 'screen ' + (scr.cls || this.name);
+    // keep the entrance-animation classes: dropping them swaps the animation name, which replays an entrance
+    // on the whole screen (this made the first "Next patient" after a room's zoom-in fade the entire screen)
+    const keep = ['zoom-in', 'from-point'].filter((k) => sec.classList.contains(k));
+    sec.className = ['screen', scr.cls || this.name, ...keep].join(' ');
     sec.innerHTML = scr.render(this.params);
     if (scr.mount) scr.mount(sec, this.params);
     // writing scrollTop forces a layout on the spot, so only do it when it has to move
@@ -89,7 +101,7 @@ const App = {
     box.appendChild(t);
     setTimeout(() => {
       t.classList.add('out');
-      setTimeout(() => t.remove(), 250);
+      setTimeout(() => t.remove(), 200); // 10-base.css .toast.out (160 ms)
     }, ms);
   },
 
@@ -98,7 +110,23 @@ const App = {
     root.innerHTML = `<div class="modal-backdrop" data-modal-bg>` +
       `<div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
     const bg = root.firstChild;
-    const close = () => { root.innerHTML = ''; };
+    // The dialog leaves instead of vanishing: it is moved out of #modal-root at once (so it counts as closed and
+    // a new dialog can open), then fades and sinks a little, faster than it came in (exits are quicker).
+    const close = () => {
+      if (!bg.isConnected) return;
+      if (calmChosen() || !bg.animate) { bg.remove(); return; }
+      const m = bg.querySelector('.modal');
+      if (document.activeElement && bg.contains(document.activeElement)) document.activeElement.blur();
+      bg.removeAttribute('data-modal-bg');
+      bg.style.pointerEvents = 'none';
+      bg.style.animation = 'none';
+      if (m) m.style.animation = 'none';
+      document.body.appendChild(bg);
+      const ease = 'cubic-bezier(.4, 0, .9, .4)';
+      if (m) m.animate([{ transform: 'none' }, { transform: 'scale(.96) translateY(8px)' }], { duration: 160, easing: ease, fill: 'forwards' });
+      bg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, easing: ease, fill: 'forwards' })
+        .finished.then(() => bg.remove(), () => bg.remove());
+    };
     bg.addEventListener('click', (e) => {
       if (e.target === bg) { close(); return; }
       const b = e.target.closest('[data-m]');

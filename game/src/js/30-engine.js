@@ -66,6 +66,33 @@ const Engine = {
   //       h: times right only with the 50/50 (seen, but not proof you know it) }
   rec(qid) { return WR.state.items[qid]; },
   isSolid(r) { return !!r && r.ok >= CONFIG.mastery.solidDays; },
+  // patients to answer right for a room's next star (0 when it has three)
+  nextStarNeed(m) {
+    const M = CONFIG.mastery, T = m.total;
+    if (!T || m.stars >= 3) return 0;
+    if (m.stars === 2) return Math.max(0, Math.ceil(M.threeStars * T) - m.solid);
+    return Math.max(0, Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever);
+  },
+  // Which room the floor nurse points you to: first the room with the most missed patients who can be discharged
+  // today (right on an earlier day, so one more right answer today sends them home: spaced review), otherwise the
+  // started room furthest behind on stars. Nothing for a brand-new player (the first shift is the tutorial's).
+  suggestRoom() {
+    const t = todayStr(), need = CONFIG.mastery.solidDays - 1;
+    let best = null;
+    for (const u of Content.units) {
+      let n = 0;
+      for (const q of Content.byUnit[u.id] || []) {
+        const r = WR.state.items[q.id];
+        if (r && r.miss && r.ok >= need && r.od !== t) n++;
+      }
+      if (n && (!best || n > best.n)) best = { unit: u, n, why: 'ready' };
+    }
+    if (best) return best;
+    const started = Content.units.map((u) => ({ unit: u, m: this.mastery(u.id) })).filter((x) => x.m.seen && x.m.stars < 3);
+    if (!started.length) return null;
+    started.sort((a, b) => a.m.stars - b.m.stars || a.m.everFrac - b.m.everFrac);
+    return { unit: started[0].unit, n: this.nextStarNeed(started[0].m), why: 'weak' };
+  },
   touchDay() {
     const d = WR.state.days, t = todayStr();
     if (d.today !== t) {

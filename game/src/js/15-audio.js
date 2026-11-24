@@ -48,6 +48,14 @@ const Sound = {
     src.start(t0); src.stop(t0 + dur + 0.05);
   },
 
+  // the right-answer chime climbs a major scale with the streak (resets on a miss), so a hot streak sounds hot
+  right(streak) {
+    if (!this.on()) return;
+    const steps = [0, 2, 4, 5, 7, 9, 11, 12];
+    const k = Math.pow(2, steps[Math.min(Math.max(streak - 1, 0), steps.length - 1)] / 12);
+    try { this.tone(784 * k, 0, 0.14, 'triangle', 0.8); this.tone(1175 * k, 0.09, 0.22, 'triangle', 0.7); } catch (e) { /* audio is optional */ }
+  },
+
   play(name, delay = 0) {
     if (delay) { setTimeout(() => this.play(name), delay); return; }
     if (!this.on()) return;

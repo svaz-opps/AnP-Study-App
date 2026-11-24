@@ -323,14 +323,212 @@
   old screen is removed at once and only the new one fades in over the plain background (Reduce Motion: it just
   appears). Removed `.screen.leaving`, `screen-out` and `CONFIG.timing.screenLeaveMs`. Checked frame by frame with
   reduce-motion on and off: never more than one screen on the page. All 7 test scripts pass.
+- Floor: the nurse used to walk straight over her own speech bubble when you tapped a room (landscape: the bubble
+  sits right of her in the corridor). Now `Screens.floor.tuckBubble()` first shrinks the bubble into her (scale to 5%
+  and fade, origin at her head, `CONFIG.timing.bubbleTuckMs` = 260 ms), then she walks. With Reduce Motion/Calm the
+  bubble just disappears (she doesn't walk then either). The new floor screen after a shift brings a fresh bubble.
+  Checked frame by frame at 1180x820. Not changed: she still passes in front of the Code Blue and OR buttons on the way to far rooms.
+- Floor: the nurse now walks behind the Code Blue and OR buttons (z-index 4, above `.walker` at 3), at the user's
+  request. The locked OR button used `opacity: .6` on the whole button, so she'd have shown through it; now its
+  background and border are dimmed with opaque colours and only its contents are at .6. Checked frame by frame at
+  1180x820 walking to room 106 (she ends partly hidden behind the OR button just before the door opens).
+- Floor, at the user's request: instead of her ending up half-hidden behind the OR button, the Code Blue and OR
+  buttons in the corridor now shrink away (scale to 5% and fade, `CONFIG.timing.buttonTuckMs` = 200 ms, clicks off)
+  the moment she starts walking, so she is always in view. They come back with the floor after the shift. The
+  layering change from before stays (harmless: for the first frames she is still behind them as they shrink).
+  Portrait is unaffected (those buttons sit below the floor plan there, out of her path). Checked frame by frame at 1180x820.
+- Portrait floor: doors now face the hallway. They used to be a horizontal strip across the top of every room; now
+  each is an upright strip on the corridor side (right edge for the left column, left edge for the right column,
+  picked by `:nth-child(odd/even)`, since rooms alternate left/right in source order). The door panel hangs from its
+  top and opens with `rotateX(75deg)` (landscape keeps `rotateY(-75deg)`). Room padding moves off the door. Checked opening rooms 103 (left) and 104 (right) at 820x1180.
 
 ## 2026-11-24 (floor layout fixes)
 - Missed-patient badges on room cards now sit in the card's top row beside the stars instead of being absolutely
   positioned, so they no longer overlap the door strip / card border on the bottom row of rooms.
 - Nurses' station desk label is centered in its box (vertical text was top-aligned because text-align defaulted to start).
 - Checked with screenshots at iPad landscape and portrait; smoke suite passes at 4 sizes.
+- Merged main (badges in the top row, centred station label) into the session branch; dropped my portrait
+  `.room-dot` offset since the dot is no longer absolutely positioned.
+- Pushed to main (196d8d8) at the user's request; Pages run #12 succeeded. The run before it (#11, from the other
+  session's merge) had failed at deploy-pages after a successful upload; #12 deployed the same plus these changes.
+- "Nurse teleports to the door" (user's iPad). Cause: the walk only ran when reduced motion was off, and on Motion
+  "Auto" the game follows the iPad's Reduce Motion setting, which the user has on; a CSS rule under
+  `prefers-reduced-motion` also killed the walker's transition, so even Motion "Full" couldn't bring it back.
+  Now the walk, the bubble/button tuck and the door swing follow the game's own Calm setting only (`calmChosen()`,
+  same as the heart monitor); the CSS rule is gone. Checked frame by frame with emulated reduce-motion: she walks
+  the whole corridor with stepping legs. Calm still skips the walk (as the Settings text says).
 
-## 2026-11-24 — R28 learning engine audit + "where you stand" report card
+## 2026-11-24 — Overnight animation pass (unattended)
+User asked for an overnight pass: research what makes good animation, apply it across the app, log progress so
+the work can resume (scheduled message at 2:20 am Central). Work stays on the session branch
+`ccr-dd43cba2-3w86f7`; nothing is pushed to main without the user. Principles + checklist: `ANIMATION_NOTES.md`.
+After animation work runs out: ideas to make the game more engaging; after that, anything useful.
+- Pending from before: the "nurse walks with device Reduce Motion on" commit is on the branch, not main.
+- A (done) Motion levels. `motionLevel()` in 00-util.js returns full / soft / calm; `<html data-motion>` carries it.
+  soft = "Auto" + device Reduce Motion: screens, feedback panel, dialogs, banners, toasts and the thank-you card
+  crossfade instead of sliding/zooming/flipping; no shake, no outage flicker, the parade fades in, confetti is a
+  lighter sprinkle; the walk, patient gags, boss projectile, screen flash and heart monitor all still play.
+  calm = the game's "Calm": still. Every `@media (prefers-reduced-motion)` rule in the CSS is gone, so "Full" is
+  really full on a Reduce-Motion device. The level follows the device switch live. Settings text explains Auto vs
+  Calm. New test `game/tests/motion.mjs` (4 cases) added to BRANCHING.md's list. All 8 test scripts pass.
+- B (done) Motion tokens in 00-tokens.css: `--ease-out` (entrances), `--ease-in` (exits), `--ease-move` (on-screen
+  travel), `--ease-spring` (small pops), `--dur-tap` 110 ms, `--dur-small` 200, `--dur-panel` 300, `--dur-exit` 160.
+  Core UI moved onto them: screens, buttons, room cards, options, modal + backdrop, toasts (exit now 160 ms ease-in,
+  faster than the 260 ms entrance), feedback panel/sheet, walker, bubble, HP bar, details arrow. Whimsy gags keep
+  their own hand-tuned curves.
+- C (done) Floor walk. Her step rate now follows her speed (`--step` = stride 58 px / speed, 0.10–0.22 s), so her
+  feet no longer slide (before: one step per 224 px). Walk 600 px/s, 0.4–1.4 s. A 150 ms crouch before she sets off
+  (anticipation), the door starts opening 160 ms before she arrives (overlap), a small spring settle when she stops,
+  then she steps through the doorway (34 px towards the room, shrink + fade, 240 ms) before the screen changes.
+  New timings in CONFIG.timing (walkStridePx, walkCrouchMs, doorLeadMs, doorSettleMs, stepInMs); doorOpenMs removed.
+- D (done) Screen continuity. Tapping a room: the bedside screen grows out of that room (`App.zoomFrom` sets the
+  transform-origin, `.from-point` / `zoom-from` 0.55 → 1, 420 ms ease-out; a fade on soft, nothing on calm).
+  Coming back to the floor from that shift (report → home, or Leave): the door opens, she steps out, the door closes
+  behind her, she walks back to the station, then her bubble and the corridor buttons pop back in one after another.
+  A room tap during that walk takes over cleanly (`walkId`). Checked frame by frame at 1180x820. All 8 tests pass.
+- E (done) Chart. After Submit: the check/cross marks pop in down the list (45 ms apart, spring), the right answer
+  gives a small nod, and the explanation panel follows 240 ms later (`CONFIG.timing.feedbackDelayMs`; right after
+  the first paint on Calm) instead of arriving together with the marks and the scroll. The wide-layout panel now
+  rises from below (it sits under the options) instead of sliding in from the side. The score rolls up to its new
+  value (`FX.countUp`, 450 ms ease-out). A lost heart swells, tips and drains to grey (it went grey at once before).
+  Next patient: a copy of the old chart slides off to the left while the new one slides in (`FX.ghostOut`; a
+  crossfade on soft; nothing waits for it, and it is placed where the chart sits after the scroll back to the top).
+  Bug fixed on the way: `App.rerender` reset the screen's classes, which swapped the animation name and replayed an
+  entrance on the whole screen at the first "Next patient" after zooming into a room. All 8 tests pass.
+- F (done) Progress bars. The old `transition: width` never ran (bars are drawn fresh with their final width), so
+  bars just appeared full. Now every `.bar > i` fills on appearing with `scaleX` (no layout per frame), 0.8 s
+  ease-out after 0.2 s; the HP and Code Blue timer bars (moved by script) are excluded; nothing on Calm. The floor's
+  XP bar starts from where it was last shown (`--from`), so XP earned on a shift flows in when you return, and the
+  XP number rolls up alongside it. All 8 tests pass.
+- G (done) Dialogs now leave instead of vanishing: on close the backdrop is moved out of #modal-root at once (so
+  the dialog counts as closed and a following dialog can open), then fades while the card sinks slightly, 160 ms
+  ease-in (entrance 260 ms spring). Toast removal timed to its 160 ms exit. The Rapid Response card glow animated
+  box-shadow every frame; it is now a ready-drawn inset ring on `::after` pulsing with opacity. All 8 tests pass.
+- H (done) Report staging. The report builds top to bottom: the nurse pops up (spring), the headline and parade
+  rise in, the six stat tiles follow 45 ms apart, then the room card, badges and buttons; earned stars stamp in
+  after the room card (scale 2 → 1 with a twist, 120 ms apart). Score and XP tiles roll up from 0 (`FX.countUp`
+  gained a formatter and a delay). Fade on soft, nothing on Calm. Floating "+100" texts are cleared when the screen
+  changes (the last answer's float used to drift over the report). All 8 tests pass.
+- I (done) Boss arena. The nurse winds up (leans back, then forward) before the throw; the projectile follows a
+  smooth arc sampled from a curve (three keyframes made a kinked path) and spins; on impact the Superbug flashes,
+  squashes and is knocked back, then wobbles back into shape. The HP bar and number now change when the blow lands
+  (they changed at Submit, before the throw). The explanation panel (and its scroll) waits 640 ms in the arena when
+  you hit (`bossFeedbackDelayMs`), because the scroll moved the page under the flying projectile so it hit empty
+  space. The Superbug breathes while idle (secondary action). All 8 tests pass.
+- J (done) Patient gags. Several swings were "alternate" between two extremes, so they snapped to the first pose
+  when they started, and those with an odd count ended mid-swing and snapped back to rest. wh-bob, wh-wave,
+  wh-wobble, pp-wave and wh-blow now start and end at rest and swing out in the middle (one cycle replaces two
+  alternate iterations, same total time). Dance, party, dizzy, the theme-room hand wave, the blower and the
+  low-score parade wave use them. Other gags already started and ended at rest (checked every keyframe).
+- K (done) Flow check: walk in / step in / grow-from-room / walk back checked frame by frame at landscape 1180x820,
+  portrait 820x1180 (both door sides) and phone 390x844; reduce-motion levels covered by tests/motion.mjs.
+  Not changed (noted): at phone width the corridor is narrower than the nurse, so she overlaps the room cards'
+  edges while walking (as before).
+- Animation checklist A–K complete. Next: ways to make the game more engaging (see ROADMAP.md / this log).
+- Engagement 1 (R29): goal-gradient nudges. Streak band shows pips toward the next multiplier (3/6/10 from
+  CONFIG.scoring) and says "N more for ×M" to screen readers; the newly earned pip pops, and reaching a new
+  multiplier makes the band jump with a floating "×2!". Room cards on the floor show "N to ★/★★/★★★" (right-once
+  counts for stars 1–2, mastered for star 3, from CONFIG.mastery). The patient that reaches today's goal gets a
+  toast + a small confetti burst (once a day: answered === target). Report: "New personal best!" tag on Best streak
+  when the round beat the all-time best (≥3). Checked at 1180x820 and 390x844; all 8 tests pass.
+- ROADMAP: R28 (animation pass) and R29 (engagement) added as in progress (on the session branch, waiting for the
+  user before main).
+- Engagement 2 (R29): the floor nurse suggests a room. `Engine.suggestRoom()`: the room with the most missed
+  patients who can be discharged today (right on an earlier day, so one right answer today sends them home), else
+  the started room furthest behind on stars; none for a brand-new player. Ready discharges are always mentioned;
+  otherwise she points at the weak room 60% of the time (`CONFIG.talk.suggestChance`) and shares a tip the rest.
+  The suggested room glows (ready-drawn inset ring, opacity pulse; still on Calm). `Engine.nextStarNeed()` is shared
+  with the room cards' "N to ★". Missed patients from earlier days already get the highest pick weight (4.5) in a
+  shift. All 8 tests pass.
+- Engagement 3 (R29): room stars are celebrated when earned. `Run.submit` compares the room's stars before and after
+  recording the answer (`c.starUp`); the chart plays the badge sound and toasts "Room 107 Ortho: ★ earned!". Back on
+  the floor, stars earned since it was last shown stamp onto the room card (scale 2.6 → 1 with a twist, after the
+  walk back starts). Checked by seeding a room one answer short of ★. All 8 tests pass.
+- Engagement 4 (R29): sound and urgency. The right-answer chime climbs a major scale with the streak (`Sound.right`,
+  8 steps, resets on a miss). Code Blue's last 5 seconds tick: the number turns red, jumps and beeps once a second
+  (`CONFIG.codeBlue.urgentSeconds`). All 8 tests pass.
+- Locker room: changing an item makes the nurse do a quick squash-and-stretch "ta-da" in the new look (feedback for
+  the change; she used to just swap); tapping a locked item shakes it "no" before the toast (skipped on soft/calm).
+  All 8 tests pass.
+- Fix: during the walk back from a room the hidden Code Blue / OR buttons could still be tapped; they are now
+  untappable until they pop back in. tests/motion.mjs gained a "walk back" case (she starts at the room's door, ends
+  at the station, the button is blocked during and works after). All 8 tests pass.
+- Portrait/phone floor: the nurse is drawn 64x79 (was 84x104) so she fits the 64 px corridor instead of spilling
+  over the room cards while she walks. Checked at 390x844. All 8 tests pass.
+- Room buttons' screen-reader labels now include "N more right/mastered for the next star" and "Suggested by your
+  nurse" on the suggested room. All 8 tests pass.
+- tests/motion.mjs: added a Code Blue play-through in soft, calm and full (answer marks, feedback, auto-advance,
+  the last-seconds tick, report fully shown at the end, no page errors). Passed 3 runs in a row.
+- Settings: the highlight in each segmented control (Sound, Motion, Silly patients, Text size, Daily target) now
+  slides to the new choice (FLIP: `slidePill` in 60-screens.js puts a pill where the old choice was, animates it to
+  the new one in 240 ms, then the new button takes over; skipped on soft/calm). It used to jump. All 8 tests pass.
+- Summary for the user written at the end of ANIMATION_NOTES.md ("What the pass changed" + one open question about
+  the landscape scroll-to-explanation).
+- Floor HUD: the "N/goal today" chip turns green with a check once today's goal is met. All 8 tests pass.
+- Headings focused by script for screen readers (`tabindex="-1"`, e.g. "Welcome to Ward Rounds", report titles)
+  no longer show the focus ring box on desktop; real controls keep their `:focus-visible` ring. Open question in
+  ANIMATION_NOTES.md now also covers the portrait explanation sheet covering the options. All 8 tests pass.
+- Onboarding "Make your nurse": each swatch tap redrew the step and replayed its fade-in, flickering the whole step;
+  the redraw now skips that fade and the nurse does the same "ta-da" as in the locker. All 8 tests pass.
+- Chart: with one life left, the last heart beats (double-pulse every 1.1 s, after the lost heart has drained;
+  still on Calm). All 8 tests pass.
+- Checkpoint 06:30 UTC: everything above is committed and pushed to `ccr-dd43cba2-3w86f7`; ROADMAP R28/R29 notes
+  updated. Resume point: animation checklist A–K done; engagement items 1–4 + extras done. Ideas not started:
+  stagger list entrances on secondary screens (avoid replaying on rerender), sliding highlight for locker tabs,
+  and the open question in ANIMATION_NOTES.md (needs the user).
+- Missed patients, Report card and Get-well cards screens: their cards rise in one after another (50 ms apart,
+  capped at 0.4 s; fade on soft, none on Calm). These screens are not redrawn while in use, so it only plays on
+  arrival. Checked all three end fully shown. All 8 tests pass. (Locker tabs were left as they are: their tabs
+  have their own backgrounds, so a sliding pill would pass behind them.)
+- Resumed 08:21 UTC (scheduled message). Performance check of the new animations with a 4x slowed CPU (frames
+  recorded with requestAnimationFrame), branch vs the `main` build: submit right/wrong and next patient average
+  ~17 ms per frame on both; walk to a room + grow-in and the walk back: no frame over 33 ms. "Next patient" on the
+  branch sometimes shows 1–2 frames of 50–67 ms (main: 0–1): its `advance()` is no slower (10–32 ms vs 18–47 ms on
+  main), the extra is ~4 ms of painting the sliding copy. Added `contain: layout paint style` + `will-change` to
+  that copy. All 8 tests pass.
+- Flakiness check: the full suite (8 scripts) passed 2 more runs in a row after all overnight changes.
+- End of the overnight pass. Everything is on `ccr-dd43cba2-3w86f7`, not on `main`. Waiting for the user: a look at
+  the changes (ANIMATION_NOTES.md "What the pass changed"), the open question about the landscape scroll /
+  portrait sheet covering the answer marks, and the go-ahead to push to `main`.
+
+## 2026-11-24 — "Next patient" always on screen
+- User's request: reaching the next patient should always be on top; it's fine to scroll for the explanation.
+- After an answer, Submit becomes "Next patient" in the same spot (the tray), and the tray then sticks to the top
+  or bottom edge of the screen (`position: sticky; top; bottom`, only the button catches taps). The explanation no
+  longer scrolls into view by itself, and the narrow-screen bottom sheet that covered the answers is gone: the
+  explanation sits under the question on every size. The Next button at the end of the explanation was removed
+  (one button). The boss-fight delay that waited out the scroll is gone (`bossFeedbackDelayMs` removed).
+- tests/motion.mjs: checks at 1180x820 and 390x844 that the page doesn't scroll by itself, there is one Next
+  button on screen, and it is still on screen at the bottom of the explanation. All 8 tests pass.
+- ROADMAP: R28, R29 marked done, R30 ("Next patient" always on screen) added. Leveling `main` and `beta` to this
+  branch at the user's request (both fast-forward; neither had commits the branch lacks).
+
+## 2026-11-24 — Pink scrubs + dedication
+- New scrub color "Pink" (#f08cba), a brighter bubblegum pink than the existing "Rose". Added at the end of the
+  list (index 8) so saved avatars keep their colors. Free from the start (no unlock), shown in the Locker room
+  (not in the onboarding picker, which shows only the first six).
+- Settings: a small italic line under the version text, "Made with love for My Tuna 💗" (the user picked this
+  wording from three drafts). Style: `.dedication` in css/40-screens.css.
+- Rebuilt dist; all 8 tests pass.
+- Pushed to `main` and `beta` at the user's request (both fast-forward to the branch).
+
+## 2026-11-24 — Room highlight no longer lingers; replay intro; change name
+- Lingering room highlight. Two causes fixed:
+  1. Hover glow: the floor is redrawn (e.g. coming back from a shift) under a mouse/trackpad still resting on the
+     room just left, so it stayed lit until the pointer moved; and touch screens that report hover keep :hover on
+     the last room tapped. Now the floor starts with `.hover-off` (removed on the first non-touch pointermove), and
+     `<html data-input="touch|mouse">` (set on every pointerdown, 90-boot.js) turns hover glow off for touch.
+  2. Tapping a room while the nurse is still stepping out of another cancelled the walk back before it closed
+     that door, leaving the other room's teal border on. The room tap now closes any other open door first.
+  Checked in Chromium: glow shows when the mouse moves over a room, not when the floor is redrawn under a resting
+  cursor, comes back once it moves, and never after a touch tap.
+- Settings: "Show tutorial" is now "Replay intro" and starts at the welcome step (name box prefilled), not the tip
+  cards. On a replay every step has "Skip intro" and the last button says "Back to the floor" (not "Start my first
+  shift"; the first-time flow is unchanged).
+- Settings: new "Your name" row at the top (saves as you type; toast on change). Assumption: the user wanted the
+  name editable both in the replayed intro and directly in Settings.
+
+## 2026-11-24 — R31 learning engine audit + "where you stand" report card
 - Went through every part of the engine that decides what the player knows (`game/src/js/30-engine.js`: record,
   mastery/stars, Missed Patients/discharge, picking weights, Rapid Response/daily/exam picks, daily target,
   weak focus points; plus the HUD streak and the date helpers). Benchmarks looked up: Khan Academy mastery levels

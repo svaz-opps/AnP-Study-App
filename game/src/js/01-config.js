@@ -93,6 +93,7 @@ const CONFIG = {
     nextAfterRightMs: 420,   // pause before the next patient
     nextAfterWrongMs: 900,
     skipRecent: 10,          // don't repeat any of the last N questions you saw anywhere
+    urgentSeconds: 5,        // the timer ticks (jumps + beeps) for the last seconds
   },
 
   exam: {
@@ -192,6 +193,7 @@ const CONFIG = {
 
   // ----- the nurse's chatter -----
   talk: {
+    suggestChance: 0.6,      // how often the floor nurse points at a room that is behind (always for ready discharges)
     streakShoutouts: [3, 6, 10, 15, 20, 25],
     chatterChance: 0.25,     // chance of a new line on each new patient
     trickChance: 0.4,        // chance a right answer repeats the memory trick
@@ -243,10 +245,17 @@ const CONFIG = {
     bossHurtMs: 700,
     timerDeltaMs: 1000,      // 30-chart.css .timer-delta (1s)
     cardSoundMs: 500,
-    walkPxPerSecond: 700,    // the nurse's walk to a room
-    walkMinSeconds: 0.35,
-    walkMaxSeconds: 1.1,
-    doorOpenMs: 360,
+    bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
+    buttonTuckMs: 200,       // the Code Blue and OR buttons shrink away as she starts walking
+    feedbackDelayMs: 240,    // the explanation panel follows the answer marks (30-chart.css mark-pop)
+    walkPxPerSecond: 600,    // the nurse's walk to a room
+    walkMinSeconds: 0.4,
+    walkMaxSeconds: 1.4,
+    walkStridePx: 58,        // ground covered per step: sets her step rate so her feet don't slide
+    walkCrouchMs: 150,       // little crouch before she sets off
+    doorLeadMs: 160,         // the door starts opening this long before she arrives
+    doorSettleMs: 140,       // pause at the open door before she steps in
+    stepInMs: 240,           // she steps through the door and fades
     confettiSeconds: 3.2,
     saveLocalMs: 1000,       // write progress to this browser this long after the last change (always on leaving the page)
     saveCloudMs: 2500,       // and to the Claude account (claude.ai only)

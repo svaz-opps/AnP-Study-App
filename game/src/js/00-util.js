@@ -95,16 +95,23 @@ function afterNextPaint(fn) {
 
 // asked every animation frame, so the media query is created once
 const reducedMotionQuery = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
-const reducedMotion = () => {
+// Three motion levels (see ANIMATION_NOTES.md):
+//   full  everything moves ("Full", or "Auto" with the device's Reduce Motion off)
+//   soft  "Auto" with the device's Reduce Motion on: feedback, characters, the walk and the monitor still
+//         animate, but big travel, zooms and shakes become crossfades (Apple: reduce means different, not none)
+//   calm  the game's own "Calm" setting: things hold still
+// <html data-motion> carries the level so CSS can follow it (CSS never reads the media query itself, so "Full"
+// really is full even on a device with Reduce Motion on).
+const motionLevel = () => {
   const s = window.WR && WR.state && WR.state.settings.motion;
-  if (s === 'reduced') return true;
-  if (s === 'full') return false;
-  return !!(reducedMotionQuery && reducedMotionQuery.matches);
+  if (s === 'reduced') return 'calm';
+  if (s === 'full') return 'full';
+  return reducedMotionQuery && reducedMotionQuery.matches ? 'soft' : 'full';
 };
-// Only the game's own "Calm" setting stills the heart monitor. On "Auto" it keeps sweeping even when the
-// device asks for reduced motion: a thin line moving inside a small box is not the zooming, sliding kind
-// of motion that setting is for, and a frozen monitor reads as a broken game.
-const calmChosen = () => !!(window.WR && WR.state && WR.state.settings.motion === 'reduced');
+// true when big movement (screen slides, shakes, smooth scrolling) should be swapped for a crossfade or skipped
+const reducedMotion = () => motionLevel() !== 'full';
+// true only on "Calm": the walk, the heart monitor, the patients' gags etc. stop
+const calmChosen = () => motionLevel() === 'calm';
 
 // ---------- icons (inline SVG, stroke-based) ----------
 const ICON_PATHS = {
