@@ -315,6 +315,9 @@ Screens.settings = {
     }
     return `${topbar('Settings')}
       <div class="narrow stack">
+        <div class="card set-row"><div><b>Your name</b><p class="dim">What your patients call you.</p></div>
+          <input type="text" id="set-name" maxlength="${CONFIG.profile.nameMaxLength}" autocomplete="nickname"
+            value="${esc(WR.state.profile.name)}" placeholder="Nurse name" aria-label="Your name"></div>
         ${row('Sound', 'Chimes, buzzers, and the Code Blue alarm.', seg('sound', [[true, 'On'], [false, 'Off']]))}
         ${row('Motion', '"Auto" follows your device: with Reduce Motion on, screens fade instead of sliding and nothing shakes. ' +
           '"Calm" holds everything still (no walking, confetti or moving heart monitor).', seg('motion', [['auto', 'Auto'], ['full', 'Full'], ['reduced', 'Calm']]))}
@@ -328,7 +331,7 @@ Screens.settings = {
           <div class="btn-row"><button class="btn" data-action="backup">${icon('download')}Download backup</button>
           <label class="btn file-btn">${icon('upload')}Restore from backup<input type="file" id="restore"
             accept=".json,application/json"></label>
-          <button class="btn" data-action="tutorial">${icon('book')}Show tutorial</button>
+          <button class="btn" data-action="tutorial">${icon('book')}Replay intro</button>
           <button class="btn danger" data-action="reset">Reset progress</button></div></div>
         ${saveHelp}
         <p class="faint center">Ward Rounds · BIOL 2401 study guide edition · ${Content.all().length} patients</p>
@@ -336,6 +339,11 @@ Screens.settings = {
       </div>`;
   },
   mount(el) {
+    const nm = $('#set-name', el);
+    if (nm) {
+      nm.addEventListener('input', () => { WR.state.profile.name = nm.value.trim().slice(0, CONFIG.profile.nameMaxLength); });
+      nm.addEventListener('change', () => { Store.save(); App.toast(WR.state.profile.name ? 'Name saved.' : 'Name cleared.'); });
+    }
     const d = $('#exam-date', el);
     if (d) d.addEventListener('change', () => {
       WR.state.settings.examDate = d.value;
@@ -408,7 +416,7 @@ Screens.settings = {
         'as a .json file.'); }
       catch (e) { App.toast('Saving files is not available here.'); }
     },
-    tutorial() { App.show('onboard', { step: 2 }); },
+    tutorial() { App.show('onboard', { step: 0 }); }, // the whole intro, name and nurse included
     async reset() {
       if (await App.confirm('Reset all progress?', 'XP, badges, stars, and missed patients will be erased. Your ' +
         'settings stay.', 'Erase everything', true)) {
@@ -471,6 +479,8 @@ Screens.onboard = {
   cls: 'onboard-screen',
   render(p) {
     const step = p.step || 0, s = WR.state, av = s.profile.avatar;
+    const replay = s.profile.onboarded; // replayed from Settings: can be left at any step
+    const skip = `<button class="btn ghost block" data-action="ob" data-to="5">${replay ? 'Skip intro' : 'Skip'}</button>`;
     const dots = `<div class="ob-dots">${[0, 1, 2, 3, 4].map((i) => `<i class="${i === step ? 'on' : ''}"></i>`).join('')}</div>`;
     let body;
     if (step === 0) {
@@ -482,7 +492,8 @@ Screens.onboard = {
         <label class="ob-name"><span class="label">What should your patients call you? (optional)</span>
           <input id="nurse-name" type="text" maxlength="${CONFIG.profile.nameMaxLength}" autocomplete="nickname"
             value="${esc(s.profile.name)}" placeholder="Nurse name"></label>
-        <button class="btn primary big block" data-action="ob" data-to="1">Next: make your nurse</button>`;
+        <button class="btn primary big block" data-action="ob" data-to="1">Next: make your nurse</button>
+        ${replay ? skip : ''}`;
     } else if (step === 1) {
       // one row of choices: colour dots, or little nurse heads for hair styles
       const row = (key, list, isColor) => {
@@ -501,13 +512,14 @@ Screens.onboard = {
         <span class="label">Hair</span>${row('hair', AVATAR.hair, false)}
         <span class="label">Scrubs</span>${row('scrubs', AVATAR.scrubs.slice(0, 6), true)}
         <p class="faint">More in the Locker room later, including unlockable patterns and extras.</p>
-        <button class="btn primary big block" data-action="ob" data-to="2">Looks good!</button>`;
+        <button class="btn primary big block" data-action="ob" data-to="2">Looks good!</button>
+        ${replay ? skip : ''}`;
     } else if (step <= 4) {
       const t = TUTORIAL[step - 2];
       body = `<div class="ob-card">${icon(t.ico)}</div><h1 tabindex="-1">${esc(t.t)}</h1><p class="dim ob-text">${esc(t.d)}</p>
         <button class="btn primary big block" data-action="ob"
-          data-to="${step + 1}">${step === 4 ? 'Start my first shift' : 'Next'}</button>
-        ${step < 4 ? `<button class="btn ghost block" data-action="ob" data-to="5">Skip</button>` : ''}`;
+          data-to="${step + 1}">${step < 4 ? 'Next' : replay ? 'Back to the floor' : 'Start my first shift'}</button>
+        ${step < 4 ? skip : ''}`;
     }
     return `<div class="onboard narrow">${body}${dots}</div>`;
   },

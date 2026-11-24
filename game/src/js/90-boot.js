@@ -31,6 +31,10 @@ function bindEvents() {
   });
   window.addEventListener('pagehide', () => { if (App.run) Store.saveRun(); Store._local.flush(); });
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
+  // touch or mouse, from the last pointer used: hover highlights are for a mouse or trackpad only
+  window.addEventListener('pointerdown', (e) => {
+    document.documentElement.dataset.input = e.pointerType === 'touch' ? 'touch' : 'mouse';
+  }, { passive: true, capture: true });
 }
 
 Object.assign(WR, { App, Engine, Content, Store, Screens, Whimsy, Run, Loop, CONFIG, applySettings });

@@ -144,6 +144,16 @@ Screens.floor = {
   },
   mount(el) {
     this.placeWalker(false);
+    // No room hover glow until the pointer actually moves: the floor is redrawn under a mouse or trackpad that
+    // is still resting on the room you just left, and that room would stay lit until you nudged it.
+    // Touch never lights it (a tap leaves :hover stuck on the last room touched); see data-input in 90-boot.js.
+    const plan = $('#floorplan', el);
+    if (plan) {
+      plan.classList.add('hover-off');
+      plan.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'touch') plan.classList.remove('hover-off');
+      }, { passive: true });
+    }
     // XP earned since the floor was last shown rolls in alongside the bar
     if (hudXpNum != null && hudXpNum < WR.state.xp) FX.countUp($('#hud-xp-num', el), hudXpNum, WR.state.xp, 900);
     hudXpNum = WR.state.xp;
@@ -322,6 +332,8 @@ Screens.floor = {
     async room(d, el) {
       if (Screens.floor.busy) return;
       Screens.floor.busy = true;
+      // a walk back from another room may still be playing: close its door now, or that room stays lit
+      $$('.room.open').forEach((r) => { if (r !== el) r.classList.remove('open'); });
       Sound.play('tap');
       await Screens.floor.tuckBubble();
       await Screens.floor.walkTo(el);

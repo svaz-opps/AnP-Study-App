@@ -511,3 +511,19 @@ After animation work runs out: ideas to make the game more engaging; after that,
   wording from three drafts). Style: `.dedication` in css/40-screens.css.
 - Rebuilt dist; all 8 tests pass.
 - Pushed to `main` and `beta` at the user's request (both fast-forward to the branch).
+
+## 2026-11-24 — Room highlight no longer lingers; replay intro; change name
+- Lingering room highlight. Two causes fixed:
+  1. Hover glow: the floor is redrawn (e.g. coming back from a shift) under a mouse/trackpad still resting on the
+     room just left, so it stayed lit until the pointer moved; and touch screens that report hover keep :hover on
+     the last room tapped. Now the floor starts with `.hover-off` (removed on the first non-touch pointermove), and
+     `<html data-input="touch|mouse">` (set on every pointerdown, 90-boot.js) turns hover glow off for touch.
+  2. Tapping a room while the nurse is still stepping out of another cancelled the walk back before it closed
+     that door, leaving the other room's teal border on. The room tap now closes any other open door first.
+  Checked in Chromium: glow shows when the mouse moves over a room, not when the floor is redrawn under a resting
+  cursor, comes back once it moves, and never after a touch tap.
+- Settings: "Show tutorial" is now "Replay intro" and starts at the welcome step (name box prefilled), not the tip
+  cards. On a replay every step has "Skip intro" and the last button says "Back to the floor" (not "Start my first
+  shift"; the first-time flow is unchanged).
+- Settings: new "Your name" row at the top (saves as you type; toast on change). Assumption: the user wanted the
+  name editable both in the replayed intro and directly in Settings.

@@ -62,7 +62,12 @@
   transition: border-color var(--dur-small) var(--ease-out), transform var(--dur-tap) var(--ease-out), box-shadow var(--dur-small) var(--ease-out);
 }
 .room:active { transform: scale(.985); }
-@media (hover: hover) { .room:hover { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); } }
+/* mouse/trackpad only, and only once it has moved over the new floor (hover-off: see Screens.floor.mount) */
+@media (hover: hover) {
+  html:not([data-input="touch"]) .floorplan:not(.hover-off) .room:hover {
+    border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+}
 /* only the blurb row (4) gives way when space is short; the patient row (5) is always shown */
 .room-body {
   display: grid;
