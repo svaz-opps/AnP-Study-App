@@ -21,7 +21,8 @@ Screens.chart = {
     if (!run.maxLives) return '';
     let s = `<div class="lives" id="lives" aria-label="${run.lives} of ${run.maxLives} lives">`;
     for (let i = 0; i < run.maxLives; i++) {
-      s += `<span class="${i < run.lives ? 'on' : 'off'} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
+      const last = run.lives === 1 && i === 0 ? ' last' : ''; // the last life beats: one more miss ends the shift
+      s += `<span class="${i < run.lives ? 'on' : 'off'}${last} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
     }
     return s + '</div>';
   },

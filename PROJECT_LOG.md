@@ -470,3 +470,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
   ANIMATION_NOTES.md now also covers the portrait explanation sheet covering the options. All 8 tests pass.
 - Onboarding "Make your nurse": each swatch tap redrew the step and replayed its fade-in, flickering the whole step;
   the redraw now skips that fade and the nurse does the same "ta-da" as in the locker. All 8 tests pass.
+- Chart: with one life left, the last heart beats (double-pulse every 1.1 s, after the lost heart has drained;
+  still on Calm). All 8 tests pass.
