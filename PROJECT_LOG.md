@@ -447,3 +447,6 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - Engagement 4 (R29): sound and urgency. The right-answer chime climbs a major scale with the streak (`Sound.right`,
   8 steps, resets on a miss). Code Blue's last 5 seconds tick: the number turns red, jumps and beeps once a second
   (`CONFIG.codeBlue.urgentSeconds`). All 8 tests pass.
+- Locker room: changing an item makes the nurse do a quick squash-and-stretch "ta-da" in the new look (feedback for
+  the change; she used to just swap); tapping a locked item shakes it "no" before the toast (skipped on soft/calm).
+  All 8 tests pass.

@@ -5890,6 +5890,20 @@ Screens.locker = {
   cls: 'locker-screen',
   tab: 'hair',
   mood: 'happy',
+  // feedback for a change: the nurse does a quick squash-and-stretch "ta-da" in the new look
+  flourish() {
+    const svg = $('.locker-nurse svg', App.el);
+    if (!svg || !svg.animate || calmChosen()) return;
+    svg.style.transformOrigin = '50% 100%';
+    svg.animate([{ transform: 'none' }, { transform: 'scale(1.08, .9)', offset: 0.25 }, { transform: 'scale(.95, 1.07) translateY(-6px)', offset: 0.55 },
+      { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.3, .7, .4, 1)' });
+  },
+  // a locked choice shakes its head
+  nope(el) {
+    if (!el || !el.animate || reducedMotion()) return;
+    el.animate([{ transform: 'none' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(4px)' }, { transform: 'translateX(-2px)' },
+      { transform: 'none' }], { duration: 320, easing: 'ease-out' });
+  },
   render() {
     const av = WR.state.profile.avatar;
     const tab = this.tab;
@@ -5936,20 +5950,20 @@ Screens.locker = {
   },
   act: {
     tab(d) { Screens.locker.tab = d.tab; App.rerender(); },
-    set(d) {
+    set(d, el) {
       const lk = `${d.key}:${d.val}`;
-      if (!isUnlocked(lk)) { App.toast(`Locked: ${reqText(lk)}`); return; }
+      if (!isUnlocked(lk)) { Screens.locker.nope(el); App.toast(`Locked: ${reqText(lk)}`); return; }
       WR.state.profile.avatar[d.key] = +d.val;
       const av = WR.state.profile.avatar;
       if (d.key === 'hair' && +d.val === 7) av.hairColor = Math.min(av.hairColor, AVATAR.hijab.length - 1); // fewer hijab colours
-      Sound.play('tap'); Store.save(); App.rerender();
+      Sound.play('tap'); Store.save(); App.rerender(); Screens.locker.flourish();
     },
-    acc(d) {
-      if (!isUnlocked('acc:' + d.id)) { App.toast(`Locked: ${reqText('acc:' + d.id)}`); return; }
+    acc(d, el) {
+      if (!isUnlocked('acc:' + d.id)) { Screens.locker.nope(el); App.toast(`Locked: ${reqText('acc:' + d.id)}`); return; }
       const a = WR.state.profile.avatar; a.acc = a.acc || [];
       const k = a.acc.indexOf(d.id);
       if (k === -1) a.acc.push(d.id); else a.acc.splice(k, 1);
-      Sound.play('tap'); Store.save(); App.rerender();
+      Sound.play('tap'); Store.save(); App.rerender(); Screens.locker.flourish();
     },
     poke() {
       const moods = ['happy', 'cheer', 'focus', 'cool', 'silly', 'starry', 'sleepy', 'worried', 'dizzy', 'neutral'];
