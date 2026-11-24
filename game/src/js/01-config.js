@@ -172,6 +172,7 @@ const CONFIG = {
 
   // ----- the nurse's chatter -----
   talk: {
+    suggestChance: 0.6,      // how often the floor nurse points at a room that is behind (always for ready discharges)
     streakShoutouts: [3, 6, 10, 15, 20, 25],
     chatterChance: 0.25,     // chance of a new line on each new patient
     trickChance: 0.4,        // chance a right answer repeats the memory trick

@@ -13,7 +13,7 @@ Status: ✅ done · 🔨 in progress · ⬜ to do · ⏸ on hold
 | R14 | Fully tap-only onboarding | ⏸ | The nurse name is the one typed field (it can be skipped). Option: pick a name from a list, or keep typing as optional. |
 | R16 | Update the online (claude.ai) game page | ⏸ | On hold at the user's request; the downloadable file on `main` is the current version. |
 | R28 | Animation pass (overnight) | 🔨 | On the session branch, not yet on `main`. Motion levels (full / soft for device Reduce Motion / calm), motion tokens, nurse walk with matching steps, room-to-screen continuity, staged answer reveal, rolling scores, filling bars, dialog exits, report build-up, boss wind-up/impact, gag swings that start/end at rest. Principles in `ANIMATION_NOTES.md`; `game/tests/motion.mjs`. Waiting for the user's look before `main`. |
-| R29 | Engagement nudges | 🔨 | On the session branch. Streak pips toward the next multiplier + a level-up pop, "N to ★" on each room card, daily-goal celebration, "New personal best!" streak tag on the report. |
+| R29 | Engagement nudges | 🔨 | On the session branch. Streak pips toward the next multiplier + a level-up pop, "N to ★" on each room card, daily-goal celebration, "New personal best!" streak tag on the report. The floor nurse points at a room worth visiting (missed patients ready for discharge today, else the started room furthest behind) and it glows. |
 
 ## Done
 

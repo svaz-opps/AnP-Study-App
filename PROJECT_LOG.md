@@ -433,3 +433,10 @@ After animation work runs out: ideas to make the game more engaging; after that,
   when the round beat the all-time best (≥3). Checked at 1180x820 and 390x844; all 8 tests pass.
 - ROADMAP: R28 (animation pass) and R29 (engagement) added as in progress (on the session branch, waiting for the
   user before main).
+- Engagement 2 (R29): the floor nurse suggests a room. `Engine.suggestRoom()`: the room with the most missed
+  patients who can be discharged today (right on an earlier day, so one right answer today sends them home), else
+  the started room furthest behind on stars; none for a brand-new player. Ready discharges are always mentioned;
+  otherwise she points at the weak room 60% of the time (`CONFIG.talk.suggestChance`) and shares a tip the rest.
+  The suggested room glows (ready-drawn inset ring, opacity pulse; still on Calm). `Engine.nextStarNeed()` is shared
+  with the room cards' "N to ★". Missed patients from earlier days already get the highest pick weight (4.5) in a
+  shift. All 8 tests pass.

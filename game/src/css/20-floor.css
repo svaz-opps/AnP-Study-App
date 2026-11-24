@@ -118,6 +118,15 @@
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
 .room-meta .next-star { color: var(--warn); white-space: nowrap; }
+/* the room the nurse suggests: a ready-drawn ring that breathes (opacity only) */
+.room.suggest { border-color: var(--accent); }
+.room.suggest::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 22px var(--accent-soft);
+  animation: suggest-glow 1.6s ease-in-out infinite alternate;
+}
+@keyframes suggest-glow { from { opacity: .25; } to { opacity: 1; } }
+[data-calm="1"] .room.suggest::after { animation: none; }
 .room-dot {
   flex: none; min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;

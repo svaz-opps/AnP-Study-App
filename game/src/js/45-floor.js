@@ -49,23 +49,20 @@ function dailyChip() {
 
 // goal gradient on the room card: how many more patients earn the next star
 function nextStarHTML(m) {
-  const M = CONFIG.mastery, T = m.total;
-  if (!T || m.stars >= 3) return '';
-  const need = m.stars === 2 ? Math.ceil(M.threeStars * T) - m.solid
-    : Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever;
+  const need = Engine.nextStarNeed(m);
   if (need <= 0) return '';
   const what = m.stars === 2 ? 'mastered' : 'right';
   return `<br><span class="next-star" title="${need} more ${what} for the next star"><span class="num">${need}</span> to ${'★'.repeat(m.stars + 1)}</span>`;
 }
 
 // one room door on the floor. `place` adds grid placement (the portrait layout)
-function roomHTML(u, place = '') {
+function roomHTML(u, place = '', suggested = false) {
   const m = Engine.mastery(u.id);
   const p = patientFor({ id: 'room-' + u.id, stem: '', unit: u.id });
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
   const waiting = m.missed ? ` ${m.missed} missed patients waiting.` : '';
   const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${waiting}`;
-  return `<button class="room"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
+  return `<button class="room${suggested ? ' suggest' : ''}"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
     <span class="room-body">
       <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span>${m.missed ? `<span class="room-dot num" title="Missed patients waiting">${m.missed}</span>` : ''}</span>
       <span class="room-ward">${esc(u.ward)}</span>
@@ -104,22 +101,33 @@ Screens.floor = {
     const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" ` +
       `aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span>` +
       `<span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : lockNote}</small></span></button>`;
-    const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
+    // the nurse usually points at a room worth visiting (and it glows); otherwise she shares a tip
+    const sug = Engine.suggestRoom();
+    const pointAt = sug && (sug.why === 'ready' || Math.random() < CONFIG.talk.suggestChance) ? sug : null;
+    let say = Talk.line('floor');
+    if (pointAt) {
+      const r = pointAt.unit.room, n = pointAt.n;
+      say = pointAt.why === 'ready'
+        ? `Room ${r} has ${n} missed patient${n === 1 ? '' : 's'} ready to go home. One right answer today each!`
+        : `Room ${r} could use a visit: ${n} more right for its next star.`;
+    }
+    const sugId = pointAt && pointAt.unit.id;
+    const bubble = `<div class="bubble pop" id="floor-bubble">${esc(say)}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
     if (App.layout === 'h') {
       plan = `<div class="floorplan h wrap" id="floorplan">
-        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u)).join('')}</div>
+        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u, '', u.id === sugId)).join('')}</div>
         <div class="corridor">
           <div class="station"><div class="station-desk" aria-hidden="true">NURSES' STATION</div>${bubble}</div>
           ${alarm}${elev}
         </div>
-        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u)).join('')}</div>
+        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u, '', u.id === sugId)).join('')}</div>
         ${walker}
       </div>`;
     } else {
       // two columns of rooms either side of the corridor
-      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`)).join('');
+      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`, u.id === sugId)).join('');
       plan = `<div class="station-card show"><div class="station-desk" aria-hidden="true">STATION</div>${bubble}</div>
       <div class="floorplan v wrap" id="floorplan">
         <div class="rooms">${rows}</div>

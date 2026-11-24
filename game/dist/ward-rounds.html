@@ -390,6 +390,15 @@ svg { display: block; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
 .room-meta .next-star { color: var(--warn); white-space: nowrap; }
+/* the room the nurse suggests: a ready-drawn ring that breathes (opacity only) */
+.room.suggest { border-color: var(--accent); }
+.room.suggest::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--accent), inset 0 0 22px var(--accent-soft);
+  animation: suggest-glow 1.6s ease-in-out infinite alternate;
+}
+@keyframes suggest-glow { from { opacity: .25; } to { opacity: 1; } }
+[data-calm="1"] .room.suggest::after { animation: none; }
 .room-dot {
   flex: none; min-width: 22px; height: 22px; padding: 0 6px;
   border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
@@ -2245,6 +2254,7 @@ const CONFIG = {
 
   // ----- the nurse's chatter -----
   talk: {
+    suggestChance: 0.6,      // how often the floor nurse points at a room that is behind (always for ready discharges)
     streakShoutouts: [3, 6, 10, 15, 20, 25],
     chatterChance: 0.25,     // chance of a new line on each new patient
     trickChance: 0.4,        // chance a right answer repeats the memory trick
@@ -3679,6 +3689,33 @@ const Engine = {
   //       od: last day answered right, ld: last day seen, miss: in Missed Patients }
   rec(qid) { return WR.state.items[qid]; },
   isSolid(r) { return !!r && r.ok >= CONFIG.mastery.solidDays; },
+  // patients to answer right for a room's next star (0 when it has three)
+  nextStarNeed(m) {
+    const M = CONFIG.mastery, T = m.total;
+    if (!T || m.stars >= 3) return 0;
+    if (m.stars === 2) return Math.max(0, Math.ceil(M.threeStars * T) - m.solid);
+    return Math.max(0, Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever);
+  },
+  // Which room the floor nurse points you to: first the room with the most missed patients who can be discharged
+  // today (right on an earlier day, so one more right answer today sends them home: spaced review), otherwise the
+  // started room furthest behind on stars. Nothing for a brand-new player (the first shift is the tutorial's).
+  suggestRoom() {
+    const t = todayStr(), need = CONFIG.mastery.solidDays - 1;
+    let best = null;
+    for (const u of Content.units) {
+      let n = 0;
+      for (const q of Content.byUnit[u.id] || []) {
+        const r = WR.state.items[q.id];
+        if (r && r.miss && r.ok >= need && r.od !== t) n++;
+      }
+      if (n && (!best || n > best.n)) best = { unit: u, n, why: 'ready' };
+    }
+    if (best) return best;
+    const started = Content.units.map((u) => ({ unit: u, m: this.mastery(u.id) })).filter((x) => x.m.seen && x.m.stars < 3);
+    if (!started.length) return null;
+    started.sort((a, b) => a.m.stars - b.m.stars || a.m.everFrac - b.m.everFrac);
+    return { unit: started[0].unit, n: this.nextStarNeed(started[0].m), why: 'weak' };
+  },
   touchDay() {
     const d = WR.state.days, t = todayStr();
     if (d.today !== t) {
@@ -4571,23 +4608,20 @@ function dailyChip() {
 
 // goal gradient on the room card: how many more patients earn the next star
 function nextStarHTML(m) {
-  const M = CONFIG.mastery, T = m.total;
-  if (!T || m.stars >= 3) return '';
-  const need = m.stars === 2 ? Math.ceil(M.threeStars * T) - m.solid
-    : Math.ceil((m.stars === 1 ? M.twoStars : M.oneStar) * T) - m.ever;
+  const need = Engine.nextStarNeed(m);
   if (need <= 0) return '';
   const what = m.stars === 2 ? 'mastered' : 'right';
   return `<br><span class="next-star" title="${need} more ${what} for the next star"><span class="num">${need}</span> to ${'★'.repeat(m.stars + 1)}</span>`;
 }
 
 // one room door on the floor. `place` adds grid placement (the portrait layout)
-function roomHTML(u, place = '') {
+function roomHTML(u, place = '', suggested = false) {
   const m = Engine.mastery(u.id);
   const p = patientFor({ id: 'room-' + u.id, stem: '', unit: u.id });
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
   const waiting = m.missed ? ` ${m.missed} missed patients waiting.` : '';
   const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${waiting}`;
-  return `<button class="room"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
+  return `<button class="room${suggested ? ' suggest' : ''}"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
     <span class="room-body">
       <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span>${m.missed ? `<span class="room-dot num" title="Missed patients waiting">${m.missed}</span>` : ''}</span>
       <span class="room-ward">${esc(u.ward)}</span>
@@ -4626,22 +4660,33 @@ Screens.floor = {
     const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" ` +
       `aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span>` +
       `<span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : lockNote}</small></span></button>`;
-    const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
+    // the nurse usually points at a room worth visiting (and it glows); otherwise she shares a tip
+    const sug = Engine.suggestRoom();
+    const pointAt = sug && (sug.why === 'ready' || Math.random() < CONFIG.talk.suggestChance) ? sug : null;
+    let say = Talk.line('floor');
+    if (pointAt) {
+      const r = pointAt.unit.room, n = pointAt.n;
+      say = pointAt.why === 'ready'
+        ? `Room ${r} has ${n} missed patient${n === 1 ? '' : 's'} ready to go home. One right answer today each!`
+        : `Room ${r} could use a visit: ${n} more right for its next star.`;
+    }
+    const sugId = pointAt && pointAt.unit.id;
+    const bubble = `<div class="bubble pop" id="floor-bubble">${esc(say)}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
     if (App.layout === 'h') {
       plan = `<div class="floorplan h wrap" id="floorplan">
-        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u)).join('')}</div>
+        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u, '', u.id === sugId)).join('')}</div>
         <div class="corridor">
           <div class="station"><div class="station-desk" aria-hidden="true">NURSES' STATION</div>${bubble}</div>
           ${alarm}${elev}
         </div>
-        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u)).join('')}</div>
+        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u, '', u.id === sugId)).join('')}</div>
         ${walker}
       </div>`;
     } else {
       // two columns of rooms either side of the corridor
-      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`)).join('');
+      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`, u.id === sugId)).join('');
       plan = `<div class="station-card show"><div class="station-desk" aria-hidden="true">STATION</div>${bubble}</div>
       <div class="floorplan v wrap" id="floorplan">
         <div class="rooms">${rows}</div>
