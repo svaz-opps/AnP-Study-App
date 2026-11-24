@@ -990,13 +990,20 @@ details.more[open] summary::before { transform: rotate(90deg); }
 }
 .arena .boss { width: 170px; height: 170px; flex: none; transition: filter .3s; }
 .arena .boss svg { width: 100%; height: 100%; overflow: visible; }
-.arena .boss.hit { animation: boss-hit .45s ease both; }
-.arena .boss.heal { animation: boss-heal .6s ease both; }
+/* the Superbug breathes while it waits (secondary action: it reads as alive, not as a sticker) */
+.arena .boss svg { animation: boss-idle 2.4s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+@keyframes boss-idle { to { transform: scale(1.03, .97) translateY(1px); } }
+/* hit: a white flash and a squash as the blow lands, knocked back, then it wobbles back into shape */
+.arena .boss { transform-origin: 50% 100%; }
+.arena .boss.hit { animation: boss-hit .5s var(--ease-out) both; }
+.arena .boss.heal { animation: boss-heal .6s var(--ease-out) both; }
 @keyframes boss-hit {
-  20% { transform: translateX(10px) rotate(4deg); filter: brightness(2.2) saturate(.3); }
-  60% { transform: translateX(-6px); }
+  12% { transform: translateX(12px) scale(.88, 1.1) rotate(5deg); filter: brightness(2.2) saturate(.3); }
+  35% { transform: translateX(6px) scale(1.06, .95); filter: none; }
+  65% { transform: translateX(-3px) scale(.99, 1.01) rotate(-1deg); }
 }
 @keyframes boss-heal { 40% { transform: scale(1.12); filter: drop-shadow(0 0 18px #7dffb2); } }
+[data-calm="1"] .arena .boss svg { animation: none; }
 .arena .nurse { width: 96px; height: 116px; flex: none; }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
 /* In the arena the bubble sits under the nurse, so its tail points up at the nurse instead of out to the side. */
@@ -2272,6 +2279,7 @@ const CONFIG = {
     bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
     buttonTuckMs: 200,       // the Code Blue and OR buttons shrink away as she starts walking
     feedbackDelayMs: 240,    // the explanation panel follows the answer marks (30-chart.css mark-pop)
+    bossFeedbackDelayMs: 640, // in the arena it waits for the wind-up + throw (170 + 420 ms) to land
     walkPxPerSecond: 600,    // the nurse's walk to a room
     walkMinSeconds: 0.4,
     walkMaxSeconds: 1.4,
@@ -3561,7 +3569,8 @@ const FX = {
     });
   },
 
-  projectile(from, to, color) {
+  // thrown along a smooth arc (sampled from a curve; three keyframes made a kinked path), spinning as it flies
+  projectile(from, to, color, delay = 0) {
     if (!from || !to || calmChosen()) return Promise.resolve();
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
     const el = document.createElement('div');
@@ -3570,11 +3579,14 @@ const FX = {
     this.layer().appendChild(el);
     const x0 = a.left + a.width * 0.7, y0 = a.top + a.height * 0.4, x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
     el.style.left = '0px'; el.style.top = '0px';
-    const anim = el.animate([
-      { transform: `translate(${x0}px, ${y0}px) scale(.6)` },
-      { transform: `translate(${(x0 + x1) / 2}px, ${Math.min(y0, y1) - 60}px) scale(1.1)` },
-      { transform: `translate(${x1}px, ${y1}px) scale(1.4)`, opacity: 0.9 },
-    ], { duration: 420, easing: 'ease-in' });
+    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - 70, N = 10, frames = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, u = 1 - t;
+      const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+      frames.push({ transform: `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${Math.round(t * 540)}deg) scale(${(0.6 + 0.8 * t).toFixed(2)})` });
+    }
+    frames[N].opacity = 0.9;
+    const anim = el.animate(frames, { duration: 420, delay, easing: 'cubic-bezier(.35, 0, .65, 1)', fill: 'backwards' });
     return anim.finished.then(() => el.remove()).catch(() => el.remove());
   },
 };
@@ -5268,15 +5280,30 @@ Screens.chart = {
       if (c.badges && c.badges.length) badgeToast(c.badges);
     };
     if (calmChosen()) afterNextPaint(showFeedback);
-    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
+    else setTimeout(showFeedback, run.mode === 'boss' && c.dmg ? CONFIG.timing.bossFeedbackDelayMs : CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {
     const run = App.run, el = App.el;
     const boss = $('#boss', el), nurse = $('#arena-nurse', el);
+    // the HP bar moves when the blow lands (cause, then effect), not when the answer is submitted
+    const showHp = () => {
+      const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
+      if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
+      if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+    };
     if (c.dmg) {
-      FX.projectile(nurse, boss).then(() => {
+      // anticipation: she winds up before the throw
+      const nsvg = nurse && $('svg', nurse);
+      if (nsvg && nsvg.animate && !calmChosen()) {
+        nsvg.style.transformOrigin = '50% 100%';
+        nsvg.animate([{ transform: 'none' }, { transform: 'rotate(-9deg) translateX(-6px)', offset: 0.45 },
+          { transform: 'rotate(7deg) translateX(5px)', offset: 0.7 }, { transform: 'none' }],
+        { duration: 380, easing: 'ease-in-out' });
+      }
+      FX.projectile(nurse, boss, null, calmChosen() ? 0 : 170).then(() => {
         Sound.play('hit');
+        showHp();
         if (boss) { boss.innerHTML = bossSVG(run.phase, 'hurt'); replayClass(boss, 'hit'); }
         FX.float('−' + c.dmg, boss, 'bad');
         setTimeout(() => { if (boss && boss.isConnected) boss.innerHTML = bossSVG(run.phase); }, CONFIG.timing.bossHurtMs);
@@ -5285,10 +5312,8 @@ Screens.chart = {
       Sound.play('heal');
       replayClass(boss, 'heal');
       FX.float('+' + c.heal + ' HP', boss, 'good');
-    }
-    const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
-    if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
-    if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+      showHp();
+    } else showHp();
     if (c.phaseUp && run.hp > 0) {
       const ar = $('#arena', el);
       if (ar) {

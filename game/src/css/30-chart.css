@@ -415,13 +415,20 @@ details.more[open] summary::before { transform: rotate(90deg); }
 }
 .arena .boss { width: 170px; height: 170px; flex: none; transition: filter .3s; }
 .arena .boss svg { width: 100%; height: 100%; overflow: visible; }
-.arena .boss.hit { animation: boss-hit .45s ease both; }
-.arena .boss.heal { animation: boss-heal .6s ease both; }
+/* the Superbug breathes while it waits (secondary action: it reads as alive, not as a sticker) */
+.arena .boss svg { animation: boss-idle 2.4s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+@keyframes boss-idle { to { transform: scale(1.03, .97) translateY(1px); } }
+/* hit: a white flash and a squash as the blow lands, knocked back, then it wobbles back into shape */
+.arena .boss { transform-origin: 50% 100%; }
+.arena .boss.hit { animation: boss-hit .5s var(--ease-out) both; }
+.arena .boss.heal { animation: boss-heal .6s var(--ease-out) both; }
 @keyframes boss-hit {
-  20% { transform: translateX(10px) rotate(4deg); filter: brightness(2.2) saturate(.3); }
-  60% { transform: translateX(-6px); }
+  12% { transform: translateX(12px) scale(.88, 1.1) rotate(5deg); filter: brightness(2.2) saturate(.3); }
+  35% { transform: translateX(6px) scale(1.06, .95); filter: none; }
+  65% { transform: translateX(-3px) scale(.99, 1.01) rotate(-1deg); }
 }
 @keyframes boss-heal { 40% { transform: scale(1.12); filter: drop-shadow(0 0 18px #7dffb2); } }
+[data-calm="1"] .arena .boss svg { animation: none; }
 .arena .nurse { width: 96px; height: 116px; flex: none; }
 .arena .nurse svg { width: 100%; height: 100%; overflow: visible; }
 /* In the arena the bubble sits under the nurse, so its tail points up at the nurse instead of out to the side. */

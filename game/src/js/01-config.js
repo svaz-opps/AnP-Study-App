@@ -226,6 +226,7 @@ const CONFIG = {
     bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
     buttonTuckMs: 200,       // the Code Blue and OR buttons shrink away as she starts walking
     feedbackDelayMs: 240,    // the explanation panel follows the answer marks (30-chart.css mark-pop)
+    bossFeedbackDelayMs: 640, // in the arena it waits for the wind-up + throw (170 + 420 ms) to land
     walkPxPerSecond: 600,    // the nurse's walk to a room
     walkMinSeconds: 0.4,
     walkMaxSeconds: 1.4,

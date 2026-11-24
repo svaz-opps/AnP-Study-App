@@ -409,3 +409,9 @@ After animation work runs out: ideas to make the game more engaging; after that,
   after the room card (scale 2 → 1 with a twist, 120 ms apart). Score and XP tiles roll up from 0 (`FX.countUp`
   gained a formatter and a delay). Fade on soft, nothing on Calm. Floating "+100" texts are cleared when the screen
   changes (the last answer's float used to drift over the report). All 8 tests pass.
+- I (done) Boss arena. The nurse winds up (leans back, then forward) before the throw; the projectile follows a
+  smooth arc sampled from a curve (three keyframes made a kinked path) and spins; on impact the Superbug flashes,
+  squashes and is knocked back, then wobbles back into shape. The HP bar and number now change when the blow lands
+  (they changed at Submit, before the throw). The explanation panel (and its scroll) waits 640 ms in the arena when
+  you hit (`bossFeedbackDelayMs`), because the scroll moved the page under the flying projectile so it hit empty
+  space. The Superbug breathes while idle (secondary action). All 8 tests pass.

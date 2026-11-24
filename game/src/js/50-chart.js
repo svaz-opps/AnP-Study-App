@@ -410,15 +410,30 @@ Screens.chart = {
       if (c.badges && c.badges.length) badgeToast(c.badges);
     };
     if (calmChosen()) afterNextPaint(showFeedback);
-    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
+    else setTimeout(showFeedback, run.mode === 'boss' && c.dmg ? CONFIG.timing.bossFeedbackDelayMs : CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {
     const run = App.run, el = App.el;
     const boss = $('#boss', el), nurse = $('#arena-nurse', el);
+    // the HP bar moves when the blow lands (cause, then effect), not when the answer is submitted
+    const showHp = () => {
+      const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
+      if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
+      if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+    };
     if (c.dmg) {
-      FX.projectile(nurse, boss).then(() => {
+      // anticipation: she winds up before the throw
+      const nsvg = nurse && $('svg', nurse);
+      if (nsvg && nsvg.animate && !calmChosen()) {
+        nsvg.style.transformOrigin = '50% 100%';
+        nsvg.animate([{ transform: 'none' }, { transform: 'rotate(-9deg) translateX(-6px)', offset: 0.45 },
+          { transform: 'rotate(7deg) translateX(5px)', offset: 0.7 }, { transform: 'none' }],
+        { duration: 380, easing: 'ease-in-out' });
+      }
+      FX.projectile(nurse, boss, null, calmChosen() ? 0 : 170).then(() => {
         Sound.play('hit');
+        showHp();
         if (boss) { boss.innerHTML = bossSVG(run.phase, 'hurt'); replayClass(boss, 'hit'); }
         FX.float('−' + c.dmg, boss, 'bad');
         setTimeout(() => { if (boss && boss.isConnected) boss.innerHTML = bossSVG(run.phase); }, CONFIG.timing.bossHurtMs);
@@ -427,10 +442,8 @@ Screens.chart = {
       Sound.play('heal');
       replayClass(boss, 'heal');
       FX.float('+' + c.heal + ' HP', boss, 'good');
-    }
-    const hpN = $('#hp-num', el), hpB = $('#hp-bar', el);
-    if (hpN) hpN.textContent = `${run.hp} / ${run.maxHp}`;
-    if (hpB) hpB.style.transform = barShift(run.hp / run.maxHp);
+      showHp();
+    } else showHp();
     if (c.phaseUp && run.hp > 0) {
       const ar = $('#arena', el);
       if (ar) {

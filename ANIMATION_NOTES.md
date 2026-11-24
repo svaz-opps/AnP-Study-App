@@ -36,6 +36,6 @@ These are what the pass checks every animation against.
 - [x] F. Progress bars: animate with transform, not width.
 - [x] G. Modals, toasts, banners: entrance/exit pairs, exit faster.
 - [x] H. Report card / rank-up / confetti: staging and stagger.
-- [ ] I. Boss arena: hit/heal anticipation and follow-through.
+- [x] I. Boss arena: hit/heal anticipation and follow-through.
 - [ ] J. Whimsy layer: check each patient gag for linear/odd timing.
 - [ ] K. Check every flow frame by frame at landscape + portrait, with and without reduce-motion.

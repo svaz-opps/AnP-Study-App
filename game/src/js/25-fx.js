@@ -263,7 +263,8 @@ const FX = {
     });
   },
 
-  projectile(from, to, color) {
+  // thrown along a smooth arc (sampled from a curve; three keyframes made a kinked path), spinning as it flies
+  projectile(from, to, color, delay = 0) {
     if (!from || !to || calmChosen()) return Promise.resolve();
     const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
     const el = document.createElement('div');
@@ -272,11 +273,14 @@ const FX = {
     this.layer().appendChild(el);
     const x0 = a.left + a.width * 0.7, y0 = a.top + a.height * 0.4, x1 = b.left + b.width / 2, y1 = b.top + b.height / 2;
     el.style.left = '0px'; el.style.top = '0px';
-    const anim = el.animate([
-      { transform: `translate(${x0}px, ${y0}px) scale(.6)` },
-      { transform: `translate(${(x0 + x1) / 2}px, ${Math.min(y0, y1) - 60}px) scale(1.1)` },
-      { transform: `translate(${x1}px, ${y1}px) scale(1.4)`, opacity: 0.9 },
-    ], { duration: 420, easing: 'ease-in' });
+    const cx = (x0 + x1) / 2, cy = Math.min(y0, y1) - 70, N = 10, frames = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, u = 1 - t;
+      const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+      frames.push({ transform: `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${Math.round(t * 540)}deg) scale(${(0.6 + 0.8 * t).toFixed(2)})` });
+    }
+    frames[N].opacity = 0.9;
+    const anim = el.animate(frames, { duration: 420, delay, easing: 'cubic-bezier(.35, 0, .65, 1)', fill: 'backwards' });
     return anim.finished.then(() => el.remove()).catch(() => el.remove());
   },
 };
