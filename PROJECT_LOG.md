@@ -340,5 +340,12 @@
 - Portrait floor: doors now face the hallway. They used to be a horizontal strip across the top of every room; now
   each is an upright strip on the corridor side (right edge for the left column, left edge for the right column,
   picked by `:nth-child(odd/even)`, since rooms alternate left/right in source order). The door panel hangs from its
-  top and opens with `rotateX(75deg)` (landscape keeps `rotateY(-75deg)`). Room padding and the red missed-count dot
-  move off the door. Checked opening rooms 103 (left) and 104 (right) at 820x1180.
+  top and opens with `rotateX(75deg)` (landscape keeps `rotateY(-75deg)`). Room padding moves off the door. Checked opening rooms 103 (left) and 104 (right) at 820x1180.
+
+## 2026-11-24 (floor layout fixes)
+- Missed-patient badges on room cards now sit in the card's top row beside the stars instead of being absolutely
+  positioned, so they no longer overlap the door strip / card border on the bottom row of rooms.
+- Nurses' station desk label is centered in its box (vertical text was top-aligned because text-align defaulted to start).
+- Checked with screenshots at iPad landscape and portrait; smoke suite passes at 4 sizes.
+- Merged main (badges in the top row, centred station label) into the session branch; dropped my portrait
+  `.room-dot` offset since the dot is no longer absolutely positioned.

@@ -326,7 +326,7 @@ svg { display: block; }
   padding: var(--s3);
   overflow: hidden;
 }
-.room-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); }
+.room-top { display: flex; align-items: center; gap: var(--s2); }
 .room-plate {
   font-family: var(--font-mono);
   font-weight: 700;
@@ -337,7 +337,7 @@ svg { display: block; }
   border-radius: 6px;
   border: 1px solid var(--line);
 }
-.room-stars { display: flex; gap: 1px; color: var(--surface-3); }
+.room-stars { display: flex; gap: 1px; color: var(--surface-3); margin-left: auto; }
 .room-stars svg { width: 16px; height: 16px; }
 .room-stars .on { color: var(--warn); }
 .room-ward {
@@ -372,11 +372,10 @@ svg { display: block; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
 .room-dot {
-  position: absolute; top: 8px; right: 8px; min-width: 22px; height: 22px; padding: 0 6px;
-  border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800;
-  display: grid; place-items: center; box-shadow: 0 0 0 3px var(--floor-tile);
+  flex: none; min-width: 22px; height: 22px; padding: 0 6px;
+  border-radius: 999px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
+  display: grid; place-items: center;
 }
-.room .room-dot ~ .room-body .room-stars { margin-right: 26px; }
 
 /* the door: a strip on the corridor side of the room that swings open */
 .door {
@@ -414,7 +413,6 @@ svg { display: block; }
 .floorplan.v .room.open .door::before { transform: rotateX(75deg); }
 .floorplan.v .room:nth-child(odd) .room-body { padding-right: calc(var(--s3) + 14px); }
 .floorplan.v .room:nth-child(even) .room-body { padding-left: calc(var(--s3) + 14px); }
-.floorplan.v .room:nth-child(odd) .room-dot { right: 22px; }
 .room.open { border-color: var(--accent); }
 
 /* ---------- corridor ---------- */
@@ -436,7 +434,8 @@ svg { display: block; }
 .station { display: flex; align-items: center; gap: var(--s3); min-width: 0; z-index: 2; }
 .station-desk {
   width: 64px; height: 92px; flex: none; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line);
-  display: grid; place-items: center; color: var(--text-faint); font-size: 10px; font-weight: 800; letter-spacing: .08em; writing-mode: vertical-rl;
+  display: grid; place-items: center; color: var(--text-faint); font-size: 10px; font-weight: 800; letter-spacing: .08em; line-height: 1.3; writing-mode: vertical-rl;
+  text-align: center; padding: 6px 0;
 }
 .walker {
   position: absolute;
@@ -4402,9 +4401,8 @@ function roomHTML(u, place = '') {
   const waiting = m.missed ? ` ${m.missed} missed patients waiting.` : '';
   const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${waiting}`;
   return `<button class="room"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
-    ${m.missed ? `<span class="room-dot num">${m.missed}</span>` : ''}
     <span class="room-body">
-      <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span></span>
+      <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span>${m.missed ? `<span class="room-dot num" title="Missed patients waiting">${m.missed}</span>` : ''}</span>
       <span class="room-ward">${esc(u.ward)}</span>
       <span class="room-topic">${esc(u.topic)}</span>
       <span class="room-blurb">${esc(u.blurb)}</span>
