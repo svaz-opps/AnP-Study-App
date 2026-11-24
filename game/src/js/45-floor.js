@@ -61,7 +61,10 @@ function roomHTML(u, place = '', suggested = false) {
   const p = patientFor({ id: 'room-' + u.id, stem: '', unit: u.id });
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
   const waiting = m.missed ? ` ${m.missed} missed patients waiting.` : '';
-  const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${waiting}`;
+  const need = Engine.nextStarNeed(m);
+  const toStar = need ? ` ${need} more ${m.stars === 2 ? 'mastered' : 'right'} for the next star.` : '';
+  const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${toStar}${waiting}` +
+    (suggested ? ' Suggested by your nurse.' : '');
   return `<button class="room${suggested ? ' suggest' : ''}"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
     <span class="room-body">
       <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span>${m.missed ? `<span class="room-dot num" title="Missed patients waiting">${m.missed}</span>` : ''}</span>
