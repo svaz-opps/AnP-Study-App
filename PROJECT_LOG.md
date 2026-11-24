@@ -349,3 +349,5 @@
 - Checked with screenshots at iPad landscape and portrait; smoke suite passes at 4 sizes.
 - Merged main (badges in the top row, centred station label) into the session branch; dropped my portrait
   `.room-dot` offset since the dot is no longer absolutely positioned.
+- Pushed to main (196d8d8) at the user's request; Pages run #12 succeeded. The run before it (#11, from the other
+  session's merge) had failed at deploy-pages after a successful upload; #12 deployed the same plus these changes.
