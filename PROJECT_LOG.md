@@ -486,3 +486,7 @@ After animation work runs out: ideas to make the game more engaging; after that,
   branch sometimes shows 1–2 frames of 50–67 ms (main: 0–1): its `advance()` is no slower (10–32 ms vs 18–47 ms on
   main), the extra is ~4 ms of painting the sliding copy. Added `contain: layout paint style` + `will-change` to
   that copy. All 8 tests pass.
+- Flakiness check: the full suite (8 scripts) passed 2 more runs in a row after all overnight changes.
+- End of the overnight pass. Everything is on `ccr-dd43cba2-3w86f7`, not on `main`. Waiting for the user: a look at
+  the changes (ANIMATION_NOTES.md "What the pass changed"), the open question about the landscape scroll /
+  portrait sheet covering the answer marks, and the go-ahead to push to `main`.
