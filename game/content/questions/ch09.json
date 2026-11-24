@@ -123,14 +123,14 @@
     "id": "N9-10", "sec": "ch9-nmj", "focus": [2], "type": "mcq", "diff": 3,
     "stem": "A farm worker was exposed to a pesticide that blocks acetylcholinesterase. What effect on the muscles should the nurse expect?",
     "opts": [
-      {"t": "Muscles stay contracted (spastic) because acetylcholine remains in the cleft.", "c": true},
-      {"t": "Flaccid paralysis because acetylcholine is never released", "w": "That describes botulism toxin, which blocks ACh release."},
-      {"t": "Weakness because the ACh receptors are destroyed", "w": "That describes myasthenia gravis, an autoimmune attack on receptors."},
-      {"t": "No effect, because calcium controls contraction", "w": "Calcium matters, but ACh starts the whole process."}
+      {"t": "ACh stays in the cleft, causing twitching first and then weakness.", "c": true},
+      {"t": "ACh is never released, causing flaccid paralysis from the start.", "w": "That is botulinum toxin, which blocks ACh release."},
+      {"t": "Antibodies destroy the ACh receptors, causing weakness.", "w": "That is myasthenia gravis, an autoimmune attack on the receptors."},
+      {"t": "Nothing changes, because calcium alone controls contraction.", "w": "Calcium matters, but ACh at the end plate starts the whole process."}
     ],
-    "why": "Acetylcholinesterase normally breaks down ACh. If it is blocked, ACh keeps stimulating the muscle, so the muscle stays contracted (spastic paralysis).",
-    "trick": "No cleaner (cholinesterase) means the 'GO' signal never gets cleared.",
-    "tip": "Predict the result: if you remove the 'off switch', the muscle stays 'on'."
+    "why": "Acetylcholinesterase normally clears ACh from the cleft. When it is blocked, ACh lingers and keeps firing the muscle, so it twitches (fasciculations) and cramps. If the exposure continues, the end plate stays depolarized and stops responding (depolarizing block), so the muscles, including the breathing muscles, become weak and then paralyzed. Your guide shortens this to 'the muscle stays contracted (spastic paralysis)'; on the exam, pick the answer about ACh staying in the cleft and overstimulating the muscle.",
+    "trick": "No eraser (AChE) = the 'GO' signal never clears: twitch first, then the worn-out muscle gives out.",
+    "tip": "Predict from the mechanism: take away the 'off switch' and the muscle is overstimulated. Then ask what too much stimulation does over time."
   },
   {
     "id": "N9-11", "sec": "ch9-contraction", "focus": [0, 2], "type": "order", "diff": 3,
@@ -208,22 +208,22 @@
       {"t": "Breaking down acetylcholine", "w": "Acetylcholinesterase does that, without needing extra oxygen."},
       {"t": "Making more lactic acid", "w": "Lactic acid builds up when oxygen is SHORT, not when extra oxygen arrives."}
     ],
-    "why": "Oxygen debt is the oxygen needed after intense exercise to convert lactic acid back to glucose and glycogen, rebuild ATP and creatine phosphate, and restore oxygen levels. That's why you keep breathing hard after you stop.",
+    "why": "Oxygen debt is the extra oxygen needed after intense exercise to rebuild ATP and creatine phosphate, refill oxygen stores in blood and myoglobin, and process lactic acid (your guide says 'convert it back to glucose and glycogen'). That's why you keep breathing hard after you stop. Researchers now call it excess post-exercise oxygen consumption (EPOC), and a warmer body and a still-busy heart and lungs also keep oxygen use up for a while.",
     "trick": "Oxygen debt = paying back the oxygen loan you took during the sprint.",
     "tip": "Look for the option that describes RECOVERY, since the stem happens after exercise."
   },
   {
     "id": "N9-17", "sec": "ch9-energy", "focus": [2], "type": "mcq", "diff": 2,
-    "stem": "A client wakes at night with a painful calf cramp. What is the most likely cause of a muscle cramp?",
+    "stem": "A client wakes at night with a painful calf cramp. According to your course guide, what is the most likely cause of a muscle cramp?",
     "opts": [
       {"t": "A lack of ATP", "c": true},
       {"t": "Too much ATP", "w": "Extra ATP would help the muscle relax."},
       {"t": "Too much oxygen", "w": "Oxygen does not cause cramps."},
       {"t": "Too much calcium stored in the sarcoplasmic reticulum", "w": "Calcium stored in the SR is the RELAXED state."}
     ],
-    "why": "Without ATP, calcium can't be pumped back into the SR and myosin heads can't detach, so the muscle stays contracted. That is a cramp.",
-    "trick": "No ATP means the muscle can't let go, both in a cramp and in rigor mortis.",
-    "tip": "Connect related facts: the cramp and rigor mortis share the same mechanism."
+    "why": "Your guide (and likely your exam) says a cramp is most likely due to a lack of ATP: without ATP, calcium can't be pumped back into the SR and myosin heads can't let go, so the muscle stays contracted. Research tells a more complicated story. Recordings of cramping muscle show bursts of firing from overexcited motor nerves, so most researchers think cramps start in the nerve, and a local shortage of ATP is only one proposed contributor. Use the guide's answer on the exam, and remember that the real cause is still debated.",
+    "trick": "Exam answer: cramp = lack of ATP (your guide). Research: mostly overexcited motor nerves.",
+    "tip": "When a question says 'according to your guide', answer with the guide's fact even if you know the science is more nuanced."
   },
   {
     "id": "N9-18", "sec": "ch9-responses", "focus": [0, 1], "type": "sata", "diff": 2,
@@ -293,14 +293,14 @@
   },
   {
     "id": "N9-23", "sec": "ch9-responses", "focus": [], "type": "math", "diff": 2,
-    "stem": "A muscle fiber's membrane potential must change from about −100 mV to −70 mV for an impulse to begin. What is the size and direction of this change?",
+    "stem": "Your guide states that a muscle fiber's membrane potential must change from about −100 mV to −70 mV for an impulse to begin. What is the size and direction of this change?",
     "opts": [
       {"t": "+30 mV (it becomes less negative)", "c": true},
       {"t": "−30 mV (it becomes more negative)", "w": "Going from −100 to −70 moves toward zero, which is a positive change."},
       {"t": "+170 mV", "w": "This adds the two numbers instead of subtracting."},
       {"t": "−170 mV", "w": "Subtract the start from the end: −70 − (−100) = +30."}
     ],
-    "why": "Change = end − start = (−70) − (−100) = +30 mV. The inside becomes less negative, which is what a threshold stimulus does.",
+    "why": "Change = end − start = (−70) − (−100) = +30 mV. The inside becomes less negative, which is what a threshold stimulus does. These are your guide's round numbers; measured resting potentials in human skeletal muscle are closer to −65 to −90 mV, depending on fiber type. The math works the same way with any numbers.",
     "trick": "Minus a minus is a plus: −70 − (−100) = −70 + 100.",
     "tip": "Number-line check: moving from −100 toward zero is moving in the positive direction."
   },
@@ -310,11 +310,11 @@
     "opts": [
       {"t": "Reduced capillary networks", "c": true},
       {"t": "Fewer mitochondria", "c": true},
-      {"t": "Smaller actin and myosin filaments", "c": true},
+      {"t": "Less actin and myosin (fewer myofilaments)", "c": true},
       {"t": "More capillaries to deliver oxygen", "w": "Disuse reduces capillary networks."},
       {"t": "Enlarged muscle fibers", "w": "Enlarged fibers are hypertrophy, from heavy use."}
     ],
-    "why": "Disuse atrophy reduces capillary networks, mitochondria, and the size of actin and myosin filaments. On your exam this was an 'all of these' item. Exercise reverses it.",
+    "why": "Disuse atrophy reduces the capillaries around each fiber, the number of mitochondria, and the amount of actin and myosin, so each fiber gets thinner. Your guide words the last change as 'smaller actin and myosin filaments'; strictly, the filaments keep their length, but the fiber loses many of them. On your exam this was an 'all of these' item. Exercise reverses it.",
     "trick": "Atrophy shrinks everything: blood supply, power plants (mitochondria), and motors (filaments).",
     "tip": "If every listed change points the same way (all decreases), they are likely all true."
   },

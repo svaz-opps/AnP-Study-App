@@ -112,8 +112,8 @@
       {"t": "A worker with seasonal hay fever whose eyes are itchy and watery this morning", "w": "Not urgent."},
       {"t": "A worker asking which hearing protection to wear near the loud grain dryer", "w": "Teaching can wait."}
     ],
-    "why": "Acetylcholinesterase normally breaks down acetylcholine. If it is blocked, ACh builds up and keeps stimulating muscles, which can impair breathing. That is a breathing emergency.",
-    "trick": "No ACh cleanup = muscles stuck 'on', including the breathing muscles.",
+    "why": "Acetylcholinesterase normally breaks down acetylcholine. When a pesticide blocks it, ACh builds up everywhere it is used. The airways fill with secretions and narrow, and the breathing muscles twitch and then weaken. Shortness of breath means breathing is failing, so this worker comes first.",
+    "trick": "No ACh cleanup = wet, tight airways and tiring breathing muscles.",
     "tip": "Breathing trouble wins priority questions."
   },
   {
@@ -320,7 +320,7 @@
       {"t": "\"Disuse reduces the blood vessels and mitochondria in muscle.\"", "w": "Accurate."},
       {"t": "\"Regular exercise helps keep muscles working as I age.\"", "w": "Accurate."}
     ],
-    "why": "Disuse atrophy shrinks capillary networks, mitochondria, and actin and myosin filaments. Exercise is the best way to rebuild and maintain muscle.",
+    "why": "Disuse atrophy shrinks the capillary supply, the mitochondria, and the amount of actin and myosin in each fiber. Exercise is the best way to rebuild and maintain muscle.",
     "trick": "Muscle follows 'use it or lose it', and you can use it to get it back.",
     "tip": "A statement that would stop a client from getting better needs correcting."
   }

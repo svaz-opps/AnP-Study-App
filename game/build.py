@@ -5,7 +5,9 @@ Inputs
   ../study-guide/data/source-content.json   the guide (sections, focus points, callouts, 232 questions)
   content/units.json                        room / ward metadata, one per chapter
   content/questions/*.json                  new ATI-style questions written for the game
-  content/guide-extras/*.json               a memory trick + ATI tip for each guide question (by id)
+  content/guide-extras/*.json               a memory trick + ATI tip for each guide question (by id); optional
+                                            "opts" (reword option i), "more_opts" (extra wrong options) and
+                                            "why" (a corrected or fuller explanation). The answer key never changes.
   src/template.html, src/css/*.css, src/js/*.js
 
 Outputs (dist/)
@@ -216,7 +218,7 @@ def main():
     errors += [f"guide-extras: unknown question id {k}" for k in extras if k not in guide_ids]
     for q in guide:
         ex = extras.get(q["id"], {})
-        for k in ("trick", "tip"):
+        for k in ("trick", "tip", "why"):
             if ex.get(k):
                 q[k] = ex[k]
         # optional rewording of option text, by the option's index in the guide (keeps the answer key)
@@ -225,6 +227,12 @@ def main():
                 errors.append(f"guide-extras {q['id']}: bad option override {i!r}")
             else:
                 q["opts"][int(i)]["t"] = text
+        # optional extra wrong options, for guide questions with too few plausible choices
+        for text in ex.get("more_opts", []):
+            if not text.strip() or any(o["t"] == text for o in q["opts"]):
+                errors.append(f"guide-extras {q['id']}: bad extra option {text!r}")
+            else:
+                q["opts"].append({"t": text, "c": False})
     missing_extras = [q["id"] for q in guide if not (q.get("trick") and q.get("tip"))]
     questions = new + guide
 

@@ -28,7 +28,7 @@
   ],
   "why": "The pericardial cavity is a thin space between the layers around the heart. If blood fills it, it squeezes the heart so it can't fill (cardiac tamponade). Muffled heart sounds, low blood pressure and bulging neck veins are the warning signs.",
   "trick": "Muffled heart + low BP + big neck veins = the sac is squeezing the heart.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Muffled heart sounds, low blood pressure and bulging neck veins together signal a squeezed heart, a circulation emergency."
  },
  {
   "id": "P3-02",
@@ -59,7 +59,7 @@
   ],
   "why": "Drinking too much plain water dilutes blood sodium, making the blood hypotonic. Water then moves into cells, and swelling brain cells cause headache, vomiting and confusion.",
   "trick": "Too much plain water = hypotonic blood = swollen brain cells.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "New confusion with a clear cause (lots of plain water) points to swelling brain cells. A change in mental status outranks soreness or thirst."
  },
  {
   "id": "P3-03",
@@ -88,7 +88,7 @@
   ],
   "why": "Slow breathing lets carbon dioxide build up in the blood. Carbon dioxide forms carbonic acid, so the pH falls (respiratory acidosis). Breathing this slowly is an airway and breathing emergency.",
   "trick": "Slow breathing = CO2 piles up = acid.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Compare the breathing rates: 8 breaths per minute after an opioid is a breathing problem; 16 is normal."
  },
  {
   "id": "P3-04",
@@ -117,7 +117,7 @@
   ],
   "why": "Hot air and smoke can burn the airway. Singed nose hairs, soot and a hoarse voice warn that the airway may swell shut within hours, so this client is seen first even though the skin burns of others look worse.",
   "trick": "Hoarse voice + soot + singed nose hair = airway burn.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Airway first, even when another client's skin burn looks worse. Hoarseness and soot warn of airway swelling to come."
  },
  {
   "id": "P3-05",
@@ -148,7 +148,7 @@
   ],
   "why": "Yellow marrow in long bones stores fat. After a long-bone fracture, fat droplets can enter the blood and lodge in the lungs and brain (fat embolism). Sudden breathlessness, confusion and tiny red spots are the warning signs.",
   "trick": "Long-bone break + breathless + confused + red dots = fat embolism.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Sudden breathlessness plus confusion after a long-bone fracture is a breathing and brain problem; controlled pain is not."
  },
  {
   "id": "P3-06",
@@ -179,7 +179,7 @@
   ],
   "why": "Muscle fibers, especially red fibers, contain myoglobin. When many fibers break down (rhabdomyolysis), myoglobin spills into the blood and urine, turning it dark, and it can damage the kidneys.",
   "trick": "Dark cola urine after a brutal workout = muscle breaking down.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Dark, cola-colored urine is the unexpected finding. Ordinary soreness 2 days after a new workout is expected."
  },
  {
   "id": "P3-07",
@@ -208,7 +208,7 @@
   ],
   "why": "A seizure is abnormal, uncontrolled firing of brain neurons. A seizure lasting more than 5 minutes (status epilepticus) can starve the brain of oxygen and is an emergency.",
   "trick": "Seizure over 5 minutes = emergency.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Use the time cutoff: a seizure lasting more than 5 minutes is an emergency. Sleepiness with easy waking after a brief seizure is expected."
  },
  {
   "id": "P3-08",
@@ -239,7 +239,7 @@
   ],
   "why": "When tissues don't get enough blood and oxygen, cells rely on glycolysis and turn pyruvate into lactate. A rising lactate with low blood pressure suggests tissues are being starved of oxygen (septic shock).",
   "trick": "Low BP + rising lactate = cells running without oxygen.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Look for numbers that show failing circulation: low blood pressure plus a rising lactate outranks a mild fever."
  },
  {
   "id": "P3-09",
@@ -270,7 +270,7 @@
   ],
   "why": "Calcium released from the sarcoplasmic reticulum triggers contraction. In malignant hyperthermia, certain anesthetics cause uncontrolled calcium release, so muscles stay contracted, make huge amounts of heat, and temperature climbs fast.",
   "trick": "Anesthesia + rigid muscles + soaring temperature = malignant hyperthermia.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Rapidly worsening vital signs after anesthesia (soaring temperature, fast heart rate, rigid muscles) come before expected recovery findings."
  },
  {
   "id": "P3-10",
@@ -301,7 +301,7 @@
   ],
   "why": "Bright red blood in vomit means active bleeding in the upper digestive tract. Light-headedness suggests blood volume is dropping, which is a circulation emergency.",
   "trick": "Vomiting fresh blood + light-headed = circulation first.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Active bleeding plus light-headedness is a circulation problem; it outranks nausea, heartburn or constipation."
  },
  {
   "id": "P3-11",
@@ -332,7 +332,7 @@
   ],
   "why": "Anaphylaxis is a severe allergic reaction that narrows the airway and drops blood pressure. Epinephrine, acting on adrenergic receptors, opens the airways and tightens blood vessels, so it is given right away.",
   "trick": "Sting + swollen tongue + wheeze = anaphylaxis: epinephrine now.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Swollen lips and tongue plus wheezing threaten the airway. A reaction limited to the sting site does not."
  },
  {
   "id": "P3-12",
@@ -363,7 +363,7 @@
   ],
   "why": "Blood is a connective tissue, and its red cells carry oxygen using hemoglobin. A very low hemoglobin with dizziness and chest pain means the heart and brain aren't getting enough oxygen.",
   "trick": "Very low hemoglobin + chest pain = organs starving for oxygen.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Pair the lab value with symptoms: a very low hemoglobin plus chest pain means the heart is short of oxygen."
  },
  {
   "id": "P3-13",
@@ -394,7 +394,7 @@
   ],
   "why": "Metastasis is cancer spreading to new sites. Cancer that spreads to the spine can press on the spinal cord. New back pain with leg weakness is an emergency, because delays can cause permanent paralysis.",
   "trick": "Cancer + new back pain + weak legs = spinal cord compression.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "New back pain plus new leg weakness in a client with cancer is urgent; expected treatment side effects are not."
  },
  {
   "id": "P3-14",
@@ -425,6 +425,6 @@
   ],
   "why": "The epidural space lies outside the dura around the spinal cord. Bleeding there (an epidural hematoma) can press on the cord. New back pain with leg weakness needs to be reported immediately.",
   "trick": "Epidural catheter + new leg weakness = check for bleeding pressing on the cord.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "With an epidural catheter, new back pain and leg weakness are unexpected; controlled pain and mild itching are expected."
  }
 ]

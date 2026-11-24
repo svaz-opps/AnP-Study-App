@@ -28,7 +28,7 @@
   ],
   "why": "Neutrons = mass number − atomic number = 40 − 20 = 20.",
   "trick": "Mass − Atomic = Neutrons (\"MAN\").",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "Neutrons = mass number − atomic number. The atomic number counts the protons."
  },
  {
   "id": "M2-02",
@@ -60,7 +60,7 @@
   ],
   "why": "A 2+ charge means the atom lost 2 electrons. A neutral calcium atom has 20 electrons, so the ion has 20 − 2 = 18.",
   "trick": "Positive ion = lost electrons (\"positive people lose negativity\").",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "Charge = protons − electrons, so a 2+ ion has two fewer electrons than protons."
  },
  {
   "id": "M2-03",
@@ -91,7 +91,7 @@
   ],
   "why": "Each 1-unit drop in pH is about 10 times more hydrogen ions. A 2-unit drop is 10 × 10 = 100 times more.",
   "trick": "Every pH step = ×10. Two steps = ×100.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "Each whole pH unit is a factor of 10. For two units, multiply (10 × 10); don't add."
  },
  {
   "id": "M2-04",
@@ -122,7 +122,7 @@
   ],
   "why": "Rule of nines (adult): head and neck 9% + whole arm 9% + front of trunk 18% = 36%.",
   "trick": "Head 9, each arm 9, each leg 18, front trunk 18, back trunk 18, groin 1.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "List each region with its value first (head 9, one arm 9, front of trunk 18), then add."
  },
  {
   "id": "M2-05",
@@ -153,7 +153,7 @@
   ],
   "why": "Back of trunk 18% + back of one leg 9% (half of 18%) = 27%.",
   "trick": "Each whole leg is 18%, so the front or back alone is 9%.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "The front or back of one leg alone is 9%, half of the whole leg's 18%."
  },
  {
   "id": "M2-06",
@@ -184,7 +184,7 @@
   ],
   "why": "Per dose: 600 mg ÷ 300 mg = 2 tablets. Twice a day: 2 × 2 = 4 tablets.",
   "trick": "Desired over Have, then times how many doses.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "Two steps: tablets per dose (600 ÷ 300 = 2), then times the number of doses per day."
  },
  {
   "id": "M2-07",
@@ -215,7 +215,7 @@
   ],
   "why": "1,000 mL is 10 times 100 mL, so 0.9 g × 10 = 9 g.",
   "trick": "Percent solution = grams per 100 mL.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "A percent solution means grams per 100 mL. Scale up: 1,000 mL is 10 × 100 mL."
  },
  {
   "id": "M2-08",
@@ -246,7 +246,7 @@
   ],
   "why": "From −70 to −55 is a change of 15 mV toward zero (depolarization): −55 − (−70) = +15 mV.",
   "trick": "Toward zero = depolarizing = closer to firing.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "Change = end − start: −55 − (−70) = +15. Moving toward zero is a positive change."
  },
  {
   "id": "M2-09",
@@ -277,6 +277,6 @@
   ],
   "why": "Net ATP = 2 per glucose × 3 glucose = 6 ATP.",
   "trick": "Glycolysis: spend 2, make 4, keep 2.",
-  "tip": "Med math: write what you know, then do one step at a time. Check that your answer makes sense."
+  "tip": "Read 'net' carefully: use 2 ATP per glucose (not the gross 4), then multiply by 3."
  }
 ]

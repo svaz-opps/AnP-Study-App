@@ -564,3 +564,51 @@ After animation work runs out: ideas to make the game more engaging; after that,
   first-try accuracy and the 14-day chart start from this update.
 - All suites pass: build --strict, smoke, hot, autosave, lifeline, backup, whimsy, smooth, learning.
 
+
+## 2026-11-24 — R32 second accuracy and quality review of the question bank (peer-reviewed sources)
+- Read all 589 questions again (357 new + 232 from the guide): stems, every option, wrong-option reasons, explanations,
+  tricks and tips. Flagged facts were checked only against peer-reviewed sources (journal articles indexed in
+  PubMed/PMC and NCBI StatPearls, which is peer-reviewed). No answer key was wrong for the course; 4 guide facts
+  disagree with the research literature and are now taught both ways (exam answer + what research shows).
+- Sources used:
+  - Muscle cramps: Miller & Layzer, Muscle Nerve 2005 (PMID 15902691); Muscle Nerve 2016 review on exercise-associated
+    cramps (PMID 27159592); Schwellnus, Br J Sports Med 2009 (PMID 18981039); StatPearls "Muscle Cramps" (NBK499895).
+  - Organophosphate poisoning: StatPearls "Organophosphate Toxicity" (PMID 29261901) — fasciculations, then flaccid
+    paralysis by depolarizing block; respiratory failure from bronchorrhea/bronchospasm.
+  - Hip dislocation after arthroplasty: PMC6162140, PMC4094102 — posterior dislocation (most common) gives a
+    shortened, adducted, internally rotated leg.
+  - Skeletal-muscle resting potential: Campion, J Clin Invest 1974 — human values about −65 to −90 mV by fiber type.
+  - EPOC: Børsheim & Bahr, Sports Med 2003 (PMID 14599232); Moniz et al. 2020 (PMID 31830334).
+  - Disuse atrophy: myofibrillar protein lost preferentially, mitochondria fall (PMC3404565, PMID 30452895);
+    capillary loss is real but inconsistent across studies (Hendrickse 2022, PMC9745458).
+  - Osteoporosis and ancestry: Wright et al., J Bone Miner Res 2014 (PMID 24771492).
+  - Confirmed, no change needed: spiral humerus fractures under age 3 and abuse (Strait et al., Pediatrics 1995; AAP
+    clinical report); shivering stops around 30–32 °C (StatPearls NBK545239; Brown et al., NEJM 2012); lactate does
+    not cause delayed soreness (Cheung et al., Sports Med 2003, PMID 12617692).
+- Accuracy fixes, new questions:
+  - N9-10: an acetylcholinesterase blocker causes twitching, then weakness/flaccid paralysis (was "muscles stay
+    contracted, spastic"). Options rewritten; explanation says how the guide words it. P-09 explanation and trick to match.
+  - N9-17: muscle cramp stem now says "according to your course guide" (key stays "lack of ATP"); explanation adds that
+    research points mainly to overexcited motor nerves. Trick/tip no longer claim cramps and rigor mortis share a mechanism.
+  - T2-25: replaced the "accurate" distractor "a cramp can happen when ATP runs low" with an undisputed fact.
+  - N9-23: stem attributes −100 → −70 mV to the guide; explanation gives measured values.
+  - N9-16: oxygen debt explanation adds the modern name (EPOC) and its other causes.
+  - N9-24 / T-15: atrophy option is now "Less actin and myosin (fewer myofilaments)" (filaments don't get smaller).
+  - P2-21: dislocated hip replacement leg is "shorter and turned inward" (was outward, which is the hip-fracture sign).
+  - P2-16: explanation mentioned sweating that isn't in the stem. T2-19: stem said "client" but the speakers are parents.
+  - N7-28: explanation says skin color stands in for ancestry. N7-11: notes textbooks differ on the order of the
+    collar and calcification steps.
+- Guide questions (through `content/guide-extras/`; the guide file and answer keys are untouched):
+  - `build.py` now also accepts `"why"` (replacement explanation) and `"more_opts"` (extra wrong options).
+  - Accuracy notes: C-ch9-nmj, C-ch9-energy, C-ch9-disorders, C-ch7-aging.
+  - 70 vocabulary "check yourself" items (ch1–6, ch10–12) had filler distractors (e.g. "RUQ", "Digital" for "study of
+    body structure") and explanations that were the definition glued to unrelated learning objectives. Each now has
+    same-category distractors (Physiology/Histology/Pathology for Anatomy, etc.) and a real explanation that defines the
+    term and tells it apart from each distractor. C-ch11-disorders had only 2 options and C-ch6-repair 3; both now 4.
+- Tips: 79 new questions shared four copy-pasted tips ("In 'needs further teaching' questions, you are looking for
+  the FALSE statement…", two generic priority tips, one generic med-math tip). Each now has its own tip naming the clue
+  that decides that question. No tip is repeated anywhere in the bank now.
+- Assumptions: the instructor's guide still decides the exam answer; where peer-reviewed research disagrees, the game
+  keeps the guide's answer and says what research shows rather than changing the key. "Light-skinned" stays in the
+  option text because that is the exam's wording. Sources were checked through search results and abstracts, not full
+  texts, except where the abstract stated the fact directly.

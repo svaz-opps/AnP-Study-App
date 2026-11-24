@@ -28,7 +28,7 @@
   ],
   "why": "Shivering is an effector that makes heat. When a cold client STOPS shivering and becomes confused, temperature control is failing: shivering usually stops once core temperature falls below about 32 °C (90 °F), so this client is dangerously cold.",
   "trick": "Cold + no shivering + confused = the thermostat has given up.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Losing a protective response (shivering stops) plus new confusion means the cold is winning. Active shivering is the body coping."
  },
  {
   "id": "P2-02",
@@ -59,7 +59,7 @@
   ],
   "why": "The kidneys regulate blood composition and make urine. Almost no urine for hours can mean the kidneys are failing or the client is severely dehydrated. Wastes and potassium can build up quickly.",
   "trick": "No urine = the body's filter has stopped.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Compare urine output with intake: almost no urine for 12 hours is unexpected; more urine after more fluid is expected."
  },
  {
   "id": "P2-03",
@@ -121,7 +121,7 @@
   ],
   "why": "The pleural cavity is a thin space between two layers. If air enters it, the layers separate and the lung can collapse (pneumothorax). Missing breath sounds and fast breathing are a breathing emergency.",
   "trick": "Breathing problems beat bruises.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Absent breath sounds on one side plus fast breathing is a breathing emergency; bruises and controlled bleeding can wait."
  },
  {
   "id": "P2-05",
@@ -152,7 +152,7 @@
   ],
   "why": "Glucose, a monosaccharide, is the brain's main fuel. Sweating, shaking and confusion suggest low blood sugar (hypoglycemia), which can quickly lead to seizures or loss of consciousness.",
   "trick": "Sweaty, shaky, confused = feed the brain sugar now.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Sudden confusion is the red flag. Sweaty, shaky and confused in a client with diabetes means low blood sugar until proven otherwise."
  },
  {
   "id": "P2-06",
@@ -183,7 +183,7 @@
   ],
   "why": "Water carries nutrients, removes wastes and helps control temperature. Losing a lot of fluid causes low blood volume: dizziness on standing and little urine are signs of serious dehydration. Older adults get worse quickly.",
   "trick": "Losing fluid both ends + dizzy + little urine = dangerously dry.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Add up the warning signs: ongoing fluid loss, dizziness on standing and very little urine in an older adult signal severe dehydration."
  },
  {
   "id": "P2-07",
@@ -214,7 +214,7 @@
   ],
   "why": "Oxygen crosses into the blood by diffusion through the thin alveolar wall. Fluid from pneumonia makes the barrier thicker, which slows diffusion. A falling oxygen level means gas exchange is getting worse.",
   "trick": "Thicker barrier = slower diffusion = falling oxygen.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Look at the trend, not just the diagnosis: a falling oxygen saturation outranks a stable one in the same disease."
  },
  {
   "id": "P2-08",
@@ -245,7 +245,7 @@
   ],
   "why": "Carbon monoxide blocks oxygen delivery to tissues. Without oxygen as the final electron acceptor, cells can't make enough ATP, and the brain is affected first (headache, confusion).",
   "trick": "Car + closed garage + confusion = carbon monoxide. Cells are starving for oxygen.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Exposure history plus confusion: a closed garage with a running car means carbon monoxide, even if the headache sounds ordinary."
  },
  {
   "id": "P2-09",
@@ -276,7 +276,7 @@
   ],
   "why": "When cells can't use glucose, the body breaks down fat for fuel and makes ketone acids. Fruity breath, deep fast breathing and vomiting suggest the blood is becoming acidic (diabetic ketoacidosis), which is an emergency.",
   "trick": "Fruity breath + deep breathing = burning fat, making acid.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Fruity breath and deep, rapid breathing mean the blood is turning acidic. A mild glucose rise after a meal is expected."
  },
  {
   "id": "P2-10",
@@ -307,7 +307,7 @@
   ],
   "why": "Pressure over a bony area squeezes blood vessels and starves the tissue of oxygen (ischemia). A deep purple area that does not blanch suggests deep tissue injury, so the client needs pressure relief now.",
   "trick": "Blanches = blood can still get in. Doesn't blanch = tissue is being damaged.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Press and watch: skin that doesn't blanch is already damaged. Redness that blanches and fades is not."
  },
  {
   "id": "P2-11",
@@ -338,7 +338,7 @@
   ],
   "why": "Yellow skin comes from bilirubin. Jaundice in the first 24 hours of life is not the normal newborn pattern and can mean bilirubin is rising too fast, which can harm the brain.",
   "trick": "Yellow = bilirubin. Orange palms = carrots (carotene). Blue hands only = normal newborn.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Timing matters in newborns: jaundice in the first 24 hours of life is never the normal pattern."
  },
  {
   "id": "P2-12",
@@ -369,7 +369,7 @@
   ],
   "why": "Red marrow makes platelets. Chemotherapy can suppress marrow, and a very low platelet count means blood can't clot well. Active bleeding that won't stop is an emergency.",
   "trick": "Low platelets + bleeding that won't stop = circulation first.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "A very low platelet count plus bleeding that won't stop is a circulation problem; expected tiredness is not."
  },
  {
   "id": "P2-13",
@@ -400,7 +400,7 @@
   ],
   "why": "The parathyroid glands sit on the thyroid and can be injured during surgery. Without parathyroid hormone, blood calcium drops. Tingling and twitching are early signs of low calcium, which can progress to spasm of the airway.",
   "trick": "Neck surgery + tingling lips = check calcium (parathyroids).",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "After thyroid surgery, tingling around the mouth and twitching mean low calcium. A sore throat is expected."
  },
  {
   "id": "P2-14",
@@ -431,7 +431,7 @@
   ],
   "why": "Below the end of the spinal cord, the nerve roots of the cauda equina control the bladder, bowel and groin sensation. New numbness in the groin with bladder problems suggests these roots are being compressed, which needs urgent treatment.",
   "trick": "Back pain + saddle numbness + bladder change = red flag for nerve root compression.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "Saddle (groin) numbness and new bladder trouble with back pain are red flags. Back pain with normal walking is not."
  },
  {
   "id": "P2-15",
@@ -462,7 +462,7 @@
   ],
   "why": "When CSF can't drain, it builds up in the ventricles (hydrocephalus) and pressure rises. In infants, the skull bones aren't fused, so the head grows and the fontanel bulges. Vomiting is a sign of high pressure in the skull.",
   "trick": "Bulging fontanel + growing head + vomiting = pressure in the skull.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "A bulging fontanel plus vomiting and a fast-growing head signal pressure inside the skull. A soft, flat fontanel is normal."
  },
  {
   "id": "P2-16",
@@ -491,9 +491,9 @@
     "w": "Chronic and stable."
    }
   ],
-  "why": "Pain from the heart can be felt in the left arm and jaw because heart and skin nerves share spinal pathways (referred pain). Chest pressure spreading this way, with sweating, may be a heart attack.",
+  "why": "Pain from the heart can be felt in the left arm and jaw because heart and skin nerves share spinal pathways (referred pain). Chest pressure spreading this way may be a heart attack, so this client is seen first.",
   "trick": "Referred pain: the heart \"calls\" from the arm and jaw.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Chest pressure spreading to the arm or jaw is cardiac until proven otherwise; it outranks minor or chronic pain."
  },
  {
   "id": "P2-17",
@@ -524,7 +524,7 @@
   ],
   "why": "Chemicals can burn the cornea, the clear front part of the eye's fibrous layer, within minutes. The eye needs flushing with water right away to limit damage.",
   "trick": "Chemical in the eye = flush first, ask questions later.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "With chemicals in the eye, minutes count: flush first. Itchy eyes and a stye can wait."
  },
  {
   "id": "P2-18",
@@ -584,7 +584,7 @@
   ],
   "why": "Bleeding between the skull and the dura mater (the outer meningeal layer) can press on the brain. A client who was knocked out and then gets sleepier is showing a drop in level of consciousness, which is an emergency.",
   "trick": "Getting sleepier after a head injury = pressure on the brain.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "After a head injury, a falling level of consciousness is the red flag. An alert, talking client can be watched."
  },
  {
   "id": "P2-20",
@@ -615,7 +615,7 @@
   ],
   "why": "The resting membrane potential depends on the potassium gradient across cell membranes. A very high blood potassium changes that gradient, which disturbs nerve, muscle and heart signals and can cause dangerous heart rhythms.",
   "trick": "High potassium = the electrical system of muscles and heart goes haywire.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Compare the lab with its normal range (potassium about 3.5 to 5.0) and look for symptoms: high potassium with weakness threatens the heart."
  },
  {
   "id": "P2-21",
@@ -628,7 +628,7 @@
   "stem": "The nurse on an orthopedic unit receives four reports. Which client should the nurse see first?",
   "opts": [
    {
-    "t": "A client 1 day after hip replacement whose operated leg is suddenly shorter and turned outward, with severe pain",
+    "t": "A client 1 day after hip replacement whose operated leg is suddenly shorter and turned inward, with severe pain",
     "c": true
    },
    {
@@ -644,9 +644,9 @@
     "w": "Can wait."
    }
   ],
-  "why": "A dislocation moves the bones out of their joint, so the limb looks deformed. A suddenly shorter, rotated leg with severe pain after hip surgery suggests the new hip has dislocated. It needs urgent care to protect nerves and blood vessels.",
-  "trick": "Shorter + turned + sudden pain = joint out of place.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "why": "A dislocation moves the bones out of their joint, so the limb looks deformed. Most hip replacements dislocate backward (posteriorly), which leaves the leg shorter and turned inward, with severe pain. It needs urgent care to protect the sciatic nerve and blood vessels. (A shorter leg turned outward is the classic sign of a hip fracture instead.)",
+  "trick": "New hip + shorter leg + turned in + sudden pain = the ball has slipped out the back.",
+  "tip": "A sudden change in the length or rotation of the leg after hip surgery means dislocation until proven otherwise."
  },
  {
   "id": "P2-22",
@@ -677,7 +677,7 @@
   ],
   "why": "Acetylcholine is stored in vesicles at the end of motor neurons. Botulinum toxin (from poorly canned food) stops its release, so muscles become weak. Trouble swallowing can progress to breathing failure.",
   "trick": "Home-canned food + droopy eyes + trouble swallowing = botulism, protect the airway.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Trouble swallowing threatens the airway. The clue words (home-canned food, droopy eyelids) point to botulism."
  },
  {
   "id": "P2-23",
@@ -708,7 +708,7 @@
   ],
   "why": "Myelin lets signals jump quickly along nerves. When an autoimmune attack strips myelin from peripheral nerves (as in Guillain-Barré syndrome), weakness often climbs upward. Once it reaches the breathing muscles, it is an emergency.",
   "trick": "Climbing weakness that reaches the chest = watch the breathing.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Weakness that climbs toward the chest will reach the breathing muscles. Shallow breathing makes it the priority."
  },
  {
   "id": "P2-24",
@@ -739,7 +739,7 @@
   ],
   "why": "Sympathetic nerves leave the spinal cord at the thoracic and lumbar levels. With an injury at T6 or above, a trigger below the injury (like a full bladder) can set off an uncontrolled sympathetic response: dangerously high blood pressure (autonomic dysreflexia).",
   "trick": "High cord injury + pounding headache + very high BP = find the trigger now (often the bladder).",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Very high blood pressure with a pounding headache after a cord injury at T6 or above is an emergency: find and remove the trigger."
  },
  {
   "id": "P2-25",
@@ -770,7 +770,7 @@
   ],
   "why": "Hearing depends on cochlear hair cells sending signals along cranial nerve VIII. Sudden hearing loss in one ear can mean damage to that pathway and needs prompt treatment for the best chance of recovery.",
   "trick": "Sudden + one-sided hearing loss = urgent.",
-  "tip": "Compare the timeline. A sudden change outranks a slow one that has developed over years."
+  "tip": "Sudden hearing loss in one ear is urgent. Gradual loss of high pitches with age is expected."
  },
  {
   "id": "P2-26",
@@ -801,7 +801,7 @@
   ],
   "why": "Skin receptors warn us about injury. When diabetes damages the nerves, the client can't feel wounds, so they get worse unnoticed. A draining blister on a numb foot may be infected.",
   "trick": "Can't feel it + open wound = infection risk the client won't notice.",
-  "tip": "Priority: pick the finding that is unexpected and getting worse. A normal body response is not the emergency."
+  "tip": "No feeling plus an open, draining wound means an infection the client can't sense. Normal findings and teaching can wait."
  },
  {
   "id": "P2-27",
@@ -832,7 +832,7 @@
   ],
   "why": "Oxygen is a survival requirement. Someone who can't speak or cough has a blocked airway and no air is moving, so they need help right away.",
   "trick": "Can't talk, can't cough = no air moving. Act now.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Can't speak or cough means no air is moving. A forceful cough means air is still moving, so that person can wait."
  },
  {
   "id": "P2-28",
@@ -861,7 +861,7 @@
   ],
   "why": "The cervical vertebrae protect the spinal cord in the neck. Neck pain with tingling in both arms suggests the cord may be injured, so the neck must be kept still until imaging is done.",
   "trick": "Neck pain + tingling in the arms = protect the spine.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Neck pain with tingling in both arms after a fall suggests a spinal cord injury: protect the spine first."
  },
  {
   "id": "P2-29",
@@ -892,6 +892,6 @@
   ],
   "why": "Filtration moves fluid out of capillaries when pressure inside them is high. In heart failure, pressure backs up into the lung capillaries, and fluid leaks into the lungs. Sudden weight gain and breathlessness lying flat mean fluid is building up.",
   "trick": "Fast weight gain = fluid. Short of breath lying flat = fluid in the lungs.",
-  "tip": "Priority: think airway, breathing, circulation, then a sudden change in mental status. Expected or stable findings can wait."
+  "tip": "Rapid weight gain plus breathlessness when lying flat means fluid in the lungs; stable weight and mild ankle swelling can wait."
  }
 ]
