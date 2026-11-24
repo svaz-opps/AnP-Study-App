@@ -50,6 +50,36 @@ for (const [rm, motion, want, wantAnim, wantWalk] of [
   check(!errors.length, 'no page errors ' + errors.join('; '));
   await page.close();
 }
+
+// continuity on the way back: after a shift in a room she comes out of that room and walks to the station,
+// and the corridor buttons can't be tapped until they are back
+{
+  console.log('walk back from a room');
+  const { page, errors } = await open('no-preference', 'auto');
+  await page.evaluate(() => document.querySelectorAll('.rooms-top .room')[5].click());
+  await page.waitForSelector('.chart .opt', { timeout: 6000 });
+  const roomX = await page.evaluate(() => {
+    window.WR.App.run = null; window.WR.App.show('floor');
+    const r = document.querySelector('.room[data-unit]:nth-child(6)').getBoundingClientRect();
+    return r.left + r.width / 2;
+  });
+  await page.waitForTimeout(150);
+  const early = await page.evaluate(() => {
+    const w = document.getElementById('walker').getBoundingClientRect();
+    return { x: w.left + w.width / 2, blocked: getComputedStyle(document.querySelector('.corridor .alarm')).pointerEvents === 'none' };
+  });
+  check(Math.abs(early.x - roomX) < 60, `she starts at the room's door (${Math.round(early.x)} vs ${Math.round(roomX)})`);
+  check(early.blocked, 'the hidden Code Blue button cannot be tapped during the walk back');
+  await page.waitForTimeout(2600);
+  const late = await page.evaluate(() => {
+    const w = document.getElementById('walker').getBoundingClientRect(), d = document.querySelector('.station-desk').getBoundingClientRect();
+    return { near: w.left - d.right < 40, open: getComputedStyle(document.querySelector('.corridor .alarm')).pointerEvents !== 'none' };
+  });
+  check(late.near, 'she ends back at the station');
+  check(late.open, 'the Code Blue button works again once she is back');
+  check(!errors.length, 'no page errors ' + errors.join('; '));
+  await page.close();
+}
 await browser.close();
 console.log(failures ? `${failures} failure(s)` : 'all motion checks passed');
 process.exit(failures ? 1 : 0);

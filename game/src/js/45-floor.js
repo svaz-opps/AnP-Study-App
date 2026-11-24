@@ -187,7 +187,7 @@ Screens.floor = {
     const bubble = $('#floor-bubble');
     const btns = $$('.corridor .alarm, .corridor .elevator', plan);
     if (bubble) { bubble.classList.remove('pop'); bubble.style.visibility = 'hidden'; }
-    btns.forEach((b) => { b.style.opacity = '0'; });
+    btns.forEach((b) => { b.style.opacity = '0'; b.style.pointerEvents = 'none'; }); // hidden buttons can't be tapped
     const start = this.doorPos(room), home = this.home(), dir = this.doorDir(room);
     walker.style.transition = 'none';
     walker.style.transform = `translate(${start.x}px, ${start.y}px)`;
@@ -213,7 +213,7 @@ Screens.floor = {
           { duration: 180, easing: 'cubic-bezier(.2, .9, .3, 1.4)' });
         if (bubble) { bubble.style.visibility = ''; bubble.classList.add('pop'); }
         btns.forEach((b, i) => {
-          b.style.opacity = '';
+          b.style.opacity = ''; b.style.pointerEvents = '';
           b.animate([{ transform: 'scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }],
             { duration: 280, delay: 120 + i * 70, easing: 'cubic-bezier(.2, .9, .3, 1.25)', fill: 'backwards' });
         });

@@ -450,3 +450,6 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - Locker room: changing an item makes the nurse do a quick squash-and-stretch "ta-da" in the new look (feedback for
   the change; she used to just swap); tapping a locked item shakes it "no" before the toast (skipped on soft/calm).
   All 8 tests pass.
+- Fix: during the walk back from a room the hidden Code Blue / OR buttons could still be tapped; they are now
+  untappable until they pop back in. tests/motion.mjs gained a "walk back" case (she starts at the room's door, ends
+  at the station, the button is blocked during and works after). All 8 tests pass.
