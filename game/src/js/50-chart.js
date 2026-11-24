@@ -20,67 +20,96 @@ Screens.chart = {
   livesHTML(run, lostIdx = -1) {
     if (!run.maxLives) return '';
     let s = `<div class="lives" id="lives" aria-label="${run.lives} of ${run.maxLives} lives">`;
-    for (let i = 0; i < run.maxLives; i++) s += `<span class="${i < run.lives ? 'on' : 'off'} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
+    for (let i = 0; i < run.maxLives; i++) {
+      s += `<span class="${i < run.lives ? 'on' : 'off'} ${i === lostIdx ? 'lost' : ''}">${icon('heart')}</span>`;
+    }
     return s + '</div>';
   },
   scoreHTML(run) {
-    const mult = Engine.multiplier(run.streak);
+    const mult = Engine.multiplier(run.streak), hot = run.streak >= 3 ? 'hot' : '';
     return `<div class="score"><small>SCORE</small><span class="num">${fmt(run.score)}</span></div>
-      <div class="streak ${run.streak >= 3 ? 'hot' : ''}" aria-label="Streak ${run.streak}, multiplier ${mult}">${icon('flame')}<span>×${mult}</span><span class="num faint">${run.streak} in a row</span></div>`;
+      <div class="streak ${hot}" aria-label="Streak ${run.streak}, multiplier ${mult}">${icon('flame')}<span>×${mult}</span><span
+        class="num faint">${run.streak} in a row</span></div>`;
   },
   ptMood(run) {
     const c = run.cur;
     if (!c.revealed) return run.mode === 'codeblue' ? 'worried' : 'neutral';
     return c.res.correct ? 'happy' : c.res.frac > 0 ? 'neutral' : 'worried';
   },
+  // the round's name and "Patient 3 of 10" (or the event / boss phase)
+  roundTitle(run) {
+    if (run.mode === 'shift') return Content.unitLabel(run.unit);
+    return run.mode === 'review' ? run.label : MODE_TITLE[run.mode];
+  },
+  roundSub(run, ev, unit) {
+    let sub;
+    if (run.total) sub = `Patient ${run.idx + 1} of ${run.total}`;
+    else if (run.mode === 'boss') sub = `Phase ${run.phase + 1} of ${CONFIG.boss.phaseAt.length + 1}`;
+    else sub = `Patient ${run.idx + 1}`;
+    if (!ev) return sub;
+    if (ev.type === 'rapid') return `Rapid Response · Room ${unit.room} ${esc(unit.ward)}`;
+    return ev.type === 'visitor' ? `${sub} · Visitor question` : `${sub} · Power outage`;
+  },
   bedsideHTML(run) {
     const q = run.q, c = run.cur, p = c.patient;
     const unit = Content.unitById[q.unit];
-    const title = run.mode === 'shift' ? Content.unitLabel(run.unit) : run.mode === 'review' ? run.label : MODE_TITLE[run.mode];
     const ev = run.evNow();
-    let sub = run.total ? `Patient ${run.idx + 1} of ${run.total}` : run.mode === 'boss' ? `Phase ${run.phase + 1} of 3` : `Patient ${run.idx + 1}`;
-    if (ev) sub = ev.type === 'rapid' ? `Rapid Response · Room ${unit.room} ${esc(unit.ward)}` : ev.type === 'visitor' ? `${sub} · Visitor question` : `${sub} · Power outage`;
     const talk = run.talk || { text: Talk.line(run.mode === 'shift' ? 'start' : run.mode), mood: 'happy' };
     run.talk = talk;
     const av = WR.state.profile.avatar;
     const sec = Content.section(q.sec);
     const top = `<div class="topbar">
       <button class="icon-btn" data-action="quit" aria-label="Leave this round">${icon('close')}</button>
-      <div class="grow"><div class="label">${esc(title)}</div><b>${sub}</b></div>
+      <div class="grow"><div class="label">${esc(this.roundTitle(run))}</div><b>${this.roundSub(run, ev, unit)}</b></div>
       ${this.livesHTML(run)}
     </div>`;
+    const spo2 = run.mode === 'codeblue' ? 88 : 97 + (p.age % 3);
     const monitor = `<div class="monitor" id="monitor"><canvas id="ecg" aria-hidden="true"></canvas>
-      <div class="vitals" aria-hidden="true"><span class="hr"><small>HR</small><b id="hr">72</b></span><span class="spo2"><small>SpO₂</small><b>${run.mode === 'codeblue' ? 88 : 97 + (p.age % 3)}</b></span></div></div>`;
+      <div class="vitals" aria-hidden="true"><span class="hr"><small>HR</small><b id="hr">72</b></span><span
+        class="spo2"><small>SpO₂</small><b>${spo2}</b></span></div></div>`;
     let middle;
     if (run.mode === 'boss') {
       middle = `<div class="arena" id="arena">${this.hpHTML(run)}
-        <div class="arena-stage"><div class="nurse" id="arena-nurse">${nurseSVG(av, talk.mood)}</div><div class="boss" id="boss">${bossSVG(run.phase)}</div></div>
+        <div class="arena-stage"><div class="nurse" id="arena-nurse">${nurseSVG(av, talk.mood)}</div><div
+          class="boss" id="boss">${bossSVG(run.phase)}</div></div>
         <div class="bubble" id="talk">${esc(talk.text)}</div></div>${monitor}`;
     } else {
+      const visitor = ev && ev.type === 'visitor'
+        ? `<div class="visitor" aria-hidden="true">${patientHead(patientFor({ id: 'visitor:' + q.id, stem: '' }), 'happy')}</div>`
+        : '';
+      const dark = ev && ev.type === 'outage' ? '<div class="outage-dark" aria-hidden="true"></div>' : '';
       middle = `<div class="bedside-row">
         <div class="patient-card"><div class="bed" id="bed">${patientInBed(p, this.ptMood(run))}</div>
-          ${ev && ev.type === 'visitor' ? `<div class="visitor" aria-hidden="true">${patientHead(patientFor({ id: 'visitor:' + q.id, stem: '' }), 'happy')}</div>` : ''}
-          <div class="pt-info"><b>${esc(p.name)}</b><span class="sub">${p.age} y · Bed ${unit.room}-${p.bed}</span><span class="pt-topic">${esc(sec.num + ' ' + sec.title)}</span><span class="band">NKDA</span></div></div>
-        ${monitor}${ev && ev.type === 'outage' ? '<div class="outage-dark" aria-hidden="true"></div>' : ''}</div>`;
+          ${visitor}
+          <div class="pt-info"><b>${esc(p.name)}</b><span class="sub">${p.age} y · Bed ${unit.room}-${p.bed}</span><span
+            class="pt-topic">${esc(sec.num + ' ' + sec.title)}</span><span class="band">NKDA</span></div></div>
+        ${monitor}${dark}</div>`;
     }
-    const nurse = run.mode === 'boss' ? '' : `<div class="nurse-row" id="nurse-row"><div class="nurse">${nurseSVG(av, talk.mood)}</div><div class="bubble" id="talk">${esc(talk.text)}</div></div>`;
-    return `<aside class="bedside ${ev ? 'ev-' + ev.type : ''}">${top}${middle}<div class="scorebar" id="scorebar">${this.scoreHTML(run)}</div>${nurse}</aside>`;
+    const nurse = run.mode === 'boss' ? '' : '<div class="nurse-row" id="nurse-row">' +
+      `<div class="nurse">${nurseSVG(av, talk.mood)}</div><div class="bubble" id="talk">${esc(talk.text)}</div></div>`;
+    return `<aside class="bedside ${ev ? 'ev-' + ev.type : ''}">${top}${middle}` +
+      `<div class="scorebar" id="scorebar">${this.scoreHTML(run)}</div>${nurse}</aside>`;
   },
   hpHTML(run) {
     return `<div class="hp"><div class="hp-row"><span>The Superbug</span><span class="num" id="hp-num">${run.hp} / ${run.maxHp}</span></div>
-      <div class="bar" role="progressbar" aria-label="Boss health" aria-valuenow="${run.hp}" aria-valuemin="0" aria-valuemax="${run.maxHp}"><i id="hp-bar" style="transform:${barShift(run.hp / run.maxHp)}"></i></div></div>`;
+      <div class="bar" role="progressbar" aria-label="Boss health" aria-valuenow="${run.hp}" aria-valuemin="0"
+        aria-valuemax="${run.maxHp}"><i id="hp-bar" style="transform:${barShift(run.hp / run.maxHp)}"></i></div></div>`;
   },
 
   // ----- right pane
   progHTML(run) {
     if (run.mode === 'codeblue') {
-      return `<div class="timer" id="timer" role="timer" aria-label="Time left">${icon('alarm')}<div class="bar"><i id="timer-bar" style="transform:${barShift(run.timeLeft / run.cfg.time)}"></i></div><b class="num" id="timer-num">${Math.ceil(run.timeLeft)}</b></div>`;
+      return `<div class="timer" id="timer" role="timer" aria-label="Time left">${icon('alarm')}<div class="bar">` +
+        `<i id="timer-bar" style="transform:${barShift(run.timeLeft / run.cfg.time)}"></i></div>` +
+        `<b class="num" id="timer-num">${Math.ceil(run.timeLeft)}</b></div>`;
     }
     if (!run.total) return '';
     let pips = '';
     for (let i = 0; i < run.total; i++) {
       const r = run.results[i];
-      let cls = i === run.idx && !run.cur.revealed ? 'now' : r ? (run.mode === 'exam' ? 'ok' : r.correct ? 'ok' : r.frac > 0 ? 'part' : 'bad') : '';
+      let cls = '';
+      if (i === run.idx && !run.cur.revealed) cls = 'now';
+      else if (r) cls = run.mode === 'exam' ? 'ok' : r.correct ? 'ok' : r.frac > 0 ? 'part' : 'bad'; // exam hides right/wrong
       if (run.event && run.event.qids.indexOf(run.queue[i]) !== -1) cls += ' ev ev-' + run.event.type;
       pips += `<i class="${cls}"></i>`;
     }
@@ -98,9 +127,10 @@ Screens.chart = {
       const o = isOrder ? { t: q.steps[i] } : q.opts[i];
       const selPos = c.sel.indexOf(i);
       const sel = selPos !== -1;
+      const gone = c.gone.indexOf(i) !== -1;
       const cls = ['opt'];
       if (isMulti) cls.push('multi');
-      if (c.gone.indexOf(i) !== -1) cls.push('gone');
+      if (gone) cls.push('gone');
       let mark = '';
       if (showTruth) {
         if (isOrder) { cls.push(selPos === i ? 'right' : 'wrong'); mark = icon(selPos === i ? 'check' : 'x'); }
@@ -109,29 +139,46 @@ Screens.chart = {
         else if (sel) { cls.push('wrong'); mark = icon('x'); }
       } else if (sel) cls.push(isOrder ? 'placed' : 'sel');
       const lead = isOrder ? `<span class="ord num">${sel ? selPos + 1 : '·'}</span>` : `<span class="key">${LETTERS[k]}</span>`;
-      const pt = q.type === 'priority' ? `<span class="pt-mini">${patientHead(patientFor({ id: q.id + ':' + i, stem: o.t }), 'neutral')}</span>` : '';
+      const pt = q.type === 'priority'
+        ? `<span class="pt-mini">${patientHead(patientFor({ id: q.id + ':' + i, stem: o.t }), 'neutral')}</span>`
+        : '';
       const after = showTruth && isOrder ? `<span class="order-ans">Step ${i + 1}</span>` : '';
-      const label = `${isOrder ? '' : 'Option ' + LETTERS[k] + ': '}${o.t}${sel && !showTruth ? (isOrder ? `, placed ${selPos + 1}` : ', selected') : ''}`;
-      s += `<li><button class="${cls.join(' ')}" data-action="pick" data-i="${i}" ${c.revealed || c.gone.indexOf(i) !== -1 ? 'disabled' : ''} aria-label="${esc(label)}" ${isMulti ? `aria-pressed="${sel}"` : ''}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}<span class="mark">${mark}</span></button></li>`;
+      const state = sel && !showTruth ? (isOrder ? `, placed ${selPos + 1}` : ', selected') : '';
+      const label = `${isOrder ? '' : 'Option ' + LETTERS[k] + ': '}${o.t}${state}`;
+      const attrs = `data-action="pick" data-i="${i}" ${c.revealed || gone ? 'disabled' : ''} aria-label="${esc(label)}" ` +
+        (isMulti ? `aria-pressed="${sel}"` : '');
+      s += `<li><button class="${cls.join(' ')}" ${attrs}>${lead}${pt}<span class="t">${esc(o.t)}</span>${after}` +
+        `<span class="mark">${mark}</span></button></li>`;
     });
     return s + '</ol>';
   },
   paperHTML(run) {
     const q = run.q, c = run.cur, sec = Content.section(q.sec);
-    const help = q.type === 'sata' ? 'Select all that apply, then tap Submit.' : q.type === 'order' ? 'Tap the steps in order, then tap Submit. Tap a placed step to take it back.' : 'Choose an answer, then tap Submit.';
-    return `<div class="paper-head"><span class="qtype ${q.type}">${TYPE_INFO[q.type].label}</span><span class="paper-topic">${q.origin === 'guide' ? 'From your study guide' : 'ATI-style'} · ${esc(sec.num)}</span></div>
+    const help = {
+      sata: 'Select all that apply, then tap Submit.',
+      order: 'Tap the steps in order, then tap Submit. Tap a placed step to take it back.',
+    }[q.type] || 'Choose an answer, then tap Submit.';
+    const from = q.origin === 'guide' ? 'From your study guide' : 'ATI-style';
+    return `<div class="paper-head"><span class="qtype ${q.type}">${TYPE_INFO[q.type].label}</span><span
+      class="paper-topic">${from} · ${esc(sec.num)}</span></div>
       <p class="stem" id="stem">${esc(q.stem)}</p>
       ${help && !c.revealed ? `<p class="paper-help">${help}</p>` : ''}
       ${c.hint && !c.revealed ? `<p class="paper-hint">${icon('users')}${esc(c.hint)}</p>` : ''}
       ${this.optsHTML(run)}`;
   },
   trayHTML(run) {
-    const q = run.q, c = run.cur;
+    const q = run.q, c = run.cur, L = run.lifelines;
     if (c.revealed) return '';
     let s = '';
     if (run.cfg.lifelines) {
-      s += `<button class="life-btn" data-action="colleague" ${run.canColleague() ? '' : 'disabled'} aria-label="Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, half the wrong options go; on ordering, the first step is placed). ${run.lifelines.colleague} left">${icon('users')}<span class="t">Ask a colleague</span><span class="n">${run.lifelines.colleague}</span></button>`;
-      s += `<button class="life-btn" data-action="coffee" ${run.lifelines.coffee && run.lives < run.maxLives ? '' : 'disabled'} aria-label="Coffee break: gain one life. ${run.lifelines.coffee} left">${icon('coffee')}<span class="t">Coffee break</span><span class="n">${run.lifelines.coffee}</span></button>`;
+      const colleagueHelp = 'Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, '
+        + 'half the wrong options go; on ordering, the first step is placed).';
+      s += `<button class="life-btn" data-action="colleague" ${run.canColleague() ? '' : 'disabled'} ` +
+        `aria-label="${colleagueHelp} ${L.colleague} left">${icon('users')}<span class="t">Ask a colleague</span>` +
+        `<span class="n">${L.colleague}</span></button>`;
+      s += `<button class="life-btn" data-action="coffee" ${L.coffee && run.lives < run.maxLives ? '' : 'disabled'} ` +
+        `aria-label="Coffee break: gain one life. ${L.coffee} left">${icon('coffee')}<span class="t">Coffee break</span>` +
+        `<span class="n">${L.coffee}</span></button>`;
     }
     s += '<span class="grow"></span>';
     if (q.type === 'order') s += `<button class="btn" data-action="undo" ${c.sel.length ? '' : 'disabled'}>${icon('undo')}Undo</button>`;
@@ -143,53 +190,81 @@ Screens.chart = {
     const fb = c.revealed && run.cfg.feedback;
     return `<main class="chartside">
       <div id="prog">${this.progHTML(run)}</div>
-      <article class="clipboard" id="clipboard" aria-label="Patient chart"><div class="clip" aria-hidden="true"></div><div class="paper" id="paper">${this.paperHTML(run)}</div></article>
+      <article class="clipboard" id="clipboard" aria-label="Patient chart"><div class="clip" aria-hidden="true"></div><div
+        class="paper" id="paper">${this.paperHTML(run)}</div></article>
       <div class="tray" id="tray">${this.trayHTML(run)}</div>
       <div class="feedback" id="feedback" ${fb ? '' : 'hidden'} role="region" aria-label="Explanation">${fb ? this.feedbackHTML(run) : ''}</div>
     </main>`;
   },
 
-  feedbackHTML(run) {
-    const q = run.q, c = run.cur, res = c.res, sec = Content.section(q.sec);
-    const st = res.correct ? 'ok' : res.frac > 0 ? 'part' : 'bad';
-    const r = rng(q.id);
-    const title = res.correct ? pick(['Correct!', 'Nice work!', 'Right on!', 'You got it!'], r) : res.frac > 0 ? 'Partly right' : 'Not quite';
-    const pts = c.pts.pts ? `+${fmt(c.pts.pts)}${c.pts.mult > 1 ? ` ×${c.pts.mult}` : ''}` : '';
-    let answer;
-    if (q.type === 'order') answer = `<ol>${q.steps.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>`;
-    else answer = `<ul>${q.opts.filter((o) => o.c).map((o) => `<li>${esc(o.t)}</li>`).join('')}</ul>`;
-    const ansLabel = q.type === 'order' ? 'Correct order' : q.type === 'sata' ? 'Correct answers' : q.type === 'teaching' ? 'Statement that needs more teaching' : 'Correct answer';
+  // ----- the explanation panel after an answer
+  feedbackNotes(run) {
+    const q = run.q, c = run.cur, res = c.res;
     const notes = [];
     if (c.ev === 'rapid') {
       const u = Content.unitById[q.unit];
-      notes.push(`${icon('alarm')} Rapid Response from Room ${u.room} · ${esc(u.ward)}: ×${EVENTS.rapid.bonus} points${c.evSafe ? ', and no life lost' : ''}.`);
+      const safe = c.evSafe ? ', and no life lost' : '';
+      notes.push(`${icon('alarm')} Rapid Response from Room ${u.room} · ${esc(u.ward)}: ×${EVENTS.rapid.bonus} points${safe}.`);
     }
-    if (c.ev === 'visitor') notes.push(`${icon('users')} Visitor question${res.correct ? `: +${EVENTS.visitor.xp} bonus XP` : ''}${c.evSafe ? '. No life lost' : ''}.`);
+    if (c.ev === 'visitor') {
+      const xp = res.correct ? `: +${EVENTS.visitor.xp} bonus XP` : '';
+      notes.push(`${icon('users')} Visitor question${xp}${c.evSafe ? '. No life lost' : ''}.`);
+    }
     if (c.ev === 'outage') notes.push(`${icon('sparkle')} Power outage: ×${EVENTS.outage.bonus} points.`);
     if (c.lostLife) notes.push(`${icon('heart')} You lost a life.`);
-    if (c.discharged) notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
+    if (c.discharged) {
+      notes.push(`${icon('bed')} Patient discharged from Missed Patients!${c.card ? ' They left you a thank-you card.' : ''}`);
+    }
     if (!res.correct && run.mode !== 'review') notes.push(`${icon('bed')} Saved to Missed Patients for review.`);
-    if (c.bonusCoffee) notes.push(`${icon('coffee')} ${CONFIG.lifelines.bonusCoffeeEvery} in a row earned you an extra coffee break.`);
+    if (c.bonusCoffee) {
+      notes.push(`${icon('coffee')} ${CONFIG.lifelines.bonusCoffeeEvery} in a row earned you an extra coffee break.`);
+    }
     if (c.dmg) notes.push(`${icon('sparkle')} ${c.dmg} damage to the Superbug.`);
     if (c.heal) notes.push(`${icon('bug')} The Superbug healed ${c.heal} HP.`);
+    return notes;
+  },
+  // memory trick, up to two tips from the guide section, and the ATI test tip
+  feedbackTips(q, sec) {
+    const tip = (cls, ico, label, text) => `<div class="tip ${cls}">${icon(ico)}<div><span class="label">${label}</span>${text}</div></div>`;
     let tips = '';
-    if (q.trick) tips += `<div class="tip trick">${icon('bulb')}<div><span class="label">Memory trick</span>${esc(q.trick)}</div></div>`;
+    if (q.trick) tips += tip('trick', 'bulb', 'Memory trick', esc(q.trick));
     const guideTips = (sec.tips || []).filter((t) => t.kind !== 'note' || !q.trick).slice(0, q.trick ? 1 : 2);
-    guideTips.forEach((t) => { tips += `<div class="tip guide">${icon('book')}<div><span class="label">From your guide<span class="src">${esc(t.label)}</span></span>${esc(t.text)}</div></div>`; });
-    tips += `<div class="tip ati">${icon('target')}<div><span class="label">ATI test tip</span>${esc(q.tip || TYPE_INFO[q.type].tip)}</div></div>`;
+    guideTips.forEach((t) => { tips += tip('guide', 'book', `From your guide<span class="src">${esc(t.label)}</span>`, esc(t.text)); });
+    tips += tip('ati', 'target', 'ATI test tip', esc(q.tip || TYPE_INFO[q.type].tip));
+    return tips;
+  },
+  feedbackHTML(run) {
+    const q = run.q, c = run.cur, res = c.res, sec = Content.section(q.sec);
+    const st = res.correct ? 'ok' : res.frac > 0 ? 'part' : 'bad';
+    const praise = pick(['Correct!', 'Nice work!', 'Right on!', 'You got it!'], rng(q.id));
+    const title = res.correct ? praise : res.frac > 0 ? 'Partly right' : 'Not quite';
+    const pts = c.pts.pts ? `+${fmt(c.pts.pts)}${c.pts.mult > 1 ? ` ×${c.pts.mult}` : ''}` : '';
+    const li = (t) => `<li>${esc(t)}</li>`;
+    const answer = q.type === 'order'
+      ? `<ol>${q.steps.map(li).join('')}</ol>`
+      : `<ul>${q.opts.filter((o) => o.c).map((o) => li(o.t)).join('')}</ul>`;
+    const ansLabel = { order: 'Correct order', sata: 'Correct answers', teaching: 'Statement that needs more teaching' }[q.type]
+      || 'Correct answer';
+    const notes = this.feedbackNotes(run);
     let others = '';
     if (q.type !== 'order' && q.opts.some((o) => o.w)) {
-      others = `<details class="more"><summary>Why the other options are wrong</summary><ul class="why-list">${q.opts.filter((o) => !o.c && o.w).map((o) => `<li><b>${esc(o.t)}</b>${esc(o.w)}</li>`).join('')}</ul></details>`;
+      const why = q.opts.filter((o) => !o.c && o.w).map((o) => `<li><b>${esc(o.t)}</b>${esc(o.w)}</li>`).join('');
+      others = `<details class="more"><summary>Why the other options are wrong</summary><ul class="why-list">${why}</ul></details>`;
     }
     const hit = new Set((q.focus || []).filter((f) => f[0] === q.sec).map((f) => f[1]));
-    const focus = sec.focus.length ? `<ul class="focus-list">${sec.focus.map((f, i) => `<li class="${hit.has(i) ? 'hit' : ''}">${esc(f)}</li>`).join('')}</ul>` : '<p class="dim">This section has no instructor focus points.</p>';
-    const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary><p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
-    const endLabel = run.isEnd() ? (run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report') : 'Next patient';
-    return `<div class="fb-head ${st}"><span class="ico">${icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x')}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
+    const focus = sec.focus.length
+      ? `<ul class="focus-list">${sec.focus.map((f, i) => `<li class="${hit.has(i) ? 'hit' : ''}">${esc(f)}</li>`).join('')}</ul>`
+      : '<p class="dim">This section has no instructor focus points.</p>';
+    const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary>` +
+      `<p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
+    let endLabel = 'Next patient';
+    if (run.isEnd()) endLabel = run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
+    const headIcon = icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x');
+    return `<div class="fb-head ${st}"><span class="ico">${headIcon}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
       ${notes.length ? `<div class="fb-notes">${notes.map((n) => `<p>${n}</p>`).join('')}</div>` : ''}
       <div class="fb-answer"><span class="label">${ansLabel}</span>${answer}</div>
       <p class="fb-why">${esc(q.why)}</p>
-      <div class="fb-tips">${tips}</div>
+      <div class="fb-tips">${this.feedbackTips(q, sec)}</div>
       ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
       ${others}${guide}
       <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
@@ -399,7 +474,8 @@ Screens.chart = {
     if (evStart) this.eventBanner(run.event.type);
     Store.saveRun();
     const cb = !reducedMotion() && $('#clipboard', App.el);
-    if (cb) cb.animate([{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
+    const slideIn = [{ opacity: 0, transform: 'translateX(24px)' }, { opacity: 1, transform: 'none' }];
+    if (cb) cb.animate(slideIn, { duration: 260, easing: 'ease-out' });
   },
 
   act: {
@@ -439,7 +515,8 @@ Screens.chart = {
     next() { Screens.chart.advance(); },
     async quit() {
       const run = App.run;
-      const msg = run.mode === 'exam' ? 'Your exam answers so far will not be scored.' : 'Answers you already gave are saved. This round will not count as a finished shift.';
+      const msg = run.mode === 'exam' ? 'Your exam answers so far will not be scored.' : 'Answers you already gave ' +
+        'are saved. This round will not count as a finished shift.';
       if (await App.confirm('Leave this round?', msg, 'Leave')) {
         if (run.mode === 'codeblue' || run.mode === 'boss') run.finish();
         App.run = null;

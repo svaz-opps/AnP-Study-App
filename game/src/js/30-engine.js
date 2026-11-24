@@ -4,6 +4,8 @@
 // Badges. `id` is the key in saved progress, so it never changes (even when the number in
 // it no longer matches the threshold). Descriptions are built from CONFIG.badges.
 const BADGE_AT = CONFIG.badges;
+const EXAM_PASS_PCT = Math.round(CONFIG.exam.passFraction * 100);
+const NIGHT_TIME = BADGE_AT.nightHour > 12 ? `${BADGE_AT.nightHour - 12} PM` : `${BADGE_AT.nightHour} AM`;
 const BADGES = [
   { id: 'first_shift', n: 'First Shift', d: 'Finish your first shift.', ico: 'clipboard' },
   { id: 'shift3', n: 'Regular', d: `Finish ${BADGE_AT.shift3} shifts.`, ico: 'calendar' },
@@ -26,8 +28,8 @@ const BADGES = [
   { id: 'allrooms1', n: 'Floor Coverage', d: 'Earn a star in every room.', ico: 'star' },
   { id: 'allrooms3', n: 'Unit Expert', d: 'Earn 3 stars in every room.', ico: 'star' },
   { id: 'exam', n: 'Mock Exam', d: 'Finish an exam simulation.', ico: 'clipboard' },
-  { id: 'exam80', n: 'Exam Ready', d: `Score ${Math.round(CONFIG.exam.passFraction * 100)}% or more on an exam simulation.`, ico: 'trophy' },
-  { id: 'night', n: 'Night Shift', d: `Study after ${BADGE_AT.nightHour > 12 ? BADGE_AT.nightHour - 12 + ' PM' : BADGE_AT.nightHour + ' AM'}.`, ico: 'sparkle' },
+  { id: 'exam80', n: 'Exam Ready', d: `Score ${EXAM_PASS_PCT}% or more on an exam simulation.`, ico: 'trophy' },
+  { id: 'night', n: 'Night Shift', d: `Study after ${NIGHT_TIME}.`, ico: 'sparkle' },
   { id: 'chief', n: 'Chief Nurse', d: 'Reach the top rank.', ico: 'trophy' },
   { id: 'daily1', n: 'Daily Dose', d: 'Finish a daily challenge.', ico: 'calendar' },
   { id: 'daily3', n: 'Habit Forming', d: `Finish the daily challenge ${BADGE_AT.daily3} days in a row.`, ico: 'calendar' },

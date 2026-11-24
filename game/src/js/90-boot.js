@@ -22,7 +22,13 @@ function bindEvents() {
   }, 150);
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', onResize);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { if (App.run) Store.saveRun(); Store._local.flush(); Store._cloud.flush(); } });
+  // leaving or hiding the page: write progress straight away
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) return;
+    if (App.run) Store.saveRun();
+    Store._local.flush();
+    Store._cloud.flush();
+  });
   window.addEventListener('pagehide', () => { if (App.run) Store.saveRun(); Store._local.flush(); });
   ['pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, () => Sound.unlock(), { once: true, passive: true }));
 }
@@ -34,7 +40,9 @@ async function start(hot) {
   try {
     await Content.load();
   } catch (e) {
-    document.getElementById('app').innerHTML = `<div class="boot"><p>${esc(e.message || 'Could not load the game.')}</p><button class="btn primary" onclick="location.reload()">Try again</button></div>`;
+    document.getElementById('app').innerHTML = `<div class="boot">` +
+      `<p>${esc(e.message || 'Could not load the game.')}</p>` +
+      `<button class="btn primary" onclick="location.reload()">Try again</button></div>`;
     return;
   }
   Store.init();
@@ -45,7 +53,8 @@ async function start(hot) {
   bindEvents();
   Store.onChange(() => {
     applySettings();
-    if (App.name === 'floor' || App.name === 'stats' || App.name === 'missed' || App.name === 'locker' || App.name === 'cards') App.rerender();
+    // newer progress arrived from the account: redraw screens that show it
+    if (['floor', 'stats', 'missed', 'locker', 'cards'].includes(App.name)) App.rerender();
   });
   if (hot && hot.run && hot.screen) {
     try {
@@ -70,12 +79,16 @@ async function start(hot) {
 }
 
 function offerResume(run) {
-  const title = run.mode === 'shift' ? Content.unitLabel(run.unit) : run.mode === 'review' ? run.label || 'Missed patients' : MODE_TITLE[run.mode];
+  const title = run.mode === 'shift' ? Content.unitLabel(run.unit)
+    : run.mode === 'review' ? run.label || 'Missed patients'
+      : MODE_TITLE[run.mode];
   const where = run.total ? `Patient ${run.idx + 1} of ${run.total}` : `Patient ${run.idx + 1}`;
-  const extra = run.mode === 'codeblue' ? ` · ${Math.ceil(run.timeLeft)}s left` : run.maxLives ? ` · ${run.lives} of ${run.maxLives} lives` : '';
+  const extra = run.mode === 'codeblue' ? ` · ${Math.ceil(run.timeLeft)}s left` : run.maxLives ? ` · ${run.lives} ` +
+    `of ${run.maxLives} lives` : '';
   App.modal(`<h2>Pick up where you left off?</h2>
     <p class="dim">Your round was autosaved: <b>${esc(title)}</b>, ${where}${extra}. Score ${fmt(run.score)}.</p>
-    <div class="actions"><button class="btn" data-m="drop">Discard round</button><button class="btn primary" data-m="go" data-autofocus>Resume</button></div>`,
+    <div class="actions"><button class="btn" data-m="drop">Discard round</button><button class="btn primary" data-m="go"
+      data-autofocus>Resume</button></div>`,
   (m) => {
     Store.holdRun = false;
     if (m === 'go') {

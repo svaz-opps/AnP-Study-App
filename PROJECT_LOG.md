@@ -246,3 +246,44 @@
   and partly-right answers get no chaos reaction by design. Wrong ordering answers are now the steps rotated by one
   (no step in place). `startShift()` in that test also passes `event: 'none'`; events keep their own checks.
 - No app code changed, no checks removed. Each suite passed 10 consecutive runs; all `BRANCHING.md` suites pass.
+
+## 2026-11-24 — Smooth play, one config file, readable code (R26, R27)
+- Measured first (Playwright, Chromium, 1180×820 at 2×, CPU slowed 4–6× to stand in for an older iPad): frame times,
+  long tasks, tap handler time and tap-to-next-paint (Event Timing API). Scripts were kept in the session scratchpad,
+  not the repo; `game/tests/smooth.mjs` keeps the fixes from regressing.
+- Stutters found and fixed:
+  - Dialogs: the blurred backdrop was re-rendered every frame over the running heart monitor (~20–30 fps). The
+    monitor now pauses while a dialog is open (as the Code Blue clock already did): 60 fps.
+  - Answer tap: three forced synchronous layouts (`void el.offsetWidth` animation restarts, `scrollTop = 0` on a panel
+    that is always new). Replaced with `replayClass()` (class back on two frames later) or a fresh element. The
+    explanation panel now renders one frame after the answer marks/sound/reaction (`afterNextPaint`). The patient was
+    drawn twice per answer when a whimsy reaction played; now once. Handler 36–50 ms → ~12 ms at 6×.
+  - Next patient: the monitor canvas was rebuilt and measured (`getBoundingClientRect`) for every patient; the same
+    canvas now carries on (sized by ResizeObserver, so the trace no longer restarts). `rerender` reads `scrollTop`
+    before changing the page. Handler ~34 → ~27 ms at 6×; tap-to-paint did not change measurably (redrawing the
+    whole screen is the cost; left as is).
+  - Monitor drawing: grid drawn once per size instead of 60+ strokes a frame; canvas `shadowBlur` glow (slow in
+    Safari) replaced by two wide faint strokes (checked side by side); resolution capped at 2×.
+  - Code Blue timer and boss HP bar slide with `transform` instead of `width` (no layout per frame); the timer number
+    is only rewritten when it changes. Floor alarm light no longer animates `box-shadow`.
+  - Saving: the localStorage write waits 1 s after the last change and runs in idle time; it is still flushed on
+    page hide/close (unchanged) and immediately for `save({ now: true })` (end of round, restore, reset). Assumption:
+    1 s is safe because iOS fires `visibilitychange` when the app is backgrounded.
+  - Picking: each room's mastery is computed once per pick instead of once per question.
+- Bug found while checking screenshots: the Code Blue timer's alarm icon had no size rule and filled the whole
+  right pane on wide screens (visible in the committed smoke screenshots), hiding the countdown bar and pushing the
+  question down. Added `.timer > svg` sizing.
+- Config (`game/src/js/01-config.js`): every rule, reward, threshold and timing. Badge descriptions, tutorial, floor
+  dialogs, nurse lines and feedback notes are built from the values, so text can't drift from the rules. Badge ids
+  (`streak10`, `cards25`…) are save keys and stay as they are even if a threshold changes. Left inline on purpose:
+  colours (CSS tokens), content (units.json, questions), avatar options, and purely cosmetic cut-offs (which face the
+  nurse makes on the report). Small text change: the Rapid Response badge says "every" instead of "both" questions,
+  and nurse lines say "×2 points" instead of "Double points", because those numbers are now configurable.
+- Readability: longest line 519 → 156 characters (JS), CSS rules split one declaration per line. Long SVG/HTML
+  strings were split at tag/attribute boundaries; big templates were broken into named pieces and helpers
+  (`ReportSummary` per mode, `feedbackNotes`/`feedbackTips`, locker `swatch`, settings `row`/`seg`, `Screens.missed.roomHTML`).
+  Proof of no visual change: a snapshot of 997 rendered pieces (every screen at 3 viewport sizes, every question type
+  in every mode before/after answering, events, reports, all locker tabs and faces, every whimsy reaction) was
+  identical before and after, byte for byte for the scripted split and with whitespace runs collapsed for the hand
+  rewrite. CSS compared identical with whitespace removed. The snapshot caught one regression during the work
+  (`map(roomHTML)` passing the index into a new parameter), fixed before commit.

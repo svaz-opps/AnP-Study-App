@@ -1,9 +1,31 @@
 /* ---------- HUD ---------- */
 .hud { display: flex; align-items: center; gap: var(--s4); flex-wrap: wrap; }
-.hud-me { display: flex; align-items: center; gap: var(--s3); text-align: left; min-height: var(--tap); padding-right: var(--s3); border-radius: 999px; }
-.hud-me .ava { width: 52px; height: 52px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--accent); overflow: hidden; flex: none; }
+.hud-me {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  text-align: left;
+  min-height: var(--tap);
+  padding-right: var(--s3);
+  border-radius: 999px;
+}
+.hud-me .ava {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 2px solid var(--accent);
+  overflow: hidden;
+  flex: none;
+}
 .hud-me .ava svg { width: 100%; height: 100%; }
-.hud-me b { display: block; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-lg); line-height: 1.1; }
+.hud-me b {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-lg);
+  line-height: 1.1;
+}
 .hud-me span { font-size: var(--fs-sm); color: var(--accent); font-weight: 800; }
 .hud-xp { flex: 1 1 220px; min-width: 180px; display: flex; flex-direction: column; gap: 6px; }
 .hud-xp .bar > i { background: linear-gradient(90deg, var(--xp), var(--accent)); }
@@ -14,8 +36,15 @@
 
 /* ---------- floor plan ---------- */
 .floorplan { position: relative; flex: 1; display: grid; gap: 0; min-height: 0; }
-.floorplan.h { grid-template-rows: minmax(auto, 1fr) 132px minmax(auto, 1fr); } /* rows never shrink below a room's content */
-.floorplan.v { flex: none; grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); grid-auto-rows: auto; row-gap: var(--s3); }
+.floorplan.h { /* rows never shrink below a room's content */
+  grid-template-rows: minmax(auto, 1fr) 132px minmax(auto, 1fr);
+}
+.floorplan.v {
+  flex: none;
+  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr);
+  grid-auto-rows: auto;
+  row-gap: var(--s3);
+}
 .floorplan.v .room { min-height: 150px; }
 
 .rooms { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s2); }
@@ -35,19 +64,56 @@
 .room:active { transform: scale(.985); }
 @media (hover: hover) { .room:hover { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); } }
 /* only the blurb row (4) gives way when space is short; the patient row (5) is always shown */
-.room-body { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr) auto; align-content: start; gap: 6px; padding: var(--s3); overflow: hidden; }
+.room-body {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  align-content: start;
+  gap: 6px;
+  padding: var(--s3);
+  overflow: hidden;
+}
 .room-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); }
-.room-plate { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-sm); background: var(--surface-3); color: var(--text); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--line); }
+.room-plate {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  background: var(--surface-3);
+  color: var(--text);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
 .room-stars { display: flex; gap: 1px; color: var(--surface-3); }
 .room-stars svg { width: 16px; height: 16px; }
 .room-stars .on { color: var(--warn); }
-.room-ward { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-md); line-height: 1.1; overflow-wrap: anywhere; }
+.room-ward {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
 .room-topic { font-size: var(--fs-sm); color: var(--text-dim); line-height: 1.2; }
-.room-blurb { grid-row: 4; font-size: var(--fs-xs); color: var(--text-faint); line-height: 1.3; margin-top: 2px; min-height: 0; overflow: hidden; }
+.room-blurb {
+  grid-row: 4;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  line-height: 1.3;
+  margin-top: 2px;
+  min-height: 0;
+  overflow: hidden;
+}
 /* landscape: the blurb takes only the space left over, so it never makes the row taller (old Safari ignores contain: rows just grow) */
 .floorplan.h .room-blurb { contain: size; }
 [data-size="compact"] .room-blurb { display: none; }
-.room-pt { grid-row: 5; align-self: end; display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s2); }
+.room-pt {
+  grid-row: 5;
+  align-self: end;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s2);
+}
 .room-pt .pt { width: 46px; height: 46px; flex: none; }
 .room-pt .pt svg { width: 100%; height: 100%; }
 .room-meta { font-size: var(--fs-xs); color: var(--text-faint); font-weight: 700; text-align: right; }
@@ -59,7 +125,16 @@
 .room .room-dot ~ .room-body .room-stars { margin-right: 26px; }
 
 /* the door: a strip on the corridor side of the room that swings open */
-.door { height: 14px; position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface-2); border-top: 2px solid var(--line); perspective: 300px; }
+.door {
+  height: 14px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface-2);
+  border-top: 2px solid var(--line);
+  perspective: 300px;
+}
 .door::before {
   content: ""; position: absolute; left: 22%; width: 56%; top: 2px; height: 8px; border-radius: 3px;
   background: linear-gradient(90deg, #6f86a8, #9ab0cc); transform-origin: left center;
@@ -93,11 +168,29 @@
   width: 64px; height: 92px; flex: none; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line);
   display: grid; place-items: center; color: var(--text-faint); font-size: 10px; font-weight: 800; letter-spacing: .08em; writing-mode: vertical-rl;
 }
-.walker { position: absolute; left: 0; top: 0; width: 84px; height: 104px; z-index: 3; pointer-events: none; transition: transform .75s cubic-bezier(.45, .05, .35, 1); will-change: transform; }
+.walker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 84px;
+  height: 104px;
+  z-index: 3;
+  pointer-events: none;
+  transition: transform .75s cubic-bezier(.45, .05, .35, 1);
+  will-change: transform;
+}
 .walker svg { width: 100%; height: 100%; overflow: visible; }
 .walker.walking svg { animation: bob .32s ease-in-out infinite alternate; }
-.walker.walking .leg-l { animation: step .32s ease-in-out infinite alternate; transform-origin: 50% 0; transform-box: fill-box; }
-.walker.walking .leg-r { animation: step .32s ease-in-out infinite alternate-reverse; transform-origin: 50% 0; transform-box: fill-box; }
+.walker.walking .leg-l {
+  animation: step .32s ease-in-out infinite alternate;
+  transform-origin: 50% 0;
+  transform-box: fill-box;
+}
+.walker.walking .leg-r {
+  animation: step .32s ease-in-out infinite alternate-reverse;
+  transform-origin: 50% 0;
+  transform-box: fill-box;
+}
 @keyframes bob { to { transform: translateY(-3px); } }
 @keyframes step { from { transform: rotate(14deg); } to { transform: rotate(-14deg); } }
 
@@ -106,7 +199,15 @@
   background: var(--paper); color: var(--ink); font-weight: 700; font-size: var(--fs-sm); line-height: 1.3;
   box-shadow: var(--shadow);
 }
-.bubble::before { content: ""; position: absolute; left: -7px; bottom: 16px; border: 8px solid transparent; border-left: 0; border-right-color: var(--paper); }
+.bubble::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  bottom: 16px;
+  border: 8px solid transparent;
+  border-left: 0;
+  border-right-color: var(--paper);
+}
 .bubble.pop { animation: pop-in .3s cubic-bezier(.2, .9, .3, 1.3) both; }
 .floor .station .bubble { margin-left: 92px; }
 .station-card { align-items: center; gap: var(--s3); }
@@ -118,18 +219,39 @@
   color: #ffd9dd; font-weight: 800; z-index: 2;
 }
 /* the light pulses with opacity only: animating box-shadow would repaint it every frame */
-.alarm .light { width: 14px; height: 14px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); animation: blink 1.4s ease-in-out infinite; }
+.alarm .light {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--code);
+  box-shadow: 0 0 12px var(--code);
+  animation: blink 1.4s ease-in-out infinite;
+}
 @keyframes blink { 50% { opacity: .35; } }
 .elevator {
   display: flex; align-items: center; gap: var(--s3); padding: 8px 14px 8px 8px; min-height: var(--tap);
   border-radius: 14px; background: var(--surface-2); border: 2px solid var(--line); font-weight: 800; text-align: left; z-index: 2;
 }
-.elevator .doors { width: 44px; height: 54px; border-radius: 6px; background: linear-gradient(90deg, #8193ad 0 49%, #2a3a52 49% 51%, #8193ad 51%); border: 2px solid #5d708d; flex: none; }
+.elevator .doors {
+  width: 44px;
+  height: 54px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #8193ad 0 49%, #2a3a52 49% 51%, #8193ad 51%);
+  border: 2px solid #5d708d;
+  flex: none;
+}
 .elevator small { display: block; font-weight: 700; color: var(--text-dim); font-size: var(--fs-xs); }
 .elevator.locked { opacity: .6; }
 
 .floor-end { display: none; }
-.floorplan.v .floor-end { display: flex; grid-column: 1 / -1; gap: var(--s3); flex-wrap: wrap; justify-content: center; padding-top: var(--s2); }
+.floorplan.v .floor-end {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: var(--s2);
+}
 .floorplan.v .corridor .alarm, .floorplan.v .corridor .elevator { display: none; }
 .floorplan.h .floor-end { display: none; }
 
@@ -146,7 +268,14 @@
   border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 800; font-size: var(--fs-sm);
 }
 .dock button svg { width: 20px; height: 20px; color: var(--accent); }
-.dock .count { background: var(--bad); color: #fff; border-radius: 999px; padding: 0 7px; font-size: 12px; line-height: 20px; }
+.dock .count {
+  background: var(--bad);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0 7px;
+  font-size: 12px;
+  line-height: 20px;
+}
 
 [data-size="compact"] .dock button span.t { display: none; }
 [data-size="compact"] .dock button { padding: 0 14px; }

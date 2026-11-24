@@ -74,7 +74,10 @@ const Sound = {
         case 'honk': this.tone(330, 0, 0.16, 'square', 0.3, 300); this.tone(330, 0.2, 0.22, 'square', 0.3, 290); break;
         case 'sneeze': this.tone(500, 0, 0.18, 'triangle', 0.25, 900); this.noise(0.2, 0.28, 0.6, 3000); break;
         case 'pop': this.tone(900, 0, 0.06, 'sine', 0.5, 1500); break;
-        case 'tada': [523, 659, 784].forEach((f, i) => this.tone(f, i * 0.08, 0.14, 'triangle', 0.6)); [523, 659, 784, 1046].forEach((f) => this.tone(f, 0.3, 0.55, 'triangle', 0.4)); break;
+        case 'tada':
+          [523, 659, 784].forEach((f, i) => this.tone(f, i * 0.08, 0.14, 'triangle', 0.6));   // rising arpeggio
+          [523, 659, 784, 1046].forEach((f) => this.tone(f, 0.3, 0.55, 'triangle', 0.4));     // then a chord
+          break;
         case 'badge': this.tone(988, 0, 0.12, 'sine', 0.6); this.tone(1318, 0.1, 0.3, 'sine', 0.6); break;
       }
     } catch (e) { /* audio is optional */ }

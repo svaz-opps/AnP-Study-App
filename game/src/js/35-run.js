@@ -208,7 +208,9 @@ class Run {
   }
   canColleague() {
     const c = this.cur;
-    return !!(this.lifelines.colleague && c && !c.revealed && (this.q.type === 'order' ? c.sel[0] !== 0 || c.sel.length !== 1 : this.colleagueCuts().length));
+    if (!this.lifelines.colleague || !c || c.revealed) return false;
+    // ordering: useful unless the first step is already the only one placed; otherwise: something to cross out
+    return this.q.type === 'order' ? c.sel[0] !== 0 || c.sel.length !== 1 : this.colleagueCuts().length > 0;
   }
 
   useColleague() {
@@ -226,7 +228,9 @@ class Run {
       this.lifelines.colleague--; this.usedLifeline = true;
       c.gone.push(...remove);
       c.sel = c.sel.filter((i) => remove.indexOf(i) === -1);
-      c.hint = q.type === 'sata' ? `Your colleague crossed out ${remove.length} wrong option${remove.length > 1 ? 's' : ''}.` : "Your colleague narrowed it down to two. It's one of these.";
+      c.hint = q.type === 'sata'
+        ? `Your colleague crossed out ${remove.length} wrong option${remove.length > 1 ? 's' : ''}.`
+        : "Your colleague narrowed it down to two. It's one of these.";
     }
     return true;
   }
@@ -352,30 +356,59 @@ const Talk = {
     const n = this.name();
     const hour = new Date().getHours();
     const days = CONFIG.mastery.solidDays, shift = MODES.shift;
+    // what the nurse can say, by situation (one is picked at random)
     const P = {
       floor: [
         `Ready for rounds, ${n}? Tap a room to start a shift.`,
         `Missed patients come back until you get them right on ${days} different days.`,
         'Rooms 107 to 109 have the most instructor focus points.',
-        hour < 12 ? `Good morning, ${n}! Coffee first, then rounds.` : hour >= 21 ? `Night shift, ${n}? Short shifts beat cramming.` : `Afternoon rounds, ${n}. Let's go!`,
+        hour < 12 ? `Good morning, ${n}! Coffee first, then rounds.`
+          : hour >= 21 ? `Night shift, ${n}? Short shifts beat cramming.`
+            : `Afternoon rounds, ${n}. Let's go!`,
         'Every answer has a "why". Reading it is where the learning happens.',
       ],
-      start: [`${shift.n} patients, ${shift.lives} lives. You got this.`, 'Read the last line of each question first.', 'New shift! Slow is smooth, smooth is fast.'],
+      start: [
+        `${shift.n} patients, ${shift.lives} lives. You got this.`,
+        'Read the last line of each question first.',
+        'New shift! Slow is smooth, smooth is fast.',
+      ],
       right: ['Nice catch!', "That's right!", 'Textbook!', 'Exactly.', 'Nailed it.', 'Your patient thanks you.'],
-      streak: [`${ctx.streak} in a row! You're on fire.`, `Streak ×${Engine.multiplier(ctx.streak || 0)}! Keep it going.`, `${ctx.streak} straight. Charge nurse is watching!`],
-      wrong: ['Shake it off. Read the why.', "Close one. Now you'll remember it.", "That's how we learn. It's in Missed Patients now.", 'Breathe. Next patient.'],
+      streak: [
+        `${ctx.streak} in a row! You're on fire.`,
+        `Streak ×${Engine.multiplier(ctx.streak || 0)}! Keep it going.`,
+        `${ctx.streak} straight. Charge nurse is watching!`,
+      ],
+      wrong: [
+        'Shake it off. Read the why.',
+        "Close one. Now you'll remember it.",
+        "That's how we learn. It's in Missed Patients now.",
+        'Breathe. Next patient.',
+      ],
       part: ['Partly there! Check which ones you missed.', 'Almost. SATA is all or nothing for the streak.'],
       low: ['Last life! Slow down and read every option.', 'One life left. Use a lifeline if you need it.'],
       back: ['Back on track!', "There it is. That's my nurse."],
-      codeblue: ['Code Blue! Quick and calm.', 'Trust your first instinct.', `Every right answer buys ${CONFIG.codeBlue.secondsPerRight} seconds!`],
+      codeblue: [
+        'Code Blue! Quick and calm.',
+        'Trust your first instinct.',
+        `Every right answer buys ${CONFIG.codeBlue.secondsPerRight} seconds!`,
+      ],
       boss: ['The Superbug hates good nursing!', 'Hit it with what you know!', 'Wrong answers heal it. Focus!'],
       bossPhase: ["It's mutating! Questions just got harder.", 'It changed color. Stay sharp!'],
       exam: ['Exam mode: no hints until the end.', 'Pace yourself. One question at a time.'],
       review: ['Re-rounding on missed patients. Second chances!', `${days} right days and they are discharged.`],
-      rapid: [`Rapid Response, Room ${ctx.room}! Different floor, same brain. ×${EVENTS.rapid.bonus} points!`, `Overhead page: Rapid Response to Room ${ctx.room}. Switch gears!`],
+      rapid: [
+        `Rapid Response, Room ${ctx.room}! Different floor, same brain. ×${EVENTS.rapid.bonus} points!`,
+        `Overhead page: Rapid Response to Room ${ctx.room}. Switch gears!`,
+      ],
       visitor: ['A family member has a quick question for you!', 'Visitor at the bedside! Answer them and earn bonus XP.'],
-      outage: [`Power outage! Backup lights only. ×${EVENTS.outage.bonus} points while it lasts.`, `The lights went out! Charts still readable. ×${EVENTS.outage.bonus} points.`],
-      daily: [`Today's daily challenge: ${MODES.daily.n} patients. Make them count!`, `Daily challenge! Same ${MODES.daily.n} patients all day.`],
+      outage: [
+        `Power outage! Backup lights only. ×${EVENTS.outage.bonus} points while it lasts.`,
+        `The lights went out! Charts still readable. ×${EVENTS.outage.bonus} points.`,
+      ],
+      daily: [
+        `Today's daily challenge: ${MODES.daily.n} patients. Make them count!`,
+        `Daily challenge! Same ${MODES.daily.n} patients all day.`,
+      ],
       win: ['What a shift!', 'You crushed it!', 'Chief Nurse material.'],
       lose: ['Rough shift. The misses are saved for review.', 'Every nurse has hard shifts. Review and come back.'],
     };
@@ -384,7 +417,11 @@ const Talk = {
     if (kind === 'right' && ctx.trick && Math.random() < CONFIG.talk.trickChance) s = 'Remember: ' + ctx.trick;
     return s;
   },
-  mood(kind) {
-    return { right: 'happy', streak: 'cheer', wrong: 'worried', part: 'focus', low: 'worried', back: 'happy', codeblue: 'focus', boss: 'focus', bossPhase: 'worried', win: 'cheer', lose: 'sad', exam: 'focus', review: 'happy', start: 'happy', rapid: 'focus', visitor: 'happy', outage: 'worried', daily: 'happy' }[kind] || 'happy';
+  // the nurse's face for each kind of line
+  moods: {
+    right: 'happy', streak: 'cheer', back: 'happy', win: 'cheer', review: 'happy', start: 'happy', visitor: 'happy', daily: 'happy',
+    wrong: 'worried', low: 'worried', bossPhase: 'worried', outage: 'worried', lose: 'sad',
+    part: 'focus', codeblue: 'focus', boss: 'focus', exam: 'focus', rapid: 'focus',
   },
+  mood(kind) { return this.moods[kind] || 'happy'; },
 };

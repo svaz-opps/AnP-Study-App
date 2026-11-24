@@ -144,7 +144,8 @@ const Store = {
   importText(text) {
     const obj = JSON.parse(text);
     const save = obj && obj.app === 'ward-rounds' ? obj.save : obj;
-    if (!save || typeof save !== 'object' || !save.profile || !save.items) throw new Error('That file is not a Ward Rounds backup.');
+    const valid = save && typeof save === 'object' && save.profile && save.items;
+    if (!valid) throw new Error('That file is not a Ward Rounds backup.');
     this.state = mergeDefaults(defaultState(), save);
     WR.state = this.state;
     this.save({ now: true });

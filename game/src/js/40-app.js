@@ -88,7 +88,8 @@ const App = {
 
   modal(html, onAct) {
     const root = document.getElementById('modal-root');
-    root.innerHTML = `<div class="modal-backdrop" data-modal-bg><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
+    root.innerHTML = `<div class="modal-backdrop" data-modal-bg>` +
+      `<div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
     const bg = root.firstChild;
     const close = () => { root.innerHTML = ''; };
     bg.addEventListener('click', (e) => {
@@ -107,7 +108,8 @@ const App = {
   confirm(title, body, okLabel, danger) {
     return new Promise((resolve) => {
       this.modal(`<h2>${esc(title)}</h2><p class="dim">${esc(body)}</p>
-        <div class="actions"><button class="btn" data-m="no">Cancel</button><button class="btn ${danger ? 'danger' : 'primary'}" data-m="yes">${esc(okLabel)}</button></div>`,
+        <div class="actions"><button class="btn" data-m="no">Cancel</button><button
+          class="btn ${danger ? 'danger' : 'primary'}" data-m="yes">${esc(okLabel)}</button></div>`,
       (m) => { resolve(m === 'yes'); return false; });
     });
   },

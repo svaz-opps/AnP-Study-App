@@ -5,21 +5,27 @@ function hudHTML() {
   const days = Engine.daysToExam();
   const goal = Engine.dailyTarget();
   const today = s.days.today === todayStr() ? s.days.answered : 0;
-  const examChip = days == null
-    ? `<button class="chip exam" data-action="settings">${icon('calendar')}Set exam date</button>`
-    : days > 0 ? `<span class="chip exam">${icon('calendar')}<span class="num">${days}</span> day${days === 1 ? '' : 's'} to exam</span>`
-      : days === 0 ? `<span class="chip exam">${icon('calendar')}Exam day. You've got this!</span>` : `<span class="chip exam">${icon('calendar')}Exam done</span>`;
+  const cal = icon('calendar');
+  let examChip;
+  if (days == null) examChip = `<button class="chip exam" data-action="settings">${cal}Set exam date</button>`;
+  else if (days > 0) examChip = `<span class="chip exam">${cal}<span class="num">${days}</span> day${days === 1 ? '' : 's'} to exam</span>`;
+  else if (days === 0) examChip = `<span class="chip exam">${cal}Exam day. You've got this!</span>`;
+  else examChip = `<span class="chip exam">${cal}Exam done</span>`;
+  const pct = Math.round(rp.frac * 100);
+  const toNext = rp.nxt ? `${fmt(rp.toGo)} to ${esc(rp.nxt.n)}` : 'Top rank!';
   return `<header class="hud wrap">
     <button class="hud-me" data-action="locker" aria-label="Open locker room to change your nurse">
       <span class="ava">${nurseSVG(s.profile.avatar, 'happy', { headOnly: true })}</span>
       <span><b>${esc(s.profile.name || 'Nurse')}</b><span>${esc(rp.cur.n)}</span></span>
     </button>
     <div class="hud-xp">
-      <div class="label"><span>XP <span class="num">${fmt(s.xp)}</span></span><span>${rp.nxt ? `${fmt(rp.toGo)} to ${esc(rp.nxt.n)}` : 'Top rank!'}</span></div>
-      <div class="bar" role="progressbar" aria-valuenow="${Math.round(rp.frac * 100)}" aria-valuemin="0" aria-valuemax="100" aria-label="Progress to next rank"><i style="width:${Math.round(rp.frac * 100)}%"></i></div>
+      <div class="label"><span>XP <span class="num">${fmt(s.xp)}</span></span><span>${toNext}</span></div>
+      <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
+        aria-label="Progress to next rank"><i style="width:${pct}%"></i></div>
     </div>
     <div class="hud-chips">
-      <span class="chip streak" title="Days in a row">${icon('flame')}<span><span class="num">${s.days.streak || 0}</span>-day streak</span></span>
+      <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
+        class="num">${s.days.streak || 0}</span>-day streak</span></span>
       <span class="chip" title="Patients answered today">${icon('target')}<span class="num">${today}/${goal}</span> today</span>
       ${examChip}
       ${dailyChip()}
@@ -30,33 +36,41 @@ function hudHTML() {
 function dailyChip() {
   const d = WR.state.daily, done = d.last === todayStr();
   const streak = d.last === todayStr() || d.last === yesterdayStr() ? d.streak : 0;
-  return `<button class="chip daily ${done ? 'done' : 'todo'}" data-action="daily" aria-label="${done ? 'Daily challenge done today' : "Start today's daily challenge"}${streak ? `, ${streak}-day daily streak` : ''}">${icon(done ? 'check' : 'sparkle')}<span>${done ? 'Daily done' : 'Daily challenge'}${streak ? ` · <span class="num">${streak}</span>d` : ''}</span></button>`;
+  const label = (done ? 'Daily done' : 'Daily challenge') + (streak ? ` · <span class="num">${streak}</span>d` : '');
+  const aria = (done ? 'Daily challenge done today' : "Start today's daily challenge") + (streak ? `, ${streak}-day daily streak` : '');
+  return `<button class="chip daily ${done ? 'done' : 'todo'}" data-action="daily" aria-label="${aria}">` +
+    `${icon(done ? 'check' : 'sparkle')}<span>${label}</span></button>`;
 }
 
-function roomHTML(u) {
+// one room door on the floor. `place` adds grid placement (the portrait layout)
+function roomHTML(u, place = '') {
   const m = Engine.mastery(u.id);
   const p = patientFor({ id: 'room-' + u.id, stem: '', unit: u.id });
   const mood = m.stars >= 3 ? 'cheer' : m.missed > 0 ? 'worried' : m.seen ? 'happy' : 'neutral';
-  const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${m.missed ? ` ${m.missed} missed patients waiting.` : ''}`;
-  return `<button class="room" data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
+  const waiting = m.missed ? ` ${m.missed} missed patients waiting.` : '';
+  const label = `Room ${u.room}, ${u.ward}, ${u.topic}. ${m.stars} of 3 stars. ${m.solid} of ${m.total} mastered.${waiting}`;
+  return `<button class="room"${place} data-action="room" data-unit="${u.id}" aria-label="${esc(label)}">
     ${m.missed ? `<span class="room-dot num">${m.missed}</span>` : ''}
     <span class="room-body">
       <span class="room-top"><span class="room-plate">${u.room}</span><span class="room-stars">${starRow(m.stars)}</span></span>
       <span class="room-ward">${esc(u.ward)}</span>
       <span class="room-topic">${esc(u.topic)}</span>
       <span class="room-blurb">${esc(u.blurb)}</span>
-      <span class="room-pt"><span class="pt">${patientHead(p, mood)}</span><span class="room-meta"><span class="num">${m.solid}/${m.total}</span><br>mastered</span></span>
+      <span class="room-pt"><span class="pt">${patientHead(p, mood)}</span><span
+        class="room-meta"><span class="num">${m.solid}/${m.total}</span><br>mastered</span></span>
     </span>
     <span class="door"></span>
   </button>`;
 }
 
 function dockHTML() {
-  const nMissed = Engine.missed().length;
+  const nMissed = Engine.missed().length, nCards = Cards.count();
+  const missedCount = nMissed ? `<span class="count num">${nMissed}</span>` : '';
+  const cardCount = nCards ? `<span class="count num" style="background:var(--accent);color:var(--accent-ink)">${nCards}</span>` : '';
   return `<nav class="dock wrap" aria-label="Main">
-    <button data-action="missed">${icon('bed')}<span class="t">Missed patients</span>${nMissed ? `<span class="count num">${nMissed}</span>` : ''}</button>
+    <button data-action="missed">${icon('bed')}<span class="t">Missed patients</span>${missedCount}</button>
     <button data-action="exam">${icon('clipboard')}<span class="t">Exam simulation</span></button>
-    <button data-action="cards">${icon('card')}<span class="t">Get-well cards</span>${Cards.count() ? `<span class="count num" style="background:var(--accent);color:var(--accent-ink)">${Cards.count()}</span>` : ''}</button>
+    <button data-action="cards">${icon('card')}<span class="t">Get-well cards</span>${cardCount}</button>
     <button data-action="locker">${icon('shirt')}<span class="t">Locker room</span></button>
     <button data-action="stats">${icon('chart')}<span class="t">Report card</span></button>
     <button data-action="settings" aria-label="Settings">${icon('gear')}<span class="t">Settings</span></button>
@@ -68,23 +82,29 @@ Screens.floor = {
   render() {
     const units = Content.units;
     const bossOpen = Engine.bossUnlocked();
-    const alarm = `<button class="alarm" data-action="codeblue" aria-label="Start a Code Blue timed round"><span class="light"></span>Code Blue</button>`;
-    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span><span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : `★ in ${CONFIG.boss.unlockRooms} rooms or ${CONFIG.boss.unlockShifts} shifts (${Engine.shiftsDone()}/${CONFIG.boss.unlockShifts})`}</small></span></button>`;
+    const alarm = `<button class="alarm" data-action="codeblue" aria-label="Start a Code Blue timed round">` +
+      `<span class="light"></span>Code Blue</button>`;
+    const BOSS = CONFIG.boss;
+    const lockNote = `★ in ${BOSS.unlockRooms} rooms or ${BOSS.unlockShifts} shifts (${Engine.shiftsDone()}/${BOSS.unlockShifts})`;
+    const elev = `<button class="elevator ${bossOpen ? '' : 'locked'}" data-action="boss" ` +
+      `aria-label="Operating room: boss fight${bossOpen ? '' : ' (locked)'}"><span class="doors"></span>` +
+      `<span>OR: Boss fight<small>${bossOpen ? 'The Superbug awaits' : lockNote}</small></span></button>`;
     const bubble = `<div class="bubble pop" id="floor-bubble">${esc(Talk.line('floor'))}</div>`;
     const walker = `<div class="walker" id="walker">${nurseSVG(WR.state.profile.avatar, 'happy')}</div>`;
     let plan;
     if (App.layout === 'h') {
       plan = `<div class="floorplan h wrap" id="floorplan">
-        <div class="rooms rooms-top">${units.slice(0, 6).map(roomHTML).join('')}</div>
+        <div class="rooms rooms-top">${units.slice(0, 6).map((u) => roomHTML(u)).join('')}</div>
         <div class="corridor">
           <div class="station"><div class="station-desk" aria-hidden="true">NURSES' STATION</div>${bubble}</div>
           ${alarm}${elev}
         </div>
-        <div class="rooms rooms-bottom">${units.slice(6).map(roomHTML).join('')}</div>
+        <div class="rooms rooms-bottom">${units.slice(6).map((u) => roomHTML(u)).join('')}</div>
         ${walker}
       </div>`;
     } else {
-      const rows = units.map((u, i) => roomHTML(u).replace('class="room"', `class="room" style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`)).join('');
+      // two columns of rooms either side of the corridor
+      const rows = units.map((u, i) => roomHTML(u, ` style="grid-column:${i % 2 ? 3 : 1};grid-row:${Math.floor(i / 2) + 1}"`)).join('');
       plan = `<div class="station-card show"><div class="station-desk" aria-hidden="true">STATION</div>${bubble}</div>
       <div class="floorplan v wrap" id="floorplan">
         <div class="rooms">${rows}</div>
@@ -159,10 +179,12 @@ Screens.floor = {
         + `and ${n - fromMissed} from anywhere in the bank. Finish it on back-to-back days to build a daily streak `
         + `and unlock a party hat (${B.daily3} days) and rubber-duck scrubs (${B.daily7} days).`;
       const replayNote = done
-        ? '<p class="dim"><b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>'
+        ? '<p class="dim">' +
+          '<b>You already finished today\'s.</b> A replay is fine for practice but does not add to the streak.</p>'
         : '';
       App.modal(`<h2>Daily challenge</h2><p class="dim">${about}</p>${replayNote}
-        <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">${done ? 'Replay' : 'Start'}</button></div>`,
+        <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary"
+          data-m="go">${done ? 'Replay' : 'Start'}</button></div>`,
       (m) => { if (m === 'go') startDaily(); return false; });
     },
     boss() {
@@ -170,7 +192,8 @@ Screens.floor = {
         const BOSS = CONFIG.boss;
         const why = `The Superbug only fights experienced nurses. Earn a star in ${BOSS.unlockRooms} rooms, `
           + `or finish ${BOSS.unlockShifts} shifts (you've finished ${Engine.shiftsDone()}). `
-          + `A star means you've answered ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients right at least once.`;
+          + `A star means you've answered ${Math.round(CONFIG.mastery.oneStar * 100)}% of a room's patients right ` +
+            `at least once.`;
         App.modal(`<h2>The OR is locked</h2><p class="dim">${why}</p>`
           + '<div class="actions"><button class="btn primary" data-m="ok">Back to rounds</button></div>');
         return;
@@ -178,8 +201,11 @@ Screens.floor = {
       startMode('boss');
     },
     exam() {
-      App.modal(`<h2>Exam simulation</h2><p class="dim">${MODES.exam.n} mixed questions from every room, like the real final. No lifelines and no explanations until the end, then a full score report by unit.</p>
-        <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary" data-m="go">Start exam</button></div>`,
+      const about = `${MODES.exam.n} mixed questions from every room, like the real final. `
+        + 'No lifelines and no explanations until the end, then a full score report by unit.';
+      App.modal(`<h2>Exam simulation</h2><p class="dim">${about}</p>
+        <div class="actions"><button class="btn" data-m="no">Not now</button><button class="btn primary"
+          data-m="go">Start exam</button></div>`,
       (m) => { if (m === 'go') startMode('exam'); return false; });
     },
   },

@@ -18,7 +18,13 @@ body {
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; margin: 0; text-wrap: balance; }
 p { margin: 0; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-button, .tap { touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+button, .tap {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
 button:disabled { cursor: default; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
 svg { display: block; }
@@ -30,7 +36,14 @@ svg { display: block; }
 
 #app { position: relative; height: 100%; overflow: hidden; }
 
-.boot { height: 100%; display: grid; place-content: center; gap: var(--s4); text-align: center; color: var(--text-dim); }
+.boot {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  gap: var(--s4);
+  text-align: center;
+  color: var(--text-dim);
+}
 .boot-ecg { width: 220px; height: 60px; margin: 0 auto;
   background: linear-gradient(90deg, transparent 0 40%, var(--ecg) 40% 41%, transparent 41%) 0 50% / 100% 2px no-repeat;
   -webkit-mask: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
@@ -90,12 +103,24 @@ svg { display: block; }
   font-size: var(--fs-sm); font-weight: 700; white-space: nowrap;
 }
 .chip svg { width: 16px; height: 16px; }
-.label { font-size: var(--fs-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); }
+.label {
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
 
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s4); }
 
 .bar { height: 10px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
-.bar > i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width .5s ease; }
+.bar > i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width .5s ease;
+}
 
 /* ---------- top bars ---------- */
 .topbar { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); }
@@ -107,7 +132,9 @@ svg { display: block; }
   position: fixed; inset: 0; z-index: 50;
   background: rgba(4, 9, 18, .7); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   display: grid; place-items: center;
-  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  padding:
+    max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
+    max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   animation: fade-in .2s ease both;
 }
 .modal {
