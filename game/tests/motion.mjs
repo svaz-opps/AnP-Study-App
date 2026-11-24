@@ -80,6 +80,38 @@ for (const [rm, motion, want, wantAnim, wantWalk] of [
   check(!errors.length, 'no page errors ' + errors.join('; '));
   await page.close();
 }
+// after an answer the page stays put (no jump to the explanation) and "Next patient" is on screen, also when
+// scrolled to the bottom of the explanation, on a tablet and a phone
+for (const [w, h] of [[1180, 820], [390, 844]]) {
+  console.log(`next patient always on screen at ${w}x${h}`);
+  const page = await browser.newPage({ viewport: { width: w, height: h } });
+  await page.goto(file);
+  await page.waitForSelector('.onboard');
+  for (const t of ['1', '2', '3', '4', '5']) await page.click(`[data-to="${t}"]`);
+  await page.waitForSelector('.chart .opt');
+  await page.evaluate(() => {
+    const q = window.WR.App.run.q;
+    const click = (k) => document.querySelector(`.opt[data-i="${k}"]`).click();
+    if (q.type === 'order') [...q.steps.keys()].reverse().forEach(click);
+    else if (q.type === 'sata') q.opts.forEach((o, k) => { if (!o.c) click(k); });
+    else click(q.opts.findIndex((o) => !o.c));
+    document.querySelector('[data-action="submit"]').click();
+  });
+  await page.waitForTimeout(900);
+  const onScreen = () => page.evaluate(() => {
+    const b = document.querySelectorAll('[data-action="next"]');
+    const r = b[0] && b[0].getBoundingClientRect();
+    return { n: b.length, in: !!r && r.top >= 0 && r.bottom <= innerHeight, scroll: document.querySelector('.screen').scrollTop };
+  });
+  const a = await onScreen();
+  check(a.scroll === 0, `the page does not scroll by itself (scrollTop ${a.scroll})`);
+  check(a.n === 1 && a.in, 'one "Next patient" button, on screen');
+  await page.evaluate(() => { const s = document.querySelector('.screen'); s.scrollTop = s.scrollHeight; });
+  await page.waitForTimeout(200);
+  check((await onScreen()).in, '"Next patient" still on screen at the bottom of the explanation');
+  await page.close();
+}
+
 // a few patients in each level: answer marks, feedback, next patient, Code Blue ticking, report, all without errors
 for (const [rm, motion] of [['reduce', 'auto'], ['no-preference', 'reduced'], ['no-preference', 'full']]) {
   console.log(`play-through: device reduce=${rm}, setting=${motion}`);

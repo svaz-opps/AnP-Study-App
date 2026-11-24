@@ -51,8 +51,8 @@ These are what the pass checks every animation against.
 - Dialogs fade out; report builds up in stages; stars stamp in; boss wind-up / arc / squash on impact; settings
   highlight slides; locker nurse shows off a change.
 
-## Left for the user to decide
-- In the wide (landscape) layout the page still scrolls down to the explanation, which takes the question and its
-  marks off screen. Option: scroll only part way (explanation header at ~35% of the screen) so the marks stay
-  visible, at the cost of scrolling to reach "Next patient". In portrait the explanation is a bottom sheet (up to
-  82% of the screen) that covers the options the same way; it could stop lower. Not changed without asking.
+## Decided
+- The user chose: after an answer the page stays put (no jump to the explanation); Submit turns into "Next patient"
+  in the same spot and that button sticks to the top or bottom edge of the screen while scrolling, so it is always
+  on screen; scroll down to read the explanation. The portrait bottom sheet is gone (the explanation sits under the
+  question on every size).

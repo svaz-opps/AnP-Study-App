@@ -858,6 +858,14 @@ svg { display: block; }
 
 .tray { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
 .tray .grow { flex: 1; }
+/* after an answer the tray holds only "Next patient" and sticks to the top (or bottom) edge of the screen while you
+   scroll, so it is always on screen; only the button catches taps and covers text, the rest of the row is
+   see-through */
+.tray:has(.next-btn) {
+  position: sticky; top: var(--s2); bottom: calc(var(--s2) + env(safe-area-inset-bottom, 0px)); z-index: 6; pointer-events: none;
+}
+.tray .next-btn { pointer-events: auto; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); }
+.tray .next-btn svg { width: 18px; height: 18px; }
 .life-btn {
   display: flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 14px; border-radius: 999px;
   background: var(--surface); border: 1px solid var(--line); font-weight: 800; font-size: var(--fs-sm);
@@ -874,17 +882,11 @@ svg { display: block; }
   box-shadow: var(--shadow);
 }
 .feedback[hidden] { display: none; }
-[data-size="wide"] .feedback { animation: slide-in var(--dur-panel) var(--ease-out) both; scroll-margin-bottom: 16px; }
-[data-size="regular"] .feedback, [data-size="compact"] .feedback {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 82%; overflow-y: auto;
-  border-radius: var(--r-lg) var(--r-lg) 0 0; border-bottom: 0;
-  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
-  padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
-  animation: sheet-up var(--dur-panel) var(--ease-out) both;
-}
+/* the explanation sits under the question on every screen size (it used to be a bottom sheet on narrow screens
+   that covered the answers); scroll down to read it */
+.feedback { animation: slide-in var(--dur-panel) var(--ease-out) both; }
 /* the panel sits under the options, so it rises from below, the way the page scrolls to it */
 @keyframes slide-in { from { opacity: 0; transform: translateY(16px); } }
-@keyframes sheet-up { from { transform: translateY(100%); } }
 .fb-head { display: flex; align-items: center; gap: var(--s3); }
 .fb-head .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .fb-head .ico svg { width: 26px; height: 26px; }
@@ -951,17 +953,6 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .why-list li.c { border-left-color: var(--good); }
 .focus-list { margin: 4px 0 0; padding-left: 1.2em; font-size: var(--fs-sm); color: var(--text-dim); }
 .focus-list li.hit { color: var(--text); font-weight: 700; }
-.fb-actions .btn { white-space: nowrap; }
-.fb-actions .btn svg { width: 18px; height: 18px; }
-.fb-actions {
-  display: flex;
-  gap: var(--s3);
-  justify-content: flex-end;
-  position: sticky;
-  bottom: 0;
-  padding-top: var(--s2);
-}
-[data-size="wide"] .fb-actions { margin-top: auto; }
 
 /* ---------- code blue ---------- */
 .mode-codeblue { background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 71, 87, .18)); }
@@ -2344,7 +2335,6 @@ const CONFIG = {
     bubbleTuckMs: 260,       // the floor speech bubble shrinks into the nurse before she walks
     buttonTuckMs: 200,       // the Code Blue and OR buttons shrink away as she starts walking
     feedbackDelayMs: 240,    // the explanation panel follows the answer marks (30-chart.css mark-pop)
-    bossFeedbackDelayMs: 640, // in the arena it waits for the wind-up + throw (170 + 420 ms) to land
     walkPxPerSecond: 600,    // the nurse's walk to a room
     walkMinSeconds: 0.4,
     walkMaxSeconds: 1.4,
@@ -5189,9 +5179,21 @@ Screens.chart = {
       ${c.hint && !c.revealed ? `<p class="paper-hint">${icon('users')}${esc(c.hint)}</p>` : ''}
       ${this.optsHTML(run)}`;
   },
+  // what the button that moves on says
+  nextLabel(run) {
+    if (!run.isEnd()) return 'Next patient';
+    return run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
+  },
   trayHTML(run) {
     const q = run.q, c = run.cur, L = run.lifelines;
-    if (c.revealed) return '';
+    // After an answer, Submit becomes "Next patient" in the same spot. The tray then sticks to the top of the
+    // screen (30-chart.css), so moving on is always one tap away, even while scrolling down through the
+    // explanation; the page no longer scrolls to the explanation by itself.
+    if (c.revealed) {
+      return run.cfg.feedback
+        ? `<span class="grow"></span><button class="btn primary big next-btn" data-action="next" data-autofocus>${this.nextLabel(run)}${icon('play')}</button>`
+        : '';
+    }
     let s = '';
     if (run.cfg.lifelines) {
       const colleagueHelp = 'Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, '
@@ -5280,8 +5282,6 @@ Screens.chart = {
       : '<p class="dim">This section has no instructor focus points.</p>';
     const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary>` +
       `<p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
-    let endLabel = 'Next patient';
-    if (run.isEnd()) endLabel = run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
     const headIcon = icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x');
     return `<div class="fb-head ${st}"><span class="ico">${headIcon}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
       ${notes.length ? `<div class="fb-notes">${notes.map((n) => `<p>${n}</p>`).join('')}</div>` : ''}
@@ -5289,8 +5289,7 @@ Screens.chart = {
       <p class="fb-why">${esc(q.why)}</p>
       <div class="fb-tips">${this.feedbackTips(q, sec)}</div>
       ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
-      ${others}${guide}
-      <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
+      ${others}${guide}`;
   },
 
   // ----- lifecycle
@@ -5372,10 +5371,10 @@ Screens.chart = {
         f.hidden = !show;
         f.innerHTML = show ? this.feedbackHTML(run) : '';
         if (show) {
-          // (the panel is new for every patient, so it is already scrolled to the top)
-          const b = $('[data-action="next"]', f);
+          // no scrolling to the panel: the question and its answer marks stay in view, and the Next button
+          // (in the tray, which sticks to the top) is always reachable
+          const b = $('#tray [data-action="next"]', el);
           if (b && !('ontouchstart' in window)) b.focus({ preventScroll: true });
-          if (App.size === 'wide') f.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
         }
       }
     }
@@ -5458,7 +5457,7 @@ Screens.chart = {
       if (c.badges && c.badges.length) badgeToast(c.badges);
     };
     if (calmChosen()) afterNextPaint(showFeedback);
-    else setTimeout(showFeedback, run.mode === 'boss' && c.dmg ? CONFIG.timing.bossFeedbackDelayMs : CONFIG.timing.feedbackDelayMs);
+    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {

@@ -263,6 +263,14 @@
 
 .tray { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
 .tray .grow { flex: 1; }
+/* after an answer the tray holds only "Next patient" and sticks to the top (or bottom) edge of the screen while you
+   scroll, so it is always on screen; only the button catches taps and covers text, the rest of the row is
+   see-through */
+.tray:has(.next-btn) {
+  position: sticky; top: var(--s2); bottom: calc(var(--s2) + env(safe-area-inset-bottom, 0px)); z-index: 6; pointer-events: none;
+}
+.tray .next-btn { pointer-events: auto; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); }
+.tray .next-btn svg { width: 18px; height: 18px; }
 .life-btn {
   display: flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 14px; border-radius: 999px;
   background: var(--surface); border: 1px solid var(--line); font-weight: 800; font-size: var(--fs-sm);
@@ -279,17 +287,11 @@
   box-shadow: var(--shadow);
 }
 .feedback[hidden] { display: none; }
-[data-size="wide"] .feedback { animation: slide-in var(--dur-panel) var(--ease-out) both; scroll-margin-bottom: 16px; }
-[data-size="regular"] .feedback, [data-size="compact"] .feedback {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-height: 82%; overflow-y: auto;
-  border-radius: var(--r-lg) var(--r-lg) 0 0; border-bottom: 0;
-  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
-  padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
-  animation: sheet-up var(--dur-panel) var(--ease-out) both;
-}
+/* the explanation sits under the question on every screen size (it used to be a bottom sheet on narrow screens
+   that covered the answers); scroll down to read it */
+.feedback { animation: slide-in var(--dur-panel) var(--ease-out) both; }
 /* the panel sits under the options, so it rises from below, the way the page scrolls to it */
 @keyframes slide-in { from { opacity: 0; transform: translateY(16px); } }
-@keyframes sheet-up { from { transform: translateY(100%); } }
 .fb-head { display: flex; align-items: center; gap: var(--s3); }
 .fb-head .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
 .fb-head .ico svg { width: 26px; height: 26px; }
@@ -356,17 +358,6 @@ details.more[open] summary::before { transform: rotate(90deg); }
 .why-list li.c { border-left-color: var(--good); }
 .focus-list { margin: 4px 0 0; padding-left: 1.2em; font-size: var(--fs-sm); color: var(--text-dim); }
 .focus-list li.hit { color: var(--text); font-weight: 700; }
-.fb-actions .btn { white-space: nowrap; }
-.fb-actions .btn svg { width: 18px; height: 18px; }
-.fb-actions {
-  display: flex;
-  gap: var(--s3);
-  justify-content: flex-end;
-  position: sticky;
-  bottom: 0;
-  padding-top: var(--s2);
-}
-[data-size="wide"] .fb-actions { margin-top: auto; }
 
 /* ---------- code blue ---------- */
 .mode-codeblue { background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 71, 87, .18)); }

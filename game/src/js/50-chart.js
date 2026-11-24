@@ -177,9 +177,21 @@ Screens.chart = {
       ${c.hint && !c.revealed ? `<p class="paper-hint">${icon('users')}${esc(c.hint)}</p>` : ''}
       ${this.optsHTML(run)}`;
   },
+  // what the button that moves on says
+  nextLabel(run) {
+    if (!run.isEnd()) return 'Next patient';
+    return run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
+  },
   trayHTML(run) {
     const q = run.q, c = run.cur, L = run.lifelines;
-    if (c.revealed) return '';
+    // After an answer, Submit becomes "Next patient" in the same spot. The tray then sticks to the top of the
+    // screen (30-chart.css), so moving on is always one tap away, even while scrolling down through the
+    // explanation; the page no longer scrolls to the explanation by itself.
+    if (c.revealed) {
+      return run.cfg.feedback
+        ? `<span class="grow"></span><button class="btn primary big next-btn" data-action="next" data-autofocus>${this.nextLabel(run)}${icon('play')}</button>`
+        : '';
+    }
     let s = '';
     if (run.cfg.lifelines) {
       const colleagueHelp = 'Ask a colleague: a 50/50 that leaves the right answer and one wrong one (on select-all questions, '
@@ -268,8 +280,6 @@ Screens.chart = {
       : '<p class="dim">This section has no instructor focus points.</p>';
     const guide = `<details class="more"><summary>Read the guide: ${esc(sec.num)} ${esc(sec.title)}</summary>` +
       `<p class="label" style="margin-top:6px">Instructor focus points</p>${focus}</details>`;
-    let endLabel = 'Next patient';
-    if (run.isEnd()) endLabel = run.mode === 'boss' ? (run.won ? 'Victory!' : 'See results') : 'See shift report';
     const headIcon = icon(st === 'ok' ? 'check' : st === 'part' ? 'target' : 'x');
     return `<div class="fb-head ${st}"><span class="ico">${headIcon}</span><h2>${title}</h2>${pts ? `<span class="pts num">${pts}</span>` : ''}</div>
       ${notes.length ? `<div class="fb-notes">${notes.map((n) => `<p>${n}</p>`).join('')}</div>` : ''}
@@ -277,8 +287,7 @@ Screens.chart = {
       <p class="fb-why">${esc(q.why)}</p>
       <div class="fb-tips">${this.feedbackTips(q, sec)}</div>
       ${c.card && Content.byId[c.card] ? Cards.html(Content.byId[c.card], { reveal: true }) : ''}
-      ${others}${guide}
-      <div class="fb-actions"><button class="btn primary big" data-action="next" data-autofocus>${endLabel}${icon('play')}</button></div>`;
+      ${others}${guide}`;
   },
 
   // ----- lifecycle
@@ -360,10 +369,10 @@ Screens.chart = {
         f.hidden = !show;
         f.innerHTML = show ? this.feedbackHTML(run) : '';
         if (show) {
-          // (the panel is new for every patient, so it is already scrolled to the top)
-          const b = $('[data-action="next"]', f);
+          // no scrolling to the panel: the question and its answer marks stay in view, and the Next button
+          // (in the tray, which sticks to the top) is always reachable
+          const b = $('#tray [data-action="next"]', el);
           if (b && !('ontouchstart' in window)) b.focus({ preventScroll: true });
-          if (App.size === 'wide') f.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
         }
       }
     }
@@ -446,7 +455,7 @@ Screens.chart = {
       if (c.badges && c.badges.length) badgeToast(c.badges);
     };
     if (calmChosen()) afterNextPaint(showFeedback);
-    else setTimeout(showFeedback, run.mode === 'boss' && c.dmg ? CONFIG.timing.bossFeedbackDelayMs : CONFIG.timing.feedbackDelayMs);
+    else setTimeout(showFeedback, CONFIG.timing.feedbackDelayMs);
   },
 
   bossFx(c) {

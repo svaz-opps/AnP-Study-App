@@ -490,3 +490,13 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - End of the overnight pass. Everything is on `ccr-dd43cba2-3w86f7`, not on `main`. Waiting for the user: a look at
   the changes (ANIMATION_NOTES.md "What the pass changed"), the open question about the landscape scroll /
   portrait sheet covering the answer marks, and the go-ahead to push to `main`.
+
+## 2026-11-24 — "Next patient" always on screen
+- User's request: reaching the next patient should always be on top; it's fine to scroll for the explanation.
+- After an answer, Submit becomes "Next patient" in the same spot (the tray), and the tray then sticks to the top
+  or bottom edge of the screen (`position: sticky; top; bottom`, only the button catches taps). The explanation no
+  longer scrolls into view by itself, and the narrow-screen bottom sheet that covered the answers is gone: the
+  explanation sits under the question on every size. The Next button at the end of the explanation was removed
+  (one button). The boss-fight delay that waited out the scroll is gone (`bossFeedbackDelayMs` removed).
+- tests/motion.mjs: checks at 1180x820 and 390x844 that the page doesn't scroll by itself, there is one Next
+  button on screen, and it is still on screen at the bottom of the explanation. All 8 tests pass.
