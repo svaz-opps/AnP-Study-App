@@ -80,6 +80,34 @@ for (const [rm, motion, want, wantAnim, wantWalk] of [
   check(!errors.length, 'no page errors ' + errors.join('; '));
   await page.close();
 }
+// a few patients in each level: answer marks, feedback, next patient, Code Blue ticking, report, all without errors
+for (const [rm, motion] of [['reduce', 'auto'], ['no-preference', 'reduced'], ['no-preference', 'full']]) {
+  console.log(`play-through: device reduce=${rm}, setting=${motion}`);
+  const { page, errors } = await open(rm, motion);
+  await page.evaluate(() => window.WR.Screens.floor.act.codeblue());
+  await page.waitForSelector('.mode-codeblue .opt');
+  for (let i = 0; i < 4; i++) {
+    await page.evaluate((right) => {
+      const q = window.WR.App.run.q;
+      const click = (k) => document.querySelector(`.opt[data-i="${k}"]`).click();
+      if (q.type === 'order') (right ? [...q.steps.keys()] : [...q.steps.keys()].reverse()).forEach(click);
+      else if (q.type === 'sata') q.opts.forEach((o, k) => { if (right ? o.c : !o.c) click(k); });
+      else click(q.opts.findIndex((o) => (right ? o.c : !o.c)));
+      document.querySelector('[data-action="submit"]').click();
+    }, i !== 2);
+    await page.waitForTimeout(1100); // Code Blue moves on by itself
+  }
+  await page.evaluate(() => { window.WR.App.run.timeLeft = 4.5; });
+  await page.waitForTimeout(1200);
+  const ticked = await page.evaluate(() => document.getElementById('timer-num')?.classList.contains('tick'));
+  check(motion === 'reduced' ? true : ticked, 'the Code Blue timer ticks in its last seconds');
+  await page.waitForSelector('.report-wrap', { timeout: 8000 });
+  await page.waitForTimeout(1500);
+  const visible = await page.evaluate(() => getComputedStyle(document.querySelector('.report-actions')).opacity);
+  check(visible === '1', `the report ends fully shown (buttons opacity ${visible})`);
+  check(!errors.length, 'no page errors ' + errors.join('; '));
+  await page.close();
+}
 await browser.close();
 console.log(failures ? `${failures} failure(s)` : 'all motion checks passed');
 process.exit(failures ? 1 : 0);

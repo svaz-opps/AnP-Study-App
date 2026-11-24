@@ -457,3 +457,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
   over the room cards while she walks. Checked at 390x844. All 8 tests pass.
 - Room buttons' screen-reader labels now include "N more right/mastered for the next star" and "Suggested by your
   nurse" on the suggested room. All 8 tests pass.
+- tests/motion.mjs: added a Code Blue play-through in soft, calm and full (answer marks, feedback, auto-advance,
+  the last-seconds tick, report fully shown at the end, no page errors). Passed 3 runs in a row.
