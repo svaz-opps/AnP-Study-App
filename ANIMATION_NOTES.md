@@ -33,7 +33,7 @@ These are what the pass checks every animation against.
 - [x] C. Floor: walk cycle matches speed (no foot sliding), anticipation + settle, nurse goes *into* the room.
 - [x] D. Screen changes: continuity (floor → room zoom from the tapped room, back out to the floor).
 - [x] E. Chart: option press, submit, right/wrong feedback, lives lost, streak, score float, Next patient.
-- [ ] F. Progress bars: animate with transform, not width.
+- [x] F. Progress bars: animate with transform, not width.
 - [ ] G. Modals, toasts, banners: entrance/exit pairs, exit faster.
 - [ ] H. Report card / rank-up / confetti: staging and stagger.
 - [ ] I. Boss arena: hit/heal anticipation and follow-through.

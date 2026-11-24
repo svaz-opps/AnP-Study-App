@@ -395,3 +395,8 @@ After animation work runs out: ideas to make the game more engaging; after that,
   crossfade on soft; nothing waits for it, and it is placed where the chart sits after the scroll back to the top).
   Bug fixed on the way: `App.rerender` reset the screen's classes, which swapped the animation name and replayed an
   entrance on the whole screen at the first "Next patient" after zooming into a room. All 8 tests pass.
+- F (done) Progress bars. The old `transition: width` never ran (bars are drawn fresh with their final width), so
+  bars just appeared full. Now every `.bar > i` fills on appearing with `scaleX` (no layout per frame), 0.8 s
+  ease-out after 0.2 s; the HP and Code Blue timer bars (moved by script) are excluded; nothing on Calm. The floor's
+  XP bar starts from where it was last shown (`--from`), so XP earned on a shift flows in when you return, and the
+  XP number rolls up alongside it. All 8 tests pass.

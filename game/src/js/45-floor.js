@@ -1,4 +1,6 @@
 // ---------- hospital floor (home) ----------
+// the XP bar fills from where it was last shown, so XP earned on a shift visibly flows in when you get back
+let hudXpShown = null, hudXpNum = null;
 function hudHTML() {
   const s = WR.state;
   const rp = Engine.rankProgress();
@@ -12,6 +14,9 @@ function hudHTML() {
   else if (days === 0) examChip = `<span class="chip exam">${cal}Exam day. You've got this!</span>`;
   else examChip = `<span class="chip exam">${cal}Exam done</span>`;
   const pct = Math.round(rp.frac * 100);
+  // fraction of the current fill to start from: 0 the first time (or after a rank-up), the old level after a shift
+  const xpFrom = hudXpShown == null || pct < hudXpShown || !pct ? 0 : (hudXpShown / pct).toFixed(3);
+  hudXpShown = pct;
   const toNext = rp.nxt ? `${fmt(rp.toGo)} to ${esc(rp.nxt.n)}` : 'Top rank!';
   return `<header class="hud wrap">
     <button class="hud-me" data-action="locker" aria-label="Open locker room to change your nurse">
@@ -19,9 +24,9 @@ function hudHTML() {
       <span><b>${esc(s.profile.name || 'Nurse')}</b><span>${esc(rp.cur.n)}</span></span>
     </button>
     <div class="hud-xp">
-      <div class="label"><span>XP <span class="num">${fmt(s.xp)}</span></span><span>${toNext}</span></div>
+      <div class="label"><span>XP <span class="num" id="hud-xp-num">${fmt(s.xp)}</span></span><span>${toNext}</span></div>
       <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"
-        aria-label="Progress to next rank"><i style="width:${pct}%"></i></div>
+        aria-label="Progress to next rank"><i style="width:${pct}%;--from:${xpFrom}"></i></div>
     </div>
     <div class="hud-chips">
       <span class="chip streak" title="Days in a row">${icon('flame')}<span><span
@@ -116,6 +121,9 @@ Screens.floor = {
   },
   mount(el) {
     this.placeWalker(false);
+    // XP earned since the floor was last shown rolls in alongside the bar
+    if (hudXpNum != null && hudXpNum < WR.state.xp) FX.countUp($('#hud-xp-num', el), hudXpNum, WR.state.xp, 900);
+    hudXpNum = WR.state.xp;
     // back from a shift: she comes out of the room she went into and walks back to the station
     const unit = this.lastRoom;
     this.lastRoom = null;

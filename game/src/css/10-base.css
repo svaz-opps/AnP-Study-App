@@ -120,8 +120,15 @@ svg { display: block; }
   height: 100%;
   border-radius: inherit;
   background: var(--accent);
-  transition: width .5s ease;
+  /* bars fill when they appear (scaleX, not width: no layout per frame); --from starts part-way, e.g. the XP bar
+     after a shift starts from where it was */
+  transform-origin: left center;
+  animation: bar-fill .8s var(--ease-out) .2s both;
 }
+@keyframes bar-fill { from { transform: scaleX(var(--from, 0)); } }
+/* the HP and Code Blue timer bars are moved by script */
+.bar > i#hp-bar, .bar > i#timer-bar { animation: none; }
+[data-calm="1"] .bar > i { animation: none; }
 
 /* ---------- top bars ---------- */
 .topbar { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); }
