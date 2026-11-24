@@ -480,3 +480,9 @@ After animation work runs out: ideas to make the game more engaging; after that,
   capped at 0.4 s; fade on soft, none on Calm). These screens are not redrawn while in use, so it only plays on
   arrival. Checked all three end fully shown. All 8 tests pass. (Locker tabs were left as they are: their tabs
   have their own backgrounds, so a sliding pill would pass behind them.)
+- Resumed 08:21 UTC (scheduled message). Performance check of the new animations with a 4x slowed CPU (frames
+  recorded with requestAnimationFrame), branch vs the `main` build: submit right/wrong and next patient average
+  ~17 ms per frame on both; walk to a room + grow-in and the walk back: no frame over 33 ms. "Next patient" on the
+  branch sometimes shows 1–2 frames of 50–67 ms (main: 0–1): its `advance()` is no slower (10–32 ms vs 18–47 ms on
+  main), the extra is ~4 ms of painting the sliding copy. Added `contain: layout paint style` + `will-change` to
+  that copy. All 8 tests pass.

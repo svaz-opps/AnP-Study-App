@@ -203,7 +203,7 @@ const FX = {
     node.setAttribute('aria-hidden', 'true');
     Object.assign(node.style, {
       position: 'fixed', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px',
-      margin: '0', pointerEvents: 'none', zIndex: '1',
+      margin: '0', pointerEvents: 'none', zIndex: '1', contain: 'layout paint style', willChange: 'transform, opacity',
     });
     layer.appendChild(node);
     const out = reducedMotion() ? [{ opacity: 1 }, { opacity: 0 }]
