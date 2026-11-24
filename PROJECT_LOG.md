@@ -612,3 +612,5 @@ After animation work runs out: ideas to make the game more engaging; after that,
   keeps the guide's answer and says what research shows rather than changing the key. "Light-skinned" stays in the
   option text because that is the exam's wording. Sources were checked through search results and abstracts, not full
   texts, except where the abstract stated the fact directly.
+- Merged into `main` at the user's request (fast-forward to d3991c4); this republishes the game on GitHub Pages.
+  `beta` was not updated.
