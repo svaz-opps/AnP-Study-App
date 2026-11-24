@@ -510,3 +510,4 @@ After animation work runs out: ideas to make the game more engaging; after that,
 - Settings: a small italic line under the version text, "Made with love for My Tuna 💗" (the user picked this
   wording from three drafts). Style: `.dedication` in css/40-screens.css.
 - Rebuilt dist; all 8 tests pass.
+- Pushed to `main` and `beta` at the user's request (both fast-forward to the branch).
